@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RevHops — Revenue operations for teams that needed it fixed last quarter</title>
+<meta name="description" content="RevHops is a revenue operations consultancy and HubSpot Platinum Partner. We design, build and maintain the system your revenue team actually runs on.">
+<link rel="icon" href="assets/img/revhops-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Lato:wght@300;400;700;900&display=swap">
+<link rel="stylesheet" href="assets/css/site.css?v=202608232103">
+</head>
+<body>
+
+<!-- ============================= NAV ============================= -->
+<header class="nav" data-nav>
+  <div class="shell nav-inner">
+    <a class="brand" href="index.html" aria-label="RevHops home">
+      <img class="brand-base" src="assets/img/revhops-logo.png" alt="revhops">
+      <img class="brand-alt" src="assets/img/revhops-logo-white.png" alt="" aria-hidden="true">
+    </a>
+    <nav class="nav-links" data-nav-links aria-label="Primary">
+      <a href="services.html">Services</a>
+      <a href="hubspot.html">HubSpot</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="book.html">Book a call</a>
+      <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-label="Menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- =============================================================
+     HERO — the visitor picks their stage and it stays picked, so the
+     cards stay readable and the rest of the page is one scroll away.
+     The choice is published on <html data-stage> for downstream use.
+     ============================================================= -->
+<section class="hero-pin">
+  <div class="hero">
+    <div class="hero-bleed">
+      <!-- orange sweeps down from above the nav; cool blue rises from below
+           the fold and grows. Both start well outside the hero (see
+           .hero-bleed .disc-a / .disc-b) so there is real travel to see. -->
+      <div class="disc disc-a"
+           data-parallax="0.28" data-parallax-host=".hero-pin"></div>
+      <div class="disc disc-cool disc-b"
+           data-parallax="-0.28" data-parallax-grow="0.55" data-parallax-host=".hero-pin"></div>
+    </div>
+    <div class="shell shell-wide">
+      <div data-revhops-maturity data-start="0"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= LOGO BAND =============================
+     One continuous rail. The list is duplicated verbatim and the whole
+     strip slides exactly half its width, so the seam never shows and there
+     is no jump on repeat. Both lists must stay identical. aria-hidden on
+     the copy keeps screen readers from hearing every name twice. Hovering
+     pauses it.
+     Takes --proof-lead so it sits 100px under the stage cards whatever the
+     viewport height — see measureProofLead() in maturity-slider.js. -->
+<section class="logo-band" aria-label="Clients we have worked with">
+  <div class="logo-rail">
+    <ul class="logo-run">
+      <li><img src="assets/img/logos/dg.webp" alt="DG" loading="lazy"></li>
+      <li><img src="assets/img/logos/woodside-homes.webp" alt="Woodside Homes" loading="lazy"></li>
+      <li><img src="assets/img/logos/core-income.webp" alt="Core Income" loading="lazy"></li>
+      <li><img src="assets/img/logos/ignite-group.webp" alt="Ignite Group" loading="lazy"></li>
+      <li><img src="assets/img/logos/key-tree.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/cialdini-institute.webp" alt="Cialdini Institute" loading="lazy"></li>
+      <li><img src="assets/img/logos/casadomaine.webp" alt="Casadomaine Custom Homes" loading="lazy"></li>
+      <li><img src="assets/img/logos/financial-lease.webp" alt="Financial Lease" loading="lazy"></li>
+      <li><img src="assets/img/logos/inbox-storage.webp" alt="Inbox Storage" loading="lazy"></li>
+    </ul>
+    <ul class="logo-run" aria-hidden="true">
+      <li><img src="assets/img/logos/dg.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/woodside-homes.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/core-income.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/ignite-group.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/key-tree.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/cialdini-institute.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/casadomaine.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/financial-lease.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/inbox-storage.webp" alt="" loading="lazy"></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================= PROOF STRIP =============================
+     No surface of its own: it stays paper so it reads as one field with the
+     hero, and so the hero's cool disc shows through as it scrolls away. -->
+<section class="proof-section proof-section-after-band">
+  <div class="shell" style="position:relative;z-index:1">
+    <!-- the badge rises from the bottom edge and settles; the copy follows
+         in from the right a beat later -->
+    <img class="proof-badge" src="assets/img/hubspot-platinum-badge.webp"
+         alt="HubSpot Platinum Solutions Partner"
+         data-enter="up" data-enter-settle="0.5" data-enter-ease="0.9">
+    <div class="proof-copy" data-enter="right" data-enter-settle="0.62" data-enter-ease="1.15">
+      <h2 class="h2">You're in good hands.</h2>
+      <div class="stack gap-8" style="align-items:center">
+        <span class="stat-stars" role="img" aria-label="Five out of five stars">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.24l-5.8 3.06 1.1-6.47L2.6 9.25l6.5-.95L12 2.4z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.24l-5.8 3.06 1.1-6.47L2.6 9.25l6.5-.95L12 2.4z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.24l-5.8 3.06 1.1-6.47L2.6 9.25l6.5-.95L12 2.4z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.24l-5.8 3.06 1.1-6.47L2.6 9.25l6.5-.95L12 2.4z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.24l-5.8 3.06 1.1-6.47L2.6 9.25l6.5-.95L12 2.4z"/></svg>
+        </span>
+        <p class="small">RevHops is a Platinum Solutions Partner, with a perfect 5-star rating that we're super proud of.
+          <a class="proof-link" href="https://app.hubspot.com/portal-recommend/l?slug=marketplace/solutions/revhops"
+             target="_blank" rel="noopener">Visit our partner profile.</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================= WHAT WE DO ============================= -->
+<section class="section">
+  <div class="shell">
+    <div class="split" style="margin-bottom:clamp(32px,4vw,56px)">
+      <div class="stack gap-16 reveal reveal-left">
+        <p class="eyebrow">What we actually do</p>
+        <h2 class="h2">Revenue operations, in the order it should be done</h2>
+        <hr class="warm-rule">
+      </div>
+      <p class="lede reveal reveal-right">Most teams call an agency when a tool is broken. The tool is usually fine.
+        What is broken is the agreement about what a stage means, who owns the handoff, and which number the board is
+        allowed to see. We fix that first, then we build.</p>
+    </div>
+
+    <div class="grid grid-4">
+      <a class="card card-link reveal" href="services.html">
+        <span class="card-num">01</span>
+        <h3 class="h3">Solution design</h3>
+        <p class="small">Before anything gets built: the data model, the lifecycle, the process map and the measurement plan,
+          agreed by the people who have to live with them.</p>
+        <span class="small" style="color:var(--navy);font-weight:700">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="card card-link reveal" href="services.html">
+        <span class="card-num">02</span>
+        <h3 class="h3">Implementation</h3>
+        <p class="small">Portal builds, platform migrations, integrations, automation and the reporting layer.
+          Built once, documented, and handed over so your team can run it.</p>
+        <span class="small" style="color:var(--navy);font-weight:700">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="card card-link reveal" href="services.html">
+        <span class="card-num">03</span>
+        <h3 class="h3">Cleanup and optimization</h3>
+        <p class="small">You already have the system. It has five years of decisions in it. We make it tell the truth again
+          without a rip-and-replace project.</p>
+        <span class="small" style="color:var(--navy);font-weight:700">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="card card-link reveal" href="services.html">
+        <span class="card-num">04</span>
+        <h3 class="h3">Ongoing partnership</h3>
+        <p class="small">A retained RevOps function without the headcount. Roadmap, maintenance, enablement and
+          somebody who answers when a workflow breaks on a Friday.</p>
+        <span class="small" style="color:var(--navy);font-weight:700">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= WHERE IT BREAKS ============================= -->
+<section class="section surface-navy" style="position:relative;overflow:hidden">
+  <div class="disc disc-cool" data-parallax="0.16"
+       style="width:min(38vw,420px);aspect-ratio:1;right:-12vw;top:-14vw;opacity:.22"></div>
+  <div class="shell" style="position:relative;z-index:1">
+    <div class="split">
+      <div class="stack gap-16 reveal reveal-left">
+        <p class="eyebrow">Where it breaks</p>
+        <h2 class="h2">Most RevOps problems are not tooling problems. They are agreement problems.</h2>
+        <hr class="warm-rule">
+        <p class="lede">Two teams, two definitions, one report that nobody trusts. No amount of new software fixes that,
+          which is why the last three tools you bought did not.</p>
+      </div>
+      <div class="stack gap-28 reveal reveal-right">
+        <ul class="ticks">
+          <li>Marketing counts a lead at the form fill. Sales counts it at the first reply. Both numbers are on the same slide.</li>
+          <li>The pipeline has nine stages, four of which mean "we are waiting to hear back."</li>
+          <li>Lifecycle stage moves backwards, forwards and sideways, and no report survives it.</li>
+          <li>Attribution is settled by whoever presents last.</li>
+          <li>The handoff between sales and onboarding happens in a Slack DM that nobody can audit.</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn-light" href="book.html">Get the free portal audit</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= HOW WE WORK ============================= -->
+<section class="section">
+  <div class="shell">
+    <div class="stack gap-16 reveal" style="margin-bottom:clamp(32px,4vw,52px);max-width:640px">
+      <p class="eyebrow">How an engagement runs</p>
+      <h2 class="h2">Three fixes, in order</h2>
+      <hr class="warm-rule">
+      <p class="lede">Sequence matters more than scope. Building automation on an undefined process just makes the
+        wrong thing happen faster.</p>
+    </div>
+
+    <div class="rail"><span></span></div>
+
+    <div class="grid grid-3">
+      <div class="card reveal">
+        <div class="step">
+          <span class="step-num">01</span>
+          <div class="stack gap-10">
+            <h3 class="h3">Agree on the definitions</h3>
+          </div>
+        </div>
+        <p class="small">What a lead is. What qualified means. When a stage advances and who is allowed to move it.
+          One page, signed off by sales and marketing together, before anything is configured.</p>
+      </div>
+      <div class="card reveal">
+        <div class="step">
+          <span class="step-num">02</span>
+          <div class="stack gap-10">
+            <h3 class="h3">Rebuild on one source</h3>
+          </div>
+        </div>
+        <p class="small">Collapse the lifecycle, retire the fields nobody fills in, and put reporting on a single
+          system of record so there is exactly one number to argue about.</p>
+      </div>
+      <div class="card reveal">
+        <div class="step">
+          <span class="step-num">03</span>
+          <div class="stack gap-10">
+            <h3 class="h3">Automate the handoff</h3>
+          </div>
+        </div>
+        <p class="small">Not the email. The handoff. Routing, ownership, alerts and SLA tracking, so the moment a deal
+          changes hands is a system event rather than a favour.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= PLATFORM / HUBSPOT ============================= -->
+<section class="section-tight surface-white" style="border-block:1px solid var(--line)">
+  <div class="shell">
+    <div class="split" style="align-items:center">
+      <div class="stack gap-16 reveal reveal-left">
+        <span class="pill" style="align-self:flex-start"><span class="pill-dot"></span>HubSpot Platinum Partner</span>
+        <h2 class="h2">Platform agnostic by principle, fluent in HubSpot by practice</h2>
+        <hr class="warm-rule">
+      </div>
+      <div class="stack gap-20 reveal reveal-right">
+        <p class="lede">The thinking works on any stack. The build work is where partner tier matters, and ours is
+          Platinum. If you are moving to HubSpot, consolidating onto it, or living with a portal somebody else configured
+          three years ago, that is our home turf.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="hubspot.html">See our HubSpot work</a>
+          <a class="btn btn-ghost" href="pricing.html">View pricing</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= FIELD NOTE ============================= -->
+<section class="section">
+  <div class="shell">
+    <div class="card reveal reveal-scale" style="position:relative;overflow:hidden;padding:clamp(32px,5vw,64px);gap:22px">
+      <div class="disc" data-parallax="0.1"
+           style="width:min(30vw,260px);aspect-ratio:1;right:-90px;top:-90px;opacity:.5"></div>
+      <div style="position:relative;z-index:1;display:flex;flex-direction:column;gap:20px;max-width:760px">
+        <p class="eyebrow">Field note</p>
+        <p class="h2">"We spent four months choosing a new platform. The problem was that
+          nobody could say what a qualified lead was. The new platform would not have known either."</p>
+        <hr class="warm-rule">
+        <p class="small muted">A conversation that happens on roughly every second discovery call.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= CTA ============================= -->
+<section class="section surface-mist" style="position:relative;overflow:hidden">
+  <div class="disc" data-parallax="0.14"
+       style="width:min(34vw,360px);aspect-ratio:1;left:-8vw;bottom:-14vw;opacity:.55"></div>
+  <div class="shell" style="position:relative;z-index:1">
+    <div class="split" style="align-items:center">
+      <div class="stack gap-16 reveal reveal-left">
+        <h2 class="h2">Start with the audit. It is free and it is specific.</h2>
+        <hr class="warm-rule">
+      </div>
+      <div class="stack gap-20 reveal reveal-right">
+        <p class="lede" style="color:#4A5A70">Thirty minutes in your portal and a written summary of what is misconfigured,
+          what is costing you data, and what to fix first. No deck, no discovery theatre.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="book.html">Book a discovery call</a>
+          <a class="btn btn-ghost" href="contact.html">Send a message instead</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div class="stack gap-16">
+        <img class="footer-mark" src="assets/img/revhops-logo-white.png" alt="revhops">
+        <p class="small" style="max-width:34ch;color:#A9B8CB">Revenue operations for teams that needed it fixed last
+          quarter. HubSpot Platinum Solutions Partner.</p>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul class="stack gap-8">
+          <li><a href="services.html">Solution design</a></li>
+          <li><a href="services.html">Implementation</a></li>
+          <li><a href="services.html">Optimization</a></li>
+          <li><a href="services.html">Ongoing partnership</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul class="stack gap-8">
+          <li><a href="hubspot.html">HubSpot</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="book.html">Book a call</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <ul class="stack gap-8">
+          <li><a href="mailto:james@revhops.com">james@revhops.com</a></li>
+          <li><a href="tel:+14808255171">480-825-5171</a></li>
+          <li><span class="small" style="color:#A9B8CB">Phoenix, Arizona</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span data-year>2026</span> RevHops. All rights reserved.</span>
+      <span>HubSpot Platinum Solutions Partner</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/maturity-slider.js?v=202608232103"></script>
+<script src="assets/js/site.js?v=202608232103"></script>
+</body>
+</html>
