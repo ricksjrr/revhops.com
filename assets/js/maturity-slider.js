@@ -138,7 +138,12 @@
     '<circle cx="37.4" cy="37.4" r="1.9" fill="#304157"/>' +
     '</svg>';
 
-  var ICON_SRC = 'assets/img/revhops-icon-white.png';
+  /* The thumb is navy in light mode and light in dark mode, since its
+     background reads var(--navy). So the mark on it has to swap too:
+     white bunny on the navy thumb, navy bunny on the light one. */
+  var ICON_LIGHT = 'assets/img/revhops-icon-white.png';   /* light theme */
+  var ICON_DARK  = 'assets/img/revhops-icon.png';         /* dark theme  */
+  var ICON_SRC = ICON_LIGHT;
   /* swap this for the real case study photo */
   var SHOT_SRC = 'assets/img/case-study-placeholder.svg';
 
@@ -153,9 +158,9 @@
      in the first card. Placeholder for now. If this should read differently
      per stage, move it into the STAGES entries above. */
   var PROBLEM_SPLIT = {
-    head: '[SECTION HEADLINE]',
-    body: 'Placeholder text goes here and should say whatever belongs ' +
-          'underneath this headline.'
+    head: 'What it usually costs you',
+    body: 'Time, mostly. Reports rebuilt by hand, leadership arguing about which ' +
+          'number is right, and deals that stall because nobody owns the next step.'
   };
 
   function esc(s) {
@@ -174,9 +179,18 @@
 
   function build(root) {
     var lastI = STAGES.length - 1;
-    var iconPath = root.getAttribute('data-icon') || ICON_SRC;
+    /* pick for the theme in force right now, so a page that loads dark does
+       not flash the white mark before syncIcon corrects it */
+    var startDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var iconPath = root.getAttribute(startDark ? 'data-icon-dark' : 'data-icon') ||
+                   (startDark ? ICON_DARK : ICON_LIGHT);
     var start = parseInt(root.getAttribute('data-start'), 10);
     if (isNaN(start) || start < 0 || start > lastI) start = 0;
+
+    /* The headline changes with the theme. Both strings live here so the
+       module owns all of its own copy; site.js only announces the switch. */
+    var HEAD_DAY   = 'Where is your team at today?';
+    var HEAD_NIGHT = 'Where is your team at tonight?';
 
     var nodesHTML = '';
     var labelsHTML = '';
@@ -234,7 +248,7 @@
     root.innerHTML =
       '<div class="mat">' +
         '<div class="mat-head">' +
-          '<h1 class="h1" data-nav-clear>Where is your team at today?</h1>' +
+          '<h1 class="h1" data-nav-clear data-headline>' + esc(HEAD_DAY) + '</h1>' +
           '<p class="lede">RevOps is the people, systems and tools that impact revenue growth through ' +
             'marketing, sales and customer service. But every team is somewhere different along that journey.</p>' +
         '</div>' +
@@ -257,11 +271,13 @@
       '<p aria-live="polite" data-live style="position:absolute;width:1px;height:1px;overflow:hidden;' +
         'clip:rect(0 0 0 0);white-space:nowrap"></p>';
 
-    /* swap in the real bunny asset when it is available */
+    /* Swap the inline fallback for the real artwork once it has loaded.
+       Both variants are preloaded so the theme can flip without a blink. */
+    [ICON_LIGHT, ICON_DARK].forEach(function (p) { (new Image()).src = p; });
     var probe = new Image();
     probe.onload = function () {
       var inner = root.querySelector('[data-thumb-inner]');
-      if (inner) inner.innerHTML = '<img src="' + iconPath + '" alt="">';
+      if (inner) inner.innerHTML = '<img data-thumb-img src="' + iconPath + '" alt="">';
     };
     probe.src = iconPath;
 
@@ -269,6 +285,11 @@
   }
 
   function init(root) {
+    /* Where the two in-card CTAs point. Set with data-cta-url on the mount
+       element so the module does not assume a flat URL structure — the site
+       uses folder URLs, and this module could sit at any depth. */
+    var CTA = root.getAttribute('data-cta-url') || 'book/';
+
     var cfg = build(root);
     var last = cfg.last;
 
@@ -354,7 +375,7 @@
           '<h3 class="mcard-subhead">Your tech stack probably includes</h3>' +
           stackChips(s.have, s.missing) +
         '</div>' +
-        '<a class="mcard-link" href="book.html">' +
+        '<a class="mcard-link" href="' + esc(CTA) + '">' +
           'Request a free tech stack audit <span class="arrow">&rarr;</span></a>',
 
         list(s.problems) +
@@ -362,7 +383,7 @@
           '<h3 class="mcard-subhead">' + esc(PROBLEM_SPLIT.head) + '</h3>' +
           '<p class="mcard-note">' + esc(PROBLEM_SPLIT.body) + '</p>' +
         '</div>' +
-        '<a class="mcard-link" href="book.html">' +
+        '<a class="mcard-link" href="' + esc(CTA) + '">' +
           'Book a discovery call <span class="arrow">&rarr;</span></a>',
 
         /* copy left, square thumbnail right, then the link on its own line
@@ -586,6 +607,36 @@
         position((index / last) * 100, true);
       }, 100);
     });
+
+    /* ---------------- headline follows the theme ---------------- */
+    var headEl = root.querySelector('[data-headline]');
+    function syncHeadline() {
+      if (!headEl) return;
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var next = dark ? 'Where is your team at tonight?' : 'Where is your team at today?';
+      if (headEl.textContent !== next) headEl.textContent = next;
+    }
+    /* the thumb mark follows the theme for the same reason the headline does */
+    function syncIcon() {
+      var img = root.querySelector('[data-thumb-img]');
+      if (!img) return;
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      var want = root.getAttribute(dark ? 'data-icon-dark' : 'data-icon') ||
+                 (dark ? ICON_DARK : ICON_LIGHT);
+      if (img.getAttribute('src') !== want) img.setAttribute('src', want);
+    }
+    function syncTheme() { syncHeadline(); syncIcon(); }
+
+    document.addEventListener('revhops:theme', syncTheme);
+    /* also covers the theme being set before this module booted, and any
+       future change made outside the toggle */
+    if ('MutationObserver' in window) {
+      new MutationObserver(syncTheme).observe(document.documentElement,
+        { attributes: true, attributeFilter: ['data-theme'] });
+    }
+    syncTheme();
+    /* the artwork lands asynchronously, so re-check once it is in */
+    setTimeout(syncIcon, 400);
 
     setIndex(index, { force: true });
     lockCardsHeight();

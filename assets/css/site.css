@@ -21,6 +21,22 @@
   --no-line: #EDD8D5;
   --paper: #FAFAF8;
 
+  /* Every card surface. Slightly translucent so the gradient circles read
+     faintly behind them, on every card, not just the hero's. */
+  --card-veil: rgba(255, 255, 255, .78);
+
+  /* Text that sits on a navy surface — the navy sections and the footer.
+     These exist as tokens purely so dark mode can flip them: there, the
+     navy surface becomes light and this text has to become dark. */
+  --on-navy:        #C9D4E2;
+  --on-navy-strong: #D3DDEA;
+  --on-navy-muted:  #A9B8CB;
+  --on-navy-faint:  #8798AE;
+  --on-navy-head:   #A9BDD6;
+  --on-navy-line:   rgba(255, 255, 255, .12);
+  --on-navy-field:  rgba(250, 250, 248, .07);
+  --on-navy-edge:   rgba(250, 250, 248, .22);
+
   --ink: #304157;
   --body: #5A6779;
   --muted: #94A0B2;
@@ -40,7 +56,7 @@
   --gutter: clamp(20px, 5vw, 64px);
   --nav-h: 86px;
   --nav-float-gap: 20px;              /* floating bar's clearance from the top */
-  --nav-float-w: min(78vw, 1416px);   /* its width once collapsed */
+  --nav-float-w: min(52vw, 949px);    /* its width once collapsed */
   --nav-float-w-sm: calc(100% - 24px);
 
   --hero-bleed-tail: 62vw; /* how far hero discs carry into the section below */
@@ -158,11 +174,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 .gap-20 { gap: 20px; } .gap-28 { gap: 28px; } .gap-40 { gap: 40px; }
 .surface-white { background: var(--surface); }
 .surface-mist { background: var(--mist); }
-.surface-navy { background: var(--navy); color: #C9D4E2; }
+.surface-navy { background: var(--navy); color: var(--on-navy); }
 .surface-navy h1, .surface-navy h2, .surface-navy h3,
 .surface-navy .h1, .surface-navy .h2, .surface-navy .h3 { color: var(--paper); }
-.surface-navy .eyebrow { color: #8FA2BB; }
-.surface-navy .lede { color: #C2CEDE; }
+.surface-navy .eyebrow { color: var(--on-navy-faint); }
+.surface-navy .lede { color: var(--on-navy); }
 
 /* ---------- buttons — soft corners, never a pill ---------- */
 .btn {
@@ -239,7 +255,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   transition: background var(--mcard-t) var(--mcard-ease), border-color var(--mcard-t) var(--mcard-ease), color var(--mcard-t) var(--mcard-ease);
 }
 .card {
-  background: var(--surface);
+  background: var(--card-veil);
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   padding: clamp(24px, 3vw, 34px);
@@ -247,15 +263,23 @@ ul { margin: 0; padding: 0; list-style: none; }
   flex-direction: column;
   gap: 14px;
   position: relative;
-  transition: border-color .3s var(--ease), transform .35s var(--ease-out),
-              box-shadow .35s var(--ease);
+  /* matches the hero cards: same duration, same curve */
+  transition: border-color var(--mcard-t) var(--mcard-ease),
+              transform .5s var(--ease-out),
+              box-shadow var(--mcard-t) var(--mcard-ease);
 }
-.card:hover { box-shadow: 0 14px 38px -28px rgba(48, 65, 87, .45); }
-.card-link:hover {
-  border-color: #C7D1DE;
-  transform: translateY(-5px);
-  box-shadow: 0 18px 44px -24px rgba(48, 65, 87, .5);
+/* One hover for every card on the site — the 4px lift and deep soft shadow
+   the hero cards use. Previously .card only shifted its shadow while the
+   hero cards lifted, so the two read as different components. */
+.card:hover,
+.card-link:hover,
+.quote-card:hover,
+.price-teaser-cell:hover,
+.retainer-cell:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 52px -28px rgba(28, 38, 53, .38);
 }
+.card-link:hover { border-color: #C7D1DE; }
 .card-link .arrow { transition: transform .3s var(--ease-out); display: inline-block; }
 .card-link:hover .arrow { transform: translateX(5px); }
 .card-num {
@@ -299,7 +323,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   background: var(--warm);
   transform-origin: left;
 }
-.surface-navy .ticks li { color: #BFCBDB; }
+.surface-navy .ticks li { color: var(--on-navy); }
 .reveal .ticks li::before { transform: scaleX(0); }
 .reveal.is-in .ticks li::before { transform: scaleX(1); transition: transform .5s var(--ease-out); }
 .reveal.is-in .ticks li:nth-child(1)::before { transition-delay: .10s; }
@@ -310,18 +334,53 @@ ul { margin: 0; padding: 0; list-style: none; }
 .reveal.is-in .ticks li:nth-child(6)::before { transition-delay: .45s; }
 .reveal.is-in .ticks li:nth-child(n+7)::before { transition-delay: .52s; }
 
-/* gradient disc: the one decorative device */
+/* gradient disc: the one decorative device.
+
+   Layering, site-wide, so a disc can bleed across a section boundary
+   without ever landing on top of something readable:
+
+     section        position:relative, NO z-index  — background layer
+     .disc          z-index 1                      — above every background
+     section .shell z-index 2                      — above every disc
+
+   The sections must not carry a z-index of their own. One that does forms
+   a stacking context, which traps its disc at that level and puts the
+   whole subtree above the next section's content as well as its
+   background — which is exactly the bug this replaced. */
 .disc {
   position: absolute;
   border-radius: 50%;
   background: radial-gradient(circle at 32% 28%, #F7D9BE 0%, #F2C39B 38%, #C6D3E0 100%);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   will-change: transform;
+}
+
+main > section { position: relative; }
+
+/* Section content runs to 60px from each screen edge rather than being
+   capped at --shell and centred. The hero is excluded because its .shell is
+   a grandchild of the section, not a child — it keeps its own wider cap so
+   the stage cards stay in proportion. The nav and footer sit outside <main>
+   and are untouched.
+
+   Clamped rather than a flat 60px: on a 375px phone, 60 a side would eat a
+   third of the screen. It scales down and tops out at the 60 asked for. */
+main > section > .shell {
+  position: relative;
+  z-index: 2;
+  max-width: none;
+  padding-inline: clamp(20px, 5vw, 60px);
 }
 .disc-cool {
   background: radial-gradient(circle at 34% 30%, #E4EDF6 0%, #C6D3E0 46%, #8FA3BC 100%);
 }
+
+/* Depth tiers for background shapes. Pair these with data-parallax:
+     far   0.06–0.10   large, faint, slow      — sits well behind content
+     mid   0.12–0.18   medium                  — the default
+     near  0.20–0.28   smaller, quicker        — hero only, so it stays the star
+   At most two shapes per section, and alternate warm/cool down the page. */
 
 /* ==========================================================================
    NAV — flat paper, no border, no shadow, no state change on scroll.
@@ -380,13 +439,13 @@ ul { margin: 0; padding: 0; list-style: none; }
   font-size: .875rem;
   font-weight: 500;
   letter-spacing: -.008em;
-  color: #4E5B70;
+  color: var(--body);
   white-space: nowrap;
   transition: color .3s var(--ease);
 }
 .nav-links a:hover { color: var(--navy); }
 .nav-links a[aria-current="page"] { color: var(--navy); font-weight: 700; }
-.nav.is-floating .nav-links a { color: #BCCADB; }
+.nav.is-floating .nav-links a { color: var(--on-navy); }
 .nav.is-floating .nav-links a:hover { color: var(--paper); }
 .nav.is-floating .nav-links a[aria-current="page"] { color: var(--paper); }
 
@@ -456,13 +515,13 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 
 /* ---------- footer ---------- */
-.footer { background: var(--navy); color: #A9B8CB; padding-block: clamp(48px, 6vw, 76px) 34px; }
+.footer { background: var(--navy); color: var(--on-navy-muted); padding-block: clamp(32px, 4vw, 54px) 34px; }
 .footer h4 {
   font-family: var(--font-head); font-weight: 700; font-size: .82rem;
-  letter-spacing: -.01em; color: #A9BDD6; margin-bottom: 14px;
+  letter-spacing: -.01em; color: var(--on-navy-head); margin-bottom: 14px;
 }
 .footer a {
-  color: #D3DDEA; font-size: .9rem;
+  color: var(--on-navy-strong); font-size: .9rem;
   transition: color .2s var(--ease);
 }
 .footer a:hover { color: var(--paper); }
@@ -478,11 +537,10 @@ ul { margin: 0; padding: 0; list-style: none; }
   align-self: flex-start;
 }
 .footer-bottom {
-  margin-top: 46px; padding-top: 22px;
-  border-top: 1px solid rgba(255, 255, 255, .12);
+  margin-top: 28px; padding-top: 14px;
   display: flex; flex-wrap: wrap; gap: 12px 26px;
   justify-content: space-between; align-items: center;
-  font-size: .8rem; color: #7E92AE;
+  font-size: .8rem; color: var(--on-navy-faint);
 }
 
 /* ---------- reveal on scroll ---------- */
@@ -536,7 +594,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   align-items: center;
   padding-block: clamp(36px, 7vw, 124px) clamp(14px, 1.8vw, 30px);
 }
-.hero > .shell { position: relative; z-index: 1; width: 100%; }
+.hero > .shell { position: relative; z-index: 2; width: 100%; }
 
 /* Clipping box for the decorative discs. It reaches up over the nav band so
    a disc bleeds off the top corner of the screen rather than stopping at the
@@ -551,7 +609,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   bottom: calc(var(--hero-bleed-tail) * -1);
   overflow: hidden;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
 }
 /* Both discs are parked well outside the hero at rest, showing only a
    sliver, and sweep across it as you scroll: orange down from above the
@@ -588,6 +646,33 @@ ul { margin: 0; padding: 0; list-style: none; }
    - x only. `overflow-y` stays visible so .section-bleed's disc can still
      run up into the nav band. */
 main { overflow-x: clip; }
+
+/* ==========================================================================
+   SECTION EDGES
+   No hairlines between sections. Where the surface changes, it dissolves
+   instead: the neighbouring colour is painted as a gradient over the first
+   or last stretch of the section, so the seam has no line in it.
+
+   The one exception is a full-width navy section sitting between two light
+   ones — there the colour change is the separation, and a fade would only
+   muddy it. Those keep hard edges by simply not carrying these classes.
+
+   The gradients fade to an explicit transparent white rather than the
+   `transparent` keyword, which resolves to transparent BLACK and would
+   pull a grey haze through the middle of the ramp. */
+.fade-top {
+  background-image: linear-gradient(to bottom,
+    var(--paper) 0, rgba(255, 255, 255, 0) clamp(70px, 9vw, 150px));
+}
+.fade-bottom {
+  background-image: linear-gradient(to top,
+    var(--paper) 0, rgba(255, 255, 255, 0) clamp(70px, 9vw, 150px));
+}
+.fade-top.fade-bottom {
+  background-image:
+    linear-gradient(to bottom, var(--paper) 0, rgba(255, 255, 255, 0) clamp(70px, 9vw, 150px)),
+    linear-gradient(to top,    var(--paper) 0, rgba(255, 255, 255, 0) clamp(70px, 9vw, 150px));
+}
 
 .mat { display: flex; flex-direction: column; gap: 0; }
 /* subhead -> timeline, and timeline -> cards. Tuned so the whole module
@@ -756,8 +841,7 @@ main { overflow-x: clip; }
 .mcard-col > .mcard { flex: 1; }
 .mcard {
   --mcard-pad: clamp(16px, 1.7vw, 24px);
-  /* held at two-thirds so the gradient discs read faintly through */
-  background: rgba(255, 255, 255, .67);
+  background: var(--card-veil);
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   --mcard-gap: 9px;
@@ -902,7 +986,7 @@ main { overflow-x: clip; }
    one out. Everything inside it is set on light accordingly. */
 .stage-form {
   flex: none;
-  background: rgba(255, 255, 255, .67);
+  background: var(--card-veil);
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
   padding: clamp(16px, 1.7vw, 22px);
@@ -1140,7 +1224,7 @@ main { overflow-x: clip; }
 .logo-band {
   padding-top: var(--proof-lead, 100px);
   position: relative;
-  z-index: 1;
+  z-index: 2;
   /* feather both ends so logos dissolve into the paper rather than being
      chopped off at the edge of the screen */
   -webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
@@ -1195,7 +1279,6 @@ main { overflow-x: clip; }
   max-width: 56ch;
   margin: clamp(28px, 3.4vw, 48px) auto 0;
 }
-.stat-stars { justify-content: center; }
 /* underlined so it still reads as a link at this contrast */
 .proof-link {
   color: var(--warm);
@@ -1206,12 +1289,6 @@ main { overflow-x: clip; }
   transition: color .22s var(--ease);
 }
 .proof-link:hover { color: var(--navy); }
-.stat-stars { display: flex; gap: 6px; align-items: center; }
-.stat-stars svg {
-  width: clamp(22px, 1.6rem + .6vw, 31px);
-  height: auto;
-  fill: var(--navy);
-}
 @media (max-width: 620px) {
   .proof-badge { height: clamp(200px, 62vw, 300px); }
 }
@@ -1310,7 +1387,7 @@ main { overflow-x: clip; }
 
 .contact-line { display: flex; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line); }
 .contact-line dt { font-weight: 700; font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); width: 82px; flex: none; }
-.contact-line dd { margin: 0; font-size: .98rem; color: #4E5B70; }
+.contact-line dd { margin: 0; font-size: .98rem; color: var(--body); }
 
 /* ---------- motion preferences ---------- */
 @media (prefers-reduced-motion: reduce) {
@@ -1329,4 +1406,639 @@ main { overflow-x: clip; }
   .logo-rail { animation: none; transform: none; width: 100%; }
   .logo-band { overflow-x: auto; }
   .logo-rail .logo-run[aria-hidden="true"] { display: none; }
+}
+
+/* ==========================================================================
+   HOMEPAGE — PROOF, QUALIFICATION AND PRICE
+   Sections added when the homepage was restructured around a
+   problem → solution → method → proof → fit → price → CTA arc.
+   ========================================================================== */
+
+/* ---------- featured case study ---------- */
+.case-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(24px, 3.6vw, 58px);
+  align-items: center;
+}
+.case-shot {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  background: var(--mist);
+  box-shadow: inset 0 0 0 1px rgba(48, 65, 87, .08);
+}
+/* the numbers that carry the result */
+.case-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(22px, 3.2vw, 48px);
+  padding-top: 4px;
+}
+.case-stat-num {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 1.2rem + 1.9vw, 2.8rem);
+  line-height: 1;
+  letter-spacing: -.036em;
+  color: var(--navy);
+}
+.case-stat-label {
+  font-size: .8rem;
+  line-height: 1.4;
+  color: var(--slate);
+  margin-top: 7px;
+  max-width: 17ch;
+}
+
+/* ---------- testimonials ---------- */
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 26px);
+  align-items: stretch;
+}
+.quote-card {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: clamp(24px, 2.6vw, 34px);
+  background: var(--card-veil);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  transition: transform .5s var(--ease-out), box-shadow .5s var(--ease);
+}
+.quote-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 52px -28px rgba(28, 38, 53, .3);
+}
+.quote-mark {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 2.6rem;
+  line-height: .62;
+  color: var(--warm);
+  /* it is decoration, not content — keep it out of the reading order */
+  user-select: none;
+}
+.quote-body {
+  flex: 1;
+  font-size: .94rem;
+  line-height: 1.58;
+  color: var(--ink);
+}
+.quote-attr { display: flex; align-items: center; gap: 12px; margin-top: 2px; }
+.quote-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--mist);
+  flex: none;
+}
+.quote-name { font-weight: 700; font-size: .86rem; color: var(--ink); line-height: 1.3; }
+.quote-role { font-size: .78rem; color: var(--slate); line-height: 1.35; }
+
+/* ---------- who it is for, and who it is not ----------
+   Uses the same success/failure pair as the tech stack chips in the hero,
+   so "fit" and "not a fit" read consistently across the site. */
+.fit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 26px);
+}
+.fit-col {
+  padding: clamp(24px, 2.7vw, 38px);
+  border-radius: var(--radius-card);
+  border: 1px solid;
+}
+.fit-yes { background: var(--ok-bg); border-color: var(--ok-line); }
+.fit-no  { background: var(--no-bg); border-color: var(--no-line); }
+.fit-head {
+  display: flex; align-items: center; gap: 11px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1rem, .94rem + .22vw, 1.14rem);
+  letter-spacing: -.018em;
+}
+.fit-yes .fit-head { color: var(--ok); }
+.fit-no  .fit-head { color: var(--no); }
+/* the glyph carries the meaning for anyone who cannot separate the two by hue */
+.fit-badge {
+  width: 25px; height: 25px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: .72rem; font-style: normal;
+  color: #FFFFFF;
+  flex: none;
+}
+.fit-yes .fit-badge { background: var(--ok); }
+.fit-no  .fit-badge { background: var(--no); }
+.fit-list { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
+.fit-list li {
+  position: relative;
+  padding-left: 25px;
+  font-size: .9rem;
+  line-height: 1.5;
+  color: var(--body);
+}
+.fit-list li::before {
+  content: "";
+  position: absolute; left: 0; top: .5em;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+}
+.fit-yes .fit-list li::before { background: var(--ok); opacity: .3; }
+.fit-no  .fit-list li::before { background: var(--no); opacity: .3; }
+
+/* ---------- pricing teaser ---------- */
+.price-teaser {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 26px);
+}
+.price-teaser-cell {
+  display: flex; flex-direction: column; gap: 7px;
+  padding: clamp(22px, 2.4vw, 32px);
+  background: var(--card-veil);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  transition: border-color .3s var(--ease), transform .5s var(--ease-out);
+}
+.price-teaser-cell:hover { border-color: var(--mist); transform: translateY(-3px); }
+.price-teaser-label { font-size: .82rem; font-weight: 700; color: var(--slate); }
+.price-teaser-fig {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.15rem);
+  line-height: 1.05;
+  letter-spacing: -.032em;
+  color: var(--ink);
+}
+.price-teaser-fig small {
+  display: block;
+  font-size: .42em;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--slate);
+  margin-top: 4px;
+}
+.price-teaser-note { font-size: .82rem; line-height: 1.45; color: var(--body); }
+
+@media (max-width: 940px) {
+  .case-feature { grid-template-columns: minmax(0, 1fr); }
+  .quote-grid, .price-teaser { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .quote-grid, .price-teaser, .fit-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- newsletter opt-in, footer ---------- */
+.footer-optin {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: center;
+  padding-bottom: clamp(30px, 3.6vw, 46px);
+  margin-bottom: clamp(30px, 3.6vw, 46px);
+  border-bottom: 1px solid rgba(198, 211, 224, .16);
+}
+.footer-optin h3 {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1rem + .5vw, 1.5rem);
+  letter-spacing: -.022em;
+  color: var(--paper);
+  margin-bottom: 7px;
+}
+.footer-optin p { font-size: .875rem; line-height: 1.5; color: var(--on-navy-muted); max-width: 46ch; }
+.optin-fields { display: flex; align-items: center; gap: 12px; }
+.optin-fields input[type="email"] {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 13px 16px;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--on-navy-edge);
+  background: var(--on-navy-field);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: .9rem;
+  transition: border-color .22s var(--ease), background .22s var(--ease);
+}
+.optin-fields input::placeholder { color: var(--on-navy-faint); opacity: 1; }
+.optin-fields input:hover { border-color: rgba(250, 250, 248, .4); }
+.optin-fields input:focus {
+  outline: 2px solid var(--warm);
+  outline-offset: 1px;
+  border-color: transparent;
+  background: rgba(250, 250, 248, .12);
+}
+.optin-send {
+  flex: none;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .84rem;
+  line-height: 1;
+  color: var(--paper);
+  transition: color .3s var(--ease);
+}
+.optin-send .arrow { display: inline-block; transition: transform .3s var(--ease-out); }
+.optin-send:hover { color: var(--warm); }
+.optin-send:hover .arrow { transform: translateX(4px); }
+
+@media (max-width: 860px) {
+  .footer-optin { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .optin-fields { flex-direction: column; align-items: stretch; }
+  .optin-send { align-self: flex-start; }
+}
+
+/* ==========================================================================
+   CARD HOVER — defined last, deliberately.
+
+   .reveal.is-in sets `transform: none` at the same specificity as
+   .card:hover, and sits later in this file, so it was silently cancelling
+   the lift on every card that animates in. Since every card on the site
+   carries .reveal, no card outside the hero was lifting at all. Redefining
+   the hover here, after that rule, is what makes it stick.
+   ========================================================================== */
+.card:hover,
+.card-link:hover,
+.quote-card:hover,
+.price-teaser-cell:hover,
+.retainer-cell:hover,
+.svc-row:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 52px -28px rgba(28, 38, 53, .38);
+  transition: transform .5s var(--ease-out),
+              box-shadow var(--mcard-t) var(--mcard-ease),
+              border-color var(--mcard-t) var(--mcard-ease);
+}
+.svc-row:hover { box-shadow: none; }
+
+/* ---------- small label, replacing the old uppercase eyebrow ---------- */
+.label {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .85rem;
+  line-height: 1.3;
+  letter-spacing: -.012em;
+  color: var(--ink);
+  margin: 0;
+}
+.surface-navy .label { color: var(--paper); }
+
+/* ==========================================================================
+   SERVICES LIST — editorial rows, not cards.
+   Title on the left, description on the right, separated by hairlines.
+   Unnumbered on purpose: numbering implied the four run in sequence, which
+   they do not. Hover warms the rule and slides the arrow.
+   ========================================================================== */
+.svc-list { border-top: 1px solid var(--line); }
+.svc-row {
+  display: grid;
+  grid-template-columns: minmax(0, .78fr) minmax(0, 1.35fr) auto;
+  gap: clamp(18px, 3vw, 52px);
+  align-items: start;
+  padding: clamp(24px, 3vw, 40px) 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  text-decoration: none;
+  transition: border-color var(--mcard-t) var(--mcard-ease);
+}
+/* the warm rule that draws itself in under the row on hover */
+.svc-row::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -1px;
+  height: 1px;
+  width: 0;
+  background: var(--warm);
+  transition: width .55s var(--ease-out);
+}
+.svc-row:hover::after { width: 100%; }
+.svc-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1rem + .75vw, 1.62rem);
+  line-height: 1.16;
+  letter-spacing: -.028em;
+  color: var(--ink);
+  transition: color var(--mcard-t) var(--mcard-ease);
+}
+.svc-row:hover .svc-title { color: var(--navy); }
+.svc-copy { font-size: .935rem; line-height: 1.6; color: var(--body); }
+.svc-go {
+  align-self: center;
+  flex: none;
+  font-weight: 700;
+  font-size: .84rem;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.svc-go .arrow { display: inline-block; transition: transform .3s var(--ease-out); }
+.svc-row:hover .svc-go .arrow { transform: translateX(5px); }
+
+@media (max-width: 820px) {
+  .svc-row { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .svc-go { align-self: start; }
+}
+
+/* ==========================================================================
+   CREDIBILITY BAND
+   Badge on the left, claim and link beside it, the pair centred as one
+   group with equal space either side.
+
+   Flex rather than grid, deliberately. A grid column of minmax(0,1fr)
+   stretches to the container's full width, and since the copy is capped
+   narrower than that, the slack all collected on the right and the group
+   looked left-heavy even though the container itself was centred. Sizing
+   both columns to their content means the group's real width is what gets
+   centred, so the margins either side actually match.
+   ========================================================================== */
+.cred-section { padding-block: clamp(40px, 4.6vw, 68px); }
+
+.cred {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(28px, 4.5vw, 64px);
+}
+
+.cred-badge { flex: none; display: flex; justify-content: center; }
+.cred-badge img {
+  width: auto;
+  height: clamp(188px, 20vw, 288px);
+  max-width: 100%;
+}
+
+/* the cap lives on the whole column, not just the paragraph, so the
+   heading wraps inside the same measure and the group stays symmetrical */
+.cred-copy {
+  flex: 0 1 auto;
+  max-width: 52ch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+.cred-copy .h2 { font-size: clamp(1.45rem, 1.1rem + 1.3vw, 2.15rem); }
+.cred-note { font-size: .95rem; line-height: 1.6; color: var(--body); }
+
+/* phones only: the badge sits above the copy */
+@media (max-width: 720px) {
+  .cred { flex-direction: column; align-items: flex-start; gap: 24px; }
+  .cred-badge { justify-content: flex-start; }
+  .cred-badge img { height: clamp(155px, 33vw, 210px); }
+}
+
+/* ==========================================================================
+   TEXT LINK
+   The default call to action everywhere. The boxed .btn is reserved for
+   booking actions only — book a call, schedule, request the audit — so a
+   framed button on the page always means the same thing.
+   ========================================================================== */
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .86rem;
+  color: var(--navy);
+  transition: color .3s var(--ease);
+}
+.text-link .arrow { display: inline-block; transition: transform .3s var(--ease-out); }
+.text-link:hover { color: var(--deep); }
+.text-link:hover .arrow { transform: translateX(5px); }
+.text-link:focus-visible { outline: 2px solid var(--navy); outline-offset: 4px; border-radius: 4px; }
+
+/* reversed, for the navy and mist surfaces */
+.surface-navy .text-link { color: var(--paper); }
+.surface-navy .text-link:hover { color: var(--warm); }
+.surface-navy .text-link:focus-visible { outline-color: var(--warm); }
+
+/* a row of them sits like a btn-row but tighter */
+.link-row { display: flex; flex-wrap: wrap; gap: clamp(18px, 2.4vw, 32px); align-items: center; }
+
+/* ==========================================================================
+   DARK MODE
+
+   Implemented purely as a token swap on <html data-theme="dark">, so no
+   component rule needs a dark variant. Two inversions do the work:
+
+     --paper  becomes the navy   (every light background goes dark)
+     --navy   becomes the paper  (everything that was navy goes light)
+
+   The second one is what makes it cheap. A navy section, the navy footer
+   and a navy button all read `var(--navy)`, so they flip to light surfaces
+   automatically — and the on-navy text tokens flip the other way to stay
+   legible against them. Warm is untouched: it works on both.
+   ========================================================================== */
+html[data-theme="dark"] {
+  --paper: #2B3A4D;          /* the page */
+  --navy:  #F2F5F8;          /* was the dark brand colour, now the light one */
+  --deep:  #FFFFFF;          /* hover, one step further */
+  --mist:  #3A4E68;          /* light surface role, inverted */
+  --slate: #9FB2C9;
+
+  --ink:     #F4F7FA;
+  --body:    #BDCADB;
+  --muted:   #8A9CB4;
+  --line:    rgba(198, 211, 224, .16);
+  --surface: #33455C;
+  /* Dark cards are a DARKER tint than the page, not a lighter one. Raising
+     the alpha on a white veil would have lightened them toward the text
+     colour; this raises opacity while moving away from white, so the
+     circles show through less and contrast against the type improves. */
+  --card-veil: rgba(28, 39, 54, .82);
+
+  /* text on what is now a LIGHT surface, so these go dark */
+  --on-navy:        #4A5A70;
+  --on-navy-strong: #304157;
+  --on-navy-muted:  #5A6779;
+  --on-navy-faint:  #7C8BA0;
+  --on-navy-head:   #304157;
+  --on-navy-line:   rgba(48, 65, 87, .14);
+  --on-navy-field:  rgba(48, 65, 87, .05);
+  --on-navy-edge:   rgba(48, 65, 87, .16);
+
+  /* the success / failure pair, darkened to sit on the navy page */
+  --ok: #9FC49F; --ok-bg: rgba(92, 122, 92, .16);  --ok-line: rgba(92, 122, 92, .34);
+  --no: #E0A79E; --no-bg: rgba(150, 86, 76, .16);  --no-line: rgba(150, 86, 76, .34);
+
+  color-scheme: dark;
+}
+
+/* On the dark page the warm arc at the foot reads as a hot spot, so it
+   takes the cool gradient instead — matching the one that bleeds down past
+   the About section. */
+html[data-theme="dark"] .cta-arc {
+  background: radial-gradient(circle at 34% 30%, #E4EDF6 0%, #C6D3E0 46%, #8FA3BC 100%);
+}
+
+/* The gradient circles are tuned for a light page; on the dark one they
+   glare. Knocking them back keeps them present without lighting up. */
+html[data-theme="dark"] .disc { opacity: .22 !important; }
+html[data-theme="dark"] .disc-a { opacity: .3 !important; }
+
+/* The logo cross-fade is driven by the nav's floating state, which on the
+   dark page is a light bar — so the lockups swap round. */
+html[data-theme="dark"] .brand-base { opacity: 0; }
+html[data-theme="dark"] .brand-alt  { opacity: 1; }
+html[data-theme="dark"] .nav.is-floating .brand-base { opacity: 1; }
+html[data-theme="dark"] .nav.is-floating .brand-alt  { opacity: 0; }
+
+/* client logos are greyscale artwork made for a light ground */
+html[data-theme="dark"] .logo-run img {
+  mix-blend-mode: normal;
+  filter: invert(1) brightness(1.6) contrast(.85);
+  opacity: .5;
+}
+html[data-theme="dark"] .logo-run img:hover { opacity: .82; }
+
+/* ---------- the toggle ----------
+   Sun at the light setting, moon at the dark one. The knob slides between
+   them and parks UNDER whichever is active, so the active symbol reads on
+   the knob while the other stays muted on the track.
+
+   The knob is warm in both themes on purpose: it has to stay legible on
+   four different grounds — the transparent nav and the floating bar, in
+   each theme — and warm is the one brand colour that works on all of them.
+   The symbol riding on it is a fixed navy for the same reason. */
+.theme-toggle {
+  position: relative;
+  z-index: 0;
+  flex: none;
+  width: 46px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(48, 65, 87, .07);
+  cursor: pointer;
+  color: var(--muted);
+  transition: background .35s var(--ease), border-color .35s var(--ease),
+              color .35s var(--ease);
+}
+.theme-toggle::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 2px; left: 2px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--warm);
+  transition: transform .38s var(--ease-out);
+}
+html[data-theme="dark"] .theme-toggle::after { transform: translateX(20px); }
+
+.theme-toggle svg {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  width: 12px; height: 12px;
+  margin-top: -6px;
+  fill: none;
+  stroke: currentColor;
+  opacity: .55;
+  transition: stroke .3s var(--ease), opacity .3s var(--ease);
+}
+/* The crescent's mass sits toward the lower left of its own box, so it does
+   not optically centre where the box does. Nudged across and turned a little
+   clockwise, which also gives it the tilt a moon usually has. */
+.tt-sun  { left: 6px; }
+.tt-moon { right: 7px; transform: rotate(18deg); }
+html:not([data-theme="dark"]) .tt-sun  { stroke: #304157; opacity: 1; }
+html[data-theme="dark"]       .tt-moon { stroke: #304157; opacity: 1; }
+
+.theme-toggle:hover { border-color: var(--slate); }
+.theme-toggle:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
+
+/* on the floating bar the ground changes, so the muted symbol does too */
+.nav.is-floating .theme-toggle {
+  border-color: var(--on-navy-edge);
+  background: var(--on-navy-field);
+  color: var(--on-navy);
+}
+
+/* The speaker sits beside the toggle and appears with dark mode, whether
+   or not sound is currently playing — otherwise a visitor arriving on a
+   remembered dark theme would have no way to start it, since browsers
+   block audio until a gesture. */
+.theme-audio {
+  flex: none;
+  width: 30px; height: 30px;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 0; border: 0; background: none; cursor: pointer;
+  color: var(--ink);
+  opacity: .75;
+  transition: opacity .3s var(--ease), color .35s var(--ease);
+}
+html[data-theme="dark"] .theme-audio { display: inline-flex; }
+.theme-audio .icon-off { display: none; }
+.theme-audio.is-muted { opacity: .45; }
+.theme-audio.is-muted .icon-on { display: none; }
+.theme-audio.is-muted .icon-off { display: block; }
+.theme-audio:hover { opacity: 1; }
+.theme-audio svg { width: 17px; height: 17px; fill: currentColor; }
+.nav.is-floating .theme-audio { color: var(--paper); }
+.theme-audio:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; border-radius: 6px; }
+
+@media (max-width: 940px) {
+  .theme-toggle { width: 42px; height: 24px; }
+  .theme-toggle::after { width: 18px; height: 18px; }
+  html[data-theme="dark"] .theme-toggle::after { transform: translateX(18px); }
+  /* knob centres move to 11 and 29, so the symbols follow */
+  .theme-toggle svg { width: 11px; height: 11px; margin-top: -5.5px; }
+  .tt-sun  { left: 5.5px; }
+  .tt-moon { right: 5.5px; transform: rotate(18deg); }
+}
+
+/* The half circle at the foot of the page.
+
+   Centred with left:0 / right:0 and auto side margins rather than a
+   negative margin, because the earlier `margin-left: min(-39vw, -440px)`
+   only tracked `width: min(78vw, 880px)` below 1128px — past that, min()
+   kept picking the vw value and the circle drifted left as the screen grew.
+   Auto margins hold at any width.
+
+   The section clips it, so only the part inside the CTA is ever drawn and
+   it never bleeds into the footer, in either theme. */
+.cta-arc {
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+}
+
+/* --- dark mode: the footer surface is light here, so its type inverts --- */
+/* The footer does not invert. It is the one navy block that stays navy in
+   both themes, so the white lockup and the light type still apply.
+
+   Rather than overriding a dozen rules, the tokens are redefined on the
+   footer itself — including --navy, which its own background reads, and
+   --paper, which several of its children read. Everything inside then
+   renders exactly as it does in light mode. */
+html[data-theme="dark"] .footer {
+  --navy:  #304157;
+  --paper: #FAFAF8;
+  --deep:  #1C2635;
+  --on-navy:        #C9D4E2;
+  --on-navy-strong: #D3DDEA;
+  --on-navy-muted:  #A9B8CB;
+  --on-navy-faint:  #8798AE;
+  --on-navy-head:   #A9BDD6;
+  --on-navy-line:   rgba(255, 255, 255, .12);
+  --on-navy-field:  rgba(250, 250, 248, .07);
+  --on-navy-edge:   rgba(250, 250, 248, .22);
+  color: var(--on-navy-muted);
 }
