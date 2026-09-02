@@ -9,25 +9,47 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=202608232103">
+<link rel="stylesheet" href="assets/css/site.css?v=202609012355">
+<!-- Theme, resolved before first paint so a dark session never flashes
+     light on load. Deliberately inline and blocking; it is small.
+
+     Order of precedence:
+       1. what the visitor last chose, if they have ever used the toggle
+       2. otherwise the clock on THEIR machine — dark from 8pm to 6am
+     Using the local hour rather than a timezone lookup means no network
+     call, no third-party service, and it is correct wherever they are. -->
+<script>(function(){try{
+  var saved = localStorage.getItem('revhops-theme');
+  var h = new Date().getHours();
+  var dark = saved ? saved === 'dark' : (h >= 20 || h < 6);
+  if (dark) document.documentElement.setAttribute('data-theme','dark');
+  if (!saved) document.documentElement.setAttribute('data-theme-auto','');
+}catch(e){}})();</script>
 </head>
 <body>
 
 <!-- ============================= NAV ============================= -->
 <header class="nav" data-nav>
   <div class="shell nav-inner">
-    <a class="brand" href="index.html" aria-label="RevHops home">
+    <a class="brand" href="./" aria-label="RevHops home">
       <img class="brand-base" src="assets/img/revhops-logo.png" alt="revhops">
       <img class="brand-alt" src="assets/img/revhops-logo-white.png" alt="" aria-hidden="true">
     </a>
     <nav class="nav-links" data-nav-links aria-label="Primary">
-      <a href="services.html">Services</a>
-      <a href="hubspot.html">HubSpot</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="contact.html">Contact</a>
+      <a href="services/">Services</a>
+      <a href="hubspot/">HubSpot</a>
+      <a href="pricing/">Pricing</a>
+      <a href="contact/">Contact</a>
     </nav>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="book.html">Book a call</a>
+      <button class="theme-toggle" data-theme-toggle type="button"
+              role="switch" aria-checked="false" aria-label="Dark mode"><svg class="tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"></line><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"></line><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"></line></svg><svg class="tt-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
+      <button class="theme-audio is-muted" data-audio-toggle type="button"
+              aria-label="Play background music" aria-pressed="false">
+        <svg class="icon-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zm-2.5-8.8v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>
+        <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm15.5 3l2.3-2.3-1.4-1.4-2.3 2.3-2.3-2.3-1.4 1.4 2.3 2.3-2.3 2.3 1.4 1.4 2.3-2.3 2.3 2.3 1.4-1.4-2.3-2.3z"/></svg>
+      </button>
+      <a class="btn btn-primary" href="book/">Book a call</a>
       <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-label="Menu"><span></span></button>
     </div>
   </div>
@@ -52,7 +74,7 @@
            data-parallax="-0.28" data-parallax-grow="0.55" data-parallax-host=".hero-pin"></div>
     </div>
     <div class="shell shell-wide">
-      <div data-revhops-maturity data-start="0"></div>
+      <div data-revhops-maturity data-start="0" data-cta-url="book/"></div>
     </div>
   </div>
 </section>
@@ -92,217 +114,282 @@
   </div>
 </section>
 
-<!-- ============================= PROOF STRIP =============================
-     No surface of its own: it stays paper so it reads as one field with the
-     hero, and so the hero's cool disc shows through as it scrolls away. -->
-<section class="proof-section proof-section-after-band">
-  <div class="shell" style="position:relative;z-index:1">
-    <!-- the badge rises from the bottom edge and settles; the copy follows
-         in from the right a beat later -->
-    <img class="proof-badge" src="assets/img/hubspot-platinum-badge.webp"
-         alt="HubSpot Platinum Solutions Partner"
-         data-enter="up" data-enter-settle="0.5" data-enter-ease="0.9">
-    <div class="proof-copy" data-enter="right" data-enter-settle="0.62" data-enter-ease="1.15">
-      <h2 class="h2">You're in good hands.</h2>
-      <div class="stack gap-8" style="align-items:center">
-        <span class="stat-stars" role="img" aria-label="Five out of five stars">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.24l-5.8 3.06 1.1-6.47L2.6 9.25l6.5-.95L12 2.4z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.24l-5.8 3.06 1.1-6.47L2.6 9.25l6.5-.95L12 2.4z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.24l-5.8 3.06 1.1-6.47L2.6 9.25l6.5-.95L12 2.4z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.24l-5.8 3.06 1.1-6.47L2.6 9.25l6.5-.95L12 2.4z"/></svg>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.58 1.1 6.47L12 17.24l-5.8 3.06 1.1-6.47L2.6 9.25l6.5-.95L12 2.4z"/></svg>
-        </span>
-        <p class="small">RevHops is a Platinum Solutions Partner, with a perfect 5-star rating that we're super proud of.
-          <a class="proof-link" href="https://app.hubspot.com/portal-recommend/l?slug=marketplace/solutions/revhops"
-             target="_blank" rel="noopener">Visit our partner profile.</a></p>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- =============================================================
+     SERVICES PREVIEW
+     The hero already named the visitor's problems, stage by stage, so the
+     page opens on the answer rather than re-explaining the problem.
 
-
-<!-- ============================= WHAT WE DO ============================= -->
-<section class="section">
+     Rows rather than cards, and deliberately unnumbered: numbering read as
+     a sequence, and these four are not steps.
+     No background shape here — the hero's discs are still settling above,
+     and a second set this close competes with them.
+     ============================================================= -->
+<section class="section" style="padding-bottom:clamp(38px,4.6vw,66px)">
   <div class="shell">
-    <div class="split" style="margin-bottom:clamp(32px,4vw,56px)">
-      <div class="stack gap-16 reveal reveal-left">
-        <p class="eyebrow">What we actually do</p>
-        <h2 class="h2">Revenue operations, in the order it should be done</h2>
-        <hr class="warm-rule">
-      </div>
-      <p class="lede reveal reveal-right">Most teams call an agency when a tool is broken. The tool is usually fine.
-        What is broken is the agreement about what a stage means, who owns the handoff, and which number the board is
-        allowed to see. We fix that first, then we build.</p>
-    </div>
 
-    <div class="grid grid-4">
-      <a class="card card-link reveal" href="services.html">
-        <span class="card-num">01</span>
-        <h3 class="h3">Solution design</h3>
-        <p class="small">Before anything gets built: the data model, the lifecycle, the process map and the measurement plan,
-          agreed by the people who have to live with them.</p>
-        <span class="small" style="color:var(--navy);font-weight:700">Read more <span class="arrow">&rarr;</span></span>
-      </a>
-      <a class="card card-link reveal" href="services.html">
-        <span class="card-num">02</span>
-        <h3 class="h3">Implementation</h3>
-        <p class="small">Portal builds, platform migrations, integrations, automation and the reporting layer.
-          Built once, documented, and handed over so your team can run it.</p>
-        <span class="small" style="color:var(--navy);font-weight:700">Read more <span class="arrow">&rarr;</span></span>
-      </a>
-      <a class="card card-link reveal" href="services.html">
-        <span class="card-num">03</span>
-        <h3 class="h3">Cleanup and optimization</h3>
-        <p class="small">You already have the system. It has five years of decisions in it. We make it tell the truth again
-          without a rip-and-replace project.</p>
-        <span class="small" style="color:var(--navy);font-weight:700">Read more <span class="arrow">&rarr;</span></span>
-      </a>
-      <a class="card card-link reveal" href="services.html">
-        <span class="card-num">04</span>
-        <h3 class="h3">Ongoing partnership</h3>
-        <p class="small">A retained RevOps function without the headcount. Roadmap, maintenance, enablement and
-          somebody who answers when a workflow breaks on a Friday.</p>
-        <span class="small" style="color:var(--navy);font-weight:700">Read more <span class="arrow">&rarr;</span></span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- ============================= WHERE IT BREAKS ============================= -->
-<section class="section surface-navy" style="position:relative;overflow:hidden">
-  <div class="disc disc-cool" data-parallax="0.16"
-       style="width:min(38vw,420px);aspect-ratio:1;right:-12vw;top:-14vw;opacity:.22"></div>
-  <div class="shell" style="position:relative;z-index:1">
-    <div class="split">
-      <div class="stack gap-16 reveal reveal-left">
-        <p class="eyebrow">Where it breaks</p>
-        <h2 class="h2">Most RevOps problems are not tooling problems. They are agreement problems.</h2>
-        <hr class="warm-rule">
-        <p class="lede">Two teams, two definitions, one report that nobody trusts. No amount of new software fixes that,
-          which is why the last three tools you bought did not.</p>
-      </div>
-      <div class="stack gap-28 reveal reveal-right">
-        <ul class="ticks">
-          <li>Marketing counts a lead at the form fill. Sales counts it at the first reply. Both numbers are on the same slide.</li>
-          <li>The pipeline has nine stages, four of which mean "we are waiting to hear back."</li>
-          <li>Lifecycle stage moves backwards, forwards and sideways, and no report survives it.</li>
-          <li>Attribution is settled by whoever presents last.</li>
-          <li>The handoff between sales and onboarding happens in a Slack DM that nobody can audit.</li>
-        </ul>
-        <div class="btn-row">
-          <a class="btn btn-light" href="book.html">Get the free portal audit</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================= HOW WE WORK ============================= -->
-<section class="section">
-  <div class="shell">
-    <div class="stack gap-16 reveal" style="margin-bottom:clamp(32px,4vw,52px);max-width:640px">
-      <p class="eyebrow">How an engagement runs</p>
-      <h2 class="h2">Three fixes, in order</h2>
+    <div class="stack gap-16 reveal reveal-left" style="margin-bottom:clamp(28px,3.4vw,46px)">
+      <h2 class="h2">Four ways in, depending on where you are</h2>
       <hr class="warm-rule">
-      <p class="lede">Sequence matters more than scope. Building automation on an undefined process just makes the
-        wrong thing happen faster.</p>
     </div>
 
-    <div class="rail"><span></span></div>
+    <div class="svc-list">
+      <a class="svc-row reveal" href="services/">
+        <h3 class="svc-title">Solution design</h3>
+        <p class="svc-copy">Decide what the system should do before anyone builds it. Data model, lifecycle, process map, and how you will measure it, agreed by the people who have to use it.</p>
+        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row reveal" href="services/">
+        <h3 class="svc-title">Implementation</h3>
+        <p class="svc-copy">Portal builds, migrations, integrations, automation, reporting. Built once, documented, and handed over so your team can run it without us.</p>
+        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row reveal" href="services/">
+        <h3 class="svc-title">Cleanup and optimization</h3>
+        <p class="svc-copy">You already have the system. It has years of decisions in it. We make it tell the truth again without starting over.</p>
+        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row reveal" href="services/">
+        <h3 class="svc-title">Ongoing partnership</h3>
+        <p class="svc-copy">A RevOps function on retainer. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday.</p>
+        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================================
+     CASE STUDIES — the deep proof. Given its own section and its own
+     surface so it does not compete with the star rating band below.
+     Shapes: one cool ring, mid tier, rising from the lower left.
+     ============================================================= -->
+<!-- overflow stays visible so the warm disc carries on down across the
+     boundary. The layering that keeps it behind the next section's content
+     is global — see the .disc rule in site.css. -->
+<section class="section surface-white fade-top fade-bottom" style="padding-top:clamp(42px,5vw,74px)">
+  <div class="disc" data-parallax="-0.12"
+       style="width:min(38vw,420px);aspect-ratio:1;left:-12vw;bottom:-22vw;opacity:.34"></div>
+  <div class="shell">
+
+    <div class="stack gap-16 reveal" style="max-width:660px;margin-bottom:clamp(30px,3.6vw,50px)">
+      <h2 class="h2">Recent work</h2>
+      <hr class="warm-rule">
+      <p class="lede">What was broken, what changed, and what it did.</p>
+    </div>
 
     <div class="grid grid-3">
-      <div class="card reveal">
-        <div class="step">
-          <span class="step-num">01</span>
-          <div class="stack gap-10">
-            <h3 class="h3">Agree on the definitions</h3>
+      <a class="card card-link reveal" href="#">
+        <img class="case-shot" src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true"
+             style="aspect-ratio:16/10;margin-bottom:4px">
+        <h3 class="h3">[Client name]</h3>
+        <p class="small">[One line on what was broken.] [One line on what changed.]</p>
+        <div class="case-stats" style="gap:24px">
+          <div>
+            <div class="case-stat-num" style="font-size:1.6rem">00%</div>
+            <div class="case-stat-label">[what it measures]</div>
+          </div>
+          <div>
+            <div class="case-stat-num" style="font-size:1.6rem">00x</div>
+            <div class="case-stat-label">[what it measures]</div>
           </div>
         </div>
-        <p class="small">What a lead is. What qualified means. When a stage advances and who is allowed to move it.
-          One page, signed off by sales and marketing together, before anything is configured.</p>
-      </div>
-      <div class="card reveal">
-        <div class="step">
-          <span class="step-num">02</span>
-          <div class="stack gap-10">
-            <h3 class="h3">Rebuild on one source</h3>
+        <span class="text-link">Read the story <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="card card-link reveal" href="#">
+        <img class="case-shot" src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true"
+             style="aspect-ratio:16/10;margin-bottom:4px">
+        <h3 class="h3">[Client name]</h3>
+        <p class="small">[One line on what was broken.] [One line on what changed.]</p>
+        <div class="case-stats" style="gap:24px">
+          <div>
+            <div class="case-stat-num" style="font-size:1.6rem">00%</div>
+            <div class="case-stat-label">[what it measures]</div>
+          </div>
+          <div>
+            <div class="case-stat-num" style="font-size:1.6rem">00h</div>
+            <div class="case-stat-label">[what it measures]</div>
           </div>
         </div>
-        <p class="small">Collapse the lifecycle, retire the fields nobody fills in, and put reporting on a single
-          system of record so there is exactly one number to argue about.</p>
-      </div>
-      <div class="card reveal">
-        <div class="step">
-          <span class="step-num">03</span>
-          <div class="stack gap-10">
-            <h3 class="h3">Automate the handoff</h3>
+        <span class="text-link">Read the story <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="card card-link reveal" href="#">
+        <img class="case-shot" src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true"
+             style="aspect-ratio:16/10;margin-bottom:4px">
+        <h3 class="h3">[Client name]</h3>
+        <p class="small">[One line on what was broken.] [One line on what changed.]</p>
+        <div class="case-stats" style="gap:24px">
+          <div>
+            <div class="case-stat-num" style="font-size:1.6rem">00%</div>
+            <div class="case-stat-label">[what it measures]</div>
+          </div>
+          <div>
+            <div class="case-stat-num" style="font-size:1.6rem">$00k</div>
+            <div class="case-stat-label">[what it measures]</div>
           </div>
         </div>
-        <p class="small">Not the email. The handoff. Routing, ownership, alerts and SLA tracking, so the moment a deal
-          changes hands is a system event rather than a favour.</p>
-      </div>
+        <span class="text-link">Read the story <span class="arrow">&rarr;</span></span>
+      </a>
     </div>
+
+    <div class="btn-row reveal" style="margin-top:clamp(26px,3vw,40px)">
+      <a class="text-link" href="#">See all case studies <span class="arrow">&rarr;</span></a>
+    </div>
+
   </div>
 </section>
 
-<!-- ============================= PLATFORM / HUBSPOT ============================= -->
-<section class="section-tight surface-white" style="border-block:1px solid var(--line)">
+<!-- =============================================================
+     CREDIBILITY BAND — the badge and the claim, side by side across the
+     full width. The badge is the credential, so there is no separate rating
+     column; the profile link sits with the copy it belongs to.
+     ============================================================= -->
+<section class="section cred-section">
+  <!-- starts in the lower right and runs on into the section below -->
+  <div class="disc disc-cool" data-parallax="0.07"
+       style="width:min(50vw,560px);aspect-ratio:1;right:-13vw;bottom:max(-30vw,-340px);opacity:.4"></div>
   <div class="shell">
-    <div class="split" style="align-items:center">
-      <div class="stack gap-16 reveal reveal-left">
-        <span class="pill" style="align-self:flex-start"><span class="pill-dot"></span>HubSpot Platinum Partner</span>
-        <h2 class="h2">Platform agnostic by principle, fluent in HubSpot by practice</h2>
+    <div class="cred">
+
+      <div class="cred-badge reveal reveal-left">
+        <img src="assets/img/hubspot-platinum-badge.webp"
+             alt="HubSpot Platinum Solutions Partner">
+      </div>
+
+      <div class="cred-copy reveal">
+        <h2 class="h2">HubSpot Platinum Solutions Partner</h2>
         <hr class="warm-rule">
+        <p class="cred-note">Every review on our directory profile is from a client who gave us admin
+          access to their portal. Read them before you talk to us.</p>
+        <a class="text-link" href="https://app.hubspot.com/portal-recommend/l?slug=marketplace/solutions/revhops"
+           target="_blank" rel="noopener">Visit our partner profile <span class="arrow">&rarr;</span></a>
       </div>
-      <div class="stack gap-20 reveal reveal-right">
-        <p class="lede">The thinking works on any stack. The build work is where partner tier matters, and ours is
-          Platinum. If you are moving to HubSpot, consolidating onto it, or living with a portal somebody else configured
-          three years ago, that is our home turf.</p>
-        <div class="btn-row">
-          <a class="btn btn-primary" href="hubspot.html">See our HubSpot work</a>
-          <a class="btn btn-ghost" href="pricing.html">View pricing</a>
-        </div>
-      </div>
+
     </div>
   </div>
 </section>
 
-<!-- ============================= FIELD NOTE ============================= -->
+<!-- =============================================================
+     ABOUT — who actually does the work. Sits after the proof and
+     immediately before the price and the ask, so the last thing read
+     before "book a call" is the person they would be calling.
+     Shapes: one warm ring, mid tier.
+     ============================================================= -->
 <section class="section">
   <div class="shell">
-    <div class="card reveal reveal-scale" style="position:relative;overflow:hidden;padding:clamp(32px,5vw,64px);gap:22px">
-      <div class="disc" data-parallax="0.1"
-           style="width:min(30vw,260px);aspect-ratio:1;right:-90px;top:-90px;opacity:.5"></div>
-      <div style="position:relative;z-index:1;display:flex;flex-direction:column;gap:20px;max-width:760px">
-        <p class="eyebrow">Field note</p>
-        <p class="h2">"We spent four months choosing a new platform. The problem was that
-          nobody could say what a qualified lead was. The new platform would not have known either."</p>
-        <hr class="warm-rule">
-        <p class="small muted">A conversation that happens on roughly every second discovery call.</p>
+    <div class="split" style="align-items:center">
+
+      <div class="reveal reveal-left">
+        <!-- swap for a real photograph -->
+        <img src="assets/img/case-study-placeholder.svg" alt="[Portrait of James Ricks]"
+             style="width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--radius-card);background:var(--mist)">
       </div>
+
+      <div class="stack gap-20 reveal reveal-right">
+        <div class="stack gap-16">
+          <h2 class="h2">You would be working with me, not an account team</h2>
+          <hr class="warm-rule">
+        </div>
+        <p class="lede">I am James. I run RevHops on my own. The person who scopes your project is
+          the person who opens your portal and does the work.</p>
+        <p class="small">That is the trade. I take fewer projects than an agency would, and I am the
+          wrong call if you need five people on site next week. What you get instead is someone who
+          still knows how your system works a year later, because I built it.</p>
+        <ul class="ticks">
+          <li>You talk to the person doing the work</li>
+          <li>[00] years in revenue operations</li>
+          <li>HubSpot Platinum Solutions Partner, Phoenix, Arizona</li>
+        </ul>
+        <div class="btn-row">
+          <a class="text-link" href="contact/">Get in touch <span class="arrow">&rarr;</span></a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- ============================= CTA ============================= -->
-<section class="section surface-mist" style="position:relative;overflow:hidden">
-  <div class="disc" data-parallax="0.14"
-       style="width:min(34vw,360px);aspect-ratio:1;left:-8vw;bottom:-14vw;opacity:.55"></div>
-  <div class="shell" style="position:relative;z-index:1">
-    <div class="split" style="align-items:center">
-      <div class="stack gap-16 reveal reveal-left">
-        <h2 class="h2">Start with the audit. It is free and it is specific.</h2>
-        <hr class="warm-rule">
+<!-- =============================================================
+     PRICING TEASER — the last objection before the ask. Publishing real
+     figures is the differentiator; this surfaces it from /pricing/.
+     ============================================================= -->
+<section class="section-tight surface-white fade-top">
+  <div class="shell">
+
+    <div class="stack gap-16 reveal reveal-left" style="margin-bottom:clamp(26px,3vw,40px)">
+      <h2 class="h2">Prices, published</h2>
+      <hr class="warm-rule">
+    </div>
+
+    <div class="price-teaser">
+      <div class="price-teaser-cell reveal">
+        <span class="price-teaser-label">Portal audit</span>
+        <span class="price-teaser-fig">Complimentary<small>What it covers</small></span>
+        <p class="price-teaser-note">Thirty minutes in your portal and a written summary of what to fix first.</p>
       </div>
-      <div class="stack gap-20 reveal reveal-right">
-        <p class="lede" style="color:#4A5A70">Thirty minutes in your portal and a written summary of what is misconfigured,
-          what is costing you data, and what to fix first. No deck, no discovery theatre.</p>
-        <div class="btn-row">
-          <a class="btn btn-primary" href="book.html">Book a discovery call</a>
-          <a class="btn btn-ghost" href="contact.html">Send a message instead</a>
-        </div>
+      <div class="price-teaser-cell reveal">
+        <span class="price-teaser-label">Solution design</span>
+        <span class="price-teaser-fig">From $3,000<small>Per engagement</small></span>
+        <p class="price-teaser-note">The plan before the build. Data model, lifecycle, process, measurement.</p>
+      </div>
+      <div class="price-teaser-cell reveal">
+        <span class="price-teaser-label">Monthly retainer</span>
+        <span class="price-teaser-fig">From $3,500<small>Per month</small></span>
+        <p class="price-teaser-note">Ongoing RevOps. The rate drops the longer you commit.</p>
       </div>
     </div>
+
+    <div class="btn-row reveal" style="margin-top:clamp(22px,2.6vw,34px)">
+      <a class="text-link" href="pricing/">See full pricing <span class="arrow">&rarr;</span></a>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================================
+     NEXT STEPS — two genuinely different commitments, said explicitly so
+     the choice is real rather than the same offer worded twice.
+     Shapes: warm disc far, cool ring mid.
+     ============================================================= -->
+<section class="section surface-white" style="overflow:hidden;padding-bottom:clamp(34px,4vw,58px)">
+  <!-- One warm circle, dropped so only its top 30% clears the section's
+       bottom edge; the section clips the rest, so it never reaches the
+       footer in either theme. Centred with auto side margins rather than
+       translateX, because the parallax loop rewrites transform and would
+       drop the centring. -->
+  <div class="disc cta-arc" data-parallax="-0.07"
+       style="width:min(97.5vw,1100px);aspect-ratio:1;bottom:max(-68.25vw,-770px);opacity:.62"></div>
+  <div class="shell">
+
+    <div class="stack gap-16 reveal" style="max-width:640px;margin-bottom:clamp(28px,3.4vw,44px)">
+      <h2 class="h2">Two ways to start</h2>
+      <hr class="warm-rule">
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card reveal">
+        <h3 class="h3">Request an audit</h3>
+        <hr class="warm-rule">
+        <p class="small">Give us read access. We go through the portal on our own time and send you
+          what is misconfigured, what is costing you data, and what to fix first.</p>
+        <ul class="ticks">
+          <li>Free, and no call needed</li>
+          <li>Written findings in two business days</li>
+        </ul>
+        <a class="btn btn-primary" href="contact/" style="align-self:flex-start;margin-top:4px">Request an audit</a>
+      </div>
+      <div class="card reveal">
+        <h3 class="h3">Schedule a discovery call</h3>
+        <hr class="warm-rule">
+        <p class="small">Thirty minutes with the portal open and the screen shared. Faster if you have
+          questions, or if the problem is easier to point at than to describe.</p>
+        <ul class="ticks">
+          <li>Free, thirty minutes</li>
+          <li>Same written summary afterwards</li>
+        </ul>
+        <a class="btn btn-primary" href="book/" style="align-self:flex-start;margin-top:4px">Schedule a call</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -311,28 +398,48 @@
 <!-- ============================= FOOTER ============================= -->
 <footer class="footer">
   <div class="shell">
+    <!-- ==================================================================
+         NEWSLETTER OPT-IN
+         Not wired to anything. Replace with a HubSpot form embed (same
+         portal as the contact page, 46722926) or point it at an endpoint.
+         ================================================================== -->
+    <div class="footer-optin">
+      <div>
+        <h3>RevOps notes</h3>
+        <p>One email a month. Something that broke in a real portal, and what fixed it.</p>
+      </div>
+      <div>
+        <form class="optin-fields" data-optin>
+          <label class="sr-only" for="optin-email">Work email</label>
+          <input id="optin-email" name="email" type="email" placeholder="Work email"
+                 autocomplete="email" required>
+          <button class="optin-send" type="submit">Subscribe <span class="arrow">&rarr;</span></button>
+        </form>
+      </div>
+    </div>
+
     <div class="footer-grid">
       <div class="stack gap-16">
         <img class="footer-mark" src="assets/img/revhops-logo-white.png" alt="revhops">
-        <p class="small" style="max-width:34ch;color:#A9B8CB">Revenue operations for teams that needed it fixed last
+        <p class="small" style="max-width:34ch;color:var(--on-navy-muted)">Revenue operations for teams that needed it fixed last
           quarter. HubSpot Platinum Solutions Partner.</p>
       </div>
       <div>
         <h4>Services</h4>
         <ul class="stack gap-8">
-          <li><a href="services.html">Solution design</a></li>
-          <li><a href="services.html">Implementation</a></li>
-          <li><a href="services.html">Optimization</a></li>
-          <li><a href="services.html">Ongoing partnership</a></li>
+          <li><a href="services/">Solution design</a></li>
+          <li><a href="services/">Implementation</a></li>
+          <li><a href="services/">Optimization</a></li>
+          <li><a href="services/">Ongoing partnership</a></li>
         </ul>
       </div>
       <div>
         <h4>Company</h4>
         <ul class="stack gap-8">
-          <li><a href="hubspot.html">HubSpot</a></li>
-          <li><a href="pricing.html">Pricing</a></li>
-          <li><a href="contact.html">Contact</a></li>
-          <li><a href="book.html">Book a call</a></li>
+          <li><a href="hubspot/">HubSpot</a></li>
+          <li><a href="pricing/">Pricing</a></li>
+          <li><a href="contact/">Contact</a></li>
+          <li><a href="book/">Book a call</a></li>
         </ul>
       </div>
       <div>
@@ -340,7 +447,7 @@
         <ul class="stack gap-8">
           <li><a href="mailto:james@revhops.com">james@revhops.com</a></li>
           <li><a href="tel:+14808255171">480-825-5171</a></li>
-          <li><span class="small" style="color:#A9B8CB">Phoenix, Arizona</span></li>
+          <li><span class="small" style="color:var(--on-navy-muted)">Phoenix, Arizona</span></li>
         </ul>
       </div>
     </div>
@@ -351,7 +458,7 @@
   </div>
 </footer>
 
-<script src="assets/js/maturity-slider.js?v=202608232103"></script>
-<script src="assets/js/site.js?v=202608232103"></script>
+<script src="assets/js/maturity-slider.js?v=202609012355"></script>
+<script src="assets/js/site.js?v=202609012355"></script>
 </body>
 </html>
