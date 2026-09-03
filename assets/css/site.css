@@ -56,13 +56,28 @@
   --gutter: clamp(20px, 5vw, 64px);
   --nav-h: 86px;
   --nav-float-gap: 20px;              /* floating bar's clearance from the top */
-  --nav-float-w: min(52vw, 949px);    /* its width once collapsed */
+  --nav-float-w: min(67.5vw, 1232px); /* its width once collapsed */
   --nav-float-w-sm: calc(100% - 24px);
 
   --hero-bleed-tail: 62vw; /* how far hero discs carry into the section below */
+  /* How far the clipping box reaches ABOVE the document's top edge, so
+     elastic overscroll does not expose a cut line across the orange disc.
+
+     In vw, not pixels, and this matters: disc-a sits at top -46vw, so the
+     height that needs covering scales with the window. A flat 300px was
+     enough at no width worth having — on a 1440px screen the disc still
+     ran 362px past the clip. The rule is H >= 46vw; 52vw leaves margin. */
+  --hero-bleed-head: 52vw;
 
   --mcard-t: .62s;                            /* stage-card hover, kept slow */
   --mcard-ease: cubic-bezier(.33, 0, .2, 1);
+
+  /* The nav collapse gets its own pair. --ease-out is an expo curve that
+     covers half the distance in the first tenth of the time, which reads as
+     a jolt on something as large as the whole bar resizing. This one eases
+     in before it accelerates, over a longer beat. */
+  --nav-t: .62s;
+  --nav-ease: cubic-bezier(.38, .02, .2, 1);
 
   --ease: cubic-bezier(.22, .61, .36, 1);
   --ease-out: cubic-bezier(.16, 1, .3, 1);
@@ -203,17 +218,17 @@ ul { margin: 0; padding: 0; list-style: none; }
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(0); }
 .btn:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
+/* Filled buttons are navy on the light theme and warm on the dark one, and
+   hovering either way lands on warm. The hover label is a literal navy
+   rather than var(--paper): on the warm fill, paper reads at 1.5:1 and navy
+   at 6.5:1, and the literal holds in both themes. */
 .btn-primary { background: var(--navy); color: var(--paper); }
 .btn-primary:hover {
-  background: var(--deep); color: var(--paper);
-  box-shadow: 0 12px 26px -14px rgba(28, 38, 53, .8);
+  background: var(--warm); color: #304157;
+  box-shadow: 0 12px 26px -14px rgba(48, 65, 87, .5);
 }
-.btn-ghost { background: transparent; color: var(--navy); border-color: #D3DAE3; }
-.btn-ghost:hover { background: #EFF2F6; color: var(--navy); border-color: #C0CAD8; }
 .btn-light { background: var(--paper); color: var(--navy); }
-.btn-light:hover { background: #FFFFFF; color: var(--deep); box-shadow: 0 12px 26px -16px rgba(0,0,0,.6); }
-.btn-outline-light { background: transparent; color: var(--paper); border-color: rgba(250,250,248,.34); }
-.btn-outline-light:hover { background: rgba(250,250,248,.1); color: var(--paper); }
+.btn-light:hover { background: var(--warm); color: #304157; box-shadow: 0 12px 26px -16px rgba(0,0,0,.45); }
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 
 /* ---------- pills, chips, cards ---------- */
@@ -398,21 +413,30 @@ main > section > .shell {
   z-index: 60;
   background: transparent;
   border: 0;
-  transition: top .45s var(--ease-out);
+  transition: top var(--nav-t) var(--nav-ease);
 }
 .nav.is-floating { top: var(--nav-float-gap); }
 
+/* At rest the bar runs the width of the screen, 45px in from each edge —
+   the same treatment the sections and footer get, one step tighter. Once it
+   collapses it takes --nav-float-w instead; that rule carries more
+   specificity, so it wins without needing !important. */
 .nav-inner {
   position: relative;
+  max-width: none;
+  padding-inline: clamp(18px, 4vw, 45px);
   height: var(--nav-h);
   display: flex;
   align-items: center;
   gap: 18px;
   border-radius: 0;
   background: transparent;
-  transition: max-width .45s var(--ease-out), padding .45s var(--ease-out),
-              height .45s var(--ease-out), background .4s var(--ease),
-              border-radius .4s var(--ease), box-shadow .4s var(--ease);
+  transition: max-width var(--nav-t) var(--nav-ease),
+              padding var(--nav-t) var(--nav-ease),
+              height var(--nav-t) var(--nav-ease),
+              background var(--nav-t) var(--nav-ease),
+              border-radius var(--nav-t) var(--nav-ease),
+              box-shadow var(--nav-t) var(--nav-ease);
 }
 .nav.is-floating .nav-inner {
   max-width: var(--nav-float-w);
@@ -425,7 +449,7 @@ main > section > .shell {
 
 /* logo: navy lockup at rest, white one once the bar goes navy */
 .brand { position: relative; display: flex; align-items: center; flex: none; }
-.brand img { height: 32px; width: auto; transition: opacity .4s var(--ease); }
+.brand img { height: 32px; width: auto; transition: opacity var(--nav-t) var(--nav-ease); }
 .brand .brand-alt { position: absolute; inset: 0; opacity: 0; }
 .nav.is-floating .brand-base { opacity: 0; }
 .nav.is-floating .brand-alt { opacity: 1; }
@@ -441,7 +465,7 @@ main > section > .shell {
   letter-spacing: -.008em;
   color: var(--body);
   white-space: nowrap;
-  transition: color .3s var(--ease);
+  transition: color var(--nav-t) var(--nav-ease);
 }
 .nav-links a:hover { color: var(--navy); }
 .nav-links a[aria-current="page"] { color: var(--navy); font-weight: 700; }
@@ -453,7 +477,7 @@ main > section > .shell {
 /* trimmer than the body button, so it sits lighter in a taller bar */
 .nav-cta .btn { padding-block: 9px; padding-inline: 22px; }
 .nav.is-floating .nav-cta .btn-primary { background: var(--paper); color: var(--navy); }
-.nav.is-floating .nav-cta .btn-primary:hover { background: #FFFFFF; color: var(--deep); }
+.nav.is-floating .nav-cta .btn-primary:hover { background: var(--warm); color: #304157; }
 
 .nav-toggle {
   display: none;
@@ -516,6 +540,9 @@ main > section > .shell {
 
 /* ---------- footer ---------- */
 .footer { background: var(--navy); color: var(--on-navy-muted); padding-block: clamp(32px, 4vw, 54px) 34px; }
+/* same treatment as main > section > .shell: runs to 60px from each screen
+   edge instead of being capped and centred */
+.footer > .shell { max-width: none; padding-inline: clamp(20px, 5vw, 60px); }
 .footer h4 {
   font-family: var(--font-head); font-weight: 700; font-size: .82rem;
   letter-spacing: -.01em; color: var(--on-navy-head); margin-bottom: 14px;
@@ -532,14 +559,17 @@ main > section > .shell {
 }
 /* white lockup, straight onto the navy footer */
 .footer-mark {
-  height: 34px;
+  height: 41px;
   width: auto;
   align-self: flex-start;
 }
+/* space-between was there to push a second item to the far edge; with only
+   the copyright line left it just pinned it to the left */
 .footer-bottom {
   margin-top: 28px; padding-top: 14px;
   display: flex; flex-wrap: wrap; gap: 12px 26px;
-  justify-content: space-between; align-items: center;
+  justify-content: center; align-items: center;
+  text-align: center;
   font-size: .8rem; color: var(--on-navy-faint);
 }
 
@@ -603,7 +633,7 @@ main > section > .shell {
    it. That section must stay transparent for this to read. */
 .hero-bleed {
   position: absolute;
-  top: calc(var(--nav-h) * -1);
+  top: calc((var(--nav-h) + var(--hero-bleed-head)) * -1);
   left: 0;
   right: 0;
   bottom: calc(var(--hero-bleed-tail) * -1);
@@ -619,7 +649,7 @@ main > section > .shell {
    tall rather than pinned. */
 .hero-bleed .disc-a {
   width: min(86vw, 975px); aspect-ratio: 1;
-  right: -25vw; top: -46vw; opacity: .38;
+  right: -25vw; top: calc(-46vw + var(--hero-bleed-head)); opacity: .38;
 }
 /* Bottom is measured from the extended box, so the tail is added back —
    the remainder is how far below the hero's own bottom edge it starts.
@@ -628,7 +658,7 @@ main > section > .shell {
    get the original, larger geometry back below. */
 .hero-bleed .disc-b {
   width: min(38.25vw, 428px); aspect-ratio: 1;
-  left: -9vw;
+  left: -14.7vw;
   bottom: calc(var(--hero-bleed-tail) - 14vw + 150px);
   opacity: .3;
 }
@@ -686,11 +716,15 @@ main { overflow-x: clip; }
   margin-inline: auto;
   display: flex; flex-direction: column; gap: 16px;
 }
+/* the second half of the headline always takes its own line */
+.mat-head .h1-tail { display: block; }
 .mat-head .h1 {
   font-size: clamp(2.4rem, 1.1rem + 5.4vw, 5.4rem);
   line-height: .98;
   letter-spacing: -.042em;
-  max-width: 17ch;
+  /* wide enough that "Where is your RevOps" holds one line on its own; the
+     break before the tail is forced by .h1-tail, not by the measure */
+  max-width: 24ch;
   margin-inline: auto;
 }
 .mat-head .lede {
@@ -868,7 +902,6 @@ main { overflow-x: clip; }
   color: var(--ink);
   transition: color var(--mcard-t) var(--mcard-ease);
 }
-.mcard .warm-rule { width: 40px; }
 .mcard-body { --mcard-body-gap: 10px;
   display: flex; flex-direction: column; gap: var(--mcard-body-gap); flex: 1; }
 
@@ -1019,7 +1052,7 @@ main { overflow-x: clip; }
   padding: 11px 14px;
   border-radius: var(--radius-btn);
   border: 1px solid #D9DEE6;
-  background: rgba(255, 255, 255, .72);
+  background: rgba(255, 255, 255, .42);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: .875rem;
@@ -1132,12 +1165,12 @@ main { overflow-x: clip; }
   .hero-bleed .disc-a {
     width: min(108vw, 620px);
     right: calc(-32vw - 50px);
-    top: -12vw;
+    top: calc(-12vw + var(--hero-bleed-head));
     opacity: .42;
   }
   .hero-bleed .disc-b {
     width: min(51vw, 570px);
-    left: -21vw;
+    left: -28.7vw;
     bottom: calc(var(--hero-bleed-tail) - 36vw);
   }
 }
@@ -1415,42 +1448,7 @@ main { overflow-x: clip; }
    ========================================================================== */
 
 /* ---------- featured case study ---------- */
-.case-feature {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-  gap: clamp(24px, 3.6vw, 58px);
-  align-items: center;
-}
-.case-shot {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: var(--radius-card);
-  background: var(--mist);
-  box-shadow: inset 0 0 0 1px rgba(48, 65, 87, .08);
-}
 /* the numbers that carry the result */
-.case-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(22px, 3.2vw, 48px);
-  padding-top: 4px;
-}
-.case-stat-num {
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: clamp(1.8rem, 1.2rem + 1.9vw, 2.8rem);
-  line-height: 1;
-  letter-spacing: -.036em;
-  color: var(--navy);
-}
-.case-stat-label {
-  font-size: .8rem;
-  line-height: 1.4;
-  color: var(--slate);
-  margin-top: 7px;
-  max-width: 17ch;
-}
 
 /* ---------- testimonials ---------- */
 .quote-grid {
@@ -1586,8 +1584,7 @@ main { overflow-x: clip; }
 .price-teaser-note { font-size: .82rem; line-height: 1.45; color: var(--body); }
 
 @media (max-width: 940px) {
-  .case-feature { grid-template-columns: minmax(0, 1fr); }
-  .quote-grid, .price-teaser { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .quote-grid, .price-teaser { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 700px) {
   .quote-grid, .price-teaser, .fit-grid { grid-template-columns: minmax(0, 1fr); }
@@ -1703,26 +1700,50 @@ main { overflow-x: clip; }
 .svc-list { border-top: 1px solid var(--line); }
 .svc-row {
   display: grid;
-  grid-template-columns: minmax(0, .78fr) minmax(0, 1.35fr) auto;
-  gap: clamp(18px, 3vw, 52px);
-  align-items: start;
+  /* name, timing, description, link */
+  grid-template-columns: minmax(0, .74fr) auto minmax(0, 1.3fr) auto;
+  gap: clamp(16px, 2.4vw, 40px);
+  /* name, copy and link all sit on the row's middle line; the padding is
+     symmetric, so whichever column is tallest has equal air above and below */
+  align-items: center;
   padding: clamp(24px, 3vw, 40px) 0;
   border-bottom: 1px solid var(--line);
   position: relative;
   text-decoration: none;
+  /* how far the hover fill runs past the text on each side */
+  --svc-bleed: clamp(12px, 1.6vw, 24px);
   transition: border-color var(--mcard-t) var(--mcard-ease);
 }
-/* the warm rule that draws itself in under the row on hover */
-.svc-row::after {
+/* The warm fill. A pseudo-element rather than a background on the row
+   itself, so it can bleed past the text on both sides and give the block
+   some breathing room without moving the content. z-index -1 puts it behind
+   the row's own text, which is unpositioned and therefore paints above it. */
+.svc-row::before {
   content: "";
   position: absolute;
-  left: 0; bottom: -1px;
-  height: 1px;
-  width: 0;
-  background: var(--warm);
-  transition: width .55s var(--ease-out);
+  inset: 0 calc(var(--svc-bleed) * -1);
+  z-index: -1;
+  border-radius: var(--radius-card);
+  /* A lighter tint of Mist, at full opacity, rather than Mist at reduced
+     opacity. Lowering the opacity would blend the fill with whatever sits
+     behind it — on the dark theme that is the navy page, which drags the
+     navy text on top down to 2.8:1. Held opaque, the fill is just as faint
+     in light mode and stays a solid ground in both. Literal, not a token,
+     because the text on it is literal navy and must not invert. */
+  background: #EFF3F8;
+  opacity: 0;
+  transition: opacity .4s var(--ease);
 }
-.svc-row:hover::after { width: 100%; }
+.svc-row:hover::before { opacity: 1; }
+/* the divider would otherwise cut across the bottom of the fill */
+.svc-row:hover { border-bottom-color: transparent; }
+
+/* Text on the fill is set in literal navy, not var(--navy): that token
+   inverts to near-white in dark mode, which on the light fill would be
+   unreadable. The copy takes a lighter navy so the two keep their
+   hierarchy; on this fill they measure 9.3:1 and 6.9:1. */
+.svc-row:hover .svc-copy { color: #42546F; }
+.svc-row:hover .svc-go   { color: #304157; }
 .svc-title {
   font-family: var(--font-head);
   font-weight: 700;
@@ -1730,74 +1751,120 @@ main { overflow-x: clip; }
   line-height: 1.16;
   letter-spacing: -.028em;
   color: var(--ink);
+  transition: color var(--mcard-t) var(--mcard-ease),
+              transform .45s var(--ease-out);
+}
+/* steps in toward the copy on hover, and returns on its own when the
+   pointer moves to another row */
+.svc-row:hover .svc-title { color: #304157; transform: translateX(15.4px); }
+.svc-copy { font-size: .935rem; line-height: 1.6; color: var(--body);
+  transition: color var(--mcard-t) var(--mcard-ease); }
+/* the timing column. --body rather than --muted: muted only reaches 2.5:1
+   on the paper, and this is content, not a hint. */
+.svc-time {
+  align-self: center;
+  flex: none;
+  /* a floor, so the description column starts at the same x on every row
+     rather than jogging with the length of each estimate */
+  min-width: 6.5em;
+  font-size: .84rem;
+  line-height: 1.3;
+  color: var(--body);
+  white-space: nowrap;
   transition: color var(--mcard-t) var(--mcard-ease);
 }
-.svc-row:hover .svc-title { color: var(--navy); }
-.svc-copy { font-size: .935rem; line-height: 1.6; color: var(--body); }
+.svc-row:hover .svc-time { color: #42546F; }
+
 .svc-go {
-  align-self: center;
   flex: none;
   font-weight: 700;
   font-size: .84rem;
   color: var(--navy);
   white-space: nowrap;
+  transition: color var(--mcard-t) var(--mcard-ease);
 }
 .svc-go .arrow { display: inline-block; transition: transform .3s var(--ease-out); }
 .svc-row:hover .svc-go .arrow { transform: translateX(5px); }
 
 @media (max-width: 820px) {
-  .svc-row { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .svc-go { align-self: start; }
+  .svc-row { grid-template-columns: minmax(0, 1fr); gap: 10px; align-items: start; }
+  .svc-go, .svc-time { align-self: start; }
 }
 
 /* ==========================================================================
-   CREDIBILITY BAND
-   Badge on the left, claim and link beside it, the pair centred as one
-   group with equal space either side.
-
-   Flex rather than grid, deliberately. A grid column of minmax(0,1fr)
-   stretches to the container's full width, and since the copy is capped
-   narrower than that, the slack all collected on the right and the group
-   looked left-heavy even though the container itself was centred. Sizing
-   both columns to their content means the group's real width is what gets
-   centred, so the margins either side actually match.
+   TOOL EXPERTISE BAND
    ========================================================================== */
-.cred-section { padding-block: clamp(40px, 4.6vw, 68px); }
+.cred-section { padding-block: clamp(44px, 5vw, 76px); }
 
-.cred {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(28px, 4.5vw, 64px);
-}
-
-.cred-badge { flex: none; display: flex; justify-content: center; }
-.cred-badge img {
-  width: auto;
-  height: clamp(188px, 20vw, 288px);
-  max-width: 100%;
-}
-
-/* the cap lives on the whole column, not just the paragraph, so the
-   heading wraps inside the same measure and the group stays symmetrical */
-.cred-copy {
-  flex: 0 1 auto;
-  max-width: 52ch;
+/* --- the tool row ------------------------------------------------------
+   Copy on the left, marks in a grid on the right. Left-aligned and static:
+   the marquee version put the text in the middle of a wide section and kept
+   the logos moving, which made both harder to take in.
+   ---------------------------------------------------------------------- */
+.tool-split {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 15px;
+  gap: clamp(28px, 3.6vw, 46px);
+  width: 100%;
 }
-.cred-copy .h2 { font-size: clamp(1.45rem, 1.1rem + 1.3vw, 2.15rem); }
-.cred-note { font-size: .95rem; line-height: 1.6; color: var(--body); }
+.tool-grid { width: 100%; }
 
-/* phones only: the badge sits above the copy */
-@media (max-width: 720px) {
-  .cred { flex-direction: column; align-items: flex-start; gap: 24px; }
-  .cred-badge { justify-content: flex-start; }
-  .cred-badge img { height: clamp(155px, 33vw, 210px); }
+.tool-grid {
+  --tool-h: clamp(34px, 3.6vw, 54px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 26px);
 }
+/* each mark sits on its own tile, which is what lets a coloured partner
+   badge and a plain wordmark share a row without looking accidental */
+.tool-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(14px, 1.6vw, 22px) clamp(10px, 1.4vw, 18px);
+  min-height: clamp(76px, 8vw, 104px);
+  background: var(--card-veil);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  transition: transform .5s var(--ease-out),
+              border-color var(--mcard-t) var(--mcard-ease),
+              box-shadow var(--mcard-t) var(--mcard-ease);
+}
+.tool-cell:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 44px -26px rgba(28, 38, 53, .32);
+}
+.tool-cell img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: var(--tool-h);
+  object-fit: contain;
+  opacity: .9;
+  transition: opacity .3s var(--ease);
+}
+.tool-cell:hover img { opacity: 1; }
+.tool-cell img[data-square] { height: calc(var(--tool-h) * 1.2); }
+
+/* Marks that are dark artwork on transparency would disappear against the
+   dark page. brightness(0) flattens them to solid black, invert(1) turns
+   that white — which is exactly the reversed variant these brands publish.
+   Anything already coloured reads on both grounds and is left alone. */
+html[data-theme="dark"] .tool-cell img[data-reverse] { filter: brightness(0) invert(1); opacity: .82; }
+html[data-theme="dark"] .tool-cell:hover img[data-reverse] { opacity: 1; }
+
+/* Microsoft 365 has a grey wordmark that must go light while its coloured
+   squares stay put, which no single filter can do, so it ships both files.
+   Scoped through .tool-cell: a bare .tool-alt is (0,1,0) and loses to
+   `.tool-cell img` at (0,1,1), which showed both variants at once. */
+.tool-cell .tool-alt { display: none; }
+html[data-theme="dark"] .tool-cell .tool-base { display: none; }
+html[data-theme="dark"] .tool-cell .tool-alt { display: block; }
+
+@media (max-width: 560px) {
+  .tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
 
 /* ==========================================================================
    TEXT LINK
@@ -1878,6 +1945,23 @@ html[data-theme="dark"] {
   color-scheme: dark;
 }
 
+/* Filled buttons go warm here. The label is a literal navy rather than
+   var(--navy), which inverts to near-white in dark mode: white on orange
+   reads at 1.5:1, fixed navy on orange at 6.5:1. */
+html[data-theme="dark"] .btn-primary,
+html[data-theme="dark"] .btn-light,
+html[data-theme="dark"] .nav.is-floating .nav-cta .btn-primary {
+  background: var(--warm);
+  color: #304157;
+}
+html[data-theme="dark"] .btn-primary:hover,
+html[data-theme="dark"] .btn-light:hover,
+html[data-theme="dark"] .nav.is-floating .nav-cta .btn-primary:hover {
+  background: #EFB482;
+  color: #1C2635;
+  box-shadow: 0 12px 26px -14px rgba(0, 0, 0, .5);
+}
+
 /* On the dark page the warm arc at the foot reads as a hot spot, so it
    takes the cool gradient instead — matching the one that bleeds down past
    the About section. */
@@ -1910,10 +1994,10 @@ html[data-theme="dark"] .logo-run img:hover { opacity: .82; }
    them and parks UNDER whichever is active, so the active symbol reads on
    the knob while the other stays muted on the track.
 
-   The knob is warm in both themes on purpose: it has to stay legible on
-   four different grounds — the transparent nav and the floating bar, in
-   each theme — and warm is the one brand colour that works on all of them.
-   The symbol riding on it is a fixed navy for the same reason. */
+   The knob reads var(--navy), which inverts with the theme, and flips to
+   var(--paper) on the floating bar — between them that covers all four
+   grounds it has to sit on. The active symbol always takes the opposite
+   token to whatever the knob under it is using. */
 .theme-toggle {
   position: relative;
   z-index: 0;
@@ -1936,8 +2020,8 @@ html[data-theme="dark"] .logo-run img:hover { opacity: .82; }
   top: 2px; left: 2px;
   width: 20px; height: 20px;
   border-radius: 50%;
-  background: var(--warm);
-  transition: transform .38s var(--ease-out);
+  background: var(--navy);
+  transition: transform .38s var(--ease-out), background .35s var(--ease);
 }
 html[data-theme="dark"] .theme-toggle::after { transform: translateX(20px); }
 
@@ -1957,8 +2041,12 @@ html[data-theme="dark"] .theme-toggle::after { transform: translateX(20px); }
    clockwise, which also gives it the tilt a moon usually has. */
 .tt-sun  { left: 6px; }
 .tt-moon { right: 7px; transform: rotate(18deg); }
-html:not([data-theme="dark"]) .tt-sun  { stroke: #304157; opacity: 1; }
-html[data-theme="dark"]       .tt-moon { stroke: #304157; opacity: 1; }
+/* the active symbol contrasts with the knob it is parked on */
+html:not([data-theme="dark"]) .tt-sun,
+html[data-theme="dark"]       .tt-moon { stroke: var(--paper); opacity: 1; }
+.nav.is-floating .theme-toggle::after { background: var(--paper); }
+html:not([data-theme="dark"]) .nav.is-floating .tt-sun,
+html[data-theme="dark"]       .nav.is-floating .tt-moon { stroke: var(--navy); }
 
 .theme-toggle:hover { border-color: var(--slate); }
 .theme-toggle:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; }
@@ -1969,30 +2057,6 @@ html[data-theme="dark"]       .tt-moon { stroke: #304157; opacity: 1; }
   background: var(--on-navy-field);
   color: var(--on-navy);
 }
-
-/* The speaker sits beside the toggle and appears with dark mode, whether
-   or not sound is currently playing — otherwise a visitor arriving on a
-   remembered dark theme would have no way to start it, since browsers
-   block audio until a gesture. */
-.theme-audio {
-  flex: none;
-  width: 30px; height: 30px;
-  display: none;
-  align-items: center; justify-content: center;
-  padding: 0; border: 0; background: none; cursor: pointer;
-  color: var(--ink);
-  opacity: .75;
-  transition: opacity .3s var(--ease), color .35s var(--ease);
-}
-html[data-theme="dark"] .theme-audio { display: inline-flex; }
-.theme-audio .icon-off { display: none; }
-.theme-audio.is-muted { opacity: .45; }
-.theme-audio.is-muted .icon-on { display: none; }
-.theme-audio.is-muted .icon-off { display: block; }
-.theme-audio:hover { opacity: 1; }
-.theme-audio svg { width: 17px; height: 17px; fill: currentColor; }
-.nav.is-floating .theme-audio { color: var(--paper); }
-.theme-audio:focus-visible { outline: 2px solid var(--navy); outline-offset: 3px; border-radius: 6px; }
 
 @media (max-width: 940px) {
   .theme-toggle { width: 42px; height: 24px; }
@@ -2042,3 +2106,300 @@ html[data-theme="dark"] .footer {
   --on-navy-edge:   rgba(250, 250, 248, .22);
   color: var(--on-navy-muted);
 }
+
+/* ---------- legal links on the copyright line ---------- */
+.footer-legal {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+}
+.footer-legal a {
+  font-size: .8rem;
+  color: var(--on-navy-faint);
+  transition: color .22s var(--ease);
+}
+.footer-legal a:hover { color: var(--on-navy-strong); }
+
+/* ==========================================================================
+   CASE STUDY RAIL
+   A row of poster cards you scroll sideways. The image fills the card, a
+   gradient sits over its lower half so white type stays readable whatever
+   the photo does, and the title, figures and arrow sit on top of that.
+   ========================================================================== */
+.case-rail-wrap { position: relative; }
+
+.case-rail {
+  display: flex;
+  gap: clamp(14px, 1.6vw, 22px);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  /* Room for the hover shadow. overflow-x: auto forces overflow-y to auto
+     too, so this box clips vertically whether or not it is asked to — the
+     shadow was being cut off at the rail's own bottom edge, not by the
+     section. The padding gives the shadow somewhere to live and the equal
+     negative margin takes the space back out of the layout. */
+  padding: 30px 8px 48px;
+  margin: -30px -8px -48px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.case-rail::-webkit-scrollbar { display: none; }
+
+.case-card {
+  position: relative;
+  flex: none;
+  width: clamp(258px, 25vw, 330px);
+  aspect-ratio: 3 / 4;
+  scroll-snap-align: start;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--mist);
+  text-decoration: none;
+  transition: transform .5s var(--ease-out), box-shadow var(--mcard-t) var(--mcard-ease);
+}
+.case-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 52px -28px rgba(28, 38, 53, .45);
+}
+.case-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .7s var(--ease-out);
+}
+.case-card:hover img { transform: scale(1.045); }
+
+.case-body {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  padding: clamp(18px, 2vw, 24px);
+}
+.case-text { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.case-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.05rem, .95rem + .4vw, 1.25rem);
+  line-height: 1.2;
+  letter-spacing: -.022em;
+  color: #FFFFFF;
+  /* With the scrim gone this is the only thing keeping the title legible
+     over a light photograph. Not a gradient — a tight shadow that reads as
+     an edge rather than a wash. */
+  text-shadow: 0 1px 3px rgba(12, 18, 26, .85), 0 0 18px rgba(12, 18, 26, .5);
+}
+.case-figs { display: flex; flex-wrap: nowrap; gap: 14px; min-width: 0; }
+/* figure and label on the same line, and both figures on one row */
+.case-fig {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  min-width: 0;
+  text-shadow: 0 1px 3px rgba(12, 18, 26, .85), 0 0 14px rgba(12, 18, 26, .5);
+}
+.case-fig b {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .92rem;
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  color: var(--warm);
+  white-space: nowrap;
+}
+.case-fig span {
+  font-size: .7rem;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, .88);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.case-go {
+  flex: none;
+  color: #FFFFFF;
+  font-size: 1.35rem;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(12, 18, 26, .85), 0 0 14px rgba(12, 18, 26, .5);
+  transition: color .3s var(--ease), transform .35s var(--ease-out);
+}
+.case-card:hover .case-go { color: var(--warm); transform: translateX(4px); }
+
+/* the two nudge buttons; hidden where there is no pointer to use them */
+.case-nav { display: flex; gap: 10px; }
+.case-nav button {
+  width: 42px; height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--card-veil);
+  color: var(--navy);
+  cursor: pointer;
+  font-size: 1.05rem;
+  transition: border-color .25s var(--ease), background .25s var(--ease), opacity .25s var(--ease);
+}
+.case-nav button:hover { border-color: var(--slate); }
+.case-nav button[disabled] { opacity: .35; cursor: default; }
+.case-nav button:hover:not([disabled]) { background: var(--warm); color: #304157; border-color: transparent; }
+
+/* Three columns with an empty first one, so the heading centres on the
+   section rather than on the space left over beside the buttons — which is
+   what a flex row with space-between would have given. */
+.case-head {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: clamp(24px, 3vw, 38px);
+}
+.case-head .case-nav { justify-self: end; }
+@media (hover: none) { .case-nav { display: none; } }
+@media (max-width: 700px) { .case-head { grid-template-columns: minmax(0, 1fr); } }
+
+/* ==========================================================================
+   SERVICES — the closing prompt under the list
+   ========================================================================== */
+.svc-cta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(14px, 2vw, 26px);
+  margin-top: clamp(26px, 3vw, 40px);
+}
+.svc-cta p {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1rem, .94rem + .3vw, 1.18rem);
+  letter-spacing: -.018em;
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   SECTION HEADS
+
+   The old pattern was title, short warm rule, paragraph — stacked, every
+   time. That triple is the thing that reads as a template, so the rule goes
+   and the accent moves into the type instead: one phrase in the headline
+   carries a warm underline, drawn behind the text rather than under the box.
+
+   The paragraph is set smaller and on a tight measure, and offset from the
+   headline's left edge, so hierarchy comes from size and position rather
+   than from a divider.
+   ========================================================================== */
+/* Centred, and uncapped so a heading takes one line wherever there is room
+   for one. text-wrap: balance only matters for the two that are long enough
+   to wrap on a narrow screen — it splits them evenly instead of leaving one
+   word stranded. */
+.sec-head {
+  max-width: none;
+  margin-inline: auto;
+  text-align: center;
+}
+.sec-head .h2 {
+  font-size: clamp(1.7rem, 1.1rem + 2.2vw, 2.9rem);
+  line-height: 1.06;
+  letter-spacing: -.034em;
+  text-wrap: balance;
+}
+
+/* The accent: a marker fill behind the phrase rather than a rule under it.
+
+   Sized at 80% of the line box and sat low in it, so the bar covers the
+   glyphs and a little air without reaching the line above — the headline
+   runs at 1.03 line-height, and a full-height inline background would
+   collide with the previous line wherever a highlighted phrase wraps.
+
+   The text colour is a literal navy, not var(--ink): that token inverts to
+   near-white on the dark theme, and white on this fill reads at 1.5:1
+   against navy's 6.5:1. Warm does not invert, so neither can the type on it.
+
+   box-decoration-break: clone gives every line of a wrapped phrase its own
+   fill; the default slices one background across the fragments and leaves
+   the second line bare. */
+.hl {
+  background-image: linear-gradient(var(--warm), var(--warm));
+  background-repeat: no-repeat;
+  background-size: 100% 80%;
+  background-position: 0 78%;
+  color: #304157;
+  font-style: italic;
+  padding-inline: .16em;
+  margin-inline: -.08em;
+  -webkit-box-decoration-break: clone;
+          box-decoration-break: clone;
+}
+/* sweeps in when the block arrives, the way the warm rules used to */
+.reveal .hl { background-size: 0% 80%; }
+.reveal.is-in .hl {
+  background-size: 100% 80%;
+  transition: background-size .7s var(--ease-out) .15s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal .hl, .reveal.is-in .hl { background-size: 100% 80%; transition: none; }
+}
+
+/* ==========================================================================
+   BACK TO TOP
+   Appears once the tool section has come into view, and stays for the rest
+   of the page. Fixed to the bottom right on a translucent scrim so it reads
+   over whatever is behind it — the arc at the foot of the page included.
+   ========================================================================== */
+.to-top {
+  position: fixed;
+  right: clamp(16px, 2.4vw, 30px);
+  bottom: clamp(16px, 2.4vw, 30px);
+  z-index: 70;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 50%;
+  background: rgba(38, 52, 71, .62);
+  -webkit-backdrop-filter: blur(9px);
+          backdrop-filter: blur(9px);
+  color: #FFFFFF;
+  cursor: pointer;
+  box-shadow: 0 14px 34px -16px rgba(12, 18, 26, .6);
+  /* out of the way until it is wanted: no fade-in on first paint, and
+     nothing to tab to while it is hidden */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity .4s var(--ease), transform .4s var(--ease-out),
+              visibility 0s linear .4s, background .3s var(--ease);
+}
+.to-top.is-on {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity .4s var(--ease), transform .4s var(--ease-out),
+              visibility 0s, background .3s var(--ease);
+}
+.to-top:hover { background: var(--warm); color: #304157; border-color: transparent; }
+.to-top:focus-visible { outline: 2px solid var(--warm); outline-offset: 3px; }
+.to-top svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 2.2; }
+
+/* on the dark page the scrim inverts, so the glyph goes dark with it */
+html[data-theme="dark"] .to-top {
+  background: rgba(244, 247, 250, .72);
+  border-color: rgba(48, 65, 87, .14);
+  color: #26344A;
+}
+html[data-theme="dark"] .to-top:hover { background: var(--warm); color: #304157; }
+
+@media (prefers-reduced-motion: reduce) {
+  .to-top { transition: opacity .001ms, visibility 0s; transform: none; }
+  .to-top.is-on { transform: none; }
+}
+

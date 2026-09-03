@@ -147,6 +147,15 @@
   /* swap this for the real case study photo */
   var SHOT_SRC = 'assets/img/case-study-placeholder.svg';
 
+  /* The headline. Split in two because the tail sits on its own line, via a
+     block-level span rather than a hard break, so it holds at any width.
+     These live at module scope because build() writes them and init()'s
+     syncHeadline() reads them — declared inside build(), the second one
+     throws a ReferenceError and takes the whole card render down with it. */
+  var HEAD_LEAD  = 'Where is your team';
+  var HEAD_DAY   = 'at today?';
+  var HEAD_NIGHT = 'at tonight?';
+
   var CARD_TITLES = [
     'Your situation may look like this',
     'Problems you’re likely facing',
@@ -186,11 +195,6 @@
                    (startDark ? ICON_DARK : ICON_LIGHT);
     var start = parseInt(root.getAttribute('data-start'), 10);
     if (isNaN(start) || start < 0 || start > lastI) start = 0;
-
-    /* The headline changes with the theme. Both strings live here so the
-       module owns all of its own copy; site.js only announces the switch. */
-    var HEAD_DAY   = 'Where is your team at today?';
-    var HEAD_NIGHT = 'Where is your team at tonight?';
 
     var nodesHTML = '';
     var labelsHTML = '';
@@ -248,7 +252,8 @@
     root.innerHTML =
       '<div class="mat">' +
         '<div class="mat-head">' +
-          '<h1 class="h1" data-nav-clear data-headline>' + esc(HEAD_DAY) + '</h1>' +
+          '<h1 class="h1" data-nav-clear data-headline>' + esc(HEAD_LEAD) + ' ' +
+            '<span class="h1-tail">' + esc(HEAD_DAY) + '</span></h1>' +
           '<p class="lede">RevOps is the people, systems and tools that impact revenue growth through ' +
             'marketing, sales and customer service. But every team is somewhere different along that journey.</p>' +
         '</div>' +
@@ -612,9 +617,11 @@
     var headEl = root.querySelector('[data-headline]');
     function syncHeadline() {
       if (!headEl) return;
+      var tailEl = headEl.querySelector('.h1-tail');
+      if (!tailEl) return;
       var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-      var next = dark ? 'Where is your team at tonight?' : 'Where is your team at today?';
-      if (headEl.textContent !== next) headEl.textContent = next;
+      var next = dark ? HEAD_NIGHT : HEAD_DAY;
+      if (tailEl.textContent !== next) tailEl.textContent = next;
     }
     /* the thumb mark follows the theme for the same reason the headline does */
     function syncIcon() {

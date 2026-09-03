@@ -99,6 +99,8 @@
 
   var ticking = false;
 
+  var NAV_HYSTERESIS = 90;   /* px of slack around the collapse threshold */
+
   /* The nav's height in its resting state, from the --nav-h token. This is
      the fixed line the headline has to reach; reading the element's own
      height instead would give a different answer once it has collapsed. */
@@ -135,9 +137,21 @@
          the live one so the threshold does not move when the bar collapses
          and shrinks, which would make it oscillate at the boundary. */
       var cz = getClearZone();
-      var floating = cz
-        ? cz.getBoundingClientRect().top <= navRestHeight()
-        : window.pageYOffset > 8;
+      var floating;
+      if (cz) {
+        var line = navRestHeight();
+        var top = cz.getBoundingClientRect().top;
+        /* Hysteresis. Once collapsed, the headline has to travel back down
+           past the line by a clear margin before the bar expands again.
+           Without it, a slow scroll sitting right on the threshold flips the
+           bar open and shut on every frame, which is most of what made the
+           change feel jumpy. */
+        floating = nav.classList.contains('is-floating')
+          ? top <= line + NAV_HYSTERESIS
+          : top <= line;
+      } else {
+        floating = window.pageYOffset > 8;
+      }
       nav.classList.toggle('is-floating', floating);
     }
 
@@ -272,16 +286,12 @@
 })();
 
 /* ==========================================================================
-   RevHops — theme toggle and the lo-fi track
+   RevHops — theme toggle
 
    Theme is a single data-theme attribute on <html>; all the colour work is
    a token swap in site.css. The value is remembered in localStorage and
-   applied by a small blocking script in <head> so there is no flash.
-
-   The music is SYNTHESISED, not a file. There is no audio asset in the repo
-   and none is licensed — this generates a slow four-chord loop through a
-   lowpass filter with a little vinyl hiss, using the Web Audio API. To use
-   a real recording instead, see the note by startAudio().
+   applied by a small blocking script in <head> so there is no flash. If the
+   visitor has never chosen, that script falls back to their own clock.
    ========================================================================== */
 (function () {
   'use strict';
@@ -289,7 +299,6 @@
   var root = document.documentElement;
   var STORE = 'revhops-theme';
   var toggles = document.querySelectorAll('[data-theme-toggle]');
-  var audioBtns = document.querySelectorAll('[data-audio-toggle]');
   if (!toggles.length) return;
 
   function isDark() { return root.getAttribute('data-theme') === 'dark'; }
@@ -301,220 +310,7 @@
     });
   }
 
-  /* ---------------- the track ----------------
-     Four bars, one chord each, voiced as lazy sevenths, with a slow beat
-     under them and a bed of vinyl noise over the top. Frequencies rather
-     than note names so there is no lookup table to get wrong.
-
-     Two buses feed the master: the pads run through a 900Hz lowpass, which
-     is most of what makes a synth chord read as "lo-fi" rather than "hold
-     music", and the drums through a gentler 3200Hz one so the hats survive
-     without turning bright. */
-  var CHORDS = [
-    [146.83, 220.00, 261.63, 329.63],  /* Dm7   */
-    [130.81, 196.00, 246.94, 329.63],  /* Cmaj7 */
-    [174.61, 220.00, 261.63, 349.23],  /* Fmaj7 */
-    [196.00, 246.94, 293.66, 392.00]   /* G     */
-  ];
-  var BEAT = 0.8;                      /* 75bpm */
-  var BEATS = 8;                       /* per chord */
-  var BAR = BEAT * BEATS;              /* 6.4s */
-  var VOLUME = 0.094;                  /* quiet enough to sit under reading */
-
-  var ctx = null, master = null, padBus = null, drumBus = null;
-  var noiseBuf = null, hiss = null, timer = null, playing = false;
-
-  function makeNoise(seconds, amp) {
-    var len = Math.floor(ctx.sampleRate * seconds);
-    var buf = ctx.createBuffer(1, len, ctx.sampleRate);
-    var d = buf.getChannelData(0);
-    for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * amp;
-    return buf;
-  }
-
-  function bus(cutoff, gain) {
-    var lp = ctx.createBiquadFilter();
-    lp.type = 'lowpass';
-    lp.frequency.value = cutoff;
-    lp.Q.value = 0.6;
-    var g = ctx.createGain();
-    g.gain.value = gain;
-    lp.connect(g); g.connect(master);
-    return lp;
-  }
-
-  function buildGraph() {
-    var AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return false;
-    ctx = new AC();
-
-    master = ctx.createGain();
-    master.gain.value = 0;
-    master.connect(ctx.destination);
-
-    padBus  = bus(900, 1);
-    drumBus = bus(3200, 0.9);
-    noiseBuf = makeNoise(2, 0.35);
-
-    /* the constant surface noise */
-    hiss = ctx.createBufferSource();
-    hiss.buffer = noiseBuf;
-    hiss.loop = true;
-    var hp = ctx.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = 1400;
-    var hg = ctx.createGain();
-    hg.gain.value = 0.03;              /* was .014 — grittier */
-    hiss.connect(hp); hp.connect(hg); hg.connect(master);
-    hiss.start();
-    return true;
-  }
-
-  /* a short burst of the noise buffer, shaped by a filter and an envelope.
-     every percussive sound here is a variation on this. */
-  function hit(at, opts) {
-    var src = ctx.createBufferSource();
-    src.buffer = noiseBuf;
-    /* random offset so repeated hits are not identical samples */
-    var off = Math.random() * 1.5;
-
-    var f = ctx.createBiquadFilter();
-    f.type = opts.type;
-    f.frequency.value = opts.freq;
-    if (opts.q) f.Q.value = opts.q;
-
-    var g = ctx.createGain();
-    g.gain.setValueAtTime(opts.gain, at);
-    g.gain.exponentialRampToValueAtTime(0.0001, at + opts.decay);
-
-    src.connect(f); f.connect(g); g.connect(opts.dry ? master : drumBus);
-    src.start(at, off, opts.decay + 0.05);
-    src.stop(at + opts.decay + 0.05);
-  }
-
-  /* soft round kick: a sine dropping in pitch, which is the whole trick */
-  function kick(at) {
-    var o = ctx.createOscillator();
-    var g = ctx.createGain();
-    o.type = 'sine';
-    o.frequency.setValueAtTime(115, at);
-    o.frequency.exponentialRampToValueAtTime(42, at + 0.13);
-    g.gain.setValueAtTime(0.5, at);
-    g.gain.exponentialRampToValueAtTime(0.0001, at + 0.34);
-    o.connect(g); g.connect(drumBus);
-    o.start(at); o.stop(at + 0.36);
-  }
-
-  function snare(at) {
-    hit(at, { type: 'bandpass', freq: 1750, q: 0.9, gain: 0.19, decay: 0.16 });
-    /* a little body under the noise so it does not read as a hiss */
-    var o = ctx.createOscillator(), g = ctx.createGain();
-    o.type = 'triangle';
-    o.frequency.setValueAtTime(190, at);
-    g.gain.setValueAtTime(0.1, at);
-    g.gain.exponentialRampToValueAtTime(0.0001, at + 0.12);
-    o.connect(g); g.connect(drumBus);
-    o.start(at); o.stop(at + 0.14);
-  }
-
-  function hat(at, open) {
-    hit(at, {
-      type: 'highpass', freq: 7200,
-      gain: open ? 0.055 : 0.038,
-      decay: open ? 0.17 : 0.045
-    });
-  }
-
-  /* one chord: four detuned triangles with a long swell and a long tail */
-  function playChord(notes, at) {
-    notes.forEach(function (f, k) {
-      var osc = ctx.createOscillator();
-      var g = ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.value = f;
-      osc.detune.value = (k - 1.5) * 4;          /* a few cents apart, so it breathes */
-
-      var peak = 0.16 / (k + 1.5);               /* upper voices quieter */
-      g.gain.setValueAtTime(0.0001, at);
-      g.gain.exponentialRampToValueAtTime(peak, at + 1.6);
-      g.gain.setValueAtTime(peak, at + BAR - 2.2);
-      g.gain.exponentialRampToValueAtTime(0.0001, at + BAR + 0.4);
-
-      osc.connect(g); g.connect(padBus);
-      osc.start(at);
-      osc.stop(at + BAR + 0.6);
-    });
-  }
-
-  /* Kick on 1 and 5 with a ghost before the turnaround, snare on 3 and 7,
-     hats on the eighths with the offbeats quieter. Every hit is nudged a
-     few milliseconds late and varies in level, because a grid that lands
-     exactly on the beat every time is the thing that sounds programmed. */
-  function playBeat(barAt, barIndex) {
-    for (var b = 0; b < BEATS; b++) {
-      var at = barAt + b * BEAT + (Math.random() * 0.018);
-      if (b === 0 || b === 4) kick(at);
-      if (b === 6 && barIndex === 3) kick(at + BEAT * 0.5);   /* turnaround */
-      if (b === 2 || b === 6) snare(at);
-      hat(at, b === 7);
-      if (Math.random() > 0.45) hat(at + BEAT * 0.5, false);  /* offbeat, sometimes */
-    }
-    /* vinyl pops: a handful of clicks per bar, at random */
-    var pops = 2 + Math.floor(Math.random() * 4);
-    for (var p = 0; p < pops; p++) {
-      hit(barAt + Math.random() * BAR, {
-        type: 'highpass', freq: 900,
-        gain: 0.02 + Math.random() * 0.03,
-        decay: 0.012, dry: true
-      });
-    }
-  }
-
-  function scheduleCycle() {
-    var at = ctx.currentTime + 0.1;
-    CHORDS.forEach(function (c, i) {
-      playChord(c, at + i * BAR);
-      playBeat(at + i * BAR, i);
-    });
-    /* queue the next cycle just before this one runs out */
-    timer = setTimeout(scheduleCycle, (CHORDS.length * BAR - 0.4) * 1000);
-  }
-
-  /* To use a real recording instead, drop the file in assets/audio/, replace
-     everything from makeNoise() to here with an <audio loop> element, and
-     keep the same fade in and out below. */
-  function startAudio() {
-    if (playing) return;
-    if (!ctx && !buildGraph()) return;
-    if (ctx.state === 'suspended') ctx.resume();
-    playing = true;
-    master.gain.cancelScheduledValues(ctx.currentTime);
-    master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), ctx.currentTime);
-    master.gain.exponentialRampToValueAtTime(VOLUME, ctx.currentTime + 2.5);
-    scheduleCycle();
-    syncAudioBtns();
-  }
-
-  function stopAudio() {
-    if (!playing || !ctx) return;
-    playing = false;
-    clearTimeout(timer);
-    master.gain.cancelScheduledValues(ctx.currentTime);
-    master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
-    master.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.2);
-    syncAudioBtns();
-  }
-
-  function syncAudioBtns() {
-    Array.prototype.forEach.call(audioBtns, function (b) {
-      b.classList.toggle('is-muted', !playing);
-      b.setAttribute('aria-pressed', playing ? 'true' : 'false');
-      b.setAttribute('aria-label', playing ? 'Mute background music' : 'Play background music');
-    });
-  }
-
-  /* ---------------- wiring ---------------- */
-  function setTheme(dark, fromUser) {
+  function setTheme(dark) {
     if (dark) root.setAttribute('data-theme', 'dark');
     else root.removeAttribute('data-theme');
     try { localStorage.setItem(STORE, dark ? 'dark' : 'light'); } catch (e) { /* private mode */ }
@@ -522,31 +318,209 @@
     root.removeAttribute('data-theme-auto');
     syncToggles();
 
-    /* let the hero swap its headline; it owns its own copy */
+    /* let the hero swap its headline and its thumb mark; it owns its own copy */
     try {
       document.dispatchEvent(new CustomEvent('revhops:theme', { detail: { dark: dark } }));
     } catch (err) { /* the attribute is set either way */ }
-
-    /* Audio only ever starts from a real click. On a page load that restores
-       dark mode there has been no gesture yet, so browsers would block it
-       anyway — and starting sound unprompted would be worse than not. */
-    if (!fromUser) return;
-    if (dark) startAudio(); else stopAudio();
   }
 
   Array.prototype.forEach.call(toggles, function (b) {
-    b.addEventListener('click', function () { setTheme(!isDark(), true); });
-  });
-  Array.prototype.forEach.call(audioBtns, function (b) {
-    b.addEventListener('click', function () { playing ? stopAudio() : startAudio(); });
-  });
-
-  /* leaving the tab pauses it rather than talking to an empty room */
-  document.addEventListener('visibilitychange', function () {
-    if (!ctx || !playing) return;
-    if (document.hidden) ctx.suspend(); else ctx.resume();
+    b.addEventListener('click', function () { setTheme(!isDark()); });
   });
 
   syncToggles();
-  syncAudioBtns();
+})();
+
+/* ==========================================================================
+   RevHops — warm rules sized from the heading above them
+
+   Every warm rule is 60% of the width of its heading's text. CSS cannot do
+   this: a rule is a sibling of the heading, and there is no selector or unit
+   that reads another element's rendered text width.
+
+   The measurement is taken with a Range over the heading's contents rather
+   than getBoundingClientRect() on the heading itself. The element is a block,
+   so its box is the full column width whatever the text does; the Range
+   returns one rect per line box, and the widest of those is the actual
+   length of the sentence.
+
+   Re-runs on resize, once webfonts land, and after the hero module has
+   injected its own headings.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var RATIO = 0.6;
+  var pairs = [];
+
+  function headingFor(hr) {
+    /* nearest preceding element that actually carries text */
+    var el = hr.previousElementSibling;
+    while (el && !el.textContent.trim()) el = el.previousElementSibling;
+    return el;
+  }
+
+  function collect() {
+    pairs = [];
+    Array.prototype.forEach.call(document.querySelectorAll('.warm-rule'), function (hr) {
+      var head = headingFor(hr);
+      if (head) pairs.push({ hr: hr, head: head });
+    });
+  }
+
+  /* Three ways to measure, best first. Range.getClientRects gives one rect
+     per line box, so the widest is the true length of the sentence. Not every
+     environment implements it, so fall back to the range's bounding box, then
+     to the element's own box — which is the block width, wider than the text,
+     but never throws and never leaves a rule at zero. */
+  function textWidth(el) {
+    try {
+      if (document.createRange) {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+
+        if (range.getClientRects) {
+          var rects = range.getClientRects();
+          var w = 0;
+          for (var i = 0; i < rects.length; i++) {
+            if (rects[i].width > w) w = rects[i].width;
+          }
+          if (range.detach) range.detach();
+          if (w > 1) return w;
+        }
+        if (range.getBoundingClientRect) {
+          var b = range.getBoundingClientRect();
+          if (b && b.width > 1) return b.width;
+        }
+      }
+    } catch (err) { /* fall through to the element's own box */ }
+
+    return el.getBoundingClientRect ? el.getBoundingClientRect().width : 0;
+  }
+
+  function apply() {
+    for (var i = 0; i < pairs.length; i++) {
+      var w = textWidth(pairs[i].head);
+      /* a hidden or not-yet-laid-out heading measures 0; leave the CSS
+         default alone rather than collapsing the rule to nothing */
+      if (w > 1) pairs[i].hr.style.width = Math.round(w * RATIO) + 'px';
+    }
+  }
+
+  function sync() { collect(); apply(); }
+
+  var t;
+  function debounced() { clearTimeout(t); t = setTimeout(sync, 120); }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', sync);
+  } else {
+    sync();
+  }
+  window.addEventListener('load', sync);
+  window.addEventListener('resize', debounced);
+
+  /* webfonts change the measurement, so take it again once they are in */
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+    document.fonts.ready.then(sync);
+  }
+  /* the hero module writes its headings after this file runs */
+  setTimeout(sync, 500);
+
+  window.revhopsSyncRules = sync;
+})();
+
+/* ==========================================================================
+   RevHops — case study rail
+
+   The rail scrolls natively, so a trackpad, a swipe and the keyboard all
+   work with no help. This only wires the two nudge buttons and keeps them
+   disabled at the ends, so they never look live when they would do nothing.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var rail = document.querySelector('[data-case-rail]');
+  var prev = document.querySelector('[data-case-prev]');
+  var next = document.querySelector('[data-case-next]');
+  if (!rail || !prev || !next) return;
+
+  /* one card plus one gap, measured rather than assumed, so the clamps in
+     the stylesheet can change without this needing to know */
+  function step() {
+    var card = rail.querySelector('.case-card');
+    if (!card) return rail.clientWidth * 0.8;
+    var gap = parseFloat(getComputedStyle(rail).columnGap) || 0;
+    return card.getBoundingClientRect().width + gap;
+  }
+
+  function sync() {
+    var max = rail.scrollWidth - rail.clientWidth;
+    /* a pixel of slack: sub-pixel layout means scrollLeft rarely lands
+       exactly on 0 or on max */
+    prev.disabled = rail.scrollLeft <= 1;
+    next.disabled = rail.scrollLeft >= max - 1;
+  }
+
+  prev.addEventListener('click', function () { rail.scrollBy({ left: -step(), behavior: 'smooth' }); });
+  next.addEventListener('click', function () { rail.scrollBy({ left:  step(), behavior: 'smooth' }); });
+
+  rail.addEventListener('scroll', function () {
+    window.requestAnimationFrame(sync);
+  }, { passive: true });
+  window.addEventListener('resize', sync);
+  sync();
+})();
+
+/* ==========================================================================
+   RevHops — back to top
+
+   Appears the moment the marked section first comes into view and stays for
+   the rest of the page. A threshold rather than a one-shot: scroll back up
+   above it and the button leaves again, so it is never sitting there while
+   you are already at the top.
+
+   Driven by the element's position rather than an IntersectionObserver,
+   because the observer only fires on threshold crossings — once the section
+   has scrolled off the top it stops intersecting, and the button would
+   vanish exactly where it is most useful.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var btn = document.querySelector('[data-to-top]');
+  if (!btn) return;
+
+  var trigger = document.querySelector('[data-top-trigger]');
+  var reduce = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function shouldShow() {
+    if (trigger) {
+      /* the section's top edge has reached the lower part of the viewport,
+         i.e. you can just see it */
+      return trigger.getBoundingClientRect().top <= window.innerHeight * 0.9;
+    }
+    /* pages with no tool section fall back to a plain distance */
+    return window.pageYOffset > window.innerHeight * 1.2;
+  }
+
+  var ticking = false;
+  function check() {
+    ticking = false;
+    btn.classList.toggle('is-on', shouldShow());
+  }
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(check);
+  }
+
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  check();
 })();
