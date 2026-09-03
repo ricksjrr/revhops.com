@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=202609012355">
+<link rel="stylesheet" href="assets/css/site.css?v=202609021829">
 <!-- Theme, resolved before first paint so a dark session never flashes
      light on load. Deliberately inline and blocking; it is small.
 
@@ -44,12 +44,7 @@
     <div class="nav-cta">
       <button class="theme-toggle" data-theme-toggle type="button"
               role="switch" aria-checked="false" aria-label="Dark mode"><svg class="tt-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"></line><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"></line><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"></line></svg><svg class="tt-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
-      <button class="theme-audio is-muted" data-audio-toggle type="button"
-              aria-label="Play background music" aria-pressed="false">
-        <svg class="icon-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zm-2.5-8.8v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>
-        <svg class="icon-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm15.5 3l2.3-2.3-1.4-1.4-2.3 2.3-2.3-2.3-1.4 1.4 2.3 2.3-2.3 2.3 1.4 1.4 2.3-2.3 2.3 2.3 1.4-1.4-2.3-2.3z"/></svg>
-      </button>
-      <a class="btn btn-primary" href="book/">Book a call</a>
+      <a class="btn btn-primary" href="book/">Schedule a call</a>
       <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-label="Menu"><span></span></button>
     </div>
   </div>
@@ -120,151 +115,215 @@
      page opens on the answer rather than re-explaining the problem.
 
      Rows rather than cards, and deliberately unnumbered: numbering read as
-     a sequence, and these four are not steps.
-     No background shape here — the hero's discs are still settling above,
-     and a second set this close competes with them.
+     a sequence, and these are not steps.
      ============================================================= -->
-<section class="section" style="padding-bottom:clamp(38px,4.6vw,66px)">
+<section class="section">
   <div class="shell">
 
-    <div class="stack gap-16 reveal reveal-left" style="margin-bottom:clamp(28px,3.4vw,46px)">
-      <h2 class="h2">Four ways in, depending on where you are</h2>
-      <hr class="warm-rule">
+    <div class="sec-head reveal reveal-left" style="margin-bottom:clamp(28px,3.4vw,46px)">
+      <h2 class="h2">No matter where you're at, <span class="hl">we're here to help</span></h2>
     </div>
 
     <div class="svc-list">
       <a class="svc-row reveal" href="services/">
+        <h3 class="svc-title">RevOps consulting</h3>
+        <span class="svc-time">Monthly</span>
+        <p class="svc-copy">Someone to think it through with. What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money.</p>
+        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row reveal" href="services/">
         <h3 class="svc-title">Solution design</h3>
-        <p class="svc-copy">Decide what the system should do before anyone builds it. Data model, lifecycle, process map, and how you will measure it, agreed by the people who have to use it.</p>
+        <span class="svc-time">2–3 weeks</span>
+        <p class="svc-copy">The plan before the build. Data model, lifecycle, process map and how you will measure it, signed off by the people who have to live with it.</p>
         <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
       <a class="svc-row reveal" href="services/">
-        <h3 class="svc-title">Implementation</h3>
-        <p class="svc-copy">Portal builds, migrations, integrations, automation, reporting. Built once, documented, and handed over so your team can run it without us.</p>
+        <h3 class="svc-title">CRM implementations</h3>
+        <span class="svc-time">6–12 weeks</span>
+        <p class="svc-copy">Portal builds and platform migrations. Built once, documented, and handed over so your team can run it without us.</p>
         <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
       <a class="svc-row reveal" href="services/">
-        <h3 class="svc-title">Cleanup and optimization</h3>
-        <p class="svc-copy">You already have the system. It has years of decisions in it. We make it tell the truth again without starting over.</p>
+        <h3 class="svc-title">HubSpot support retainers</h3>
+        <span class="svc-time">Monthly</span>
+        <p class="svc-copy">A HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon.</p>
         <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
       <a class="svc-row reveal" href="services/">
-        <h3 class="svc-title">Ongoing partnership</h3>
-        <p class="svc-copy">A RevOps function on retainer. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday.</p>
+        <h3 class="svc-title">Lead to cash process mapping</h3>
+        <span class="svc-time">2–3 weeks</span>
+        <p class="svc-copy">Every step from first touch to paid invoice, on one page. Usually the first time anyone has seen the whole thing at once.</p>
         <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
+    </div>
+
+    <div class="svc-cta reveal">
+      <p>Not sure where to begin?</p>
+      <a class="btn btn-primary" href="book/">Schedule a call</a>
     </div>
 
   </div>
 </section>
 
 <!-- =============================================================
-     CASE STUDIES — the deep proof. Given its own section and its own
-     surface so it does not compete with the star rating band below.
-     Shapes: one cool ring, mid tier, rising from the lower left.
+     TOOL EXPERTISE — copy on the left, marks on the right.
+
+     Each mark sits on its own tile. That is what lets a coloured partner
+     badge and a plain wordmark share a row without looking accidental,
+     and it gives the row something to hover.
+
+     Add data-reverse to any mark that is dark artwork on transparency: it
+     flips to white on the dark theme instead of disappearing. Microsoft 365
+     ships two files instead, because its grey wordmark has to go light
+     while its coloured squares stay put.
      ============================================================= -->
-<!-- overflow stays visible so the warm disc carries on down across the
-     boundary. The layering that keeps it behind the next section's content
-     is global — see the .disc rule in site.css. -->
-<section class="section surface-white fade-top fade-bottom" style="padding-top:clamp(42px,5vw,74px)">
+<section class="section cred-section" data-top-trigger>
+  <!-- starts in the lower right and runs on into the section below -->
+  <div class="disc disc-cool" data-parallax="0.07"
+       style="width:min(50vw,560px);aspect-ratio:1;right:-28vw;bottom:max(-30vw,-340px);opacity:.4"></div>
+  <div class="shell">
+    <div class="tool-split">
+
+      <div class="sec-head reveal">
+        <h2 class="h2">Experts in <span class="hl">all of the tools</span> in your stack</h2>
+      </div>
+
+      <div class="tool-grid reveal">
+        <div class="tool-cell"><img src="assets/img/tools/hubspot.webp" alt="HubSpot" data-reverse loading="lazy"></div>
+        <div class="tool-cell"><img src="assets/img/tools/salesforce.webp" alt="Salesforce" loading="lazy"></div>
+        <div class="tool-cell"><img src="assets/img/tools/pipedrive.webp" alt="Pipedrive Authorized Partner" loading="lazy"></div>
+        <div class="tool-cell"><img src="assets/img/tools/netsuite.webp" alt="Oracle NetSuite" data-reverse loading="lazy"></div>
+        <div class="tool-cell"><img src="assets/img/tools/marketo.webp" alt="Marketo, an Adobe company" data-reverse loading="lazy"></div>
+        <div class="tool-cell"><img src="assets/img/tools/claude.webp" alt="Claude" data-reverse loading="lazy"></div>
+        <div class="tool-cell">
+          <img class="tool-base" src="assets/img/tools/microsoft365.webp"
+               alt="Microsoft 365" loading="lazy">
+          <img class="tool-alt" src="assets/img/tools/microsoft365-dark.webp"
+               alt="" aria-hidden="true" loading="lazy">
+        </div>
+        <div class="tool-cell"><img src="assets/img/tools/google-workspace.webp" alt="Google Workspace" data-square loading="lazy"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================
+     CASE STUDIES — poster cards on a horizontal rail.
+
+     The image fills the card and a gradient sits over its lower half, so
+     white type stays readable whatever the photograph does. Every card
+     still points at the placeholder SVG; swap in real photographs and the
+     scrim will do its job on them unchanged.
+
+     The rail is a native scroll container with snap points, so it works
+     with a trackpad, a touch swipe and the keyboard on its own. The two
+     buttons are a convenience on top and are hidden where there is no
+     pointer to use them.
+     ============================================================= -->
+<section class="section surface-white fade-top fade-bottom">
   <div class="disc" data-parallax="-0.12"
-       style="width:min(38vw,420px);aspect-ratio:1;left:-12vw;bottom:-22vw;opacity:.34"></div>
+       style="width:min(38vw,420px);aspect-ratio:1;left:-17.7vw;bottom:-22vw;opacity:.34"></div>
   <div class="shell">
 
-    <div class="stack gap-16 reveal" style="max-width:660px;margin-bottom:clamp(30px,3.6vw,50px)">
-      <h2 class="h2">Recent work</h2>
-      <hr class="warm-rule">
-      <p class="lede">What was broken, what changed, and what it did.</p>
+    <div class="case-head">
+      <span aria-hidden="true"></span>
+      <div class="sec-head reveal">
+        <h2 class="h2">Recent <span class="hl">work</span></h2>
+      </div>
+      <div class="case-nav reveal">
+        <button type="button" data-case-prev aria-label="Previous case studies">&larr;</button>
+        <button type="button" data-case-next aria-label="More case studies">&rarr;</button>
+      </div>
     </div>
 
-    <div class="grid grid-3">
-      <a class="card card-link reveal" href="#">
-        <img class="case-shot" src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true"
-             style="aspect-ratio:16/10;margin-bottom:4px">
-        <h3 class="h3">[Client name]</h3>
-        <p class="small">[One line on what was broken.] [One line on what changed.]</p>
-        <div class="case-stats" style="gap:24px">
-          <div>
-            <div class="case-stat-num" style="font-size:1.6rem">00%</div>
-            <div class="case-stat-label">[what it measures]</div>
+    <div class="case-rail-wrap">
+      <div class="case-rail" data-case-rail tabindex="0" aria-label="Case studies">
+        <a class="case-card reveal" href="#">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00x</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
-          <div>
-            <div class="case-stat-num" style="font-size:1.6rem">00x</div>
-            <div class="case-stat-label">[what it measures]</div>
+        </a>
+        <a class="case-card reveal" href="#">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00h</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
-        </div>
-        <span class="text-link">Read the story <span class="arrow">&rarr;</span></span>
-      </a>
-      <a class="card card-link reveal" href="#">
-        <img class="case-shot" src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true"
-             style="aspect-ratio:16/10;margin-bottom:4px">
-        <h3 class="h3">[Client name]</h3>
-        <p class="small">[One line on what was broken.] [One line on what changed.]</p>
-        <div class="case-stats" style="gap:24px">
-          <div>
-            <div class="case-stat-num" style="font-size:1.6rem">00%</div>
-            <div class="case-stat-label">[what it measures]</div>
+        </a>
+        <a class="case-card reveal" href="#">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>$00k</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
-          <div>
-            <div class="case-stat-num" style="font-size:1.6rem">00h</div>
-            <div class="case-stat-label">[what it measures]</div>
+        </a>
+        <a class="case-card reveal" href="#">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00d</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
-        </div>
-        <span class="text-link">Read the story <span class="arrow">&rarr;</span></span>
-      </a>
-      <a class="card card-link reveal" href="#">
-        <img class="case-shot" src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true"
-             style="aspect-ratio:16/10;margin-bottom:4px">
-        <h3 class="h3">[Client name]</h3>
-        <p class="small">[One line on what was broken.] [One line on what changed.]</p>
-        <div class="case-stats" style="gap:24px">
-          <div>
-            <div class="case-stat-num" style="font-size:1.6rem">00%</div>
-            <div class="case-stat-label">[what it measures]</div>
+        </a>
+        <a class="case-card reveal" href="#">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>$00k</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00x</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
-          <div>
-            <div class="case-stat-num" style="font-size:1.6rem">$00k</div>
-            <div class="case-stat-label">[what it measures]</div>
+        </a>
+        <a class="case-card reveal" href="#">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00 hrs</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
-        </div>
-        <span class="text-link">Read the story <span class="arrow">&rarr;</span></span>
-      </a>
+        </a>
+      </div>
     </div>
 
     <div class="btn-row reveal" style="margin-top:clamp(26px,3vw,40px)">
       <a class="text-link" href="#">See all case studies <span class="arrow">&rarr;</span></a>
     </div>
 
-  </div>
-</section>
-
-<!-- =============================================================
-     CREDIBILITY BAND — the badge and the claim, side by side across the
-     full width. The badge is the credential, so there is no separate rating
-     column; the profile link sits with the copy it belongs to.
-     ============================================================= -->
-<section class="section cred-section">
-  <!-- starts in the lower right and runs on into the section below -->
-  <div class="disc disc-cool" data-parallax="0.07"
-       style="width:min(50vw,560px);aspect-ratio:1;right:-13vw;bottom:max(-30vw,-340px);opacity:.4"></div>
-  <div class="shell">
-    <div class="cred">
-
-      <div class="cred-badge reveal reveal-left">
-        <img src="assets/img/hubspot-platinum-badge.webp"
-             alt="HubSpot Platinum Solutions Partner">
-      </div>
-
-      <div class="cred-copy reveal">
-        <h2 class="h2">HubSpot Platinum Solutions Partner</h2>
-        <hr class="warm-rule">
-        <p class="cred-note">Every review on our directory profile is from a client who gave us admin
-          access to their portal. Read them before you talk to us.</p>
-        <a class="text-link" href="https://app.hubspot.com/portal-recommend/l?slug=marketplace/solutions/revhops"
-           target="_blank" rel="noopener">Visit our partner profile <span class="arrow">&rarr;</span></a>
-      </div>
-
-    </div>
   </div>
 </section>
 
@@ -276,6 +335,11 @@
      ============================================================= -->
 <section class="section">
   <div class="shell">
+
+    <div class="sec-head reveal" style="margin-bottom:clamp(28px,3.4vw,46px)">
+      <h2 class="h2">You would be working with <span class="hl">me</span>, not an account team</h2>
+    </div>
+
     <div class="split" style="align-items:center">
 
       <div class="reveal reveal-left">
@@ -285,10 +349,6 @@
       </div>
 
       <div class="stack gap-20 reveal reveal-right">
-        <div class="stack gap-16">
-          <h2 class="h2">You would be working with me, not an account team</h2>
-          <hr class="warm-rule">
-        </div>
         <p class="lede">I am James. I run RevHops on my own. The person who scopes your project is
           the person who opens your portal and does the work.</p>
         <p class="small">That is the trade. I take fewer projects than an agency would, and I am the
@@ -315,9 +375,8 @@
 <section class="section-tight surface-white fade-top">
   <div class="shell">
 
-    <div class="stack gap-16 reveal reveal-left" style="margin-bottom:clamp(26px,3vw,40px)">
-      <h2 class="h2">Prices, published</h2>
-      <hr class="warm-rule">
+    <div class="sec-head reveal reveal-left" style="margin-bottom:clamp(26px,3vw,40px)">
+      <h2 class="h2">Prices, <span class="hl">published</span></h2>
     </div>
 
     <div class="price-teaser">
@@ -351,18 +410,18 @@
      Shapes: warm disc far, cool ring mid.
      ============================================================= -->
 <section class="section surface-white" style="overflow:hidden;padding-bottom:clamp(34px,4vw,58px)">
-  <!-- One warm circle, dropped so only its top 30% clears the section's
-       bottom edge; the section clips the rest, so it never reaches the
-       footer in either theme. Centred with auto side margins rather than
-       translateX, because the parallax loop rewrites transform and would
-       drop the centring. -->
-  <div class="disc cta-arc" data-parallax="-0.07"
-       style="width:min(97.5vw,1100px);aspect-ratio:1;bottom:max(-68.25vw,-770px);opacity:.62"></div>
+  <!-- One warm circle. A positive parallax speed means it DESCENDS as the
+       page scrolls: it enters at its highest and settles down to showing
+       about a quarter of itself. The section clips the rest, so it never
+       reaches the footer in either theme. Centred with auto side margins
+       rather than translateX, because the parallax loop rewrites transform
+       and would drop the centring. -->
+  <div class="disc cta-arc" data-parallax="0.2"
+       style="width:min(97.5vw,1100px);aspect-ratio:1;bottom:max(-69.1vw,-780px);opacity:.42"></div>
   <div class="shell">
 
-    <div class="stack gap-16 reveal" style="max-width:640px;margin-bottom:clamp(28px,3.4vw,44px)">
-      <h2 class="h2">Two ways to start</h2>
-      <hr class="warm-rule">
+    <div class="sec-head reveal" style="max-width:640px;margin-bottom:clamp(28px,3.4vw,44px)">
+      <h2 class="h2"><span class="hl">Two ways</span> to start</h2>
     </div>
 
     <div class="grid grid-2">
@@ -439,7 +498,7 @@
           <li><a href="hubspot/">HubSpot</a></li>
           <li><a href="pricing/">Pricing</a></li>
           <li><a href="contact/">Contact</a></li>
-          <li><a href="book/">Book a call</a></li>
+          <li><a href="book/">Schedule a call</a></li>
         </ul>
       </div>
       <div>
@@ -453,12 +512,25 @@
     </div>
     <div class="footer-bottom">
       <span>&copy; <span data-year>2026</span> RevHops. All rights reserved.</span>
-      <span>HubSpot Platinum Solutions Partner</span>
+      <span class="footer-legal">
+        <a href="terms/">Terms of Service</a>
+        <a href="privacy/">Privacy Policy</a>
+        <a href="llms.txt">LLMs.txt</a>
+      </span>
     </div>
   </div>
 </footer>
 
-<script src="assets/js/maturity-slider.js?v=202609012355"></script>
-<script src="assets/js/site.js?v=202609012355"></script>
+
+<!-- Back to top. Shown once the visitor reaches the tool section; on pages
+     without it, a scroll distance stands in. See site.js. -->
+<button class="to-top" data-to-top type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<script src="assets/js/maturity-slider.js?v=202609021829"></script>
+<script src="assets/js/site.js?v=202609021829"></script>
 </body>
 </html>
