@@ -250,16 +250,52 @@ function tail(p) {
 
 /* ---------- assembly ----------------------------------------------------- */
 
+/* Root-absolute links (`/services`) only resolve correctly when the site sits
+   at the root of a domain. On a GitHub Pages project URL it sits one folder
+   down — https://ricksjrr.github.io/revhops.com/ — and `/services` points at
+   the top of github.io instead, which 404s.
+
+   So every internal link is written root-absolute in the content above,
+   because that is what is readable, and rewritten to a relative one here:
+
+       depth 0   href="/pricing"   ->  href="pricing"
+       depth 1   href="/pricing"   ->  href="../pricing"
+       depth 0   href="/"          ->  href="./"
+       depth 1   href="/"          ->  href="../"
+
+   Relative links resolve against whatever the site is served from, so the
+   same file works at ricksjrr.github.io/revhops.com/, at revhops.com, and
+   from tools/serve.js. They stay extensionless: GitHub Pages serves
+   pricing.html for /pricing, so the address bar keeps the clean URL.
+
+   The depth-1 pages are served at /services/ and /services/solution-design,
+   and in both cases the browser resolves `../` against /services/, so one
+   rule covers the index and the detail pages alike.
+
+   Left alone: anything external, a mailto, a bare fragment, and the asset
+   paths, which were already relative and depth-correct.
+
+   site.js resolves nav hrefs with `new URL(href, location.href)` before it
+   compares them, so aria-current keeps working with either form. */
+function relativise(html, depth) {
+  var prefix = depth === 0 ? '' : '../'.repeat(depth);
+  return html
+    .replace(/href="\/"/g, 'href="' + (prefix || './') + '"')
+    .replace(/href="\/(?!\/)([^"]*)"/g, 'href="' + prefix + '$1"');
+}
+
 function render(p) {
-  return head(p) +
-         nav(p) +
-         '\n<main>\n' +
-         (p.bare ? '' : pageHead(p)) +
-         p.body +
-         (p.noClose ? '' : closePanel()) +
-         '\n</main>\n' +
-         footer(p) +
-         tail(p);
+  return relativise(
+    head(p) +
+    nav(p) +
+    '\n<main>\n' +
+    (p.bare ? '' : pageHead(p)) +
+    p.body +
+    (p.noClose ? '' : closePanel()) +
+    '\n</main>\n' +
+    footer(p) +
+    tail(p),
+    p.depth);
 }
 
 module.exports = { render: render, up: up, STAMP: STAMP, ROOT: ROOT };

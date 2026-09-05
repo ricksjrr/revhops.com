@@ -284,7 +284,7 @@
     /* Where the two in-card CTAs point. Set with data-cta-url on the mount
        element so the module does not assume a flat URL structure — the site
        uses folder URLs, and this module could sit at any depth. */
-    var CTA = root.getAttribute('data-cta-url') || '/call';
+    var CTA = root.getAttribute('data-cta-url') || 'call';
 
     var cfg = build(root);
     var last = cfg.last;

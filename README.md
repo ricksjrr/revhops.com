@@ -39,13 +39,29 @@ case-studies/case-study-one.html        /case-studies/case-study-one
 Nothing goes deeper than one level, and nothing else becomes a folder unless
 its URL needs one.
 
-Links between pages are root-absolute and extensionless (`/services`, `/` for
-home), so that is what the address bar shows. Asset paths stay relative, which
-means a page opened from disk still renders with its stylesheet and scripts —
-but nav links will not click through from `file://`, because they resolve
-against the filesystem root. That trade was accepted for clean URLs. If it
-starts to bite, the fix is a local server with `.html` fallback, not reverting
-the links.
+**Links between pages are relative and extensionless** — `services`,
+`../pricing`, `./` for home. They are written root-absolute in
+`tools/build-pages.js` because that is what is readable, and `relativise()`
+rewrites them on the way out.
+
+Relative, because the site has to work at two different base paths: the
+GitHub Pages project URL puts it one folder down
+(`ricksjrr.github.io/revhops.com/`), where `/services` points at the top of
+github.io and 404s. Relative links resolve against whatever the site is
+served from, so one set of files works there, at `revhops.com`, and under
+`tools/serve.js`.
+
+Extensionless, because GitHub Pages serves `pricing.html` for `/pricing`, so
+the address bar keeps the clean URL either way.
+
+The depth-1 pages are served at `/services/` and `/services/solution-design`;
+a browser resolves `../` against `/services/` in both cases, so one prefix
+covers the index and the detail pages alike.
+
+The smoke test fails if a root-absolute link reappears anywhere.
+
+Clicking between pages still will not work from `file://`, because
+extensionless paths need a server to resolve. Use `preview.command`.
 
 `normalisePath()` in `site.js` strips both `index.html` and a bare `.html`, so
 `/services.html`, `/services` and `/services/` all match when it sets

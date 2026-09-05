@@ -390,7 +390,9 @@ console.log('\n— start section —');
   /flex-direction: column/.test(rule('.start-wide')) && /text-align: center/.test(rule('.start-wide'))
     ? ok('centred layout') : bad('not centred');
   const cta = sp.querySelector('.btn');
-  (cta && cta.getAttribute('href') === '/call') ? ok('one boxed CTA, pointing at /call') : bad('no /call CTA');
+  // relative now, so the same file works at revhops.com and at
+  // ricksjrr.github.io/revhops.com/ — see relativise() in build-pages.js
+  (cta && cta.getAttribute('href') === 'call') ? ok('one boxed CTA, pointing at call') : bad('no call CTA');
   sp.querySelectorAll('.btn').length === 1 ? ok('exactly one button')
                                            : bad(sp.querySelectorAll('.btn').length + ' buttons');
   // the artwork is back, spanning the close and half the testimonial above it
@@ -743,14 +745,18 @@ console.log('\n— known —');
   // <name>/index.html one level down — /services is a folder because the five
   // service pages live under it. Both count as built.
   const built = h => {
-    const rel = h.replace(/^\//, '');
+    const rel = h.replace(/^[./]+/, '');
     return fs.existsSync(path.join(ROOT, rel + '.html')) ||
            fs.existsSync(path.join(ROOT, rel, 'index.html'));
   };
-  const dead = [...new Set([...d.querySelectorAll('a[href^="/"]')].map(a => a.getAttribute('href'))
-    .filter(h => h !== '/' && !built(h)))];
-  dead.length ? note(dead.length + ' link(s) point at pages not yet rebuilt: ' + dead.join(', '))
-              : note('every internal link on the homepage resolves to a page');
+  const internal = [...d.querySelectorAll('a[href]')].map(a => a.getAttribute('href'))
+    .filter(h => !/^(https?:|mailto:|tel:|#|\/\/)/.test(h));
+  const dead = [...new Set(internal.filter(h => h !== './' && !/\.(txt|html)$/.test(h) && !built(h)))];
+  dead.length ? bad(dead.length + ' link(s) point nowhere: ' + dead.join(', '))
+              : ok('every internal link on the homepage resolves to a page');
+  const absolute = [...d.querySelectorAll('a[href^="/"]:not([href^="//"])')].map(a => a.getAttribute('href'));
+  absolute.length ? bad('root-absolute link(s) came back, these 404 on github.io: ' + absolute.join(', '))
+                  : ok('no root-absolute links, so the site works at any base path');
 }
 
 console.log(fail ? '\n' + fail + ' FAILURE(S)\n' : '\nall checks passed\n');
