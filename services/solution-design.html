@@ -71,22 +71,28 @@
 
 <main>
 
-<!-- ===================== HEADER =====================
-     .page-head, the standard band. --page-head-h keeps every page the same
-     height, and .page-head-end is the sentinel the nav watches. -->
-<section class="page-head">
-  <div class="disc" data-parallax="0.13"></div>
+<!-- ===================== HERO =====================
+     Type left, artwork bleeding off the right edge. .page-head-end is the
+     zero-height sentinel the nav watches to decide when to collapse. -->
+<section class="page-hero">
   <div class="shell">
-    <div class="page-head-inner">
-      <div class="page-head-text">
+    <div class="page-hero-inner">
+      <div class="page-hero-text">
         <h1 class="h1">The plan before the build</h1>
-        <p class="lede">Two or three weeks spent deciding what the system should be, written down and argued over, so that the build is execution rather than discovery.</p>
+        <p class="lede">Two or three weeks spent deciding what the system should be, written down and argued over, so the build is execution rather than discovery.</p>
         <div class="btn-row">
           <a class="btn btn-primary" href="../call">Schedule a call</a>
           <a class="text-link" href="../services">All services <span class="arrow">&rarr;</span></a>
         </div>
+        <dl class="hero-meta">
+          <div><dt>Timeline</dt><dd>2–3 weeks</dd></div>
+          <div><dt>From</dt><dd>$6,500</dd></div>
+        </dl>
       </div>
     </div>
+      <div class="page-hero-media">
+        <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true">
+      </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
@@ -94,23 +100,74 @@
 <section class="section">
   <div class="shell">
     <div class="split" style="align-items:start">
-      <div class="stack gap-20 reveal reveal-left">
-        <h2 class="h2">A build without a plan is <span class="hl">a very expensive draft</span></h2>
-        <p class="small">Most failed implementations were not built badly. They were built before anyone agreed what they were for, and the disagreement surfaced in week nine as a change request.</p>
-        <p class="small">Solution design front-loads that argument. We sit with sales, marketing, finance and whoever else has an opinion, and we do not stop until the object model, the lifecycle and the definition of a qualified lead mean the same thing to all of them.</p>
-        <p class="small">What comes out is a document. Not a deck.</p>
+      <p class="statement reveal reveal-left">A build without a plan is a very expensive draft.</p>
+      <div class="cols-2 reveal reveal-right">
+        <p>Most failed implementations were not built badly. They were built before anyone agreed what they were for, and the disagreement surfaced in week nine as a change request.</p>
+        <p>Solution design front-loads that argument. We sit with sales, marketing, finance and whoever else has an opinion, and we do not stop until the object model, the lifecycle and the definition of a qualified lead mean the same thing to all of them.</p>
+        <p>What comes out is a document. Not a deck.</p>
       </div>
-      <div class="stack gap-16 reveal reveal-right">
-        <p class="label">What is included</p>
-        <ul class="ticks">
-          <li>Object and data model, including custom objects and properties</li>
-          <li>Lifecycle stages and pipeline definitions everyone signs off</li>
-          <li>Process map from first touch through to closed</li>
-          <li>The reports leadership will actually open, and the fields they depend on</li>
-          <li>An integration plan for the rest of the stack</li>
-          <li>A build estimate that holds, because the scope is settled</li>
-        </ul>
-      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <h2 class="h2">What is <span class="hl">in it</span>, and what is not</h2>
+    </div>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards pcards-2">
+        <div class="pcard reveal">
+          <h3 class="pcard-title">In scope</h3>
+          <p class="pcard-copy">Everything below is part of the engagement and part of the price.</p>
+          <div class="pcard-chips">
+            <span class="chip chip-have">Object and data model</span>
+            <span class="chip chip-have">Lifecycle stages</span>
+            <span class="chip chip-have">Pipelines</span>
+            <span class="chip chip-have">Process map</span>
+            <span class="chip chip-have">Reporting model</span>
+            <span class="chip chip-have">Integration plan</span>
+            <span class="chip chip-have">Build estimate</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">Not in scope</h3>
+          <p class="pcard-copy">Quoted separately if you want it, and named here so it is never a surprise.</p>
+          <div class="pcard-chips">
+            <span class="chip chip-missing">The build itself</span>
+            <span class="chip chip-missing">Data cleanup</span>
+            <span class="chip chip-missing">Licence procurement</span>
+            <span class="chip chip-missing">Ongoing admin</span>
+          </div>
+        </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <h2 class="h2">How it runs</h2>
+    </div>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards">
+        <div class="pcard reveal">
+          <span class="pcard-n">Week one</span>
+          <h3 class="pcard-title">Everyone in a room</h3>
+          <p class="pcard-copy">Two workshops with the people who actually work the system, not only the ones who own it. Most of the useful disagreement happens here.</p>
+        </div>
+        <div class="pcard reveal">
+          <span class="pcard-n">Week two</span>
+          <h3 class="pcard-title">The model, written down</h3>
+          <p class="pcard-copy">Objects, properties, lifecycle, pipelines and the reports that depend on them. Circulated as a draft, argued with, revised.</p>
+        </div>
+        <div class="pcard reveal">
+          <span class="pcard-n">Week three</span>
+          <h3 class="pcard-title">Sign-off and estimate</h3>
+          <p class="pcard-copy">A walkthrough, a decision log and a build estimate that holds because the scope is no longer moving.</p>
+        </div>
+    </div>
     </div>
   </div>
 </section>
@@ -120,13 +177,21 @@
     <div class="sec-head reveal">
       <h2 class="h2">What you have on the last day</h2>
     </div>
-    <div class="reveal" style="margin-top:clamp(22px,2.6vw,34px)">
-      <ul class="ticks ticks-2">
-          <li>A specification your team can hand to any competent builder, us included</li>
-          <li>A walkthrough session, recorded, so the people who were not in the room still get it</li>
-          <li>A prioritized backlog, split into what ships first and what waits</li>
-          <li>A decision log, so in six months nobody has to guess why it was done that way</li>
-        </ul>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards">
+        <div class="pcard reveal">
+          <h3 class="pcard-title">A specification</h3>
+          <p class="pcard-copy">Detailed enough to hand to any competent builder. Us included, but you are not obliged to.</p>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">A decision log</h3>
+          <p class="pcard-copy">Every call and the reason behind it, so in six months nobody has to guess why it works that way.</p>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">A ranked backlog</h3>
+          <p class="pcard-copy">Split into what ships first and what can wait, sized so you can start on Monday.</p>
+        </div>
+    </div>
     </div>
   </div>
 </section>
@@ -135,20 +200,20 @@
   <div class="shell">
     <div class="split" style="align-items:center">
       <a class="case-card reveal reveal-left" href="../case-studies/case-study-one">
-        <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
-        <div class="case-body">
-          <div class="case-text">
-            <h3 class="case-title">[Client name]</h3>
-            <div class="case-figs">
-              <span class="case-fig"><b>00%</b><span>[measure]</span></span>
-              <span class="case-fig"><b>00x</b><span>[measure]</span></span>
+          <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00x</b><span>[measure]</span></span>
+              </div>
             </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
-          <span class="case-go" aria-hidden="true">&rarr;</span>
-        </div>
-      </a>
+        </a>
       <div class="stack gap-20 reveal reveal-right">
-        <h2 class="h2">One that went <span class="hl">the way it should</span></h2>
+        <h2 class="h2">One that went the way it should</h2>
         <p class="small">[One paragraph on the client: what they sold, how big the team was, and
           what state the system was in when they called.]</p>
         <p class="small">[One paragraph on what this service changed for them, and the number that
@@ -162,7 +227,7 @@
 <section class="section-tight to-white">
   <div class="shell">
     <div class="sec-head reveal">
-      <h2 class="h2">What solution design costs</h2>
+      <h2 class="h2">What it costs</h2>
     </div>
     <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">
       <div class="price-teaser-cell">
@@ -181,9 +246,9 @@
         <p class="price-teaser-note">Design does not oblige you to build with us</p>
       </div>
     </div>
-    <p class="small muted reveal" style="margin-top:18px;max-width:62ch">Every number here is a
-      starting point, not a quote. The full range is on the <a href="../pricing">pricing page</a>,
-      and the real figure comes out of the first call.</p>
+    <p class="small muted reveal" style="margin-top:18px;max-width:62ch">A starting point, not a
+      quote. The full range is on the <a href="../pricing">pricing page</a>, and the real figure
+      comes out of the first call.</p>
 
     <div class="stack gap-16 reveal" style="margin-top:clamp(38px,4.5vw,64px)">
       <p class="label">Often paired with</p>

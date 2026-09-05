@@ -71,21 +71,25 @@
 
 <main>
 
-<!-- ===================== HEADER =====================
-     .page-head, the standard band. --page-head-h keeps every page the same
-     height, and .page-head-end is the sentinel the nav watches. -->
-<section class="page-head">
-  <div class="disc" data-parallax="0.13"></div>
+<!-- ===================== HERO =====================
+     Type left, artwork bleeding off the right edge. .page-head-end is the
+     zero-height sentinel the nav watches to decide when to collapse. -->
+<section class="page-hero">
   <div class="shell">
-    <div class="page-head-inner">
-      <div class="page-head-text">
+    <div class="page-hero-inner">
+      <div class="page-hero-text">
         <h1 class="h1">[Client name]</h1>
         <p class="lede">[One sentence on what was broken and what it is now. The whole story in a line, so the rest of the page is detail rather than suspense.]</p>
-      </div>
-      <div class="page-head-media">
-        <img src="../assets/img/case-study-placeholder.svg" alt="">
+        <dl class="hero-meta">
+          <div><dt>Industry</dt><dd>[sector]</dd></div>
+          <div><dt>Engagement</dt><dd>[service]</dd></div>
+          <div><dt>Timeline</dt><dd>[00 weeks]</dd></div>
+        </dl>
       </div>
     </div>
+      <div class="page-hero-media">
+        <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true">
+      </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
@@ -105,14 +109,53 @@
     <div class="split" style="align-items:center">
       <div class="stack gap-20 reveal reveal-left">
         <h2 class="h2">Where they <span class="hl">started</span></h2>
-        <p class="small">[What the business does, how many people sell for it, and what the
-          revenue system looked like on the day they called. Name the thing that finally made
-          them pick up the phone.]</p>
-        <p class="small">[The symptom everyone in the company could see, and the cause nobody
-          had gone looking for.]</p>
+        <p class="small">[What the business does, how many people sell for it, and what the revenue
+          system looked like on the day they called. Name the thing that finally made them pick up
+          the phone.]</p>
+        <p class="small">[The symptom everyone could see, and the cause nobody had gone looking
+          for.]</p>
       </div>
       <img class="reveal reveal-right" src="../assets/img/case-study-placeholder.svg" alt=""
            style="border-radius:var(--radius-card)" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <h2 class="h2">What we built</h2>
+    </div>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards">
+        <div class="pcard reveal">
+          <span class="pcard-n">Phase one</span>
+          <h3 class="pcard-title">[The first thing]</h3>
+          <p class="pcard-copy">[What was scoped and why it went first.]</p>
+          <div class="pcard-chips">
+            <span class="chip">[system]</span>
+            <span class="chip">[team]</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <span class="pcard-n">Phase two</span>
+          <h3 class="pcard-title">[The second thing]</h3>
+          <p class="pcard-copy">[What it replaced, and what stopped being manual.]</p>
+          <div class="pcard-chips">
+            <span class="chip">[system]</span>
+            <span class="chip">[team]</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <span class="pcard-n">Phase three</span>
+          <h3 class="pcard-title">[The third thing]</h3>
+          <p class="pcard-copy">[The part that was harder than expected, and the decision that settled it.]</p>
+          <div class="pcard-chips">
+            <span class="chip">[system]</span>
+            <span class="chip">[team]</span>
+          </div>
+        </div>
+    </div>
     </div>
   </div>
 </section>
@@ -123,31 +166,11 @@
       <img class="reveal reveal-left" src="../assets/img/case-study-placeholder.svg" alt=""
            style="border-radius:var(--radius-card)" loading="lazy">
       <div class="stack gap-20 reveal reveal-right">
-        <h2 class="h2">What we built</h2>
-        <p class="small">[The work, in the order it happened. What was scoped, what was built,
-          what got cut and why.]</p>
-        <p class="small">[The decision that mattered most, and the argument it settled.]</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-tight">
-  <div class="shell">
-    <div class="split" style="align-items:start">
-      <div class="stack gap-20 reveal reveal-left">
         <h2 class="h2">What changed</h2>
-        <p class="small">[What is different now, in the terms the client would use rather than
-          the ones we would. If something did not work, say that too.]</p>
-      </div>
-      <div class="stack gap-16 reveal reveal-right">
-        <p class="label">On the other side of it</p>
-        <ul class="ticks">
-          <li>[Outcome, with the number attached]</li>
-          <li>[Outcome, with the number attached]</li>
-          <li>[Something the team can now do for itself]</li>
-          <li>[Something that stopped being anyone's job]</li>
-        </ul>
+        <p class="small">[What is different now, in the terms the client would use rather than the
+          ones we would. If something did not work, say that too.]</p>
+        <p class="small">[What the team can now do for itself, and what stopped being anyone's
+          job.]</p>
       </div>
     </div>
   </div>
@@ -156,8 +179,8 @@
 <section class="section-tight">
   <div class="shell">
     <blockquote class="quote reveal" style="max-width:62ch;margin-inline:auto;text-align:center">
-      <p>[One quotation from the person who signed it off. Two or three sentences, in their
-        words, not ours.]</p>
+      <p>[One quotation from the person who signed it off. Two or three sentences, in their words,
+        not ours.]</p>
       <footer class="quote-by" style="justify-content:center">
         <div class="stars" role="img" aria-label="Five out of five">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>

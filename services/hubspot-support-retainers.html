@@ -71,22 +71,28 @@
 
 <main>
 
-<!-- ===================== HEADER =====================
-     .page-head, the standard band. --page-head-h keeps every page the same
-     height, and .page-head-end is the sentinel the nav watches. -->
-<section class="page-head">
-  <div class="disc" data-parallax="0.13"></div>
+<!-- ===================== HERO =====================
+     Type left, artwork bleeding off the right edge. .page-head-end is the
+     zero-height sentinel the nav watches to decide when to collapse. -->
+<section class="page-hero">
   <div class="shell">
-    <div class="page-head-inner">
-      <div class="page-head-text">
+    <div class="page-hero-inner">
+      <div class="page-hero-text">
         <h1 class="h1">A HubSpot admin on call</h1>
-        <p class="lede">Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon. Monthly, cancel with thirty days.</p>
+        <p class="lede">Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon. Monthly, thirty days notice, no annual lock-in.</p>
         <div class="btn-row">
           <a class="btn btn-primary" href="../call">Schedule a call</a>
           <a class="text-link" href="../services">All services <span class="arrow">&rarr;</span></a>
         </div>
+        <dl class="hero-meta">
+          <div><dt>Timeline</dt><dd>Monthly</dd></div>
+          <div><dt>From</dt><dd>$2,500 a month</dd></div>
+        </dl>
       </div>
     </div>
+      <div class="page-hero-media">
+        <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true">
+      </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
@@ -94,22 +100,11 @@
 <section class="section">
   <div class="shell">
     <div class="split" style="align-items:start">
-      <div class="stack gap-20 reveal reveal-left">
-        <h2 class="h2">A full-time admin is <span class="hl">more than most teams need</span></h2>
-        <p class="small">Hiring a HubSpot admin means paying for forty hours to get about eight of real work. Not hiring one means the portal slowly rots, because the person who half-knows it has a day job.</p>
-        <p class="small">A retainer is the middle. You get a named admin who already knows your portal, a standing roadmap so improvements happen on purpose rather than in a panic, and a channel where a broken workflow gets looked at the same day.</p>
-        <p class="small">Hours roll over within the quarter. We would rather you spend them well than spend them fast.</p>
-      </div>
-      <div class="stack gap-16 reveal reveal-right">
-        <p class="label">What is included</p>
-        <ul class="ticks">
-          <li>A named admin who knows your portal, not a queue</li>
-          <li>A quarterly roadmap agreed with you, reviewed monthly</li>
-          <li>Build work: workflows, reports, properties, integrations</li>
-          <li>Break-fix, same day for anything blocking revenue</li>
-          <li>Training for new starters and refreshers for everyone else</li>
-          <li>A monthly note on what changed, what it cost and what is next</li>
-        </ul>
+      <p class="statement reveal reveal-left">A full-time admin is more than most teams need.</p>
+      <div class="cols-2 reveal reveal-right">
+        <p>Hiring one means paying for forty hours to get about eight of real work. Not hiring one means the portal slowly rots, because the person who half-knows it has a day job.</p>
+        <p>A retainer is the middle. A named admin who already knows your portal, a standing roadmap so improvements happen on purpose rather than in a panic, and a channel where a broken workflow gets looked at the same day.</p>
+        <p>Hours roll over within the quarter. We would rather you spent them well than spent them fast.</p>
       </div>
     </div>
   </div>
@@ -118,15 +113,85 @@
 <section class="section-tight">
   <div class="shell">
     <div class="sec-head reveal">
-      <h2 class="h2">How it runs month to month</h2>
+      <h2 class="h2">What is <span class="hl">in it</span>, and what is not</h2>
     </div>
-    <div class="reveal" style="margin-top:clamp(22px,2.6vw,34px)">
-      <ul class="ticks ticks-2">
-          <li>One standing call a month, more if a project needs it</li>
-          <li>Requests go to a shared channel, not to a form</li>
-          <li>Anything over the retainer is quoted before it starts, never after</li>
-          <li>Thirty days notice, both ways. No annual lock-in</li>
-        </ul>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards pcards-2">
+        <div class="pcard reveal">
+          <h3 class="pcard-title">In scope</h3>
+          <p class="pcard-copy">Everything below is part of the engagement and part of the price.</p>
+          <div class="pcard-chips">
+            <span class="chip chip-have">Build work</span>
+            <span class="chip chip-have">Break-fix</span>
+            <span class="chip chip-have">Reporting</span>
+            <span class="chip chip-have">Data hygiene</span>
+            <span class="chip chip-have">Integrations</span>
+            <span class="chip chip-have">Training</span>
+            <span class="chip chip-have">Roadmap</span>
+            <span class="chip chip-have">Release reviews</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">Not in scope</h3>
+          <p class="pcard-copy">Quoted separately if you want it, and named here so it is never a surprise.</p>
+          <div class="pcard-chips">
+            <span class="chip chip-missing">Net-new implementations</span>
+            <span class="chip chip-missing">Paid media management</span>
+            <span class="chip chip-missing">Content writing</span>
+          </div>
+        </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <h2 class="h2">How it runs</h2>
+    </div>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards">
+        <div class="pcard reveal">
+          <span class="pcard-n">Every month</span>
+          <h3 class="pcard-title">One standing call</h3>
+          <p class="pcard-copy">What shipped, what it cost, what is next. Thirty minutes, and more if a project needs it.</p>
+        </div>
+        <div class="pcard reveal">
+          <span class="pcard-n">Every quarter</span>
+          <h3 class="pcard-title">A roadmap review</h3>
+          <p class="pcard-copy">Agreed with you rather than presented to you, and reordered whenever the business moves.</p>
+        </div>
+        <div class="pcard reveal">
+          <span class="pcard-n">Any day</span>
+          <h3 class="pcard-title">A channel, not a form</h3>
+          <p class="pcard-copy">Requests go to a shared channel. Anything blocking revenue gets looked at the same day.</p>
+        </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <h2 class="h2">What you have on the last day</h2>
+    </div>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards">
+        <div class="pcard reveal">
+          <h3 class="pcard-title">A named admin</h3>
+          <p class="pcard-copy">The same person every month, who already knows why your portal is the way it is.</p>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">Hours that roll</h3>
+          <p class="pcard-copy">Within the quarter, so a quiet month is banked rather than burned on filler.</p>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">No lock-in</h3>
+          <p class="pcard-copy">Thirty days notice, both ways. Nobody has ever done better work because the client was stuck with them.</p>
+        </div>
+    </div>
     </div>
   </div>
 </section>
@@ -135,20 +200,20 @@
   <div class="shell">
     <div class="split" style="align-items:center">
       <a class="case-card reveal reveal-left" href="../case-studies/case-study-three">
-        <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
-        <div class="case-body">
-          <div class="case-text">
-            <h3 class="case-title">[Client name]</h3>
-            <div class="case-figs">
-              <span class="case-fig"><b>00%</b><span>[measure]</span></span>
-              <span class="case-fig"><b>00k</b><span>[measure]</span></span>
+          <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00k</b><span>[measure]</span></span>
+              </div>
             </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
-          <span class="case-go" aria-hidden="true">&rarr;</span>
-        </div>
-      </a>
+        </a>
       <div class="stack gap-20 reveal reveal-right">
-        <h2 class="h2">One that went <span class="hl">the way it should</span></h2>
+        <h2 class="h2">One that went the way it should</h2>
         <p class="small">[One paragraph on the client: what they sold, how big the team was, and
           what state the system was in when they called.]</p>
         <p class="small">[One paragraph on what this service changed for them, and the number that
@@ -162,7 +227,7 @@
 <section class="section-tight to-white">
   <div class="shell">
     <div class="sec-head reveal">
-      <h2 class="h2">What hubSpot support retainers costs</h2>
+      <h2 class="h2">What it costs</h2>
     </div>
     <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">
       <div class="price-teaser-cell">
@@ -181,9 +246,9 @@
         <p class="price-teaser-note">Within the quarter, so a quiet month is not wasted</p>
       </div>
     </div>
-    <p class="small muted reveal" style="margin-top:18px;max-width:62ch">Every number here is a
-      starting point, not a quote. The full range is on the <a href="../pricing">pricing page</a>,
-      and the real figure comes out of the first call.</p>
+    <p class="small muted reveal" style="margin-top:18px;max-width:62ch">A starting point, not a
+      quote. The full range is on the <a href="../pricing">pricing page</a>, and the real figure
+      comes out of the first call.</p>
 
     <div class="stack gap-16 reveal" style="margin-top:clamp(38px,4.5vw,64px)">
       <p class="label">Often paired with</p>

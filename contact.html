@@ -71,18 +71,25 @@
 
 <main>
 
-<!-- ===================== HEADER =====================
-     .page-head, the standard band. --page-head-h keeps every page the same
-     height, and .page-head-end is the sentinel the nav watches. -->
-<section class="page-head">
-  <div class="disc" data-parallax="0.13"></div>
+<!-- ===================== HERO =====================
+     Type left, artwork bleeding off the right edge. .page-head-end is the
+     zero-height sentinel the nav watches to decide when to collapse. -->
+<section class="page-hero">
   <div class="shell">
-    <div class="page-head-inner">
-      <div class="page-head-text">
+    <div class="page-hero-inner">
+      <div class="page-hero-text">
         <h1 class="h1">Tell us what is broken</h1>
         <p class="lede">The more specific you are, the more useful the first reply will be. We answer everything within a working day, usually with a question rather than a pitch.</p>
+        <dl class="hero-meta">
+          <div><dt>Reply within</dt><dd>One working day</dd></div>
+          <div><dt>Email</dt><dd>team@revhops.com</dd></div>
+          <div><dt>Based in</dt><dd>Phoenix, AZ</dd></div>
+        </dl>
       </div>
     </div>
+      <div class="page-hero-media">
+        <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true">
+      </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
@@ -91,8 +98,8 @@
   <div class="shell">
     <div class="split" style="align-items:start">
 
-      <!-- Deliberately not inside a card. The form is the page; putting a
-           frame round the only thing on it reads as a widget dropped into a
+      <!-- Deliberately not inside a card. The form is the page; a frame
+           round the only thing on it reads as a widget dropped into a
            layout rather than as the layout. -->
       <form class="form reveal reveal-left" method="post" action="#" novalidate>
         <div class="form-row">

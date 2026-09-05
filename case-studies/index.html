@@ -71,26 +71,29 @@
 
 <main>
 
-<!-- ===================== HEADER =====================
-     .page-head, the standard band. --page-head-h keeps every page the same
-     height, and .page-head-end is the sentinel the nav watches. -->
-<section class="page-head">
-  <div class="disc" data-parallax="0.13"></div>
+<!-- ===================== HERO =====================
+     Type left, artwork bleeding off the right edge. .page-head-end is the
+     zero-height sentinel the nav watches to decide when to collapse. -->
+<section class="page-hero">
   <div class="shell">
-    <div class="page-head-inner">
-      <div class="page-head-text">
+    <div class="page-hero-inner">
+      <div class="page-hero-text">
         <h1 class="h1">Proof beats a pitch deck</h1>
         <p class="lede">Five engagements, what was broken when we arrived, and what the numbers did afterwards. The awkward ones are in here too.</p>
+        <dl class="hero-meta">
+          <div><dt>Engagements</dt><dd>Five</dd></div>
+          <div><dt>Sectors</dt><dd>[to fill in]</dd></div>
+        </dl>
       </div>
     </div>
+      <div class="page-hero-media">
+        <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true">
+      </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
 
-<!-- The client rail, straight off the homepage: one continuous strip, the
-     list duplicated verbatim, the whole thing sliding exactly half its
-     width so the seam never shows. Both lists must stay identical. -->
-<section class="logo-band" aria-label="Clients we have worked with">
+<section class="logo-band" aria-label="Clients we have worked with" style="--proof-lead:clamp(18px,2.4vw,40px)">
   <div class="logo-rail">
     <ul class="logo-run">
       <li><img src="../assets/img/logos/dg.webp" alt="DG" loading="lazy"></li>
@@ -117,7 +120,7 @@
   </div>
 </section>
 
-<section class="section case-section to-white">
+<section class="section case-section">
   <div class="shell">
 
     <div class="case-head">
@@ -201,6 +204,42 @@
       </div>
     </div>
 
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <h2 class="h2">What the work usually involves</h2>
+    </div>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards">
+        <div class="pcard reveal">
+          <h3 class="pcard-title">A system nobody trusts</h3>
+          <p class="pcard-copy">The most common starting point. The CRM says one thing, the invoices say another, and leadership has stopped believing either.</p>
+          <div class="pcard-chips">
+            <span class="chip">Bad data</span>
+            <span class="chip">No single source</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">Growth that outran the setup</h3>
+          <p class="pcard-copy">What worked at eight people falls over at thirty. Usually the routing, the stages and the reporting all at once.</p>
+          <div class="pcard-chips">
+            <span class="chip">Scaling</span>
+            <span class="chip">Handoffs</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">A migration nobody wants to run</h3>
+          <p class="pcard-copy">Moving platforms with a decade of history attached, without losing the history or the quarter.</p>
+          <div class="pcard-chips">
+            <span class="chip">Migration</span>
+            <span class="chip">Reconciliation</span>
+          </div>
+        </div>
+    </div>
+    </div>
   </div>
 </section>
 
