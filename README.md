@@ -9,10 +9,12 @@ first.
 
 ## Before you change anything
 
-**This folder is not a git repository.** There is a `.gitignore` but no `.git`
-directory, so there is no revert and every change is destructive. Anything
-deleted here is gone. Worth settling with `git init && git add -A && git commit`
-before the next round of work.
+**This folder is a git repository as of 9 September**, initialised on branch
+`main` with one commit covering the whole site. There is finally a revert.
+Nothing before that commit is recoverable — everything deleted on 4 September
+is still gone.
+
+No remote is configured yet. See "Deploying to GitHub Pages" below.
 
 **Twenty-one pages exist.** `index.html` is hand-maintained. The other twenty
 are written by `tools/build-pages.js` and **will be overwritten by the next
@@ -546,25 +548,55 @@ it sits 100px below the stage cards at any viewport height.
 
 Everything collapses to a static layout under `prefers-reduced-motion`.
 
-## Testing on a phone or tablet
+## Previewing it locally
 
-Serve the folder and open it over Wi-Fi:
+**Double-click `preview.command`.** It starts a small server, opens your
+browser at it, and prints the address. Close the Terminal window it opens to
+stop it.
+
+Opening `index.html` by double-clicking works for *looking* at a page but not
+for clicking between them: the links are root-absolute (`/services`,
+`/pricing`) and from `file://` those resolve against your hard drive rather
+than the site. That is the trade the clean URLs bought, and this is the fix the
+README has always pointed at.
+
+Under the hood it is `tools/serve.js` — Node, no dependencies — which resolves
+a bare path the way GitHub Pages does:
 
 ```
-cd ~/Downloads/Claude/revhops.com
-python3 -m http.server 8000
+/pricing        → pricing.html
+/services       → services/index.html
+/services/x     → services/x.html
 ```
 
-Then `http://<your-mac-ip>:8000` on the device. Option-click the Wi-Fi menu bar
-icon for the IP. This also gives the nav links something to resolve against, so
-clicking through works the way it does not from `file://`.
+Anything else gets a 404 rather than falling back to the homepage, because
+silently serving index.html for a typo is how a broken link survives a
+click-through test. Run it directly with `node tools/serve.js`, or
+`node tools/serve.js 4000` for another port.
+
+**On a phone or tablet.** The server binds to every interface, so open
+`http://<your-mac-ip>:<port>` on a device on the same Wi-Fi. Option-click the
+Wi-Fi menu bar icon for the IP.
 
 ## Deploying to GitHub Pages
 
-1. Push this folder to a repo.
-2. Settings → Pages → Source: `main` branch, `/ (root)`.
-3. Add `revhops.com` as the custom domain, then point a CNAME at
-   `<user>.github.io`.
+The repo is initialised and committed. What is left:
+
+1. Create an empty repo on GitHub. Do not let it add a README or a
+   `.gitignore` — this folder already has both and the merge is a nuisance.
+2. `git remote add origin https://github.com/<user>/<repo>.git`
+3. `git push -u origin main`
+4. Settings → Pages → Source: `main` branch, `/ (root)`.
+
+`.nojekyll` is already there, which is what stops Pages trying to run Jekyll
+over the folder.
+
+**Do not point `revhops.com` at GitHub Pages yet.** The domain currently
+resolves to HubSpot, and the meetings scheduler embedded on `/call` and
+`/client-call` loads from `https://revhops.com/meetings/revhops/…`. Moving the
+apex record to Pages takes that path with it and both booking pages break.
+Either move the schedulers to their `meetings.hubspot.com` equivalents first,
+or launch on a subdomain. This wants deciding before launch, not during it.
 
 Not done yet: the custom domain, Open Graph and Twitter tags, canonical tags,
 `sitemap.xml`, `robots.txt`.

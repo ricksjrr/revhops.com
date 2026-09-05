@@ -11,22 +11,18 @@ of play; the README is how the thing is built.
 
 ## Read this before you trust anything below about git
 
-**This folder is not a git repository.** `git status` returns *fatal: not a
-git repository*. There is a `.gitignore` and the sections below talk about
-git history, but there is no `.git` directory here, so:
+**This folder became a git repository on 9 September.** Branch `main`, one
+commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
-- **there is no revert.** Every change is destructive. Nothing that was
-  deleted on 4 September — the seven other pages, their CSS, the first dark
-  theme, the mobile testimonial rail — can be recovered from this folder.
-  Where the text below says "it is in git history", read it as "it is gone".
+- **there is a revert now**, from that commit forward.
+- **nothing before it survives.** Everything deleted on 4 September — the
+  seven other pages, their CSS, the first dark theme, the mobile testimonial
+  rail — is still gone. Where the text below says "it is in git history",
+  read it as "it is gone".
 - **nothing is deleted casually.** The orphaned hop images are still on
   disk for exactly this reason.
-- **the Pushing section at the end does not work as written.** It assumes a
-  remote that is not configured here.
-
-If a copy of the repository exists elsewhere, this folder is not it. Worth
-settling before launch, and worth doing first in any new session:
-`git init && git add -A && git commit`.
+- **there is no remote yet**, so the Pushing section at the end still does
+  not work as written. See "Deploying to GitHub Pages" in the README.
 
 ---
 
