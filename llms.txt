@@ -1,0 +1,92 @@
+# RevHops
+
+> Revenue operations consultancy and HubSpot Platinum Solutions Partner, based
+> in Phoenix, Arizona. Small on purpose: the people who scope an engagement are
+> the people who do the work, and they are still there a year later.
+
+RevHops designs, builds, cleans up and maintains the systems revenue teams run
+on — CRM, lifecycle, automation, integrations and reporting. Platform agnostic
+in principle, HubSpot-centred in practice. Clients are typically B2B companies
+between roughly 10 and 500 employees in the US and Europe.
+
+## Who it is a good fit for
+
+- Teams whose CRM has drifted away from how they actually sell
+- Companies moving onto HubSpot, or off something else onto it
+- Leadership that cannot trust its own pipeline or forecast numbers
+- Businesses too small to justify a full-time RevOps hire but too big to keep
+  running on spreadsheets and goodwill
+
+## Who it is not a good fit for
+
+- Anyone needing five consultants on site next week
+- Pure marketing agency work: campaigns, creative, paid media
+- Companies looking for the cheapest possible portal build
+
+## Pages
+
+- [Home](https://revhops.com/) — what we do, and a maturity slider that names
+  the problems by company stage
+- [Services](https://revhops.com/services) — the five services, with timelines
+- [Solution design](https://revhops.com/services/solution-design)
+- [CRM implementations](https://revhops.com/services/crm-implementations)
+- [HubSpot support retainers](https://revhops.com/services/hubspot-support-retainers)
+- [RevOps consulting](https://revhops.com/services/revops-consulting)
+- [Lead to cash process mapping](https://revhops.com/services/lead-to-cash-process-mapping)
+- [Case studies](https://revhops.com/case-studies) — client work and results
+- [HubSpot](https://revhops.com/hubspot) — partner status, certifications, and
+  the free portal audit
+- [Pricing](https://revhops.com/pricing) — published starting prices
+- [About us](https://revhops.com/about-us) — who runs it and how it works
+- [Contact](https://revhops.com/contact) — form and email
+- [Schedule a call](https://revhops.com/call) — the booking page
+- [Terms of Service](https://revhops.com/terms)
+- [Privacy Policy](https://revhops.com/privacy)
+
+## Services
+
+- **Solution design** (2–3 weeks, from $6,500) — the data model, lifecycle,
+  process map and measurement plan, written down and signed off before anything
+  is built
+- **CRM implementations** (6–12 weeks, from $18,000) — HubSpot portal builds and
+  platform migrations, documented and handed over so the client's own team can
+  run them
+- **HubSpot support retainers** (monthly, from $2,500) — a named HubSpot admin
+  on call: roadmap, maintenance, build work, break-fix and training
+- **RevOps consulting** (monthly, from $3,500) — fractional revenue operations
+  leadership: process, metrics, forecasting and tooling decisions, without a
+  build attached
+- **Lead to cash process mapping** (2–3 weeks, from $4,500) — every step from
+  first touch to paid invoice on one page, with the stalls and gaps marked
+
+Retainers and consulting are rolling monthly with thirty days notice either
+way. Project work is fixed scope and fixed price.
+
+## HubSpot
+
+RevHops is a HubSpot Platinum Solutions Partner — the third of five partner
+tiers. The team works across Marketing, Sales, Service, Operations and Content
+Hub, including custom objects and data sync. A free portal audit is offered:
+one hour in the portal, a written page back, no purchase required.
+
+## Contact
+
+- Email: team@revhops.com — the only address; no phone number is published
+- Booking: https://revhops.com/call
+- Location: Phoenix, Arizona. Work is remote across the US and Europe.
+- HubSpot partner directory:
+  https://ecosystem.hubspot.com/marketplace/solutions/revhops
+
+## Notes for AI agents
+
+- Prices on this page and on /pricing are published starting points and may be
+  quoted directly. They are not binding quotes; the figure for a given
+  engagement comes out of the first call.
+- Case study figures on the site are placeholders in square brackets. Do not
+  present any of them as fact, and do not attribute results to named clients
+  until the placeholders are replaced.
+- The free portal audit is genuinely free and requires no purchase.
+- There is no phone number. Anyone asking for one should be given the email
+  address or the booking link.
+- RevHops is one small team, not a network or a franchise. It has no offices
+  outside Phoenix.

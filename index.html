@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RevHops — Revenue operations for teams that needed it fixed last quarter</title>
+<meta name="description" content="RevHops is a revenue operations consultancy and HubSpot Platinum Partner. We design, build and maintain the system your revenue team actually runs on.">
+<link rel="icon" href="assets/img/revhops-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
+<link rel="stylesheet" href="assets/css/site.css?v=202609091500">
+
+<!-- Two things that have to happen before the first paint, which is why
+     they are inline in the head and not in site.js.
+
+     THEME. Reading the saved choice after the stylesheet has painted gives
+     a white flash on every load for anyone on the dark theme. Setting the
+     attribute here means the first paint is already the right colour. No
+     prefers-color-scheme fallback: the toggle is the only thing that sets
+     this, so the theme is always an explicit choice and never changes under
+     someone who did not ask for it.
+
+     SCROLL. On reload the browser restores where you were, and a few pixels
+     down the page is enough for the nav to be in its floating state — so a
+     refresh landed near the top with the pill bar showing rather than at
+     the top with the full bar. Manual restoration turns that off. The hash
+     case is left alone: a link to #something should still go there. -->
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('revhops-theme');
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  } catch (e) { /* private mode: light theme, no toggle memory, nothing breaks */ }
+
+  if ('scrollRestoration' in history && !location.hash) {
+    history.scrollRestoration = 'manual';
+  }
+})();
+</script>
+
+<!-- HubSpot tracking, portal 46722926. Async and deferred, so it never
+     blocks the first paint. Goes in the head of every public page — copy
+     this block verbatim into any new page. -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/46722926.js"></script>
+</head>
+<body>
+
+<!-- ============================= NAV ============================= -->
+<header class="nav" data-nav>
+  <div class="shell nav-inner">
+    <a class="brand" href="./" aria-label="RevHops home">
+      <img class="brand-base" src="assets/img/revhops-logo.png" alt="revhops">
+      <img class="brand-alt" src="assets/img/revhops-logo-white.png" alt="" aria-hidden="true">
+    </a>
+    <nav class="nav-links" data-nav-links aria-label="Primary">
+      <a href="/services">Services</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/hubspot">HubSpot</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/about-us">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <!-- Light/dark. One button, both icons drawn, CSS shows whichever the
+           current theme calls for — swapping the SVG in JS would leave the
+           wrong icon on screen for a frame on every load. aria-pressed says
+           whether the dark theme is on; site.js keeps it and the label in
+           step with the attribute on <html>. -->
+      <button class="theme-toggle" data-theme-toggle type="button"
+              aria-pressed="false" aria-label="Switch to the dark theme">
+        <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2.2v2.4M12 19.4v2.4M4.1 4.1l1.7 1.7M18.2 18.2l1.7 1.7M2.2 12h2.4M19.4 12h2.4M4.1 19.9l1.7-1.7M18.2 5.8l1.7-1.7"/>
+        </svg>
+        <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.1 14.6A8.4 8.4 0 0 1 9.4 3.9a8.4 8.4 0 1 0 10.7 10.7z"/>
+        </svg>
+      </button>
+      <a class="btn btn-primary" href="/call">Schedule a call</a>
+      <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-label="Menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- =============================================================
+     HERO — the visitor picks their stage and it stays picked, so the
+     cards stay readable and the rest of the page is one scroll away.
+     The choice is published on <html data-stage> for downstream use.
+     ============================================================= -->
+<section class="hero-pin">
+  <div class="hero">
+    <div class="hero-bleed">
+      <!-- orange sweeps down from above the nav; cool blue rises from below
+           the fold and grows. Both start well outside the hero (see
+           .hero-bleed .disc-a / .disc-b) so there is real travel to see. -->
+      <div class="disc disc-a"
+           data-parallax="0.28" data-parallax-host=".hero-pin"></div>
+      <div class="disc disc-cool disc-b"
+           data-parallax="-0.28" data-parallax-grow="0.55" data-parallax-host=".hero-pin"></div>
+    </div>
+    <div class="shell shell-wide">
+      <div data-revhops-maturity data-start="0" data-cta-url="/call"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= LOGO BAND =============================
+     One continuous rail. The list is duplicated verbatim and the whole
+     strip slides exactly half its width, so the seam never shows and there
+     is no jump on repeat. Both lists must stay identical. aria-hidden on
+     the copy keeps screen readers from hearing every name twice. Hovering
+     pauses it.
+     Takes --proof-lead so it sits 100px under the stage cards whatever the
+     viewport height — see measureProofLead() in maturity-slider.js. -->
+<section class="logo-band" aria-label="Clients we have worked with">
+  <div class="logo-rail">
+    <ul class="logo-run">
+      <li><img src="assets/img/logos/dg.webp" alt="DG" loading="lazy"></li>
+      <li><img src="assets/img/logos/woodside-homes.webp" alt="Woodside Homes" loading="lazy"></li>
+      <li><img src="assets/img/logos/core-income.webp" alt="Core Income" loading="lazy"></li>
+      <li><img src="assets/img/logos/ignite-group.webp" alt="Ignite Group" data-solid loading="lazy"></li>
+      <li><img src="assets/img/logos/key-tree.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/cialdini-institute.webp" alt="Cialdini Institute" loading="lazy"></li>
+      <li><img src="assets/img/logos/casadomaine.webp" alt="Casadomaine Custom Homes" loading="lazy"></li>
+      <li><img src="assets/img/logos/financial-lease.webp" alt="Financial Lease" loading="lazy"></li>
+      <li><img src="assets/img/logos/inbox-storage.webp" alt="Inbox Storage" loading="lazy"></li>
+    </ul>
+    <ul class="logo-run" aria-hidden="true">
+      <li><img src="assets/img/logos/dg.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/woodside-homes.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/core-income.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/ignite-group.webp" alt="" data-solid loading="lazy"></li>
+      <li><img src="assets/img/logos/key-tree.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/cialdini-institute.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/casadomaine.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/financial-lease.webp" alt="" loading="lazy"></li>
+      <li><img src="assets/img/logos/inbox-storage.webp" alt="" loading="lazy"></li>
+    </ul>
+  </div>
+</section>
+
+<!-- =============================================================
+     SERVICES PREVIEW
+     The hero already named the visitor's problems, stage by stage, so the
+     page opens on the answer rather than re-explaining the problem.
+
+     Rows rather than cards, and deliberately unnumbered: numbering read as
+     a sequence, and these are not steps.
+     ============================================================= -->
+<section class="section">
+  <div class="shell">
+
+    <div class="sec-head reveal reveal-left" style="margin-bottom:clamp(28px,3.4vw,46px)">
+      <h2 class="h2">RevOps services that scale with you, <span class="hl">wherever you're at</span></h2>
+      <p class="sec-sub">Most engagements start with one of these and grow into another. You do not
+        need to know which one you need before the first call.</p>
+    </div>
+
+    <div class="svc-list">
+      <a class="svc-row reveal" href="/services/solution-design">
+        <h3 class="svc-title">Solution design</h3>
+        <span class="svc-time">2–3 weeks</span>
+        <p class="svc-copy">The plan before the build. Data model, lifecycle, process map and how you will measure it, signed off by the people who have to live with it.</p>
+        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row reveal" href="/services/crm-implementations">
+        <h3 class="svc-title">CRM implementations</h3>
+        <span class="svc-time">6–12 weeks</span>
+        <p class="svc-copy">Portal builds and platform migrations. Built once, documented, and handed over so your team can run it without us.</p>
+        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row reveal" href="/services/hubspot-support-retainers">
+        <h3 class="svc-title">HubSpot support retainers</h3>
+        <span class="svc-time">Monthly</span>
+        <p class="svc-copy">A HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon.</p>
+        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row reveal" href="/services/revops-consulting">
+        <h3 class="svc-title">RevOps consulting</h3>
+        <span class="svc-time">Monthly</span>
+        <p class="svc-copy">Someone to think it through with. What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money.</p>
+        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row reveal" href="/services/lead-to-cash-process-mapping">
+        <h3 class="svc-title">Lead to cash process mapping</h3>
+        <span class="svc-time">2–3 weeks</span>
+        <p class="svc-copy">Every step from first touch to paid invoice, on one page. Usually the first time anyone has seen the whole thing at once.</p>
+        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
+      </a>
+    </div>
+
+    <div class="svc-cta reveal">
+      <p>Not sure exactly what you need?</p>
+      <a class="btn btn-primary" href="/call">Schedule a call</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================================
+     CASE STUDIES — poster cards on a horizontal rail.
+
+     A plain scroll container with snap points, so a trackpad swipe, a touch
+     drag and the keyboard all work with no help from us. The two arrows are
+     a convenience on top of that and disable themselves at each end; they
+     are hidden where there is no pointer to use them.
+
+     The pinned version that forced the page scroll sideways was removed on
+     4 September. Scrolling down the page now does what it says.
+     ============================================================= -->
+<section class="section case-section">
+  <div class="shell">
+
+    <div class="case-head">
+      <span aria-hidden="true"></span>
+      <div class="sec-head reveal">
+        <h2 class="h2">We've hopped with <span class="hl">some of the best</span></h2>
+      </div>
+      <div class="case-nav reveal">
+        <button type="button" data-case-prev aria-label="Previous case studies">&larr;</button>
+        <button type="button" data-case-next aria-label="More case studies">&rarr;</button>
+      </div>
+    </div>
+
+    <div class="case-rail-wrap">
+      <div class="case-rail" data-case-rail tabindex="0" aria-label="Case studies">
+        <a class="case-card reveal" href="/case-studies/case-study-one">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00x</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
+          </div>
+        </a>
+        <a class="case-card reveal" href="/case-studies/case-study-two">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00h</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
+          </div>
+        </a>
+        <a class="case-card reveal" href="/case-studies/case-study-three">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>$00k</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
+          </div>
+        </a>
+        <a class="case-card reveal" href="/case-studies/case-study-four">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00d</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
+          </div>
+        </a>
+        <a class="case-card reveal" href="/case-studies/case-study-five">
+          <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+          <div class="case-body">
+            <div class="case-text">
+              <h3 class="case-title">[Client name]</h3>
+              <div class="case-figs">
+                <span class="case-fig"><b>$00k</b><span>[measure]</span></span>
+                <span class="case-fig"><b>00x</b><span>[measure]</span></span>
+              </div>
+            </div>
+            <span class="case-go" aria-hidden="true">&rarr;</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================================
+     ABOUT — small on purpose.
+
+     Section head, subheading and body all use the shared classes rather
+     than one-off sizes, so this section is set the same as every other one
+     on the page.
+
+     The portrait tilts AWAY from the pointer: the edge you are nearest
+     recedes. [data-tilt] in site.js writes two custom properties and
+     nothing else; the transform lives in the stylesheet.
+     ============================================================= -->
+<section class="section-tight to-white-1">
+  <div class="shell">
+
+    <!-- =============================================================
+         ABOUT — small by design.
+
+         Two photographs at different sizes, the smaller one overlapping the
+         larger and both turned a couple of degrees, the same loose hand as
+         the tool clump. Deliberately not a card: this section sits under
+         five 3:4 poster cards, and one more rectangle squared to the grid
+         read as more of the same.
+
+         The pair tilts away from the pointer, and the front image responds
+         about twice as hard as the one behind it, which is what gives the
+         two some depth rather than moving them as one flat sheet.
+         [data-tilt] in site.js writes two custom properties; everything
+         else is in the stylesheet.
+
+         Both are the placeholder. Swap for real photographs: a portrait or
+         near-square for the back, and something tighter for the front.
+         ============================================================= -->
+    <div class="split about-split" style="align-items:center">
+
+      <div class="about-stack reveal reveal-left" data-tilt>
+        <img class="about-img about-img-back" src="assets/img/james-portrait.webp"
+             alt="James Ricks of RevHops">
+        <img class="about-img about-img-front" src="assets/img/hubspot-platinum-badge.webp"
+             alt="HubSpot Platinum Solutions Partner">
+      </div>
+
+      <div class="stack gap-20 reveal reveal-right">
+        <h2 class="h2"><span class="hl">Small by design</span> and staying that way</h2>
+        <p class="small">A large agency wins by staffing. It sells you a senior name, then hands the
+          build to whoever is free that month, and the person who understood your business leaves
+          the project before it ships. We would rather take fewer clients and keep the same people
+          on them, which means we still know how your system works a year later, because we built
+          it.</p>
+        <ul class="ticks">
+          <li>You talk to the people doing the work, start to finish</li>
+          <li>Deep in revenue operations only, not a generalist shop with a RevOps page</li>
+          <li>HubSpot Platinum Solutions Partner</li>
+          <li>The wrong call if you need five bodies on site next week, and we will say so</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =============================================================
+     TOOL EXPERTISE — a loose clump rather than a grid.
+
+     The marks sit in a centred flex wrap and each one is nudged off the
+     line by a few pixels and a fraction of a degree, so the block reads as
+     a pile of logos rather than a table of them. The offsets are static and
+     come from nth-child, not from random numbers, so the arrangement is the
+     same on every load and can be tuned by hand.
+
+     Every mark is greyed back at rest and comes up in full colour on
+     hover. That replaces the old per-mark data-reverse flag, which existed
+     only to survive the dark theme.
+     ============================================================= -->
+<section class="section to-white-2" data-top-trigger>
+  <div class="shell">
+
+    <div class="sec-head reveal">
+      <h2 class="h2">Experts in <span class="hl">all of the tools</span> in your RevOps stack</h2>
+      <p class="sec-sub">Most of the work is making these talk to each other properly. We have been
+        inside all of them, and we will tell you when the one you own is already good enough.</p>
+    </div>
+
+    <div class="tool-clump reveal">
+      <div class="tool-row">
+        <span class="tool-mark"><img src="assets/img/tools/marketo.webp" alt="Marketo" loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/microsoft365.webp" alt="Microsoft 365" loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/salesforce.webp" alt="Salesforce" data-mid loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/hubspot.webp" alt="HubSpot" data-hero loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/pipedrive.webp" alt="Pipedrive" data-mid loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/google-workspace.webp" alt="Google Workspace" data-stack loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/netsuite.webp" alt="Oracle NetSuite" loading="lazy"></span>
+      </div>
+      <div class="tool-row">
+        <span class="tool-mark"><img src="assets/img/tools/quickbooks.webp" alt="Intuit QuickBooks" loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/zoominfo.webp" alt="ZoomInfo" loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/slack.webp" alt="Slack" loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/claude.webp" alt="Claude" loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/meta.svg" alt="Meta" loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/chargebee.webp" alt="Chargebee" loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/salesmsg.webp" alt="Salesmsg" loading="lazy"></span>
+        <span class="tool-mark"><img src="assets/img/tools/advizorpro.webp" alt="AdvizorPro" data-stack loading="lazy"></span>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- =============================================================
+     NEXT STEPS — one panel, not two cards.
+
+     Copy on the left, the two commitments stacked down the right, split by
+     a single hairline. That hairline is inside a component, not between
+     sections, so it does not break the no-dividers rule.
+     ============================================================= -->
+<!-- =============================================================
+     TESTIMONIAL — one quote, not three.
+
+     Copy at two thirds, the sticker at one third. The section head sits in
+     the copy column rather than centred over both, because with a single
+     quote the two read as one block.
+
+     The sticker is a circle with a white ring, turned a few degrees, and
+     lit so one edge looks lifted: a tight contact shadow on the lower
+     right and a long soft one away from it, with a highlight along the top
+     left. It is not a literal paper curl — a real peel on a circle needs
+     artwork, not CSS — but it sits off the page rather than on it.
+     ============================================================= -->
+<section class="section-tight testi-section">
+  <div class="shell">
+    <!-- Three quotes, three columns, Deborah first. No section heading on the
+         page: each quote carries its own title, so the h2 below is there for
+         the document outline only, and the titles under it are h3s. -->
+    <h2 class="sr-only">What clients say about working with us</h2>
+
+    <div class="testi">
+      <div class="testi-col reveal">
+        <h3 class="testi-title"><span class="q">&ldquo;</span>&thinsp;Superior expertise&thinsp;<span class="q">&rdquo;</span></h3>
+        <blockquote class="quote">
+          <p>Our experience working with RevHops to build out specific functionality, reporting,
+            workflows, sequences and dashboards has exceeded expectations.
+            <span class="hl">James has taken the time to learn our business model,
+            understand the complexities and remained confident and transparent</span> on what we can
+            and cannot do within the platform. Looking forward to continued partnership with
+            RevHops.</p>
+          <footer class="quote-by">
+            <div class="stars" role="img" aria-label="Five out of five">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+            </div>
+            <cite>Deborah <span class="sep">|</span> COO</cite>
+          </footer>
+        </blockquote>
+      </div>
+      <div class="testi-col reveal">
+        <h3 class="testi-title"><span class="q">&ldquo;</span>&thinsp;Responsive &amp; Thorough&thinsp;<span class="q">&rdquo;</span></h3>
+        <blockquote class="quote">
+          <p>We partnered with RevHops on a complex HubSpot Marketing Hub Enterprise implementation, and
+            the experience was excellent from start to finish. James was highly responsive, extremely
+            well-organized, and thorough. <span class="hl">RevHops put together a clear, structured
+            plan, communicated recommendations in a way that was easy to align on</span>, and
+            followed up proactively to ensure everyone fully understood the strategy and next
+            steps.</p>
+          <footer class="quote-by">
+            <div class="stars" role="img" aria-label="Five out of five">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+            </div>
+            <cite>Amy <span class="sep">|</span> VP of Client Services</cite>
+          </footer>
+        </blockquote>
+      </div>
+      <div class="testi-col reveal">
+        <h3 class="testi-title"><span class="q">&ldquo;</span>&thinsp;Great team to work with!&thinsp;<span class="q">&rdquo;</span></h3>
+        <blockquote class="quote">
+          <p><span class="hl">James set our small company up for success through his proven
+            process</span> and knowledge of
+            HubSpot after meeting with key people on my team and then mapping everything out for us
+            for the first time. His team was organized in their implementation and tracked our
+            progress throughout the project. We will be using RevHops more in the near future.
+            Highly recommend!!</p>
+          <footer class="quote-by">
+            <div class="stars" role="img" aria-label="Five out of five">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
+            </div>
+            <cite>Adam <span class="sep">|</span> CEO</cite>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section start-section">
+
+  <!-- =============================================================
+       NEXT STEPS
+       The page's closing full stop. No paragraph and no artwork behind it,
+       so the type and one button carry the whole thing. Centred rather than
+       split: with the supporting line gone there was nothing on the right
+       to balance the shout against, and a button alone in a column read as
+       an afterthought.
+
+       The break is forced. Left to the measure it gives "Ready to hop
+       with" over "RevHops?" at some widths; the br is hidden below 900px
+       where the column is too narrow to need it.
+
+       /call is the booking page: the meetings embed and nothing else. Every
+       "Schedule a call" on the site points there.
+       ============================================================= -->
+  <div class="start-wide reveal">
+    <h2 class="start-shout">Ready to hop <br>with RevHops?</h2>
+    <a class="btn btn-primary btn-lg" href="/call">Schedule a discovery call</a>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <div class="shell">
+
+    <!-- Brand and the one address we publish on the left, links on the
+         right. The address is set as a display link rather than a list item
+         because it is the only contact route on the site and burying it in
+         a column of eight-point links wasted it. -->
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <img class="footer-mark" src="assets/img/revhops-logo-white.png" alt="revhops">
+        <p class="footer-pitch">Revenue operations for teams that needed it fixed last quarter.</p>
+        <a class="footer-mail" href="mailto:team@revhops.com">team@revhops.com</a>
+        <p class="footer-place">Phoenix, Arizona</p>
+      </div>
+
+      <nav class="footer-links" aria-label="Footer">
+        <div>
+          <h4>Services</h4>
+          <ul class="stack gap-8">
+            <li><a href="/services/solution-design">Solution design</a></li>
+            <li><a href="/services/crm-implementations">CRM implementations</a></li>
+            <li><a href="/services/hubspot-support-retainers">HubSpot support retainers</a></li>
+            <li><a href="/services/revops-consulting">RevOps consulting</a></li>
+            <li><a href="/services/lead-to-cash-process-mapping">Lead to cash mapping</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul class="stack gap-8">
+            <li><a href="/case-studies">Case studies</a></li>
+            <li><a href="/hubspot">HubSpot</a></li>
+            <li><a href="/about-us">About us</a></li>
+            <li><a href="/pricing">Pricing</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Reversed Platinum badge, sized to the height of the link columns
+           beside it. HubSpot's own white artwork, so it needs no chip and no
+           filter: 0% of its ink falls under 3:1 on the navy. -->
+      <div class="footer-badges">
+        <a href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"
+           target="_blank" rel="noopener"
+           aria-label="RevHops on the HubSpot partner directory">
+          <img src="assets/img/hubspot-platinum-badge-white.webp"
+               alt="HubSpot Platinum Solutions Partner" loading="lazy">
+        </a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; <span data-year>2026</span> RevHops. All rights reserved.</span>
+      <span class="footer-legal">
+        <a href="/terms">Terms of Service</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="llms.txt">LLMs.txt</a>
+      </span>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- Back to top. Shown once the visitor reaches the tool section; on pages
+     without it, a scroll distance stands in. See site.js. -->
+<button class="to-top" data-to-top type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<script src="assets/js/maturity-slider.js?v=202609091500"></script>
+<script src="assets/js/site.js?v=202609091500"></script>
+</body>
+</html>

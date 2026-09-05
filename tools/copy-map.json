@@ -1,0 +1,737 @@
+{
+  "stamp": "202609072140",
+  "html": [
+    {
+      "id": "h1",
+      "html": "Services"
+    },
+    {
+      "id": "h2",
+      "html": "HubSpot"
+    },
+    {
+      "id": "h3",
+      "html": "Pricing"
+    },
+    {
+      "id": "h4",
+      "html": "Contact"
+    },
+    {
+      "id": "h5",
+      "html": "Schedule a call"
+    },
+    {
+      "id": "h6",
+      "html": "RevOps services that scale with you, <span class=\"hl\">wherever you're at</span>"
+    },
+    {
+      "id": "h7",
+      "html": "Most engagements start with one of these and grow into another. You do not need to know which one you need before the first call."
+    },
+    {
+      "id": "h8",
+      "html": "Solution design"
+    },
+    {
+      "id": "h9",
+      "html": "2–3 weeks"
+    },
+    {
+      "id": "h10",
+      "html": "The plan before the build. Data model, lifecycle, process map and how you will measure it, signed off by the people who have to live with it."
+    },
+    {
+      "id": "h11",
+      "html": "Read more <span class=\"arrow\">→</span>"
+    },
+    {
+      "id": "h12",
+      "html": "CRM implementations"
+    },
+    {
+      "id": "h13",
+      "html": "6–12 weeks"
+    },
+    {
+      "id": "h14",
+      "html": "Portal builds and platform migrations. Built once, documented, and handed over so your team can run it without us."
+    },
+    {
+      "id": "h15",
+      "html": "Read more <span class=\"arrow\">→</span>"
+    },
+    {
+      "id": "h16",
+      "html": "HubSpot support retainers"
+    },
+    {
+      "id": "h17",
+      "html": "Monthly"
+    },
+    {
+      "id": "h18",
+      "html": "A HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon."
+    },
+    {
+      "id": "h19",
+      "html": "Read more <span class=\"arrow\">→</span>"
+    },
+    {
+      "id": "h20",
+      "html": "RevOps consulting"
+    },
+    {
+      "id": "h21",
+      "html": "Monthly"
+    },
+    {
+      "id": "h22",
+      "html": "Someone to think it through with. What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money."
+    },
+    {
+      "id": "h23",
+      "html": "Read more <span class=\"arrow\">→</span>"
+    },
+    {
+      "id": "h24",
+      "html": "Lead to cash process mapping"
+    },
+    {
+      "id": "h25",
+      "html": "2–3 weeks"
+    },
+    {
+      "id": "h26",
+      "html": "Every step from first touch to paid invoice, on one page. Usually the first time anyone has seen the whole thing at once."
+    },
+    {
+      "id": "h27",
+      "html": "Read more <span class=\"arrow\">→</span>"
+    },
+    {
+      "id": "h28",
+      "html": "Not sure exactly what you need?"
+    },
+    {
+      "id": "h29",
+      "html": "Schedule a call"
+    },
+    {
+      "id": "h30",
+      "html": "We've hopped with <span class=\"hl\">some of the best</span>"
+    },
+    {
+      "id": "h31",
+      "html": "<button type=\"button\" data-case-prev=\"\" aria-label=\"Previous case studies\">←</button> <button type=\"button\" data-case-next=\"\" aria-label=\"More case studies\">→</button>"
+    },
+    {
+      "id": "h32",
+      "html": "[Client name]"
+    },
+    {
+      "id": "h33",
+      "html": "<span class=\"case-fig\"><b>00%</b><span>[measure]</span></span> <span class=\"case-fig\"><b>00x</b><span>[measure]</span></span>"
+    },
+    {
+      "id": "h34",
+      "html": "→"
+    },
+    {
+      "id": "h35",
+      "html": "[Client name]"
+    },
+    {
+      "id": "h36",
+      "html": "<span class=\"case-fig\"><b>00%</b><span>[measure]</span></span> <span class=\"case-fig\"><b>00h</b><span>[measure]</span></span>"
+    },
+    {
+      "id": "h37",
+      "html": "→"
+    },
+    {
+      "id": "h38",
+      "html": "[Client name]"
+    },
+    {
+      "id": "h39",
+      "html": "<span class=\"case-fig\"><b>00%</b><span>[measure]</span></span> <span class=\"case-fig\"><b>$00k</b><span>[measure]</span></span>"
+    },
+    {
+      "id": "h40",
+      "html": "→"
+    },
+    {
+      "id": "h41",
+      "html": "[Client name]"
+    },
+    {
+      "id": "h42",
+      "html": "<span class=\"case-fig\"><b>00%</b><span>[measure]</span></span> <span class=\"case-fig\"><b>00d</b><span>[measure]</span></span>"
+    },
+    {
+      "id": "h43",
+      "html": "→"
+    },
+    {
+      "id": "h44",
+      "html": "[Client name]"
+    },
+    {
+      "id": "h45",
+      "html": "<span class=\"case-fig\"><b>$00k</b><span>[measure]</span></span> <span class=\"case-fig\"><b>00x</b><span>[measure]</span></span>"
+    },
+    {
+      "id": "h46",
+      "html": "→"
+    },
+    {
+      "id": "h47",
+      "html": "<span class=\"hl\">Small by design</span> and staying that way"
+    },
+    {
+      "id": "h48",
+      "html": "A large agency wins by staffing. It sells you a senior name, then hands the build to whoever is free that month, and the person who understood your business leaves the project before it ships. We would rather take fewer clients and keep the same people on them, which means we still know how your system works a year later, because we built it."
+    },
+    {
+      "id": "h49",
+      "html": "You talk to the people doing the work, start to finish"
+    },
+    {
+      "id": "h50",
+      "html": "Deep in revenue operations only, not a generalist shop with a RevOps page"
+    },
+    {
+      "id": "h51",
+      "html": "HubSpot Platinum Solutions Partner"
+    },
+    {
+      "id": "h52",
+      "html": "The wrong call if you need five bodies on site next week, and we will say so"
+    },
+    {
+      "id": "h53",
+      "html": "Experts in <span class=\"hl\">all of the tools</span> in your RevOps stack"
+    },
+    {
+      "id": "h54",
+      "html": "Most of the work is making these talk to each other properly. We have been inside all of them, and we will tell you when the one you own is already good enough."
+    },
+    {
+      "id": "h55",
+      "html": "What clients say about working with us"
+    },
+    {
+      "id": "h56",
+      "html": "<span class=\"q\">“</span> Superior expertise <span class=\"q\">”</span>"
+    },
+    {
+      "id": "h57",
+      "html": "Our experience working with RevHops to build out specific functionality, reporting, workflows, sequences and dashboards has exceeded expectations. <span class=\"hl\">James has taken the time to learn our business model, understand the complexities and remained confident and transparent</span> on what we can and cannot do within the platform. Looking forward to continued partnership with RevHops."
+    },
+    {
+      "id": "h58",
+      "html": "Deborah <span class=\"sep\">|</span> COO"
+    },
+    {
+      "id": "h59",
+      "html": "<span class=\"q\">“</span> Responsive &amp; Thorough <span class=\"q\">”</span>"
+    },
+    {
+      "id": "h60",
+      "html": "We partnered with RevHops on a complex HubSpot Marketing Hub Enterprise implementation, and the experience was excellent from start to finish. James was highly responsive, extremely well-organized, and thorough. <span class=\"hl\">RevHops put together a clear, structured plan, communicated recommendations in a way that was easy to align on</span>, and followed up proactively to ensure everyone fully understood the strategy and next steps."
+    },
+    {
+      "id": "h61",
+      "html": "Amy <span class=\"sep\">|</span> VP of Client Services"
+    },
+    {
+      "id": "h62",
+      "html": "<span class=\"q\">“</span> Great team to work with! <span class=\"q\">”</span>"
+    },
+    {
+      "id": "h63",
+      "html": "<span class=\"hl\">James set our small company up for success through his proven process</span> and knowledge of HubSpot after meeting with key people on my team and then mapping everything out for us for the first time. His team was organized in their implementation and tracked our progress throughout the project. We will be using RevHops more in the near future. Highly recommend!!"
+    },
+    {
+      "id": "h64",
+      "html": "Adam <span class=\"sep\">|</span> CEO"
+    },
+    {
+      "id": "h65",
+      "html": "Ready to hop <br>with RevHops?"
+    },
+    {
+      "id": "h66",
+      "html": "Schedule a discovery call"
+    },
+    {
+      "id": "h67",
+      "html": "Revenue operations for teams that needed it fixed last quarter."
+    },
+    {
+      "id": "h68",
+      "html": "team@revhops.com"
+    },
+    {
+      "id": "h69",
+      "html": "Phoenix, Arizona"
+    },
+    {
+      "id": "h70",
+      "html": "Services"
+    },
+    {
+      "id": "h71",
+      "html": "Solution design"
+    },
+    {
+      "id": "h72",
+      "html": "Implementation"
+    },
+    {
+      "id": "h73",
+      "html": "Optimization"
+    },
+    {
+      "id": "h74",
+      "html": "Ongoing partnership"
+    },
+    {
+      "id": "h75",
+      "html": "Company"
+    },
+    {
+      "id": "h76",
+      "html": "HubSpot"
+    },
+    {
+      "id": "h77",
+      "html": "Pricing"
+    },
+    {
+      "id": "h78",
+      "html": "Contact"
+    },
+    {
+      "id": "h79",
+      "html": "Schedule a call"
+    },
+    {
+      "id": "h80",
+      "html": "<span>© <span data-year=\"\">2026</span> RevHops. All rights reserved.</span> <span class=\"footer-legal\"> <a href=\"/terms\">Terms of Service</a> <a href=\"/privacy\">Privacy Policy</a> <a href=\"llms.txt\">LLMs.txt</a> </span>"
+    }
+  ],
+  "js": [
+    {
+      "id": "j1",
+      "value": "Startup",
+      "nth": 1
+    },
+    {
+      "id": "j2",
+      "value": "1 to 10 employees",
+      "nth": 1
+    },
+    {
+      "id": "j3",
+      "value": "Founders wearing every hat, maybe one early hire in sales or ops",
+      "nth": 1
+    },
+    {
+      "id": "j4",
+      "value": "Pre-revenue to around $1M ARR",
+      "nth": 1
+    },
+    {
+      "id": "j5",
+      "value": "Website builder",
+      "nth": 1
+    },
+    {
+      "id": "j6",
+      "value": "Email tool",
+      "nth": 1
+    },
+    {
+      "id": "j7",
+      "value": "Shared inbox",
+      "nth": 1
+    },
+    {
+      "id": "j8",
+      "value": "CRM discipline",
+      "nth": 1
+    },
+    {
+      "id": "j9",
+      "value": "Attribution",
+      "nth": 1
+    },
+    {
+      "id": "j10",
+      "value": "Ticketing",
+      "nth": 1
+    },
+    {
+      "id": "j11",
+      "value": "No data hygiene habits, so the first CRM launches dirty",
+      "nth": 1
+    },
+    {
+      "id": "j12",
+      "value": "Deal knowledge lives only in the founder’s head",
+      "nth": 1
+    },
+    {
+      "id": "j13",
+      "value": "Informal customer promises go undocumented",
+      "nth": 1
+    },
+    {
+      "id": "j14",
+      "value": "Makarios Design Build",
+      "nth": 1
+    },
+    {
+      "id": "j15",
+      "value": "Case study description goes here and should describe what the case study is about.",
+      "nth": 1
+    },
+    {
+      "id": "j16",
+      "value": "Scaleup",
+      "nth": 1
+    },
+    {
+      "id": "j17",
+      "value": "10 to 50 employees",
+      "nth": 1
+    },
+    {
+      "id": "j18",
+      "value": "First dedicated marketer, one to three AEs or SDRs, first support hire",
+      "nth": 1
+    },
+    {
+      "id": "j19",
+      "value": "Around $1M to $10M ARR",
+      "nth": 1
+    },
+    {
+      "id": "j20",
+      "value": "Entry-tier CRM",
+      "nth": 1
+    },
+    {
+      "id": "j21",
+      "value": "Forms and landing pages",
+      "nth": 1
+    },
+    {
+      "id": "j22",
+      "value": "Helpdesk",
+      "nth": 1
+    },
+    {
+      "id": "j23",
+      "value": "Lead scoring",
+      "nth": 1
+    },
+    {
+      "id": "j24",
+      "value": "MQL and SQL criteria",
+      "nth": 1
+    },
+    {
+      "id": "j25",
+      "value": "Sales engagement",
+      "nth": 1
+    },
+    {
+      "id": "j26",
+      "value": "Marketing and sales quietly disagree on what \"qualified\" means",
+      "nth": 1
+    },
+    {
+      "id": "j27",
+      "value": "No clean handoff, so leads fall through the cracks unnoticed",
+      "nth": 1
+    },
+    {
+      "id": "j28",
+      "value": "The founder is still the real approval path, whatever the process says",
+      "nth": 1
+    },
+    {
+      "id": "j29",
+      "value": "Makarios Design Build",
+      "nth": 2
+    },
+    {
+      "id": "j30",
+      "value": "Case study description goes here and should describe what the case study is about.",
+      "nth": 2
+    },
+    {
+      "id": "j31",
+      "value": "Growth",
+      "nth": 1
+    },
+    {
+      "id": "j32",
+      "value": "50 to 200 employees",
+      "nth": 1
+    },
+    {
+      "id": "j33",
+      "value": "SDR and AE split, a small marketing team, dedicated CS, first RevOps hire",
+      "nth": 1
+    },
+    {
+      "id": "j34",
+      "value": "Around $10M to $50M ARR",
+      "nth": 1
+    },
+    {
+      "id": "j35",
+      "value": "Marketing automation",
+      "nth": 1
+    },
+    {
+      "id": "j36",
+      "value": "Sales engagement",
+      "nth": 2
+    },
+    {
+      "id": "j37",
+      "value": "CS platform",
+      "nth": 1
+    },
+    {
+      "id": "j38",
+      "value": "Data governance",
+      "nth": 1
+    },
+    {
+      "id": "j39",
+      "value": "Single source of truth",
+      "nth": 1
+    },
+    {
+      "id": "j40",
+      "value": "RevOps headcount",
+      "nth": 1
+    },
+    {
+      "id": "j41",
+      "value": "Integrations outpace anyone’s ability to govern them",
+      "nth": 1
+    },
+    {
+      "id": "j42",
+      "value": "Everyone has their own dashboard and nobody trusts the numbers",
+      "nth": 1
+    },
+    {
+      "id": "j43",
+      "value": "One RevOps hire is admin, analyst and process owner at the same time",
+      "nth": 1
+    },
+    {
+      "id": "j44",
+      "value": "Makarios Design Build",
+      "nth": 3
+    },
+    {
+      "id": "j45",
+      "value": "Case study description goes here and should describe what the case study is about.",
+      "nth": 3
+    },
+    {
+      "id": "j46",
+      "value": "Maturity",
+      "nth": 1
+    },
+    {
+      "id": "j47",
+      "value": "200 to 1,000 employees",
+      "nth": 1
+    },
+    {
+      "id": "j48",
+      "value": "Segmented sales org, dedicated enablement, a full CS org, a multi-person RevOps team",
+      "nth": 1
+    },
+    {
+      "id": "j49",
+      "value": "Around $50M to $250M ARR",
+      "nth": 1
+    },
+    {
+      "id": "j50",
+      "value": "ABM platform",
+      "nth": 1
+    },
+    {
+      "id": "j51",
+      "value": "Deal desk",
+      "nth": 1
+    },
+    {
+      "id": "j52",
+      "value": "Advanced forecasting",
+      "nth": 1
+    },
+    {
+      "id": "j53",
+      "value": "Clean data model",
+      "nth": 1
+    },
+    {
+      "id": "j54",
+      "value": "Unified customer data",
+      "nth": 1
+    },
+    {
+      "id": "j55",
+      "value": "Legacy fields nobody remembers the reason for",
+      "nth": 1
+    },
+    {
+      "id": "j56",
+      "value": "Each department has its own version of the truth",
+      "nth": 1
+    },
+    {
+      "id": "j57",
+      "value": "Attribution and comp models sophisticated enough to be gamed",
+      "nth": 1
+    },
+    {
+      "id": "j58",
+      "value": "Makarios Design Build",
+      "nth": 4
+    },
+    {
+      "id": "j59",
+      "value": "Case study description goes here and should describe what the case study is about.",
+      "nth": 4
+    },
+    {
+      "id": "j60",
+      "value": "Enterprise",
+      "nth": 1
+    },
+    {
+      "id": "j61",
+      "value": "1,000+ employees",
+      "nth": 1
+    },
+    {
+      "id": "j62",
+      "value": "Regional and global GTM teams, specialized roles, RevOps as its own department",
+      "nth": 1
+    },
+    {
+      "id": "j63",
+      "value": "$250M+ ARR",
+      "nth": 1
+    },
+    {
+      "id": "j64",
+      "value": "Enterprise suite",
+      "nth": 1
+    },
+    {
+      "id": "j65",
+      "value": "CDP",
+      "nth": 1
+    },
+    {
+      "id": "j66",
+      "value": "PRM",
+      "nth": 1
+    },
+    {
+      "id": "j67",
+      "value": "BI and warehouse",
+      "nth": 1
+    },
+    {
+      "id": "j68",
+      "value": "Consolidated CRM",
+      "nth": 1
+    },
+    {
+      "id": "j69",
+      "value": "Consistent standards",
+      "nth": 1
+    },
+    {
+      "id": "j70",
+      "value": "One customer view",
+      "nth": 1
+    },
+    {
+      "id": "j71",
+      "value": "Multiple CRMs never consolidated after M&A",
+      "nth": 1
+    },
+    {
+      "id": "j72",
+      "value": "Nobody understands the full customer journey end to end",
+      "nth": 1
+    },
+    {
+      "id": "j73",
+      "value": "Legacy systems are too big to fail, and also the bottleneck",
+      "nth": 1
+    },
+    {
+      "id": "j74",
+      "value": "Makarios Design Build",
+      "nth": 5
+    },
+    {
+      "id": "j75",
+      "value": "Case study description goes here and should describe what the case study is about.",
+      "nth": 5
+    },
+    {
+      "id": "j76",
+      "value": "Where is your team",
+      "nth": 1
+    },
+    {
+      "id": "j77",
+      "value": "at today?",
+      "nth": 1
+    },
+    {
+      "id": "j78",
+      "value": "Your situation may look like this",
+      "nth": 1
+    },
+    {
+      "id": "j79",
+      "value": "Problems you’re likely facing",
+      "nth": 1
+    },
+    {
+      "id": "j80",
+      "value": "A case study that’s relevant to you",
+      "nth": 1
+    },
+    {
+      "id": "j81",
+      "value": "What it usually costs you",
+      "nth": 1
+    },
+    {
+      "id": "j82",
+      "value": "Time, mostly. Reports rebuilt by hand, leadership arguing about which number is right, and deals that stall because nobody owns the next step.",
+      "nth": 1
+    }
+  ]
+}
