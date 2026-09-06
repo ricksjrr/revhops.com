@@ -3535,3 +3535,148 @@ a.pcard:hover .arrow { transform: translateX(5px); }
    ========================================================================== */
 .svc-index .start-section { --start-bleed: 100px; }
 .svc-index .case-section { padding-bottom: 100px; }
+
+/* ==========================================================================
+   THE SERVICE PAGE — header, quadrant, scheduler
+
+   A leaf page reached from a list of five names. It answers four questions
+   and then gets out of the way, so it is built out of three parts and no
+   card grids: the header, one quadrant, one booking widget.
+   ========================================================================== */
+
+/* ---------- the eyebrow back to /services ----------
+   Above the H1 rather than beside it, and set at label size so it reads as
+   a position in the site rather than as a second headline. The arrow points
+   backwards and slides backwards on hover, which is the .text-link
+   behaviour reversed and the only reason it does not just use that class. */
+.hero-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-head);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .3s var(--ease-out);
+}
+.hero-back .arrow {
+  display: inline-block;
+  transition: transform .3s var(--ease-out);
+}
+.hero-back:hover { color: var(--ink-hover); }
+.hero-back:hover .arrow { transform: translateX(-5px); }
+.hero-back:focus-visible {
+  outline: 2px solid var(--ink-strong);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* ---------- the header ----------
+   .page-hero-nomedia gives it the /services header's spacing: same clearance
+   under the nav, same full-width single column, no artwork. That rule ends
+   at padding-bottom: 0 because the services index hands the gap to its list.
+   This page cannot — the meta row is the last thing in the band and needs a
+   beat under it — so the bottom comes back here.
+
+   The H1 also gets its measure back. --hero-media-w no longer reserves a
+   column, so a 20ch cap would break two-word service names oddly early. */
+.page-hero-svc { padding-bottom: clamp(30px, 3.4vw, 52px); }
+.page-hero-svc .h1 { max-width: 24ch; }
+.page-hero-svc .lede { max-width: 62ch; }
+/* the meta row runs the width of the column here rather than stopping at
+   46ch: with three facts instead of two, the third was wrapping alone */
+.page-hero-svc .hero-meta { max-width: none; gap: 18px clamp(38px, 5vw, 76px); }
+
+/* ---------- the quadrant ----------
+   Four cells, two hairlines. Drawn with a gap the parent's background shows
+   through rather than with borders on the cells: borders on a 2x2 grid
+   double up on the inside edges and need a nth-child rule per side to
+   suppress, and the doubled line is visible at these weights.
+
+   The padding is inside the cells, so the hairlines run edge to edge of the
+   shell and the text sits off them. --quad-gutter is that inset, and it is
+   what makes the cross read as a division of one block rather than as space
+   between four blocks. */
+.quad {
+  --quad-gutter: clamp(22px, 3vw, 46px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  /* Pulled in from the section shell, hairlines and all.
+
+     The shell runs to 1680px on a wide display, and half of that is a 700px
+     column holding two short paragraphs — so the copy stopped at its own
+     46ch measure and left a slab of empty page between the left column and
+     the vertical rule. Capping the whole block at --shell instead lets the
+     copy fill its cell edge to edge, which is what closes that gap: the
+     measure is now set by the cell rather than by a max-width fighting it. */
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+}
+.quad-cell { padding: var(--quad-gutter); }
+
+/* Two lines, drawn as borders on three cells rather than as a grid gap over
+   a coloured parent: the ground under this section drifts from paper to
+   white down the page, so anything that paints its own background behind
+   the cells shows up as a rectangle. Borders inherit nothing and follow
+   --line into the dark theme on their own. */
+.quad-cell:nth-child(1) { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.quad-cell:nth-child(2) { border-bottom: 1px solid var(--line); }
+.quad-cell:nth-child(3) { border-right: 1px solid var(--line); }
+/* the outer edges carry no line, so the padding on the four outside faces
+   is doing nothing but pushing the type off the shell margin */
+.quad-cell:nth-child(odd)  { padding-left: 0; }
+.quad-cell:nth-child(even) { padding-right: 0; }
+.quad-cell:nth-child(1),
+.quad-cell:nth-child(2)    { padding-top: 0; }
+.quad-cell:nth-child(3),
+.quad-cell:nth-child(4)    { padding-bottom: 0; }
+
+.quad-title {
+  margin: 0 0 clamp(12px, 1.3vw, 18px);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1rem + .55vw, 1.5rem);
+  letter-spacing: -.024em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.quad-copy {
+  margin: 0 0 .85em;
+  /* no max-width: the cell is the measure now. See the note on .quad. */
+  color: var(--body);
+  font-size: clamp(.95rem, .92rem + .12vw, 1.02rem);
+  line-height: 1.62;
+}
+.quad-copy:last-child { margin-bottom: 0; }
+
+/* one hairline, one column, on a phone: a 2x2 grid at that width gives each
+   cell about 20 characters, and the vertical rule stops meaning anything */
+@media (max-width: 720px) {
+  .quad { grid-template-columns: minmax(0, 1fr); }
+  .quad-cell {
+    padding: clamp(24px, 6vw, 34px) 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .quad-cell:first-child { padding-top: 0; }
+  .quad-cell:last-child { padding-bottom: 0; border-bottom: 0; }
+}
+
+/* the one link out of the page that is not the widget */
+.quad-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(38px, 4.6vw, 70px);
+}
+
+/* ---------- the scheduler ----------
+   Its heading is centred because the widget under it is, and this is one of
+   the few places on the site where that is true. The widget wants a longer
+   beat under the heading than a card grid does: it paints its own frame, so
+   a tight gap reads as the heading sitting on top of the iframe. */
+.svc-book .sec-head { margin-bottom: clamp(26px, 3vw, 42px); }

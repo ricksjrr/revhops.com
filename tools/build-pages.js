@@ -194,6 +194,7 @@ function pageHero(p) {
 '  <div class="shell">\n' +
 '    <div class="page-hero-inner">\n' +
 '      <div class="page-hero-text">\n' +
+eyebrow +
 '        <h1 class="h1">' + p.h1 + '</h1>\n' +
 '        <p class="lede">' + p.lede + '</p>\n' +
 buttons +
@@ -449,6 +450,7 @@ var SERVICES = [
     price: ['Starting at $6,500', 'Fixed scope, fixed price'],
     dur: ['2–3 weeks', 'Two workshops, one review'],
     next: ['Usually a build', 'Design does not oblige you to build with us'],
+    kind: 'Project',
     results: 'Immediate',
     quad: [
       ['A written specification for your revenue system, produced before anyone touches a portal. Object model, lifecycle, pipelines, process map and the reports that depend on all of it.',
@@ -495,6 +497,7 @@ var SERVICES = [
     price: ['Starting at $18,000', 'Scope-dependent, quoted after design'],
     dur: ['6–12 weeks', 'Weekly working sessions'],
     next: ['Hypercare included', 'Most teams move onto a retainer afterwards'],
+    kind: 'Project',
     results: '6–8 weeks',
     quad: [
       ['[Placeholder] A HubSpot portal built or migrated end to end, by the same people who scoped it, and documented well enough that your team can run it without calling us.',
@@ -540,6 +543,7 @@ var SERVICES = [
     price: ['From $2,500 a month', 'Tiered by hours, not by seats'],
     dur: ['Rolling monthly', 'Thirty days notice either way'],
     next: ['Unused hours roll', 'Within the quarter, so a quiet month is not wasted'],
+    kind: 'Retainer',
     results: 'First month',
     quad: [
       ['[Placeholder] A named HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon.',
@@ -585,6 +589,7 @@ var SERVICES = [
     price: ['From $3,500 a month', 'Fractional, not full-time'],
     dur: ['Rolling monthly', 'Fortnightly sessions'],
     next: ['Advice, not delivery', 'Build work is scoped and priced on its own'],
+    kind: 'Retainer',
     results: '4–6 weeks',
     quad: [
       ['[Placeholder] Fractional revenue operations leadership. What the system should be doing, what it is doing instead, and which of those gaps is costing you money.',
@@ -630,6 +635,18 @@ var SERVICES = [
     price: ['Starting at $4,500', 'Fixed scope, fixed price'],
     dur: ['2–3 weeks', 'Interviews, then one findings session'],
     next: ['Stands alone', 'Often the first step before a design engagement'],
+    kind: 'Project',
+    results: 'Immediate',
+    quad: [
+      ['[Placeholder] Every step from first touch to paid invoice, mapped end to end across every team and every system, on one page.',
+       '[Placeholder] Usually the first time anyone has seen the whole thing at once.'],
+      ['[Placeholder] Deals that stall at the seams between teams, shadow spreadsheets holding the process together, and manual steps nobody has counted.',
+       '[Placeholder] Second short paragraph.'],
+      ['[Placeholder] We interview each team separately, then follow real records through the real systems, because the process people describe and the process that runs are rarely the same thing.',
+       '[Placeholder] Then we draw the whole thing, handoffs and owners marked.'],
+      ['[Placeholder] Teams who know something is slow but cannot say where, and teams about to buy software to fix a process they have never drawn.',
+       '[Placeholder] Second short paragraph.']
+    ],
     caseIdx: 4
   }
 ];
@@ -689,103 +706,68 @@ function caseCard(c, depth, cls) {
 }
 
 /* ---------- one service page ----------
-   Seven sections, and no two of them the same shape: a statement over two
-   columns of prose, a pair of scope cards, the numbered run of the
-   engagement, what you leave with, one poster card, the price, and the two
-   services people usually pair it with. */
 
-function servicePage(s, i) {
-  var kase = CASES[s.caseIdx];
-  var other = SERVICES.filter(function (x) { return x.slug !== s.slug; }).slice(0, 2);
+   Three things and nothing else: a header carrying the service name and the
+   three facts a buyer asks first, a quadrant answering the four questions
+   they ask next, and that service's own booking widget.
+
+   It replaced seven sections that were five variations on the same card
+   grid. A leaf page does not need to re-argue the pitch — it needs to say
+   what the thing is and let you book a call about it.
+
+   The quadrant is four cells split by two hairlines rather than four
+   floating cards: it reads as one object with four parts, which is what it
+   is, and it does not repeat the .pcard grids used on the pages above.
+
+   No closing panel. The booking widget IS the call to action, and a
+   'Schedule a discovery call' button sitting underneath a scheduler is
+   asking twice. */
+
+var QUAD_TITLES = ['What it is', 'Problems it solves', 'Our process', 'Who it is for'];
+
+/* Every service will eventually point at its own HubSpot meeting link.
+   Until James splits them out they all land on the discovery call, so the
+   fallback lives here rather than repeated five times in SERVICES. */
+var BOOKING_DEFAULT = 'https://revhops.com/meetings/revhops/discovery-call?embed=true';
+
+function meetingEmbed(src) {
+  return '      <!-- Start of Meetings Embed Script -->\n' +
+         '      <div class="meetings-iframe-container" data-src="' + src + '"></div>\n' +
+         '      <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"><\/script>\n' +
+         '      <!-- End of Meetings Embed Script -->\n';
+}
+
+function servicePage(s) {
   var body = '';
 
-  /* the argument, set large, with the detail beside it */
-  body += section(
-'    <div class="split" style="align-items:start">\n' +
-'      <p class="statement reveal reveal-left">' + s.statement + '</p>\n' +
-'      <div class="cols-2 reveal reveal-right">\n' +
-      s.prose.map(function (t) { return '        <p>' + t + '</p>'; }).join('\n') + '\n' +
-'      </div>\n' +
-'    </div>\n');
-
-  /* what is and is not in it */
-  body += section(
-    secHead('What is <span class="hl">in it</span>, and what is not') +
-'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-    pcards([
-      { title: 'In scope', copy: 'Everything below is part of the engagement and part of the price.',
-        chips: s.scope.in, chipKind: 'have' },
-      { title: 'Not in scope', copy: 'Quoted separately if you want it, and named here so it is never a surprise.',
-        chips: s.scope.out, chipKind: 'missing' }
-    ], 'pcards-2') +
-'    </div>\n', 'section-tight');
-
-  /* how it runs */
-  body += section(
-    secHead('How it runs') +
-'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-    pcards(s.steps.map(function (st) {
-      return { n: st.n, title: st.title, copy: st.copy };
-    })) +
-'    </div>\n', 'section-tight');
-
-  /* what you leave with */
-  body += section(
-    secHead('What you have on the last day') +
-'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-    pcards(s.leave) +
-'    </div>\n', 'section-tight');
-
-  /* one case study */
-  body += section(
-'    <div class="split" style="align-items:center">\n' +
-'      ' + caseCard(kase, 1, 'reveal reveal-left') + '\n' +
-'      <div class="stack gap-20 reveal reveal-right">\n' +
-'        <h2 class="h2">One that went the way it should</h2>\n' +
-'        <p class="small">[One paragraph on the client: what they sold, how big the team was, and\n' +
-'          what state the system was in when they called.]</p>\n' +
-'        <p class="small">[One paragraph on what this service changed for them, and the number that\n' +
-'          moved because of it.]</p>\n' +
-'        <a class="text-link" href="/case-studies/' + kase.slug + '">Read the story <span class="arrow">&rarr;</span></a>\n' +
-'      </div>\n' +
-'    </div>\n', 'section-tight');
-
-  /* the price, then where to go next */
-  body += section(
-    secHead('What it costs') +
-'    <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-'      <div class="price-teaser-cell">\n' +
-'        <span class="price-teaser-label">Price</span>\n' +
-'        <span class="price-teaser-fig">' + s.price[0] + '</span>\n' +
-'        <p class="price-teaser-note">' + s.price[1] + '</p>\n' +
-'      </div>\n' +
-'      <div class="price-teaser-cell">\n' +
-'        <span class="price-teaser-label">Timeline</span>\n' +
-'        <span class="price-teaser-fig">' + s.dur[0] + '</span>\n' +
-'        <p class="price-teaser-note">' + s.dur[1] + '</p>\n' +
-'      </div>\n' +
-'      <div class="price-teaser-cell">\n' +
-'        <span class="price-teaser-label">' + s.next[0] + '</span>\n' +
-'        <span class="price-teaser-fig">&mdash;</span>\n' +
-'        <p class="price-teaser-note">' + s.next[1] + '</p>\n' +
-'      </div>\n' +
+  /* the quadrant, then one text link out to pricing */
+  body += '\n<section class="section svc-quad-section">\n' +
+'  <div class="shell">\n' +
+'    <div class="quad reveal">\n' +
+    s.quad.map(function (cell, i) {
+      return '      <div class="quad-cell">\n' +
+             '        <h2 class="quad-title">' + QUAD_TITLES[i] + '</h2>\n' +
+             cell.map(function (t) {
+               return '        <p class="quad-copy">' + t + '</p>';
+             }).join('\n') + '\n' +
+             '      </div>';
+    }).join('\n') + '\n' +
 '    </div>\n' +
-'    <p class="small muted reveal" style="margin-top:18px;max-width:62ch">A starting point, not a\n' +
-'      quote. The full range is on the <a href="/pricing">pricing page</a>, and the real figure\n' +
-'      comes out of the first call.</p>\n' +
-'\n' +
-'    <div class="stack gap-16 reveal" style="margin-top:clamp(38px,4.5vw,64px)">\n' +
-'      <p class="label">Often paired with</p>\n' +
-'      <div class="svc-list svc-list-plain">\n' +
-      other.map(function (o) {
-        return '        <a class="svc-row" href="/services/' + o.slug + '">\n' +
-               '          <h3 class="svc-title">' + o.name + '</h3>\n' +
-               '          <p class="svc-copy">' + o.row + '</p>\n' +
-               '          <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>\n' +
-               '        </a>';
-      }).join('\n') + '\n' +
-'      </div>\n' +
-'    </div>\n', 'section-tight to-white');
+'    <div class="quad-cta reveal">\n' +
+'      <a class="text-link" href="/pricing">View pricing details <span class="arrow">&rarr;</span></a>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n';
+
+  /* the service's own scheduler */
+  body += '\n<section class="section-tight svc-book">\n' +
+'  <div class="shell">\n' +
+    secHead('Want to learn more?', null, 'centred') +
+'    <div class="meet-wrap">\n' +
+    meetingEmbed(s.booking || BOOKING_DEFAULT) +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n';
 
   return {
     file: 'services/' + s.slug + '.html',
@@ -793,12 +775,25 @@ function servicePage(s, i) {
     navCurrent: '/services',
     title: s.title,
     description: s.desc,
-    h1: s.h1,
+
+    /* the service's NAME, not a slogan. This page is reached from a list of
+       five names and from a nav item called Services; anything else at the
+       top makes the visitor check they landed on the right one. */
+    h1: s.name,
     lede: s.lede,
-    media: { src: 'assets/img/case-study-placeholder.svg', alt: '' },
-    meta: [['Timeline', s.time], ['From', s.price[0].replace(/^(Starting at |From )/, '')]],
-    headButtons: '          <a class="btn btn-primary" href="/call">Schedule a call</a>\n' +
-                 '          <a class="text-link" href="/services">All services <span class="arrow">&rarr;</span></a>',
+
+    /* same header spacing as /services — no artwork, full-width type — with
+       a bottom beat added, because this one carries a meta row underneath */
+    heroClass: 'page-hero-nomedia page-hero-svc',
+    eyebrow: ['All services', '/services'],
+    meta: [
+      ['Timeline', s.time],
+      ['From', s.price[0].replace(/^(Starting at |From )/, '')],
+      ['Time to results', s.results],
+      ['Type', s.kind]
+    ],
+
+    noClose: true,
     body: body
   };
 }
