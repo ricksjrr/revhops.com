@@ -2760,7 +2760,11 @@ main { overflow-x: clip; }
    ========================================================================== */
 .page-hero {
   position: relative;
-  padding-top: clamp(30px, 3.6vw, 58px);
+  /* pulled up under the nav so the artwork runs to the top of the screen,
+     the way the homepage's disc does. The copy column keeps clear of the bar
+     with its own padding. */
+  margin-top: calc(var(--nav-h) * -1);
+  padding-top: calc(var(--nav-h) + clamp(26px, 3vw, 48px));
   padding-bottom: clamp(38px, 4.4vw, 72px);
 }
 .page-hero-inner {
@@ -2768,10 +2772,12 @@ main { overflow-x: clip; }
   /* the second column is a spacer the artwork sits over, so the two stay
      the same width and the headline breaks at the same point on every page */
   grid-template-columns: minmax(0, 1fr) var(--hero-media-w);
-  --hero-media-w: min(40vw, 620px);
+  --hero-media-w: min(38vw, 600px);
   gap: clamp(28px, 4vw, 60px);
   align-items: center;
-  min-height: clamp(260px, 26vw, 400px);
+  /* 480 put the band back at 742px tall, which is where it was when James
+     first said it pushed the page down. */
+  min-height: clamp(280px, 25vw, 396px);
 }
 .page-hero-text {
   display: flex;
@@ -2781,12 +2787,28 @@ main { overflow-x: clip; }
 }
 /* Bigger than .page-head's headline was, and on a shorter band: the size
    is what carries the top of the page now that the circle is gone. */
+/* Bigger than it was. The old size left the headline floating in the middle
+   of its own column with nothing holding the top of the page down. */
 .page-hero .h1 {
-  font-size: clamp(2.2rem, 1.15rem + 4vw, 4.1rem);
+  /* 4.6rem was too big for a column this wide: 'Five ways in and one system
+     underneath' broke to three lines, and three is the one thing the type
+     rules do not allow. This size holds it to two. */
+  font-size: clamp(2.3rem, 1.2rem + 3.4vw, 3.7rem);
   line-height: 1;
-  letter-spacing: -.042em;
+  letter-spacing: -.04em;
+  /* 15ch forced 'Five ways in and one system underneath' to three lines, and
+     three is the one thing the type rules do not allow. */
+  max-width: 20ch;
 }
-.page-hero .lede { max-width: 46ch; }
+.page-hero .lede { max-width: 42ch; font-size: clamp(1.05rem, .98rem + .4vw, 1.24rem); }
+/* one warm mark at the top of the page, above the headline. Not an eyebrow —
+   no words, just the rule. */
+.page-hero-text::before {
+  content: "";
+  width: 54px; height: 4px; border-radius: 2px;
+  background: var(--warm);
+  margin-bottom: clamp(6px, 1vw, 14px);
+}
 
 /* The meta line — timing, price, whatever the page's two facts are. Set as
    type on a rule rather than as chips: chips here read as tags on the
@@ -2820,6 +2842,8 @@ main { overflow-x: clip; }
 
 .page-hero-media {
   position: absolute;
+  /* 0, not --nav-h. The band's own padding-top already clears the bar; adding
+     the nav height on top of it opened an 86px gap between the two. */
   top: 0;
   bottom: 0;
   right: 0;
