@@ -553,3 +553,129 @@
 
   apply();
 })();
+
+/* ==========================================================================
+   CASE STUDIES INDEX — the five-axis filter
+
+   The rule is OR inside a group, AND across groups. Tick Growth and
+   Maturity and you get both; tick Growth and eCommerce and you get the
+   overlap. A group with nothing ticked does not constrain anything, which
+   is why the page opens showing everything.
+
+   Service is the exception that proves it: it loads with all five ticked,
+   which under that rule is the same result as none ticked, and the last one
+   still on locks so the shelf cannot be emptied from the group that is
+   meant to be the default view.
+
+   The matcher knows nothing about the axes. Each option carries
+   data-group / data-field / data-val, and each card carries a data-
+   attribute per field holding a space-separated token list. Adding an axis
+   is markup only: a new group in tools/build-pages.js and a matching data-
+   attribute on the cards.
+
+   Nothing is drawn when the grid comes back empty. The count line above it
+   reads "Showing 0 of 5" and Clear filters sits at the top of the column
+   the visitor just used — a panel in the grid said both those things again
+   and pushed the controls off the screen.
+
+   No URL state and no persistence, as asked: the filter clears on reload
+   and does not follow the visitor to another page.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var root = document.querySelector('[data-cs-filters]');
+  var grid = document.querySelector('[data-cs-grid]');
+  if (!root || !grid) return;
+
+  var opts = Array.prototype.slice.call(root.querySelectorAll('[data-group]'));
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.case-card'));
+  var clears = Array.prototype.slice.call(document.querySelectorAll('[data-cs-clear]'));
+  var count = document.querySelector('[data-cs-count]');
+  if (!opts.length || !cards.length) return;
+
+  /* what each option looked like on load, so Clear can put it back */
+  opts.forEach(function (o) {
+    o.setAttribute('data-default', o.getAttribute('aria-checked'));
+  });
+
+  function on(o) { return o.getAttribute('aria-checked') === 'true'; }
+
+  function tokens(card, field) {
+    return (card.getAttribute('data-' + field) || '').split(/\s+/);
+  }
+
+  /* the ticked options, grouped: { service: {field:'services', vals:[...]}, ... } */
+  function selection() {
+    var groups = {};
+    opts.forEach(function (o) {
+      if (!on(o)) return;
+      var g = o.getAttribute('data-group');
+      if (!groups[g]) groups[g] = { field: o.getAttribute('data-field'), vals: [] };
+      groups[g].vals.push(o.getAttribute('data-val'));
+    });
+    return groups;
+  }
+
+  function apply() {
+    var groups = selection();
+    var shown = 0;
+
+    cards.forEach(function (card) {
+      var ok = Object.keys(groups).every(function (g) {
+        var tags = tokens(card, groups[g].field);
+        return groups[g].vals.some(function (v) { return tags.indexOf(v) !== -1; });
+      });
+      card.hidden = !ok;
+      if (ok) shown++;
+    });
+
+    /* the last service still on is held, and says so */
+    var svc = opts.filter(function (o) { return o.getAttribute('data-group') === 'service'; });
+    var svcOn = svc.filter(on);
+    svc.forEach(function (o) {
+      if (svcOn.length === 1 && on(o)) {
+        o.setAttribute('data-locked', '');
+        o.setAttribute('aria-disabled', 'true');
+      } else {
+        o.removeAttribute('data-locked');
+        o.removeAttribute('aria-disabled');
+      }
+    });
+
+    /* Clear goes quiet when there is nothing to clear */
+    var touched = opts.some(function (o) {
+      return String(on(o)) !== o.getAttribute('data-default');
+    });
+    clears.forEach(function (b) {
+      if (touched) b.removeAttribute('data-idle');
+      else b.setAttribute('data-idle', '');
+    });
+
+    if (count) {
+      count.textContent = shown === cards.length
+        ? 'Showing all ' + cards.length + ' case studies'
+        : 'Showing ' + shown + ' of ' + cards.length + ' case studies';
+    }
+  }
+
+  opts.forEach(function (o) {
+    o.addEventListener('click', function () {
+      if (o.hasAttribute('data-locked')) return;
+      o.setAttribute('aria-checked', on(o) ? 'false' : 'true');
+      apply();
+    });
+  });
+
+  clears.forEach(function (b) {
+    b.addEventListener('click', function () {
+      opts.forEach(function (o) {
+        o.setAttribute('aria-checked', o.getAttribute('data-default'));
+      });
+      apply();
+      root.scrollTop = 0;
+    });
+  });
+
+  apply();
+})();

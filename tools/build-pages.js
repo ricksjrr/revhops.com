@@ -658,12 +658,81 @@ var SERVICES = [
    everything else here — set it properly when the real stories land, or the
    filter will confidently show the wrong work. */
 
+/* ---------- the case study taxonomy ----------
+
+   THIS IS THE BACKEND FOR THE /case-studies FILTER. Every axis the filter
+   offers is built from the data below, so adding a tool to a case study puts
+   that tool in the Tools used list, and nothing has to be typed twice.
+
+   Three axes plus service:
+
+     svc       one or more service slugs, from SERVICES
+     crm       exactly one CRMS slug. Every engagement has a CRM at the
+               middle of it, which is what makes this the one tool worth
+               filtering on — the rest of the stack varies too much between
+               clients to be a useful axis
+     industry  one INDUSTRIES slug
+     stage     one STAGES slug, shown as the Team size band. Growth stage
+               was a second filter over this same field and is gone: the
+               homepage maturity slider defines a stage BY its headcount, so
+               the two could never disagree and the second one only made the
+               column longer.
+
+   THE TAGS ON THE FIVE CASES BELOW ARE PLACEHOLDERS, invented to give the
+   filter something real to move. They are as fictional as [Client name] and
+   the 00% figures. Correct them when the real write-ups land.
+   ---------------------------------------------------------------------- */
+
+var INDUSTRIES = [
+  ['b2b-saas',              'B2B SaaS'],
+  ['financial-services',    'Financial Services'],
+  ['professional-services', 'Professional Services'],
+  ['ecommerce',             'eCommerce']
+];
+
+/* The three CRMs worth asking about. A closed list, unlike the tool tags
+   that used to be here: this is the question a visitor actually arrives
+   with, and a derived list of fifteen logos was answering a question nobody
+   asked. */
+var CRMS = [
+  ['hubspot',    'HubSpot'],
+  ['pipedrive',  'Pipedrive'],
+  ['salesforce', 'Salesforce']
+];
+
+/* slug, stage name, headcount band. Both the name and the band come from
+   STAGES in assets/js/maturity-slider.js — if that array changes, this one
+   changes with it or the two halves of the site disagree about what
+   "Growth" means. The name is unused on this page now that Growth stage has
+   gone; it stays because the band is meaningless without it. */
+var STAGES = [
+  ['startup',    'Startup',    '1&ndash;10'],
+  ['scaleup',    'Scaleup',    '10&ndash;50'],
+  ['growth',     'Growth',     '50&ndash;200'],
+  ['maturity',   'Maturity',   '200&ndash;1,000'],
+  ['enterprise', 'Enterprise', '1,000+']
+];
+
 var CASES = [
-  { slug: 'case-study-one',   n: 'one',   figs: [['00', '%'], ['00', 'x']], svc: ['solution-design', 'crm-implementations'] },
-  { slug: 'case-study-two',   n: 'two',   figs: [['00', '%'], ['00', 'h']], svc: ['crm-implementations', 'lead-to-cash-process-mapping'] },
-  { slug: 'case-study-three', n: 'three', figs: [['00', '%'], ['00', 'k']], svc: ['hubspot-support-retainers', 'revops-consulting'] },
-  { slug: 'case-study-four',  n: 'four',  figs: [['00', '%'], ['00', 'd']], svc: ['solution-design', 'lead-to-cash-process-mapping'] },
-  { slug: 'case-study-five',  n: 'five',  figs: [['00', 'k'], ['00', 'x']], svc: ['revops-consulting', 'crm-implementations'] }
+  { slug: 'case-study-one',   n: 'one',   figs: [['00', '%'], ['00', 'x']],
+    svc: ['solution-design', 'crm-implementations'],
+    crm: 'salesforce', industry: 'b2b-saas', stage: 'growth' },
+
+  { slug: 'case-study-two',   n: 'two',   figs: [['00', '%'], ['00', 'h']],
+    svc: ['crm-implementations', 'lead-to-cash-process-mapping'],
+    crm: 'hubspot', industry: 'professional-services', stage: 'scaleup' },
+
+  { slug: 'case-study-three', n: 'three', figs: [['00', '%'], ['00', 'k']],
+    svc: ['hubspot-support-retainers', 'revops-consulting'],
+    crm: 'hubspot', industry: 'financial-services', stage: 'maturity' },
+
+  { slug: 'case-study-four',  n: 'four',  figs: [['00', '%'], ['00', 'd']],
+    svc: ['solution-design', 'lead-to-cash-process-mapping'],
+    crm: 'hubspot', industry: 'ecommerce', stage: 'startup' },
+
+  { slug: 'case-study-five',  n: 'five',  figs: [['00', 'k'], ['00', 'x']],
+    svc: ['revops-consulting', 'crm-implementations'],
+    crm: 'pipedrive', industry: 'b2b-saas', stage: 'enterprise' }
 ];
 
 /* the client marquee, straight off the homepage. Both runs must stay
@@ -687,9 +756,18 @@ function logoBand(depth) {
 '</section>\n';
 }
 
-/* one poster card off the homepage rail */
+/* one poster card off the homepage rail
+
+   The data- attributes are the filter's whole vocabulary. /services reads
+   data-services only; /case-studies reads all four. They are written on
+   every card everywhere, because a card that knows what it is costs nothing
+   and a card that only knows it on one page is how the two filters drift. */
 function caseCard(c, depth, cls) {
-  var svc = c.svc ? '\n           data-services="' + c.svc.join(' ') + '"' : '';
+  var svc =
+    (c.svc      ? '\n           data-services="' + c.svc.join(' ') + '"'   : '') +
+    (c.crm      ? '\n           data-crm="' + c.crm + '"'                  : '') +
+    (c.industry ? '\n           data-industry="' + c.industry + '"'        : '') +
+    (c.stage    ? '\n           data-stage="' + c.stage + '"'              : '');
   return '<a class="case-card' + (cls ? ' ' + cls : '') + '" href="' + '/case-studies/' + c.slug + '"' + svc + '>\n' +
     '          <img src="' + up(depth) + 'assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">\n' +
     '          <div class="case-body">\n' +
@@ -703,6 +781,66 @@ function caseCard(c, depth, cls) {
     '            <span class="case-go" aria-hidden="true">&rarr;</span>\n' +
     '          </div>\n' +
     '        </a>';
+}
+
+/* ---------- the /case-studies filter column ----------
+
+   Five groups of checkboxes and a clear. Each option carries three things:
+
+     data-group  which group it belongs to, for the OR-within / AND-across
+                 rule the matcher applies
+     data-field  which card attribute it tests. Team size and Growth stage
+                 are two groups reading the same data-stage field
+     data-val    the token to look for in that attribute
+
+   The markup is dumb on purpose: site.js reads those three attributes and
+   nothing else, so a new axis is a new csGroup call here and no JavaScript.
+   ---------------------------------------------------------------------- */
+function csOpt(group, field, val, label, on) {
+  return '          <button class="cs-opt" type="button" role="checkbox" aria-checked="' + (on ? 'true' : 'false') + '"\n' +
+         '                  data-group="' + group + '" data-field="' + field + '" data-val="' + val + '">\n' +
+         '            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>\n' +
+         '            <span class="cs-opt-label">' + label + '</span>\n' +
+         '          </button>';
+}
+
+function csGroup(title, opts) {
+  return '\n      <div class="cs-group">\n' +
+         '        <h3 class="cs-group-title">' + title + '</h3>\n' +
+         '        <div class="cs-opts" role="group" aria-label="' + title + '">\n' +
+         opts.join('\n') + '\n' +
+         '        </div>\n' +
+         '      </div>\n';
+}
+
+function csSide() {
+  /* no .reveal on the column: it sticks, and the reveal transform would
+     take the sticky positioning with it */
+  return '    <aside class="cs-side" data-cs-filters aria-label="Filter case studies">\n' +
+'      <div class="cs-side-head">\n' +
+'        <h2 class="cs-side-title">Filter</h2>\n' +
+'        <button class="cs-clear" type="button" data-cs-clear>Clear filters</button>\n' +
+'      </div>\n' +
+
+  /* Service loads all five checked, which is the same result as none
+     checked and reads better: the page opens showing the whole shelf and
+     every other group opens empty. */
+  csGroup('Service', SERVICES.map(function (s) {
+    return csOpt('service', 'services', s.slug, s.name, true);
+  })) +
+
+  csGroup('CRM used', CRMS.map(function (t) {
+    return csOpt('crm', 'crm', t[0], t[1], false);
+  })) +
+
+  csGroup('Industry', INDUSTRIES.map(function (i) {
+    return csOpt('industry', 'industry', i[0], i[1], false);
+  })) +
+
+  csGroup('Team size', STAGES.map(function (s) {
+    return csOpt('size', 'stage', s[0], s[2] + ' people', false);
+  })) +
+'    </aside>\n';
 }
 
 /* ---------- one service page ----------
@@ -1054,58 +1192,52 @@ var servicesIndex = {
 '    </div>\n', 'section case-section to-white')
 };
 
+/* ---------- /case-studies ----------
+
+   A header plate, the filterable shelf, the close. The rail, the problem
+   cards and the testimonials that used to be on this page are gone: this is
+   the page you come to in order to FIND a case study, and everything else
+   was standing between the visitor and the grid.
+
+   `bare` skips the shared .page-hero — the header here is the gradient
+   plate, which is a different object and carries its own nav sentinel.
+   ---------------------------------------------------------------------- */
 var caseIndex = {
   file: 'case-studies/index.html',
   depth: 1,
   navCurrent: '/case-studies',
+  mainClass: 'cs-index',
+  bare: true,
   title: 'Case studies — RevHops',
-  description: 'Revenue operations work we have done, what it changed, and what the clients said about it.',
-  h1: 'Proof beats a pitch deck',
-  lede: 'Five engagements, what was broken when we arrived, and what the numbers did afterwards. The awkward ones are in here too.',
-  media: { src: 'assets/img/case-study-placeholder.svg', alt: '' },
-  meta: [['Engagements', 'Five'], ['Sectors', '[to fill in]']],
+  description: 'Revenue operations work we have done, filterable by service, tools, industry, team size and growth stage.',
   body:
-    logoBand(1) +
-'\n<section class="section case-section">\n' +
+'\n<!-- ===================== HEADER PLATE =====================\n' +
+'     The start panel artwork on a 12px plate, 100px below the bar. Nothing\n' +
+'     in it but the title: the filter under it is the page. .page-head-end\n' +
+'     is the zero-height sentinel the nav watches to decide when to\n' +
+'     collapse, and it lives here because there is no .page-hero. -->\n' +
+'<section class="cs-head">\n' +
 '  <div class="shell">\n' +
-'\n' +
-'    <div class="case-head">\n' +
-'      <span aria-hidden="true"></span>\n' +
-'      <div class="sec-head reveal">\n' +
-'        <h2 class="h2">We\'ve hopped with <span class="hl">some of the best</span></h2>\n' +
-'      </div>\n' +
-'      <div class="case-nav reveal">\n' +
-'        <button type="button" data-case-prev aria-label="Previous case studies">&larr;</button>\n' +
-'        <button type="button" data-case-next aria-label="More case studies">&rarr;</button>\n' +
-'      </div>\n' +
+'    <div class="cs-head-panel">\n' +
+'      <h1 class="h1">Case Studies</h1>\n' +
 '    </div>\n' +
-'\n' +
-'    <div class="case-rail-wrap">\n' +
-'      <div class="case-rail" data-case-rail tabindex="0" aria-label="Case studies">\n' +
-      CASES.map(function (c) { return '        ' + caseCard(c, 1, 'reveal'); }).join('\n') + '\n' +
-'      </div>\n' +
-'    </div>\n' +
-'\n' +
 '  </div>\n' +
+'  <div class="page-head-end" data-nav-clear></div>\n' +
 '</section>\n' +
-    section(
-      secHead('What the work usually involves') +
-'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-      pcards([
-        { title: 'A system nobody trusts', copy: 'The most common starting point. The CRM says one thing, the invoices say another, and leadership has stopped believing either.',
-          chips: ['Bad data', 'No single source'] },
-        { title: 'Growth that outran the setup', copy: 'What worked at eight people falls over at thirty. Usually the routing, the stages and the reporting all at once.',
-          chips: ['Scaling', 'Handoffs'] },
-        { title: 'A migration nobody wants to run', copy: 'Moving platforms with a decade of history attached, without losing the history or the quarter.',
-          chips: ['Migration', 'Reconciliation'] }
-      ]) +
-'    </div>\n', 'section-tight') +
-'\n<!-- The testimonials, same three quotes as the homepage. No heading on the\n' +
-'     page: each quote carries its own title, so the h2 is for the outline. -->\n' +
-'<section class="section-tight testi-section">\n' +
+'\n<!-- ===================== THE SHELF =====================\n' +
+'     20 / 80. Filters down the left, the grid on the right, three cards\n' +
+'     across from 1100px up. -->\n' +
+'<section class="section cs-section to-white">\n' +
 '  <div class="shell">\n' +
-'    <h2 class="sr-only">What clients say about working with us</h2>\n' +
-'    <div class="testi">\n' + TESTIMONIALS + '    </div>\n' +
+'    <div class="cs-layout">\n' +
+      csSide() +
+'\n      <div class="cs-results">\n' +
+'        <p class="cs-count" data-cs-count role="status">Showing all ' + CASES.length + ' case studies</p>\n' +
+'        <div class="cs-grid" data-cs-grid>\n' +
+        CASES.map(function (c) { return '        ' + caseCard(c, 1, 'reveal'); }).join('\n') + '\n' +
+'        </div>\n' +
+'      </div>\n' +
+'    </div>\n' +
 '  </div>\n' +
 '</section>\n'
 };

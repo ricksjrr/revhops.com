@@ -3680,3 +3680,244 @@ a.pcard:hover .arrow { transform: translateX(5px); }
    beat under the heading than a card grid does: it paints its own frame, so
    a tight gap reads as the heading sitting on top of the iframe. */
 .svc-book .sec-head { margin-bottom: clamp(26px, 3vw, 42px); }
+
+/* ==========================================================================
+   CASE STUDIES INDEX — the header plate and the filterable shelf
+
+   The page is two objects: a gradient plate carrying the title, and a
+   20 / 80 split with the filter column on the left and a grid of the same
+   poster cards the homepage uses on the right. The rail, the problem cards
+   and the testimonials that used to sit here are gone — this is the page
+   you arrive at to FIND a case study, and everything else was in the way.
+   ========================================================================== */
+
+/* ---------- the header plate ----------
+
+   100px below the bar, flat, no negative margin: unlike .page-hero this
+   header does not run up behind the nav, because the plate has a hard top
+   edge and the transparent bar's navy links would sit on the artwork.
+
+   No border, per the brief. The plate's own edge is the radius and the
+   contrast step against paper. */
+.cs-head {
+  padding-top: 74px;
+  padding-bottom: clamp(24px, 2.8vw, 40px);
+}
+
+/* THE SCRIM IS NOT DECORATION — it is what makes the title legible.
+
+   The artwork is a light gradient that darkens towards the bottom left and
+   towards the middle, and navy type measures 2.5:1 on the worst of it and
+   8:1 on the white corner — so the crop alone cannot be trusted. `center
+   20%` keeps the light band in view, and the wash sits under the middle
+   third where the centred title lands, carrying the worst pixel under it to
+   5.9:1 at 335px wide and 8.5:1 at 1112px. It clears by 78% of the width,
+   so the warm right-hand edge and the white left one are both untouched.
+
+   Re-measure if the artwork, the crop or the title's alignment changes.
+   tools/ has no checker for this; it was measured in Pillow. */
+.cs-head-panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: clamp(178px, 20vw, 268px);
+  padding: clamp(26px, 3.4vw, 54px);
+  border-radius: var(--radius-card);
+  border: 0;
+  overflow: hidden;
+  background-color: var(--mist);
+  background-image:
+    radial-gradient(ellipse 72% 102% at 50% 50%,
+      rgba(250, 250, 248, .74) 0%,
+      rgba(250, 250, 248, .34) 55%,
+      rgba(250, 250, 248, 0) 100%),
+    url("../img/start-panel-bg.webp");
+  background-size: auto, cover;
+  background-position: center, center 20%;
+  background-repeat: no-repeat, no-repeat;
+}
+/* Navy in both themes. The plate brings its own light ground with it, so it
+   does not follow the page when the page goes dark — the same reason the
+   close panel's headline is pinned to #304157 further up this file. */
+.cs-head-panel .h1 {
+  position: relative;
+  margin: 0;
+  color: #304157;
+  /* the same ramp .page-hero .h1 uses, so "Case Studies" here and "Services"
+     on /services are the same size at every width */
+  font-size: clamp(2.3rem, 1.2rem + 3.4vw, 3.7rem);
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+
+/* ---------- the split ----------
+   20 / 80 exactly, as asked. The gap comes out of the right column, so the
+   filters stay at a fifth of the shell at every width above the breakpoint. */
+.cs-layout {
+  display: grid;
+  grid-template-columns: 20% minmax(0, 1fr);
+  gap: clamp(22px, 2.8vw, 44px);
+  align-items: start;
+}
+
+/* The column travels with the grid. Sticky rather than fixed so it stops at
+   the section's own end, and top clears the floating bar plus its gap. */
+.cs-side {
+  position: sticky;
+  top: calc(var(--nav-float-gap) + 74px);
+  max-height: calc(100vh - var(--nav-float-gap) - 96px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding-right: 2px;
+}
+.cs-side-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.cs-side-title {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .78rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+/* A text button, not a chip: it is an escape hatch rather than a sixth
+   filter, and a chip here reads as one more thing to switch on. */
+.cs-clear {
+  border: 0;
+  background: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: .76rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: transparent;
+  transition: color .25s var(--ease), text-decoration-color .25s var(--ease);
+}
+.cs-clear:hover { color: var(--ink-strong); text-decoration-color: currentColor; }
+.cs-clear:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 3px; border-radius: 3px; }
+/* nothing is on but the five services, so there is nothing to clear */
+.cs-clear[data-idle] { opacity: .45; pointer-events: none; }
+
+.cs-group { padding-top: clamp(16px, 1.8vw, 22px); }
+.cs-group-title {
+  margin: 0 0 9px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .82rem;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+.cs-opts { display: flex; flex-direction: column; gap: 2px; }
+
+/* A row, not a chip. At a fifth of the shell the chips from /services wrap
+   into a ragged block that is hard to read down; a stacked row keeps the
+   boxes in one column and lets a long service name wrap under itself. */
+.cs-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  width: 100%;
+  padding: 6px 8px 6px 6px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--body);
+  font-family: var(--font-body);
+  font-size: .82rem;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+  transition: background .2s var(--ease), color .2s var(--ease);
+}
+.cs-opt:hover { background: var(--pill-bg); color: var(--ink); }
+.cs-opt:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 1px; }
+.cs-opt .cs-box { margin-top: 1px; }
+.cs-opt[aria-checked="true"] { color: var(--ink); font-weight: 700; }
+.cs-opt[aria-checked="true"] .cs-box {
+  background: var(--ink-strong);
+  border-color: var(--ink-strong);
+}
+.cs-opt[aria-checked="true"] .cs-box svg { opacity: 1; transform: scale(1); }
+/* the last service still on is held — an empty shelf is not a state worth
+   being able to reach, and the same rule runs the rail on /services */
+.cs-opt[data-locked] { cursor: default; }
+.cs-opt[data-locked]:hover { background: none; }
+
+/* ---------- the grid ----------
+   Three fixed tracks, not auto-fill. auto-fill was letting a wide display
+   put four and five posters across the 80% column, and at that width the
+   cards are smaller than the thing they are advertising. Three is the cap,
+   and the cards take whatever width that leaves them. */
+.cs-results { min-width: 0; }
+.cs-count {
+  margin: 0 0 clamp(14px, 1.6vw, 20px);
+  font-size: .8rem;
+  color: var(--muted);
+}
+.cs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 24px);
+}
+/* the rail sizes its own cards; in a grid the track does it */
+.cs-grid .case-card { width: auto; flex: none; }
+.cs-grid .case-card[hidden] { display: none; }
+
+/* Two, then one. The breakpoints are the card's, not the page's: a 3:4
+   poster stops being readable somewhere under 200px wide, and three tracks
+   reach that before the layout itself changes shape. */
+@media (max-width: 860px) {
+  .cs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 540px) {
+  .cs-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Nothing stands in for an empty grid. The count line above it already says
+   "Showing 0 of 5", and Clear filters is eight inches up the same screen —
+   a panel here repeated both and pushed the filters off the fold. */
+
+/* The close bleeds up over whatever is above it. Same pairing as the
+   services index: the bleed and the section's bottom padding are the same
+   number, so the plate starts exactly where the last row of cards stops.
+   Change one and change the other. */
+.cs-index .start-section { --start-bleed: 100px; }
+.cs-index .cs-section { padding-bottom: 100px; }
+
+@media (max-width: 1000px) {
+  /* The column stops being a fifth of anything useful below this. It goes
+     full width above the grid and the options lay out as wrapping chips
+     again, which is the shape they had room for on /services. */
+  .cs-layout { grid-template-columns: minmax(0, 1fr); }
+  .cs-side {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .cs-opts { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+  .cs-opt {
+    width: auto;
+    align-items: center;
+    padding: 7px 12px 7px 9px;
+    border: 1px solid var(--plate-line);
+    background: var(--plate);
+  }
+  .cs-opt[aria-checked="true"] { border-color: var(--ink-strong); background: var(--pill-bg); }
+  .cs-opt[data-locked]:hover { background: var(--pill-bg); }
+  .cs-opt .cs-box { margin-top: 0; }
+}

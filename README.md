@@ -211,6 +211,11 @@ full outstanding list, including the pages that still need building.
 name, one line on what was broken, one on what changed, and two figures. Left
 blank on purpose: these are real client results and should not be invented.
 
+**1b. Case study filter tags** — `CASES` in `tools/build-pages.js` carries
+`crm`, `industry` and `stage` on each of the five, and the /case-studies filter
+is built from them. The tags themselves are invented, the same way the `00%`
+figures are. Correct them with the outcomes.
+
 **2. Years in revenue operations** — `[00]` in the About bullets.
 
 **3. A portrait** — About still points at `case-study-placeholder.svg`, twice.

@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Case studies — RevHops</title>
-<meta name="description" content="Revenue operations work we have done, what it changed, and what the clients said about it.">
+<meta name="description" content="Revenue operations work we have done, filterable by service, tools, industry, team size and growth stage.">
 <link rel="icon" href="../assets/img/revhops-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="../assets/css/site.css?v=a71c43016f">
+<link rel="stylesheet" href="../assets/css/site.css?v=0a4f4191aa">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -69,75 +69,152 @@
   </div>
 </header>
 
-<main>
+<main class="cs-index">
 
-<!-- ===================== HERO =====================
-     Type left, artwork bleeding off the right edge. .page-head-end is the
-     zero-height sentinel the nav watches to decide when to collapse. -->
-<section class="page-hero">
+<!-- ===================== HEADER PLATE =====================
+     The start panel artwork on a 12px plate, 100px below the bar. Nothing
+     in it but the title: the filter under it is the page. .page-head-end
+     is the zero-height sentinel the nav watches to decide when to
+     collapse, and it lives here because there is no .page-hero. -->
+<section class="cs-head">
   <div class="shell">
-    <div class="page-hero-inner">
-      <div class="page-hero-text">
-        <h1 class="h1">Proof beats a pitch deck</h1>
-        <p class="lede">Five engagements, what was broken when we arrived, and what the numbers did afterwards. The awkward ones are in here too.</p>
-        <dl class="hero-meta">
-          <div><dt>Engagements</dt><dd>Five</dd></div>
-          <div><dt>Sectors</dt><dd>[to fill in]</dd></div>
-        </dl>
-      </div>
+    <div class="cs-head-panel">
+      <h1 class="h1">Case Studies</h1>
     </div>
-      <div class="page-hero-media">
-        <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true">
-      </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
 
-<section class="logo-band" aria-label="Clients we have worked with" style="--proof-lead:clamp(18px,2.4vw,40px)">
-  <div class="logo-rail">
-    <ul class="logo-run">
-      <li><img src="../assets/img/logos/dg.webp" alt="DG" loading="lazy"></li>
-      <li><img src="../assets/img/logos/woodside-homes.webp" alt="Woodside Homes" loading="lazy"></li>
-      <li><img src="../assets/img/logos/core-income.webp" alt="Core Income" loading="lazy"></li>
-      <li><img src="../assets/img/logos/ignite-group.webp" alt="Ignite Group" data-solid loading="lazy"></li>
-      <li><img src="../assets/img/logos/key-tree.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/cialdini-institute.webp" alt="Cialdini Institute" loading="lazy"></li>
-      <li><img src="../assets/img/logos/casadomaine.webp" alt="Casadomaine Custom Homes" loading="lazy"></li>
-      <li><img src="../assets/img/logos/financial-lease.webp" alt="Financial Lease" loading="lazy"></li>
-      <li><img src="../assets/img/logos/inbox-storage.webp" alt="Inbox Storage" loading="lazy"></li>
-    </ul>
-    <ul class="logo-run" aria-hidden="true">
-      <li><img src="../assets/img/logos/dg.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/woodside-homes.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/core-income.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/ignite-group.webp" alt="" data-solid loading="lazy"></li>
-      <li><img src="../assets/img/logos/key-tree.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/cialdini-institute.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/casadomaine.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/financial-lease.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/inbox-storage.webp" alt="" loading="lazy"></li>
-    </ul>
-  </div>
-</section>
-
-<section class="section case-section">
+<!-- ===================== THE SHELF =====================
+     20 / 80. Filters down the left, the grid on the right, three cards
+     across from 1100px up. -->
+<section class="section cs-section to-white">
   <div class="shell">
-
-    <div class="case-head">
-      <span aria-hidden="true"></span>
-      <div class="sec-head reveal">
-        <h2 class="h2">We've hopped with <span class="hl">some of the best</span></h2>
+    <div class="cs-layout">
+    <aside class="cs-side" data-cs-filters aria-label="Filter case studies">
+      <div class="cs-side-head">
+        <h2 class="cs-side-title">Filter</h2>
+        <button class="cs-clear" type="button" data-cs-clear>Clear filters</button>
       </div>
-      <div class="case-nav reveal">
-        <button type="button" data-case-prev aria-label="Previous case studies">&larr;</button>
-        <button type="button" data-case-next aria-label="More case studies">&rarr;</button>
-      </div>
-    </div>
 
-    <div class="case-rail-wrap">
-      <div class="case-rail" data-case-rail tabindex="0" aria-label="Case studies">
+      <div class="cs-group">
+        <h3 class="cs-group-title">Service</h3>
+        <div class="cs-opts" role="group" aria-label="Service">
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="true"
+                  data-group="service" data-field="services" data-val="solution-design">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">Solution design</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="true"
+                  data-group="service" data-field="services" data-val="crm-implementations">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">CRM implementations</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="true"
+                  data-group="service" data-field="services" data-val="hubspot-support-retainers">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">HubSpot support retainers</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="true"
+                  data-group="service" data-field="services" data-val="revops-consulting">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">RevOps consulting</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="true"
+                  data-group="service" data-field="services" data-val="lead-to-cash-process-mapping">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">Lead to cash process mapping</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="cs-group">
+        <h3 class="cs-group-title">CRM used</h3>
+        <div class="cs-opts" role="group" aria-label="CRM used">
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="crm" data-field="crm" data-val="hubspot">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">HubSpot</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="crm" data-field="crm" data-val="pipedrive">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">Pipedrive</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="crm" data-field="crm" data-val="salesforce">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">Salesforce</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="cs-group">
+        <h3 class="cs-group-title">Industry</h3>
+        <div class="cs-opts" role="group" aria-label="Industry">
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="industry" data-field="industry" data-val="b2b-saas">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">B2B SaaS</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="industry" data-field="industry" data-val="financial-services">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">Financial Services</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="industry" data-field="industry" data-val="professional-services">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">Professional Services</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="industry" data-field="industry" data-val="ecommerce">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">eCommerce</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="cs-group">
+        <h3 class="cs-group-title">Team size</h3>
+        <div class="cs-opts" role="group" aria-label="Team size">
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="size" data-field="stage" data-val="startup">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">1&ndash;10 people</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="size" data-field="stage" data-val="scaleup">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">10&ndash;50 people</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="size" data-field="stage" data-val="growth">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">50&ndash;200 people</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="size" data-field="stage" data-val="maturity">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">200&ndash;1,000 people</span>
+          </button>
+          <button class="cs-opt" type="button" role="checkbox" aria-checked="false"
+                  data-group="size" data-field="stage" data-val="enterprise">
+            <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>
+            <span class="cs-opt-label">1,000+ people</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+      <div class="cs-results">
+        <p class="cs-count" data-cs-count role="status">Showing all 5 case studies</p>
+        <div class="cs-grid" data-cs-grid>
         <a class="case-card reveal" href="../case-studies/case-study-one"
-           data-services="solution-design crm-implementations">
+           data-services="solution-design crm-implementations"
+           data-crm="salesforce"
+           data-industry="b2b-saas"
+           data-stage="growth">
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
@@ -151,7 +228,10 @@
           </div>
         </a>
         <a class="case-card reveal" href="../case-studies/case-study-two"
-           data-services="crm-implementations lead-to-cash-process-mapping">
+           data-services="crm-implementations lead-to-cash-process-mapping"
+           data-crm="hubspot"
+           data-industry="professional-services"
+           data-stage="scaleup">
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
@@ -165,7 +245,10 @@
           </div>
         </a>
         <a class="case-card reveal" href="../case-studies/case-study-three"
-           data-services="hubspot-support-retainers revops-consulting">
+           data-services="hubspot-support-retainers revops-consulting"
+           data-crm="hubspot"
+           data-industry="financial-services"
+           data-stage="maturity">
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
@@ -179,7 +262,10 @@
           </div>
         </a>
         <a class="case-card reveal" href="../case-studies/case-study-four"
-           data-services="solution-design lead-to-cash-process-mapping">
+           data-services="solution-design lead-to-cash-process-mapping"
+           data-crm="hubspot"
+           data-industry="ecommerce"
+           data-stage="startup">
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
@@ -193,7 +279,10 @@
           </div>
         </a>
         <a class="case-card reveal" href="../case-studies/case-study-five"
-           data-services="revops-consulting crm-implementations">
+           data-services="revops-consulting crm-implementations"
+           data-crm="pipedrive"
+           data-industry="b2b-saas"
+           data-stage="enterprise">
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
@@ -206,116 +295,7 @@
             <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
         </a>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section class="section-tight">
-  <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">What the work usually involves</h2>
-    </div>
-    <div style="margin-top:clamp(22px,2.6vw,34px)">
-    <div class="pcards">
-        <div class="pcard reveal">
-          <h3 class="pcard-title">A system nobody trusts</h3>
-          <p class="pcard-copy">The most common starting point. The CRM says one thing, the invoices say another, and leadership has stopped believing either.</p>
-          <div class="pcard-chips">
-            <span class="chip">Bad data</span>
-            <span class="chip">No single source</span>
-          </div>
         </div>
-        <div class="pcard reveal">
-          <h3 class="pcard-title">Growth that outran the setup</h3>
-          <p class="pcard-copy">What worked at eight people falls over at thirty. Usually the routing, the stages and the reporting all at once.</p>
-          <div class="pcard-chips">
-            <span class="chip">Scaling</span>
-            <span class="chip">Handoffs</span>
-          </div>
-        </div>
-        <div class="pcard reveal">
-          <h3 class="pcard-title">A migration nobody wants to run</h3>
-          <p class="pcard-copy">Moving platforms with a decade of history attached, without losing the history or the quarter.</p>
-          <div class="pcard-chips">
-            <span class="chip">Migration</span>
-            <span class="chip">Reconciliation</span>
-          </div>
-        </div>
-    </div>
-    </div>
-  </div>
-</section>
-
-<!-- The testimonials, same three quotes as the homepage. No heading on the
-     page: each quote carries its own title, so the h2 is for the outline. -->
-<section class="section-tight testi-section">
-  <div class="shell">
-    <h2 class="sr-only">What clients say about working with us</h2>
-    <div class="testi">
-      <div class="testi-col reveal">
-        <h3 class="testi-title"><span class="q">&ldquo;</span>&thinsp;Superior expertise&thinsp;<span class="q">&rdquo;</span></h3>
-        <blockquote class="quote">
-          <p>Our experience working with RevHops to build out specific functionality, reporting,
-            workflows, sequences and dashboards has exceeded expectations.
-            <span class="hl">James has taken the time to learn our business model,
-            understand the complexities and remained confident and transparent</span> on what we can
-            and cannot do within the platform. Looking forward to continued partnership with
-            RevHops.</p>
-          <footer class="quote-by">
-            <div class="stars" role="img" aria-label="Five out of five">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-            </div>
-            <cite>Deborah <span class="sep">|</span> COO</cite>
-          </footer>
-        </blockquote>
-      </div>
-      <div class="testi-col reveal">
-        <h3 class="testi-title"><span class="q">&ldquo;</span>&thinsp;Responsive &amp; Thorough&thinsp;<span class="q">&rdquo;</span></h3>
-        <blockquote class="quote">
-          <p>We partnered with RevHops on a complex HubSpot Marketing Hub Enterprise implementation, and
-            the experience was excellent from start to finish. James was highly responsive, extremely
-            well-organized, and thorough. <span class="hl">RevHops put together a clear, structured
-            plan, communicated recommendations in a way that was easy to align on</span>, and
-            followed up proactively to ensure everyone fully understood the strategy and next
-            steps.</p>
-          <footer class="quote-by">
-            <div class="stars" role="img" aria-label="Five out of five">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-            </div>
-            <cite>Amy <span class="sep">|</span> VP of Client Services</cite>
-          </footer>
-        </blockquote>
-      </div>
-      <div class="testi-col reveal">
-        <h3 class="testi-title"><span class="q">&ldquo;</span>&thinsp;Great team to work with!&thinsp;<span class="q">&rdquo;</span></h3>
-        <blockquote class="quote">
-          <p><span class="hl">James set our small company up for success through his proven
-            process</span> and knowledge of
-            HubSpot after meeting with key people on my team and then mapping everything out for us
-            for the first time. His team was organized in their implementation and tracked our
-            progress throughout the project. We will be using RevHops more in the near future.
-            Highly recommend!!</p>
-          <footer class="quote-by">
-            <div class="stars" role="img" aria-label="Five out of five">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>
-            </div>
-            <cite>Adam <span class="sep">|</span> CEO</cite>
-          </footer>
-        </blockquote>
       </div>
     </div>
   </div>
@@ -401,6 +381,6 @@
   </svg>
 </button>
 
-<script src="../assets/js/site.js?v=a71c43016f"></script>
+<script src="../assets/js/site.js?v=0a4f4191aa"></script>
 </body>
 </html>
