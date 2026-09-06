@@ -282,10 +282,49 @@ defined at the very end of `site.css` on purpose: `.reveal.is-in` sets
 `transform: none` at the same specificity, and being later in the file it was
 silently cancelling the lift on every card that animates in.
 
-## The global page header
+## The page hero
 
-`.page-head` is the standard opening band on every page except the homepage.
-When James says "the global page header", this is it. One layout, no variants.
+`.page-hero` is the opening band on every page except the homepage. It
+replaced `.page-head` on 9 September, after that header shipped and was
+measured at 741px tall with a 900px gradient circle filling its right-hand
+side — a screen and a half of nothing on a 1440px display before the page
+started.
+
+```
+section.page-hero
+  .shell
+    .page-hero-inner        grid: copy | a spacer the artwork sits over
+      .page-hero-text       h1.h1 + p.lede (+ .btn-row) (+ dl.hero-meta)
+    .page-hero-media        absolute, right: 0, runs off the screen edge
+  .page-head-end[data-nav-clear]
+```
+
+**No gradient circle, here or anywhere below the homepage.** The disc is the
+homepage's device. Twenty pages carrying the same one turned it into
+wallpaper, and the size of it was what pushed every page's content down.
+
+**The artwork bleeds off the right edge** because `main > section > .shell`
+is full-bleed, so `right: 0` inside it is the screen edge. `.page-hero-inner`
+reserves a column of the same width, so the copy never runs under it and the
+headline breaks at the same point on every page.
+
+**It starts below the nav**, unlike the old header, which pulled up behind
+it. The nav is transparent at rest with navy links sitting hard right —
+exactly where the artwork is — and running the image up behind them made the
+links unreadable until the bar collapsed.
+
+`dl.hero-meta` is the two or three facts worth putting at the top: timeline
+and starting price on a service page, sector and engagement on a case study.
+`.page-hero-plain` drops the artwork column, for the legal pages.
+
+Below 900px the artwork returns to the flow as a 16:9 band under the copy.
+
+`.page-head` is still in the stylesheet and is no longer used by anything.
+
+## The old global page header
+
+`.page-head` was the standard opening band on every page except the homepage.
+Kept in the stylesheet, referenced by nothing.
 
 ```
 section.page-head
@@ -675,6 +714,9 @@ All of them sit in `site.css` immediately before the dark theme block.
 | `.form` `.field` `.form-foot` | The contact form. Labels above fields, plate tokens so it inverts with the theme, and deliberately **not** inside a card. |
 | `.figs` `.fig` | The three counted numbers on a case study, on navy. The only type on the site set larger than an H1. |
 | `.svc-list-plain` | `.svc-row` with three columns instead of four, for row lists with no timing column. Inherits the whole hover — the fill that bleeds past the text, the title stepping in, the arrow sliding. |
+| `.pcards` `.pcard` | The frosted card with chips that replaced every dash-bullet list on the inner pages. Same `--card-veil` surface and blur as the homepage stage cards, so the inner pages are built out of the homepage's own parts. `auto-fit` columns: three across on a laptop, more on a wide display, one on a phone, no media query per layout. |
+| `.statement` `.cols-2` | A short sentence set large, with the detail beside it in two columns. One statement per page — a second one stops both working. |
+| `.hero-meta` | The facts line under a hero headline. |
 | `.grid-3` `.ticks-2` | Three text blocks across, and a ticked list in two columns. |
 | `.meet-wrap` | A measure for the meetings embed. Adds no border, plate or shadow: HubSpot draws its own chrome inside the iframe. |
 
