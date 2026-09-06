@@ -22,7 +22,10 @@ const path = require('path');
 const { JSDOM, VirtualConsole } = require('jsdom');
 
 const ROOT = path.resolve(__dirname, '..');
-const STAMP = '202609091500';
+/* Read off the homepage rather than hard-coded: this constant was wrong
+   twice, and both times the test passed while the site served stale CSS. */
+const STAMP = (fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8')
+  .match(/site\.css\?v=([0-9a-zA-Z]+)/) || [, 'missing'])[1];
 
 let fail = 0;
 const ok = m => console.log('  ok   ' + m);

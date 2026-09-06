@@ -177,7 +177,13 @@ Bump it on every change, on every page at once, or stale styles show up —
 especially on iOS, where mobile Safari caches stylesheets hard enough that
 edits appear not to land.
 
-Current stamp: `202609091500`. It lives in three places: `index.html`,
+Current stamp: derived — a hash of `site.css`, `site.js` and
+`maturity-slider.js`, computed by `tools/build-pages.js` on every run and
+written into every page including `index.html`. Nothing to bump by hand, and
+nothing to forget. It was a typed constant until 9 September; it went stale
+twice, and the second time a whole redesign shipped and rendered as the old
+one because the CDN kept serving the previous stylesheet under an unchanged
+`?v=`. It lives in three places: `index.html`,
 `STAMP` in `tools/build-pages.js`, and `STAMP` in `tools/smoke.js`.
 
 ## HubSpot tracking

@@ -29,7 +29,28 @@ var fs = require('fs');
 var path = require('path');
 
 var ROOT = path.resolve(__dirname, '..');
-var STAMP = '202609091500';   /* keep in step with index.html and README */
+
+/* THE CACHE STAMP IS DERIVED, NOT TYPED.
+
+   Every page links site.css and site.js with ?v=<stamp>. If the stamp does
+   not change when those files do, browsers and the GitHub Pages CDN keep
+   serving the old stylesheet against the new markup — which on 9 September
+   meant a whole redesign shipped and rendered as the previous one, because
+   the stamp was a hand-typed constant somebody forgot to bump. Twice.
+
+   So it is a hash of the asset files themselves. Change a stylesheet and the
+   stamp changes on the next build; change nothing and it stays put, so a
+   rebuild does not needlessly bust every visitor's cache. It cannot go
+   stale, because there is nothing to remember to do.
+
+   index.html is hand-maintained and is not in PAGES, so the writer at the
+   bottom of this file rewrites its stamp too. */
+var STAMP = (function () {
+  var h = require('crypto').createHash('sha1');
+  ['assets/css/site.css', 'assets/js/site.js', 'assets/js/maturity-slider.js']
+    .forEach(function (f) { h.update(fs.readFileSync(path.join(ROOT, f))); });
+  return h.digest('hex').slice(0, 10);
+})();
 
 /* ---------- shared chrome ------------------------------------------------ */
 
@@ -1448,5 +1469,16 @@ PAGES.forEach(function (p) {
   written++;
   console.log('  wrote  ' + p.file);
 });
-console.log('\n' + written + ' pages written. index.html is hand-maintained and was not touched.');
+/* index.html is not generated, but its cache stamp has to match or it will
+   paint new markup with an old stylesheet — the exact failure this stamp
+   exists to prevent. Only the ?v= is touched; nothing else in the file. */
+var home = path.join(ROOT, 'index.html');
+var before = fs.readFileSync(home, 'utf8');
+var after = before.replace(/(site\.css|site\.js|maturity-slider\.js)\?v=[0-9a-f]+/g, '$1?v=' + STAMP);
+if (after !== before) {
+  fs.writeFileSync(home, after, 'utf8');
+  console.log('  stamped index.html');
+}
+
+console.log('\n' + written + ' pages written at stamp ' + STAMP + '. index.html is hand-maintained.');
 }
