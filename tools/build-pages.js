@@ -1715,11 +1715,15 @@ var contact = {
 '    </div>\n', 'section to-white')
 };
 
-/* ---------- the two booking pages ----------
-   Nothing but the widget. No header band, no closing panel: the page has one
-   job and anything else on it is a way to not do that job. The sentinel at
-   the top is what tells the nav when to collapse, since there is no
-   .page-head to carry it. */
+/* ---------- the booking pages ----------
+   No closing panel on either: these pages have one job and anything else on
+   them is a way to not do that job. /client-call carries the /case-studies
+   gradient plate as its title and nothing more; /call has no header band at
+   all, because its own left panel is already one.
+
+   /client-call is the bare version — existing clients, noindexed, nothing to
+   sell. /call is built separately below, because it is where every
+   'Schedule a call' button on the site lands and it has one more job. */
 
 function meetingPage(o) {
   return {
@@ -1732,10 +1736,20 @@ function meetingPage(o) {
     bare: true,
     noClose: true,
     body:
-'\n<div class="page-head-end" data-nav-clear></div>\n' +
+/* The gradient plate off /case-studies, carrying the title. Same classes,
+   so it is the same object at the same size — .cs-head-panel is already
+   centred flex, which is what puts the title on the plate's middle line.
+   The sentinel rides with it, as it does on /case-studies. */
+'\n<section class="cs-head">\n' +
+'  <div class="shell">\n' +
+'    <div class="cs-head-panel">\n' +
+'      <h1 class="h1">' + o.heading + '</h1>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'  <div class="page-head-end" data-nav-clear></div>\n' +
+'</section>\n' +
 '\n<section class="section">\n' +
 '  <div class="shell">\n' +
-'    <h1 class="sr-only">' + o.srTitle + '</h1>\n' +
 '    <div class="meet-wrap">\n' +
 '      <!-- Start of Meetings Embed Script -->\n' +
 '      <div class="meetings-iframe-container" data-src="' + o.src + '"></div>\n' +
@@ -1747,19 +1761,87 @@ function meetingPage(o) {
   };
 }
 
-var callPage = meetingPage({
+/* ---------- /call ----------
+
+   30 / 70. The panel on the left carries the title, what the call actually
+   is, and a short video of the same; the scheduler fills the right. Both
+   start at the same y, so the reassurance is being read while the form is
+   being filled rather than before it.
+
+   The panel wears the /case-studies header artwork — the one gradient object
+   this site has below the homepage — rather than inventing a second one.
+
+   The video slot is a placeholder until James records it. Swapping it in is
+   one block: drop the YouTube <iframe> in place of .call-video-ph and the
+   wrapper supplies the 16:9, the 12px radius and the clipping.
+
+   `bare` skips the shared .page-hero. No full-width header here: everyone
+   arriving has already read the pitch on the page they clicked from, and a
+   band restating it is one more screen before the calendar. */
+
+var CALL_SUB =
+  'We’ll talk about you and your team and dive into the problems you’re facing ' +
+  'today and talk about where you’d like to get to. Then, if we’re a good fit, ' +
+  'we’ll walk you through our proven process for solving these challenges and talk ' +
+  'about how we can help you get where you want to go.';
+
+var callPage = {
   file: 'call.html',
+  depth: 0,
   title: 'Schedule a discovery call — RevHops',
   description: 'Book a discovery call with RevHops. Thirty minutes, no deck.',
-  srTitle: 'Schedule a discovery call with RevHops',
-  src: 'https://revhops.com/meetings/revhops/discovery-call?embed=true'
-});
+  bare: true,
+  noClose: true,
+  body:
+'\n<div class="page-head-end" data-nav-clear></div>\n' +
+'\n<section class="section">\n' +
+'  <div class="shell">\n' +
+'    <div class="call-layout">\n' +
+'\n' +
+'      <!-- LEFT, 30% — the gradient plate off /case-studies, portrait.\n' +
+'           Its scrim is legibility, not decoration; see .call-panel. -->\n' +
+'      <div class="call-panel reveal">\n' +
+'        <h1 class="h1">Schedule a Call</h1>\n' +
+'        <p class="call-sub">' + CALL_SUB + '</p>\n' +
+'\n' +
+'        <!-- PLACEHOLDER. To ship the real video, replace the whole\n' +
+'             .call-video-ph div with:\n' +
+'             <iframe src="https://www.youtube.com/embed/VIDEO_ID"\n' +
+'                     title="What to expect on the call" loading="lazy"\n' +
+'                     allow="accelerometer; autoplay; clipboard-write;\n' +
+'                            encrypted-media; picture-in-picture"\n' +
+'                     allowfullscreen></iframe>\n' +
+'             and change nothing else — .call-video carries the ratio, the\n' +
+'             12px radius and the clipping. -->\n' +
+'        <div class="call-video">\n' +
+'          <div class="call-video-ph">\n' +
+'            <span class="call-video-play" aria-hidden="true">\n' +
+'              <svg viewBox="0 0 16 18"><path d="M0 0l16 9-16 9z"/></svg>\n' +
+'            </span>\n' +
+'            <span class="call-video-note">Video: what to expect</span>\n' +
+'          </div>\n' +
+'        </div>\n' +
+'      </div>\n' +
+'\n' +
+'      <!-- RIGHT, 70% — the widget, at the full width of its column.\n' +
+'           No .reveal on this one on purpose: reveal animates a blur and a\n' +
+'           transform, and both create a containing block the HubSpot iframe\n' +
+'           is measured inside while it is still sizing itself. The widget is\n' +
+'           the page — it should be there on arrival, not fade in. -->\n' +
+'      <div class="call-embed">\n' +
+        meetingEmbed('https://revhops.com/meetings/revhops/discovery-call?embed=true') +
+'      </div>\n' +
+'\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n'
+};
 
 var clientCallPage = meetingPage({
   file: 'client-call.html',
   title: 'Client call — RevHops',
   description: 'Booking page for existing RevHops clients.',
-  srTitle: 'Book a client call with RevHops',
+  heading: 'Book a client call',
   src: 'https://revhops.com/meetings/revhops/client-call?embed=true',
   noindex: true
 });

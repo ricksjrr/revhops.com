@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=d721358432">
+<link rel="stylesheet" href="assets/css/site.css?v=894517b6ef">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -75,12 +75,45 @@
 
 <section class="section">
   <div class="shell">
-    <h1 class="sr-only">Schedule a discovery call with RevHops</h1>
-    <div class="meet-wrap">
+    <div class="call-layout">
+
+      <!-- LEFT, 30% — the gradient plate off /case-studies, portrait.
+           Its scrim is legibility, not decoration; see .call-panel. -->
+      <div class="call-panel reveal">
+        <h1 class="h1">Schedule a Call</h1>
+        <p class="call-sub">We’ll talk about you and your team and dive into the problems you’re facing today and talk about where you’d like to get to. Then, if we’re a good fit, we’ll walk you through our proven process for solving these challenges and talk about how we can help you get where you want to go.</p>
+
+        <!-- PLACEHOLDER. To ship the real video, replace the whole
+             .call-video-ph div with:
+             <iframe src="https://www.youtube.com/embed/VIDEO_ID"
+                     title="What to expect on the call" loading="lazy"
+                     allow="accelerometer; autoplay; clipboard-write;
+                            encrypted-media; picture-in-picture"
+                     allowfullscreen></iframe>
+             and change nothing else — .call-video carries the ratio, the
+             12px radius and the clipping. -->
+        <div class="call-video">
+          <div class="call-video-ph">
+            <span class="call-video-play" aria-hidden="true">
+              <svg viewBox="0 0 16 18"><path d="M0 0l16 9-16 9z"/></svg>
+            </span>
+            <span class="call-video-note">Video: what to expect</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT, 70% — the widget, at the full width of its column.
+           No .reveal on this one on purpose: reveal animates a blur and a
+           transform, and both create a containing block the HubSpot iframe
+           is measured inside while it is still sizing itself. The widget is
+           the page — it should be there on arrival, not fade in. -->
+      <div class="call-embed">
       <!-- Start of Meetings Embed Script -->
       <div class="meetings-iframe-container" data-src="https://revhops.com/meetings/revhops/discovery-call?embed=true"></div>
       <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"></script>
       <!-- End of Meetings Embed Script -->
+      </div>
+
     </div>
   </div>
 </section>
@@ -155,6 +188,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=d721358432"></script>
+<script src="assets/js/site.js?v=894517b6ef"></script>
 </body>
 </html>

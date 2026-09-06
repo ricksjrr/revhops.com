@@ -4224,3 +4224,143 @@ a.pcard:hover .arrow { transform: translateX(5px); }
    section above it stops exactly that far short. Change one, change both. */
 .cs-detail .start-section { --start-bleed: 100px; }
 .cs-detail .cs-body-section { padding-bottom: 100px; }
+
+/* ==========================================================================
+   /call — THE BOOKING PAGE
+
+   No page header. Every 'Schedule a call' button on the site lands here, and
+   the visitor arrived having already read the pitch — a full-width band
+   restating it is one more screen between them and the calendar.
+
+   So the page is the split: a 30/70 grid with the reassurance on the left
+   and the scheduler on the right, both starting at the same y. The left
+   column answers "what happens on this call" while the right one is being
+   filled in, which is the only question anyone has at this point.
+   ========================================================================== */
+
+/* 30 / 70 exactly. Same construction as .cs-layout: the gap comes out of the
+   right column, so the panel stays at 30% of the shell at every width above
+   the breakpoint. Top-aligned — the two columns are different heights and
+   centring them floats the panel off the scheduler's first row. */
+.call-layout {
+  display: grid;
+  grid-template-columns: 30% minmax(0, 1fr);
+  gap: clamp(22px, 2.8vw, 44px);
+  align-items: start;
+}
+
+/* ---------- the panel ----------
+
+   The /case-studies header artwork, portrait. Its scrim is doing the same
+   job it does there and is not decoration: navy on the raw image measures
+   2.5:1 at the bottom left, and this panel carries a paragraph rather than
+   four words, so the whole surface has to hold up rather than one band.
+
+   A flat wash would work (.52 clears 4.86:1) but flattens the artwork where
+   it is already light. This one follows the image instead — .46 at the top,
+   where the title sits on the pale corner, to .70 at the bottom, where the
+   gradient goes dark. Worst pixel: 6.37:1 across panel shapes from 300x760
+   to 700x420. Re-measure in Pillow if the artwork or the ramp changes. */
+.call-panel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(26px, 2.4vw, 38px);
+  border-radius: var(--radius-card);
+  background-color: var(--mist);
+  background-image:
+    linear-gradient(180deg,
+      rgba(250, 250, 248, .46) 0%,
+      rgba(250, 250, 248, .70) 100%),
+    url("../img/start-panel-bg.webp");
+  background-size: auto, cover;
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+}
+
+/* Navy in both themes, like .cs-head-panel: the panel brings its own light
+   ground with it and does not follow the page into dark. */
+.call-panel .h1,
+.call-panel .call-sub {
+  position: relative;
+  color: #304157;
+}
+.call-panel .h1 {
+  margin: 0;
+  font-size: clamp(2rem, 1.1rem + 2.4vw, 2.9rem);
+  line-height: 1.02;
+  letter-spacing: -.035em;
+}
+.call-sub {
+  margin: clamp(14px, 1.4vw, 20px) 0 0;
+  font-size: clamp(.94rem, .9rem + .12vw, 1.02rem);
+  line-height: 1.6;
+}
+
+/* ---------- the video ----------
+
+   16:9, on the 12px card radius like everything else. The placeholder is a
+   dashed frame on the panel's own ground rather than a grey block, so an
+   empty slot reads as "not filled in yet" rather than as a broken embed.
+
+   Swapping in the real one: replace the whole .call-video-ph block with the
+   YouTube <iframe> and nothing else changes — the wrapper supplies the
+   ratio, the radius and the clipping, and `.call-video > *` sizes whatever
+   is inside it. */
+.call-video {
+  position: relative;
+  margin-top: clamp(20px, 2.2vw, 30px);
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  /* Safari clips an iframe out of a rounded parent only with its own layer */
+  isolation: isolate;
+}
+.call-video > * {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.call-video-ph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px dashed rgba(48, 65, 87, .38);
+  border-radius: 12px;
+  background: rgba(250, 250, 248, .58);
+  color: #304157;
+}
+.call-video-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(38px, 3.4vw, 48px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(48, 65, 87, .10);
+}
+.call-video-play svg { width: 42%; fill: currentColor; display: block; }
+.call-video-note {
+  font-family: var(--font-body);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+/* ---------- the scheduler column ----------
+   No max-width and no auto margins: .meet-wrap centres itself at 960px,
+   which inside a 70% column leaves the widget floating away from the panel
+   at wide sizes. Here the column IS the measure. */
+.call-embed { width: 100%; min-width: 0; }
+
+/* One column below 900px, and the panel first — the scheduler is tall on a
+   phone, and putting it above the reassurance means nobody reads the
+   reassurance. Same order as the source, so nothing to reorder. */
+@media (max-width: 900px) {
+  .call-layout { grid-template-columns: minmax(0, 1fr); }
+}
