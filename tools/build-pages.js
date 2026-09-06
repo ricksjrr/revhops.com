@@ -330,7 +330,7 @@ function render(p) {
     head(p) +
     nav(p) +
     '\n<main>\n' +
-    (p.bare ? '' : (p.hero || pageHero(p))) +
+    (p.bare ? '' : pageHero(p)) +
     p.body +
     (p.noClose ? '' : closePanel()) +
     '\n</main>\n' +
@@ -398,102 +398,6 @@ function section(inner, cls) {
   return '\n<section class="' + (cls || 'section') + '">\n' +
          '  <div class="shell">\n' + inner + '  </div>\n' +
          '</section>\n';
-}
-
-
-/* ==========================================================================
-   ARTWORK
-
-   Drawn here in SVG from the six brand colours. No photography and no stock:
-   the only real image on the site is James's portrait. Each page gets its
-   own motif, which is most of what stops twenty pages reading as one
-   template with the words swapped.
-
-   Inline rather than files, so the shapes can take page-specific tints
-   without a folder of near-identical assets.
-   ========================================================================== */
-
-var INK = '#304157', SLATE = '#6B7A93', MIST = '#C6D3E0', WARM = '#F2C39B',
-    PAPER = '#FAFAF8', DEEP = '#1C2635';
-
-/* Five overlapping planes, stepping back and to the right. The services
-   page: one system, seen in layers. */
-function artPlanes(cls) {
-  var tints = ['#E9EEF4', '#D9E2EC', '#C6D3E0', '#A9BACD', '#8497AF'];
-  var out = '';
-  for (var i = 0; i < 5; i++) {
-    out += '\n    <rect x="' + (30 + i * 52) + '" y="' + (196 - i * 34) + '" width="300" height="128" rx="10" ' +
-           'fill="' + tints[i] + '"/>';
-  }
-  return '<svg class="page-art ' + (cls || '') + '" viewBox="0 0 620 400" role="img" ' +
-         'aria-label="Five layered planes, one system seen in section">' +
-         '\n    <circle cx="500" cy="96" r="58" fill="' + WARM + '" opacity=".85"/>' +
-         out + '\n  </svg>';
-}
-
-/* A field of squares, one warm. The case studies index: a body of work, and
-   the one you are about to read. */
-function artField(cls, highlight) {
-  var out = '', k = 0, hi = highlight === undefined ? 13 : highlight;
-  for (var r = 0; r < 5; r++) {
-    for (var c = 0; c < 8; c++) {
-      var on = k === hi;
-      out += '\n    <rect x="' + (14 + c * 76) + '" y="' + (14 + r * 76) + '" width="58" height="58" rx="8" fill="' +
-             (on ? WARM : MIST) + '" opacity="' + (on ? '1' : (0.22 + ((r + c) % 4) * 0.13).toFixed(2)) + '"/>';
-      k++;
-    }
-  }
-  return '<svg class="page-art ' + (cls || '') + '" viewBox="0 0 620 400" role="img" aria-label="A field of tiles, one picked out">' +
-         out + '\n  </svg>';
-}
-
-/* Steps climbing left to right, the last one warm. The pricing page. */
-function artSteps(cls) {
-  var out = '';
-  var h = [64, 108, 152, 196, 250];
-  for (var i = 0; i < 5; i++) {
-    out += '\n    <rect x="' + (26 + i * 116) + '" y="' + (330 - h[i]) + '" width="86" height="' + h[i] + '" rx="8" fill="' +
-           (i === 4 ? WARM : MIST) + '" opacity="' + (i === 4 ? '.95' : (0.3 + i * 0.14).toFixed(2)) + '"/>';
-  }
-  return '<svg class="page-art ' + (cls || '') + '" viewBox="0 0 620 400" role="img" aria-label="Five ascending steps">' +
-         out + '\n    <rect x="20" y="336" width="580" height="2" rx="1" fill="' + MIST + '"/>\n  </svg>';
-}
-
-/* A poster for a case study card. Five variants so the rail is five
-   different pictures rather than the same placeholder five times. The seed
-   picks the palette and the shape of the peak, and nothing is random, so a
-   card looks the same on every load. */
-function artPoster(seed) {
-  var schemes = [
-    ['#E8EEF5', '#B9C7D8', '#6D7F99', '#304157', WARM],
-    ['#EFEAF3', '#C7C2D6', '#7D7897', '#3A3557', '#E9B8C6'],
-    ['#E7F1EE', '#B3CFC7', '#6B948A', '#2E4A45', '#EBD79B'],
-    ['#F2EDE6', '#D6C7B5', '#9C876C', '#4A3E30', '#B8CBD8'],
-    ['#E9EDF2', '#BFC9D6', '#7A879A', '#2A3340', '#F2C39B']
-  ];
-  var s = schemes[seed % schemes.length];
-  var peaks = [
-    'M0 300 L150 190 L300 268 L450 150 L600 244 L600 450 L0 450 Z',
-    'M0 268 L120 214 L268 160 L420 246 L600 178 L600 450 L0 450 Z',
-    'M0 288 L170 168 L330 250 L470 186 L600 262 L600 450 L0 450 Z',
-    'M0 250 L140 250 L140 190 L330 190 L330 262 L470 262 L470 206 L600 206 L600 450 L0 450 Z',
-    'M0 310 L110 236 L240 292 L390 200 L510 268 L600 224 L600 450 L0 450 Z'
-  ];
-  var low = [
-    'M0 372 L180 330 L340 366 L490 328 L600 358 L600 450 L0 450 Z',
-    'M0 358 L160 392 L330 344 L470 384 L600 340 L600 450 L0 450 Z',
-    'M0 380 L200 342 L360 380 L520 344 L600 372 L600 450 L0 450 Z',
-    'M0 356 L150 356 L150 400 L360 400 L360 350 L600 350 L600 450 L0 450 Z',
-    'M0 366 L130 400 L300 352 L450 396 L600 348 L600 450 L0 450 Z'
-  ];
-  return '<svg class="case-art" viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">' +
-    '<defs><linearGradient id="cs' + seed + '" x1="0" y1="0" x2="0" y2="1">' +
-    '<stop offset="0" stop-color="' + s[0] + '"/><stop offset="1" stop-color="' + s[1] + '"/></linearGradient></defs>' +
-    '<rect width="600" height="450" fill="url(#cs' + seed + ')"/>' +
-    '<circle cx="' + (430 + seed * 26) + '" cy="' + (118 - seed * 9) + '" r="' + (52 + seed * 5) + '" fill="' + s[4] + '" opacity=".9"/>' +
-    '<path d="' + peaks[seed % peaks.length] + '" fill="' + s[2] + '" opacity=".88"/>' +
-    '<path d="' + low[seed % low.length] + '" fill="' + s[3] + '"/>' +
-    '</svg>';
 }
 
 /* ---------- the five services ----------
@@ -711,7 +615,7 @@ function logoBand(depth) {
 /* one poster card off the homepage rail */
 function caseCard(c, depth, cls) {
   return '<a class="case-card' + (cls ? ' ' + cls : '') + '" href="' + '/case-studies/' + c.slug + '">\n' +
-    '          ' + artPoster(CASES.indexOf(c)) + '\n' +
+    '          <img src="' + up(depth) + 'assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">\n' +
     '          <div class="case-body">\n' +
     '            <div class="case-text">\n' +
     '              <h3 class="case-title">[Client name]</h3>\n' +
@@ -1009,19 +913,7 @@ var TESTIMONIALS =
 '      </div>\n';
 
 
-
-/* ==========================================================================
-   THE STANDALONE PAGES
-
-   Each one is laid out for what it has to do, and no two share a hero. The
-   five service pages share a template and the five case studies share
-   another, which is right — they are sets. These are not.
-   ========================================================================== */
-
-/* ---------- /services ----------
-   The hero is type and nothing else, full width, with the five services as
-   a numbered index under it. That index is the page's table of contents and
-   its artwork at the same time. */
+/* ---------- the standalone pages ---------- */
 
 var servicesIndex = {
   file: 'services/index.html',
@@ -1029,35 +921,15 @@ var servicesIndex = {
   navCurrent: '/services',
   title: 'RevOps services — RevHops',
   description: 'Solution design, CRM implementations, HubSpot support retainers, RevOps consulting and lead to cash process mapping.',
-  hero:
-'\n<section class="page-hero page-hero-plain">\n' +
-'  <div class="shell">\n' +
-'    <div class="g-8-4" style="align-items:end">\n' +
-'      <div class="page-hero-text">\n' +
-'        <h1 class="h1">Five ways in and one system underneath</h1>\n' +
-'        <p class="lede">Most engagements start with one of these and grow into another. You do not\n' +
-'          need to know which one you need before the first call.</p>\n' +
-'      </div>\n' +
-'      <div class="hero-index">\n' +
-        SERVICES.map(function (s, i) {
-          return '        <a href="/services/' + s.slug + '">\n' +
-                 '          <b>' + ('0' + (i + 1)) + '</b>\n' +
-                 '          <span>' + s.name + '</span>\n' +
-                 '          <i>' + s.time + '</i>\n' +
-                 '        </a>';
-        }).join('\n') + '\n' +
-'      </div>\n' +
-'    </div>\n' +
-'  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
-'</section>\n',
+  h1: 'Five ways in and one system underneath',
+  lede: 'Most engagements start with one of these and grow into another. You do not need to know which one you need before the first call.',
+  media: { src: 'assets/img/case-study-placeholder.svg', alt: '' },
+  meta: [['Engagements', 'Five'], ['Shortest', '2 weeks'], ['Commitment', 'None to talk']],
+  headButtons: '          <a class="btn btn-primary" href="/call">Schedule a call</a>',
   body:
     section(
-'    <div class="marker reveal">\n' +
-'      <b>The work</b>\n' +
-'      <h2 class="h2">RevOps services that scale with you, <span class="hl">wherever you\'re at</span></h2>\n' +
-'    </div>\n' +
-'    <div class="svc-list">\n' +
+      secHead('RevOps services that scale with you, <span class="hl">wherever you\'re at</span>') +
+'    <div class="svc-list" style="margin-top:clamp(22px,2.6vw,34px)">\n' +
       SERVICES.map(function (s) {
         return '      <a class="svc-row reveal" href="/services/' + s.slug + '">\n' +
                '        <h3 class="svc-title">' + s.name + '</h3>\n' +
@@ -1067,44 +939,41 @@ var servicesIndex = {
                '      </a>';
       }).join('\n') + '\n' +
 '    </div>\n') +
-'\n<!-- the page\'s one loud moment: white on navy, edge to edge, no cards -->\n' +
-'<section class="section band">\n' +
-'  <div class="shell">\n' +
-'    <div class="g-4-8" style="align-items:start">\n' +
-'      <h2 class="h2 reveal" style="max-width:14ch">True of all five</h2>\n' +
-'      <div class="qcols reveal">\n' +
-      [['Same people', 'The person who scopes it does the work. Nobody is handed to whoever is free that month.'],
-       ['Written first', 'Scope is a document you approve, not a conversation someone half remembers.'],
-       ['Documented out', 'Every engagement ends with something your team can run without calling us.'],
-       ['Told the truth', 'Including when the thing you asked for is not the thing you need.']].map(function (c, i) {
-        return '        <div class="qcol" style="border-top-color:rgba(250,250,248,.5)">\n' +
-               '          <span class="qcol-n" style="color:var(--on-navy-faint)">' + ('0' + (i + 1)) + '</span>\n' +
-               '          <h3 class="qcol-t" style="color:var(--paper)">' + c[0] + '</h3>\n' +
-               '          <p class="qcol-c" style="color:var(--on-navy)">' + c[1] + '</p>\n' +
-               '        </div>';
-      }).join('\n') + '\n' +
-'      </div>\n' +
-'    </div>\n' +
-'  </div>\n' +
-'</section>\n' +
+    logoBand(1) +
     section(
-'    <div class="g-5-7" style="align-items:center">\n' +
+'    <div class="split" style="align-items:start">\n' +
 '      <div class="reveal reveal-left">\n' +
 '        <p class="statement">There is no discovery phase where nothing happens.</p>\n' +
 '        <p class="statement-note">The first call is a working session, and by the end of it you\n' +
 '          will know whether we are the right people for the job. That is not always yes, and we\n' +
 '          would rather say so on day one than in month four.</p>\n' +
-'        <p style="margin-top:22px"><a class="text-link" href="/pricing">What all of this costs <span class="arrow">&rarr;</span></a></p>\n' +
 '      </div>\n' +
-'      <div class="reveal reveal-right">' + artPlanes() + '</div>\n' +
-'    </div>\n') +
-    logoBand(1)
+'      <div class="cols-2 reveal reveal-right">\n' +
+'        <p>From there the shape is the same whatever the service: agree what good looks like,\n' +
+'          write it down, build against the document, hand it over with the documentation.</p>\n' +
+'        <p>The interesting part is how much of that is arguing about definitions, and how little\n' +
+'          of it is software. A lifecycle stage everyone reads differently costs more than any\n' +
+'          licence on your bill.</p>\n' +
+'      </div>\n' +
+'    </div>\n', 'section-tight') +
+    section(
+      secHead('True of all five') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+      pcards([
+        { title: 'The same people throughout', copy: 'The person who scopes it does the work. Nobody is handed to whoever is free that month.',
+          chips: ['No bench', 'No handoff'] },
+        { title: 'Written before built', copy: 'Scope is a document you approve, not a conversation someone half remembers.',
+          chips: ['Signed scope', 'Fixed price'] },
+        { title: 'Documented on the way out', copy: 'Every engagement ends with something your team can run without calling us.',
+          chips: ['Written docs', 'Recorded training'] },
+        { title: 'Told when you are wrong', copy: 'Including when the thing you asked for is not the thing you need, and when the cheaper option is the better one.',
+          chips: ['No upsell', 'No lock-in'] }
+      ]) +
+'    </div>\n' +
+'    <p class="reveal" style="margin-top:clamp(26px,3vw,40px)">\n' +
+'      <a class="text-link" href="/pricing">What all of this costs <span class="arrow">&rarr;</span></a>\n' +
+'    </p>\n', 'section to-white')
 };
-
-/* ---------- /case-studies ----------
-   Headline straight into a navy band of aggregate figures, then a filter
-   and a grid. No hero artwork: the posters are the artwork, and there are
-   five different ones. */
 
 var caseIndex = {
   file: 'case-studies/index.html',
@@ -1112,48 +981,49 @@ var caseIndex = {
   navCurrent: '/case-studies',
   title: 'Case studies — RevHops',
   description: 'Revenue operations work we have done, what it changed, and what the clients said about it.',
-  hero:
-'\n<section class="page-hero page-hero-plain" style="padding-bottom:clamp(26px,3vw,44px)">\n' +
+  h1: 'Proof beats a pitch deck',
+  lede: 'Five engagements, what was broken when we arrived, and what the numbers did afterwards. The awkward ones are in here too.',
+  media: { src: 'assets/img/case-study-placeholder.svg', alt: '' },
+  meta: [['Engagements', 'Five'], ['Sectors', '[to fill in]']],
+  body:
+    logoBand(1) +
+'\n<section class="section case-section">\n' +
 '  <div class="shell">\n' +
-'    <div class="g-7-5" style="align-items:end">\n' +
-'      <div class="page-hero-text">\n' +
-'        <h1 class="h1">Proof beats a pitch deck</h1>\n' +
-'        <p class="lede">Five engagements, what was broken when we arrived, and what the numbers did\n' +
-'          afterwards. The awkward ones are in here too.</p>\n' +
+'\n' +
+'    <div class="case-head">\n' +
+'      <span aria-hidden="true"></span>\n' +
+'      <div class="sec-head reveal">\n' +
+'        <h2 class="h2">We\'ve hopped with <span class="hl">some of the best</span></h2>\n' +
+'      </div>\n' +
+'      <div class="case-nav reveal">\n' +
+'        <button type="button" data-case-prev aria-label="Previous case studies">&larr;</button>\n' +
+'        <button type="button" data-case-next aria-label="More case studies">&rarr;</button>\n' +
 '      </div>\n' +
 '    </div>\n' +
+'\n' +
+'    <div class="case-rail-wrap">\n' +
+'      <div class="case-rail" data-case-rail tabindex="0" aria-label="Case studies">\n' +
+      CASES.map(function (c) { return '        ' + caseCard(c, 1, 'reveal'); }).join('\n') + '\n' +
+'      </div>\n' +
+'    </div>\n' +
+'\n' +
 '  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
 '</section>\n' +
-'\n<section class="section band" style="padding-block:clamp(40px,5vw,72px)">\n' +
-'  <div class="shell">\n' +
-'    <div class="figs reveal">\n' +
-'      <div class="fig"><b><span data-count="00" data-suffix="">00</span></b><span>Engagements shipped</span></div>\n' +
-'      <div class="fig"><b><span data-count="00" data-suffix="%">00%</span></b><span>[aggregate measure across the five]</span></div>\n' +
-'      <div class="fig"><b><span data-count="00" data-suffix="">00</span></b><span>[aggregate measure across the five]</span></div>\n' +
-'    </div>\n' +
-'  </div>\n' +
-'</section>\n',
-  body:
     section(
-'    <div class="marker reveal" style="flex-wrap:wrap;gap:14px 22px">\n' +
-'      <b>The work</b>\n' +
-'      <h2 class="h2" style="flex:1 1 16ch">We\'ve hopped with <span class="hl">some of the best</span></h2>\n' +
-'    </div>\n' +
-'    <div class="filters reveal" style="margin-bottom:clamp(22px,2.6vw,34px)" role="group" aria-label="Filter case studies">\n' +
-'      <button class="filter" type="button" data-filter="all" aria-pressed="true">Everything</button>\n' +
-      SERVICES.map(function (s) {
-        return '      <button class="filter" type="button" data-filter="' + s.slug + '" aria-pressed="false">' + s.name + '</button>';
-      }).join('\n') + '\n' +
-'      <span class="filter-count" data-filter-count aria-live="polite"></span>\n' +
-'    </div>\n' +
-'    <div class="case-grid" data-filter-grid>\n' +
-      CASES.map(function (c, i) {
-        var tags = [SERVICES[i % SERVICES.length].slug, SERVICES[(i + 2) % SERVICES.length].slug].join(' ');
-        return '      ' + caseCard(c, 1, 'reveal').replace('<a class="case-card reveal"', '<a class="case-card reveal" data-tags="' + tags + '"');
-      }).join('\n') + '\n' +
-'    </div>\n') +
-'\n<section class="section-tight testi-section">\n' +
+      secHead('What the work usually involves') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+      pcards([
+        { title: 'A system nobody trusts', copy: 'The most common starting point. The CRM says one thing, the invoices say another, and leadership has stopped believing either.',
+          chips: ['Bad data', 'No single source'] },
+        { title: 'Growth that outran the setup', copy: 'What worked at eight people falls over at thirty. Usually the routing, the stages and the reporting all at once.',
+          chips: ['Scaling', 'Handoffs'] },
+        { title: 'A migration nobody wants to run', copy: 'Moving platforms with a decade of history attached, without losing the history or the quarter.',
+          chips: ['Migration', 'Reconciliation'] }
+      ]) +
+'    </div>\n', 'section-tight') +
+'\n<!-- The testimonials, same three quotes as the homepage. No heading on the\n' +
+'     page: each quote carries its own title, so the h2 is for the outline. -->\n' +
+'<section class="section-tight testi-section">\n' +
 '  <div class="shell">\n' +
 '    <h2 class="sr-only">What clients say about working with us</h2>\n' +
 '    <div class="testi">\n' + TESTIMONIALS + '    </div>\n' +
@@ -1161,643 +1031,71 @@ var caseIndex = {
 '</section>\n'
 };
 
-/* ---------- /pricing ----------
-   The only centred hero on the site, because a price list is read down the
-   middle. Rows rather than cards: this is a table of numbers and it should
-   look like one. */
-
 var pricing = {
   file: 'pricing.html',
   depth: 0,
   navCurrent: '/pricing',
   title: 'Pricing — RevHops',
   description: 'What RevOps work with RevHops costs: project pricing for design, mapping and implementation, monthly pricing for retainers and consulting.',
-  hero:
-'\n<section class="page-hero page-hero-plain">\n' +
-'  <div class="shell">\n' +
-'    <div class="page-hero-text" style="align-items:center;text-align:center;max-width:24ch;margin-inline:auto">\n' +
-'      <h1 class="h1">What it costs before we talk</h1>\n' +
-'    </div>\n' +
-'    <p class="lede" style="text-align:center;margin-inline:auto;margin-top:18px;max-width:56ch">Published,\n' +
-'      because chasing an agency for a number is a waste of everyone\'s afternoon. These are starting\n' +
-'      points, and we will tell you on the first call if you are about to overspend.</p>\n' +
-'    <div style="max-width:420px;margin:clamp(26px,3.4vw,48px) auto 0">' + artSteps() + '</div>\n' +
-'  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
-'</section>\n',
+  h1: 'What it costs before we talk',
+  lede: 'Published, because chasing an agency for a number is a waste of everyone\'s afternoon. These are starting points, and we will tell you on the first call if you are about to overspend.',
+  media: { src: 'assets/img/case-study-placeholder.svg', alt: '' },
+  meta: [['Projects from', '$4,500'], ['Monthly from', '$2,500'], ['Discovery call', 'Free']],
   body:
     section(
-'    <div class="marker reveal"><b>Project work</b><h2 class="h2">Fixed scope, <span class="hl">fixed price</span></h2></div>\n' +
-'    <div class="qrows">\n' +
+      secHead('Project work with <span class="hl">a fixed scope and a fixed price</span>',
+              'Quoted once the scope is written down. If the scope moves we requote before the work starts, not after.') +
+'    <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">\n' +
       [SERVICES[0], SERVICES[4], SERVICES[1]].map(function (s) {
-        return '      <div class="qrow reveal">\n' +
-               '        <span class="qrow-n">' + s.dur[0] + '</span>\n' +
-               '        <div class="qrow-b">\n' +
-               '          <div class="g-7-5" style="gap:clamp(12px,2vw,32px);align-items:baseline">\n' +
-               '            <h3 class="qrow-t">' + s.name + '</h3>\n' +
-               '            <span class="price-teaser-fig" style="font-size:clamp(1.3rem,1rem + 1vw,1.8rem)">' + s.price[0].replace('Starting at ', '') + '</span>\n' +
-               '          </div>\n' +
-               '          <p class="qrow-c">' + s.row + '</p>\n' +
-               '          <a class="text-link" href="/services/' + s.slug + '">What is in it <span class="arrow">&rarr;</span></a>\n' +
-               '        </div>\n' +
-               '      </div>';
+        return '      <a class="price-teaser-cell" href="/services/' + s.slug + '" style="text-decoration:none">\n' +
+               '        <span class="price-teaser-label">' + s.name + '</span>\n' +
+               '        <span class="price-teaser-fig">' + s.price[0] + '<small>' + s.dur[0] + '</small></span>\n' +
+               '        <p class="price-teaser-note">' + s.row + '</p>\n' +
+               '      </a>';
       }).join('\n') + '\n' +
-'    </div>\n' +
-'\n' +
-'    <div class="marker reveal" style="margin-top:clamp(48px,5.5vw,86px)"><b>Monthly</b><h2 class="h2">No lock-in, thirty days notice</h2></div>\n' +
-'    <div class="qrows">\n' +
+'    </div>\n') +
+    section(
+      secHead('Monthly work with no lock-in',
+              'Thirty days notice, both ways. Nobody has ever done better work because the client was contractually stuck with them.') +
+'    <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">\n' +
       [SERVICES[2], SERVICES[3]].map(function (s) {
-        return '      <div class="qrow reveal">\n' +
-               '        <span class="qrow-n">Rolling</span>\n' +
-               '        <div class="qrow-b">\n' +
-               '          <div class="g-7-5" style="gap:clamp(12px,2vw,32px);align-items:baseline">\n' +
-               '            <h3 class="qrow-t">' + s.name + '</h3>\n' +
-               '            <span class="price-teaser-fig" style="font-size:clamp(1.3rem,1rem + 1vw,1.8rem)">' + s.price[0].replace('From ', '') + '</span>\n' +
-               '          </div>\n' +
-               '          <p class="qrow-c">' + s.row + '</p>\n' +
-               '          <a class="text-link" href="/services/' + s.slug + '">What is in it <span class="arrow">&rarr;</span></a>\n' +
-               '        </div>\n' +
-               '      </div>';
+        return '      <a class="price-teaser-cell" href="/services/' + s.slug + '" style="text-decoration:none">\n' +
+               '        <span class="price-teaser-label">' + s.name + '</span>\n' +
+               '        <span class="price-teaser-fig">' + s.price[0] + '<small>' + s.price[1] + '</small></span>\n' +
+               '        <p class="price-teaser-note">' + s.row + '</p>\n' +
+               '      </a>';
       }).join('\n') + '\n' +
-'      <div class="qrow reveal">\n' +
-'        <span class="qrow-n">Ask</span>\n' +
-'        <div class="qrow-b">\n' +
-'          <h3 class="qrow-t">Something else</h3>\n' +
-'          <p class="qrow-c">Audits, one-off training, a second opinion on someone else\'s build.\n' +
-'            Smaller pieces get quoted on the call, and we will say if it is not us.</p>\n' +
-'        </div>\n' +
+'      <div class="price-teaser-cell">\n' +
+'        <span class="price-teaser-label">Something else</span>\n' +
+'        <span class="price-teaser-fig">Ask<small>We will say if it is not us</small></span>\n' +
+'        <p class="price-teaser-note">Audits, one-off training, a second opinion on someone else\'s build. Smaller pieces get quoted on the call.</p>\n' +
 '      </div>\n' +
-'    </div>\n') +
-'\n<section class="section band">\n' +
-'  <div class="shell">\n' +
-'    <div class="g-4-8" style="align-items:start">\n' +
-'      <p class="statement reveal" style="color:var(--paper)">Almost never the software.</p>\n' +
-'      <div class="reveal">\n' +
-'        <div class="cols-2" style="color:var(--on-navy)">\n' +
-'          <p>What moves the price is how many teams have to agree, how much of the data has to be\n' +
-'            cleaned before it can move, and how many systems are already holding a version of the\n' +
-'            truth.</p>\n' +
-'          <p>A twelve-person company with one pipeline and a clean import sits at the bottom of\n' +
-'            every range on this page. Four business units, two CRMs and a decade of history does\n' +
-'            not, and no amount of scoping will make it.</p>\n' +
-'        </div>\n' +
-'      </div>\n' +
-'    </div>\n' +
-'  </div>\n' +
-'</section>\n' +
+'    </div>\n', 'section-tight') +
     section(
-'    <div class="marker reveal"><b>Whatever you spend</b><h2 class="h2">Included either way</h2></div>\n' +
-'    <div class="qcols reveal">\n' +
-      [['Documentation', 'Part of the work, not a line item that gets cut when the budget tightens.'],
-       ['The same people', 'First call to handover. No introduction to a delivery team you have never met.'],
-       ['A written scope', 'Approved by you before anything is built, and requoted before it changes.'],
-       ['The first call', 'Where we work out whether this is a fit. No charge and no obligation either way.']].map(function (c, i) {
-        return '      <div class="qcol">\n' +
-               '        <span class="qcol-n">' + ('0' + (i + 1)) + '</span>\n' +
-               '        <h3 class="qcol-t">' + c[0] + '</h3>\n' +
-               '        <p class="qcol-c">' + c[1] + '</p>\n' +
-               '      </div>';
-      }).join('\n') + '\n' +
-'    </div>\n')
-};
-
-/* ---------- /about-us ----------
-   The portrait runs off the LEFT edge and the type sits right, which is the
-   reverse of everything else on the site and the reason this page is
-   recognisable at a glance. */
-
-var about = {
-  file: 'about-us.html',
-  depth: 0,
-  navCurrent: '/about-us',
-  title: 'About RevHops',
-  description: 'RevHops is a small revenue operations consultancy in Phoenix, Arizona. Who we are, how we work, and what we will not do.',
-  hero:
-'\n<section class="page-hero page-hero-flip">\n' +
-'  <div class="shell">\n' +
-'    <div class="page-hero-inner-flip">\n' +
-'      <div class="page-hero-text order-first">\n' +
-'        <h1 class="h1">The team you meet is the team you get</h1>\n' +
-'        <p class="lede">A revenue operations consultancy in Phoenix, Arizona. Small on purpose,\n' +
-'          deep in one thing, and straight with you about the parts that will be difficult.</p>\n' +
-'        <dl class="hero-meta">\n' +
-'          <div><dt>Based in</dt><dd>Phoenix, AZ</dd></div>\n' +
-'          <div><dt>Founded by</dt><dd>James Ricks</dd></div>\n' +
-'          <div><dt>Clients at once</dt><dd>Deliberately few</dd></div>\n' +
-'        </dl>\n' +
-'      </div>\n' +
-'    </div>\n' +
-'    <div class="page-hero-media is-left">\n' +
-'      <img src="assets/img/james-portrait.webp" alt="James Ricks, founder of RevHops">\n' +
-'    </div>\n' +
-'  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
-'</section>\n',
-  body:
-    section(
-'    <div class="g-5-7" style="align-items:start">\n' +
+'    <div class="split" style="align-items:start">\n' +
 '      <div class="reveal reveal-left">\n' +
-'        <p class="statement">The agencies I hired were good at building what I asked for.</p>\n' +
-'        <p class="statement-note">And bad at telling me when I had asked for the wrong thing.\n' +
-'          That is the reason this shop exists.</p>\n' +
+'        <p class="statement">Almost never the software.</p>\n' +
+'        <p class="statement-note">What moves the price is how many teams have to agree, how much\n' +
+'          of the data has to be cleaned before it can move, and how many systems are already\n' +
+'          holding a version of the truth.</p>\n' +
 '      </div>\n' +
 '      <div class="cols-2 reveal reveal-right">\n' +
-'        <p>I am James. Before RevHops I spent [00] years inside revenue teams rather than beside\n' +
-'          them — running the systems, owning the number, and explaining to a board why the\n' +
-'          forecast and the invoices disagreed.</p>\n' +
-'        <p>The people who could tell me the truth were expensive, busy, and gone by month three.\n' +
-'          The ones who stayed did what they were told.</p>\n' +
-'        <p>So RevHops takes fewer clients and keeps the same people on them. It is a less\n' +
-'          scalable business. It is a much better one to be a client of.</p>\n' +
+'        <p>A twelve-person company with one pipeline and a clean import sits at the bottom of\n' +
+'          every range on this page.</p>\n' +
+'        <p>Four business units, two CRMs and a decade of history does not, and no amount of\n' +
+'          scoping will make it. We would rather show you why than average it away.</p>\n' +
 '      </div>\n' +
-'    </div>\n') +
-'\n<section class="section band">\n' +
-'  <div class="shell">\n' +
-'    <div class="marker reveal" style="border-bottom-color:rgba(250,250,248,.45)">\n' +
-'      <b style="color:var(--on-navy-faint)">What we believe</b>\n' +
-'      <h2 class="h2">Three, and we mean them</h2>\n' +
-'    </div>\n' +
-'    <div class="qcols reveal" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))">\n' +
-      [["Show, don't tell", "We're veteran experts and we know our stuff, but it's the work we do, not our words, that we let do the talking."],
-       ['Seriously, fun', 'Working with us is as enjoyable and fun as it is effective. You know, the whole work hard, play hard thing.'],
-       ['Clarity over comfort', 'The most important thing we can do is guide you down the right path, not the easy or convenient one.']].map(function (c, i) {
-        return '      <div class="qcol" style="border-top-color:rgba(250,250,248,.5)">\n' +
-               '        <span class="qcol-n" style="color:var(--on-navy-faint)">' + ('0' + (i + 1)) + '</span>\n' +
-               '        <h3 class="qcol-t" style="color:var(--paper)">' + c[0] + '</h3>\n' +
-               '        <p class="qcol-c" style="color:var(--on-navy)">' + c[1] + '</p>\n' +
-               '      </div>';
-      }).join('\n') + '\n' +
-'    </div>\n' +
-'  </div>\n' +
-'</section>\n' +
-    logoBand(0) +
+'    </div>\n', 'section-tight') +
     section(
-'    <div class="marker reveal"><b>In practice</b><h2 class="h2">How we work</h2></div>\n' +
-'    <div class="qrows">\n' +
-      [['Always', 'You talk to the people doing the work', 'The person on the first call is the person doing the build. Start to finish, no exceptions and no account managers in between.'],
-       ['Only', 'Revenue operations, and nothing else', 'Not a generalist shop with a RevOps page. It is the whole business, which is why we are any good at it.'],
-       ['Certified', 'HubSpot Platinum Solutions Partner', 'Current certifications, and a line into HubSpot for when the problem turns out to be on their side rather than yours.'],
-       ['Sometimes', 'The wrong call, and we will say so', 'If you need five bodies on site next week, or the real problem is a hiring problem, you will hear that on the first call.']].map(function (r) {
-        return '      <div class="qrow reveal">\n' +
-               '        <span class="qrow-n">' + r[0] + '</span>\n' +
-               '        <div class="qrow-b">\n' +
-               '          <h3 class="qrow-t">' + r[1] + '</h3>\n' +
-               '          <p class="qrow-c">' + r[2] + '</p>\n' +
-               '        </div>\n' +
-               '      </div>';
-      }).join('\n') + '\n' +
-'    </div>\n' +
-'    <p class="reveal" style="margin-top:clamp(26px,3vw,40px)">\n' +
-'      <a class="text-link" href="/services">What we actually do <span class="arrow">&rarr;</span></a>\n' +
-'    </p>\n')
-};
-
-/* ---------- /contact ----------
-   One job. A short hero, the form at seven twelfths, and the direct routes
-   on a navy panel beside it — the panel is the page's only colour and it is
-   there so "just email us" is as prominent as the form. */
-
-var contact = {
-  file: 'contact.html',
-  depth: 0,
-  navCurrent: '/contact',
-  title: 'Contact RevHops',
-  description: 'Get in touch with RevHops. Tell us what is broken, or book a discovery call directly.',
-  hero:
-'\n<section class="page-hero page-hero-plain" style="padding-bottom:clamp(20px,2.4vw,34px)">\n' +
-'  <div class="shell">\n' +
-'    <div class="page-hero-text" style="max-width:34ch">\n' +
-'      <h1 class="h1">Tell us what is broken</h1>\n' +
-'    </div>\n' +
-'    <p class="lede" style="margin-top:16px">The more specific you are, the more useful the first\n' +
-'      reply will be. We answer everything within a working day, usually with a question rather\n' +
-'      than a pitch.</p>\n' +
-'  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
-'</section>\n',
-  body:
-    section(
-'    <div class="g-7-5" style="align-items:stretch;gap:clamp(28px,3.4vw,56px)">\n' +
-'\n' +
-'      <form class="form reveal reveal-left" method="post" action="#" novalidate>\n' +
-'        <div class="form-row">\n' +
-'          <div class="field">\n' +
-'            <label for="c-name">Your name</label>\n' +
-'            <input id="c-name" name="name" type="text" autocomplete="name" required>\n' +
-'          </div>\n' +
-'          <div class="field">\n' +
-'            <label for="c-email">Work email</label>\n' +
-'            <input id="c-email" name="email" type="email" autocomplete="email" required>\n' +
-'          </div>\n' +
-'        </div>\n' +
-'        <div class="form-row">\n' +
-'          <div class="field">\n' +
-'            <label for="c-company">Company</label>\n' +
-'            <input id="c-company" name="company" type="text" autocomplete="organization">\n' +
-'          </div>\n' +
-'          <div class="field">\n' +
-'            <label for="c-crm">What you are running today</label>\n' +
-'            <select id="c-crm" name="crm">\n' +
-'              <option value="">Pick the closest one</option>\n' +
-'              <option>HubSpot</option>\n' +
-'              <option>Salesforce</option>\n' +
-'              <option>Pipedrive</option>\n' +
-'              <option>Something else</option>\n' +
-'              <option>Spreadsheets, mostly</option>\n' +
-'            </select>\n' +
-'          </div>\n' +
-'        </div>\n' +
-'        <div class="field">\n' +
-'          <label for="c-msg">What is going wrong</label>\n' +
-'          <textarea id="c-msg" name="message" rows="7"\n' +
-'                    placeholder="The symptom is enough. You do not have to have diagnosed it."></textarea>\n' +
-'        </div>\n' +
-'        <div class="form-foot">\n' +
-'          <button class="btn btn-primary" type="submit">Send it over</button>\n' +
-'          <p class="form-note">No newsletter, no sequence. One reply from a person.</p>\n' +
-'        </div>\n' +
-'      </form>\n' +
-'\n' +
-'      <aside class="side-panel reveal reveal-right">\n' +
-'        <h2 class="h3" style="color:var(--paper)">Or skip the form</h2>\n' +
-'        <p class="side-panel-copy">Email lands in the same place and gets the same answer. If you\n' +
-'          would rather just talk, the calendar is open and there is nothing to fill in first.</p>\n' +
-'        <div class="side-panel-routes">\n' +
-'          <a class="text-link" href="mailto:team@revhops.com">team@revhops.com <span class="arrow">&rarr;</span></a>\n' +
-'          <a class="text-link" href="/call">Book a discovery call <span class="arrow">&rarr;</span></a>\n' +
-'        </div>\n' +
-'        <dl class="side-panel-meta">\n' +
-'          <div><dt>Where we are</dt><dd>Phoenix, Arizona</dd></div>\n' +
-'          <div><dt>Who we work with</dt><dd>Teams across the US and Europe</dd></div>\n' +
-'          <div><dt>Reply time</dt><dd>One working day</dd></div>\n' +
-'        </dl>\n' +
-'      </aside>\n' +
-'\n' +
-'    </div>\n')
-};
-
-/* ---------- /hubspot ----------
-   Laid out as a CRM record. The argument the page is making is "we live in
-   this tool", and showing that is better than writing it down. The middle
-   column's sub-tabs are the hub explorer, and they reuse the case filter's
-   attributes exactly, so there is no second script. */
-
-var HUBS = [
-  { key: 'marketing', tab: 'Marketing', title: 'Marketing Hub',
-    line: 'Lifecycle, scoring and attribution rebuilt so the funnel reports mean something',
-    body: 'Most portals score leads on a model nobody has revisited since onboarding. We rebuild the lifecycle to match how you actually sell, then make the campaign reporting defensible enough to take to a board.',
-    chips: ['Lifecycle', 'Lead scoring', 'Attribution', 'Campaigns'], when: 'Every engagement' },
-  { key: 'sales', tab: 'Sales', title: 'Sales Hub',
-    line: 'Pipelines, routing and a forecast built on something other than optimism',
-    body: 'Stage definitions everyone reads the same way, routing that does not depend on someone watching a queue, and sequences that stop when a human replies.',
-    chips: ['Pipelines', 'Routing', 'Sequences', 'Forecasting'], when: 'Every engagement' },
-  { key: 'service', tab: 'Service', title: 'Service Hub',
-    line: 'Tickets, SLAs, and the sales-to-service handoff that is usually the real problem',
-    body: 'The handoff is where the customer notices the seams. We map it, own it, and put the SLA somewhere the team can see it without opening a report.',
-    chips: ['Tickets', 'SLAs', 'Handoffs', 'Feedback'], when: 'Where it applies' },
-  { key: 'operations', tab: 'Operations', title: 'Operations Hub',
-    line: 'Data sync, programmable automation and quality rules — where the difficult work lives',
-    body: 'Two-way sync with the systems you are not replacing, custom-coded actions for the logic no workflow can express, and format rules that stop the data going bad again.',
-    chips: ['Data sync', 'Custom code', 'Quality rules', 'Datasets'], when: 'Most engagements' },
-  { key: 'content', tab: 'Content', title: 'Content Hub',
-    line: 'Where it earns its place, and where a separate stack is the cheaper answer',
-    body: 'We will tell you when your existing CMS is fine. Where Content Hub does win is when the site has to read the CRM, and that is the case we will make or not make on the call.',
-    chips: ['CMS', 'Themes', 'Serverless'], when: 'Sometimes' },
-  { key: 'objects', tab: 'Custom objects', title: 'Custom objects and the data model',
-    line: 'Built when the model genuinely needs one, and talked you out of when it does not',
-    body: 'A custom object is a permanent decision. Half the time the answer is a property on an existing one, and saying so is more useful than the invoice for building it.',
-    chips: ['Modelling', 'Migration', 'Associations'], when: 'When it is right' }
-];
-
-var hubspot = {
-  file: 'hubspot.html',
-  depth: 0,
-  navCurrent: '/hubspot',
-  title: 'HubSpot Platinum Solutions Partner — RevHops',
-  description: 'RevHops is a HubSpot Platinum Solutions Partner. Portal builds, migrations, admin retainers and a free portal audit.',
-  hero:
-'\n<section class="record">\n' +
-'  <div class="shell">\n' +
-'\n' +
-'    <div class="record-bar">\n' +
-'      <a class="record-crumb" href="/services"><span aria-hidden="true">&larr;</span> Services</a>\n' +
-'      <a class="record-crumb" href="/call">Book a call <span aria-hidden="true">&rarr;</span></a>\n' +
-'    </div>\n' +
-'\n' +
-'    <div class="record-grid">\n' +
-'\n' +
-'      <!-- the record itself -->\n' +
-'      <aside class="record-left">\n' +
-'        <div class="rcard">\n' +
-'          <div class="record-id">\n' +
-'            <img src="assets/img/revhops-icon-white.png" alt="" aria-hidden="true">\n' +
-'            <div>\n' +
-'              <h1 class="record-name">HubSpot Platinum Partner</h1>\n' +
-'              <p class="record-org">RevHops &middot; Phoenix, Arizona</p>\n' +
-'              <a class="record-mail" href="mailto:team@revhops.com">team@revhops.com</a>\n' +
-'            </div>\n' +
-'          </div>\n' +
-'          <div class="record-actions">\n' +
-        [['/contact', 'Audit', 'M9 3h6l1 3H8zM6 6h12v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z'],
-         ['mailto:team@revhops.com', 'Email', 'M3 6h18v12H3zM3 6l9 7 9-7'],
-         ['/call', 'Meeting', 'M4 5h16v16H4zM4 10h16M9 3v4M15 3v4'],
-         ['/pricing', 'Pricing', 'M4 12h16M4 7h16M4 17h10']].map(function (a) {
-          return '            <a class="record-action" href="' + a[0] + '">\n' +
-                 '              <span><svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><path d="' + a[2] + '"/></svg></span>\n' +
-                 '              <em>' + a[1] + '</em>\n' +
-                 '            </a>';
-        }).join('\n') + '\n' +
-'          </div>\n' +
-'        </div>\n' +
-'\n' +
-'        <div class="rcard">\n' +
-'          <div class="rcard-head"><h2 class="rcard-title">About this partnership</h2></div>\n' +
-'          <dl class="rprops">\n' +
-        [['Partner tier', 'Platinum'], ['Solutions Partner since', '[year]'],
-         ['Hubs implemented', 'All five'], ['Certifications current', '10'],
-         ['Portals built', '[00]'], ['Portal owner', 'James Ricks'],
-         ['Free audit', 'Yes, one hour']].map(function (r) {
-          return '            <div><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>';
-        }).join('\n') + '\n' +
-'          </dl>\n' +
-'        </div>\n' +
-'      </aside>\n' +
-'\n' +
-'      <!-- the timeline, and the hub explorer that filters it -->\n' +
-'      <div class="record-main">\n' +
-'        <div class="rtabs">\n' +
-'          <a class="rtab" href="/services">Overview</a>\n' +
-'          <a class="rtab" href="#" aria-current="true">What we do in HubSpot</a>\n' +
-'        </div>\n' +
-'\n' +
-'        <div class="rsubtabs" role="group" aria-label="Filter by hub">\n' +
-'          <button class="rsubtab" type="button" data-filter="all" aria-pressed="true">All activity</button>\n' +
-        HUBS.map(function (h) {
-          return '          <button class="rsubtab" type="button" data-filter="' + h.key + '" aria-pressed="false">' + h.tab + '</button>';
-        }).join('\n') + '\n' +
-'        </div>\n' +
-'\n' +
-'        <div data-filter-grid>\n' +
-'          <p class="rgroup">Upcoming</p>\n' +
-'          <div class="rentry reveal" data-tags="marketing sales service operations content objects">\n' +
-'            <div class="rentry-top">\n' +
-'              <p class="rentry-title"><b>Portal audit</b> &mdash; an hour inside yours, a written page back</p>\n' +
-'              <span class="rentry-when">Free, no purchase</span>\n' +
-'            </div>\n' +
-'            <p class="rentry-body">What is set up well, what is quietly costing you, and the three things worth\n' +
-'              fixing first. If the portal is in good shape we will tell you that, and you will have spent an\n' +
-'              hour to find out.</p>\n' +
-'            <p style="margin-top:13px"><a class="text-link" href="/contact">Request the audit <span class="arrow">&rarr;</span></a></p>\n' +
-'          </div>\n' +
-'\n' +
-'          <p class="rgroup">Where the work happens</p>\n' +
-        HUBS.map(function (h) {
-          return '          <div class="rentry reveal" data-tags="' + h.key + '">\n' +
-                 '            <div class="rentry-top">\n' +
-                 '              <p class="rentry-title"><b>' + h.title + '</b> &mdash; ' + h.line + '</p>\n' +
-                 '              <span class="rentry-when">' + h.when + '</span>\n' +
-                 '            </div>\n' +
-                 '            <p class="rentry-body">' + h.body + '</p>\n' +
-                 '            <div class="rentry-chips">\n' +
-                 h.chips.map(function (c) { return '              <span class="chip">' + c + '</span>'; }).join('\n') + '\n' +
-                 '            </div>\n' +
-                 '          </div>';
-        }).join('\n') + '\n' +
-'        </div>\n' +
-'      </div>\n' +
-'\n' +
-'      <!-- associated records -->\n' +
-'      <aside class="record-right">\n' +
-'        <div class="rcard">\n' +
-'          <div class="rcard-head"><h2 class="rcard-title">Certifications (10)</h2></div>\n' +
-'          <div class="rentry-chips" style="margin-top:0">\n' +
-        ['Solutions Partner', 'Revenue Operations', 'Marketing Hub Implementation',
-         'Sales Hub Implementation', 'Service Hub Implementation', 'Data Integrations',
-         'CRM Data Management', 'Reporting', 'Marketing Automation', 'Objectives-based Onboarding']
-          .map(function (c) { return '            <span class="chip">' + c + '</span>'; }).join('\n') + '\n' +
-'          </div>\n' +
-'          <p class="rempty" style="margin-top:12px">[Badge artwork goes here once James supplies it.]</p>\n' +
-'        </div>\n' +
-'\n' +
-'        <div class="rcard">\n' +
-'          <div class="rcard-head"><h2 class="rcard-title">Case studies (5)</h2>\n' +
-'            <a class="rcard-add" href="/case-studies">All</a></div>\n' +
-'          <div class="rassoc">\n' +
-        CASES.map(function (c, i) {
-          return '            <a href="/case-studies/' + c.slug + '">[Client name] <small>' + c.figs[0][0] + c.figs[0][1] + '</small></a>';
-        }).join('\n') + '\n' +
-'          </div>\n' +
-'        </div>\n' +
-'\n' +
-'        <div class="rcard">\n' +
-'          <div class="rcard-head"><h2 class="rcard-title">Ways in (5)</h2>\n' +
-'            <a class="rcard-add" href="/services">All</a></div>\n' +
-'          <div class="rassoc">\n' +
-        SERVICES.map(function (s) {
-          return '            <a href="/services/' + s.slug + '">' + s.name + ' <small>' + s.time + '</small></a>';
-        }).join('\n') + '\n' +
-'          </div>\n' +
-'        </div>\n' +
-'\n' +
-'        <div class="rcard">\n' +
-'          <div class="rcard-head"><h2 class="rcard-title">Not a reason to buy it</h2></div>\n' +
-'          <p class="rempty">Platinum is the third tier of five, and anyone whose pitch is their\n' +
-'            partner tier is selling you their partner tier. If you own Salesforce and it is\n' +
-'            working, we will say so and you will have saved a migration.</p>\n' +
-'        </div>\n' +
-'      </aside>\n' +
-'\n' +
-'    </div>\n' +
-'  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
-'</section>\n',
-  /* The close pulls itself up by --start-bleed and paints across whatever is
-     above it. With no body that was the record's own cards, with the bottom
-     300px of the layout washed out. This section is what it lands on. */
-  body: section(
-'    <div class="g-5-7" style="align-items:start">\n' +
-'      <div class="reveal reveal-left">\n' +
-'        <p class="statement">If the portal is in good shape we will tell you that.</p>\n' +
-'        <p class="statement-note">And you will have spent an hour to find out, which is a better\n' +
-'          outcome than most audits manage.</p>\n' +
-'      </div>\n' +
-'      <div class="cols-2 reveal reveal-right">\n' +
-'        <p>Most audits are a sales document with a findings section attached. The findings are\n' +
-'          real, the recommendation is always the same, and it is always the thing being sold.</p>\n' +
-'        <p>This one is an hour and a page. If the answer is leave it alone, that is what the page\n' +
-'          will say, and you can put it in front of whoever asked you to look.</p>\n' +
-'      </div>\n' +
+      secHead('Included whatever you spend') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+      pcards([
+        { title: 'Documentation', copy: 'Part of the work, not a line item that gets cut when the budget tightens.', chips: ['Always'] },
+        { title: 'The same people', copy: 'First call to handover. No introduction to a delivery team you have never met.', chips: ['Always'] },
+        { title: 'A written scope', copy: 'Approved by you before anything is built, and requoted before it changes.', chips: ['Always'] },
+        { title: 'The free first call', copy: 'Where we work out whether this is a fit. No charge and no obligation either way.', chips: ['Free'] }
+      ]) +
 '    </div>\n', 'section to-white')
-};
-
-var about = {
-  file: 'about-us.html',
-  depth: 0,
-  navCurrent: '/about-us',
-  title: 'About RevHops',
-  description: 'RevHops is a small revenue operations consultancy in Phoenix, Arizona. Who we are, how we work, and what we will not do.',
-  hero:
-'\n<section class="page-hero page-hero-flip">\n' +
-'  <div class="shell">\n' +
-'    <div class="page-hero-inner-flip">\n' +
-'      <div class="page-hero-text order-first">\n' +
-'        <h1 class="h1">The team you meet is the team you get</h1>\n' +
-'        <p class="lede">A revenue operations consultancy in Phoenix, Arizona. Small on purpose,\n' +
-'          deep in one thing, and straight with you about the parts that will be difficult.</p>\n' +
-'        <dl class="hero-meta">\n' +
-'          <div><dt>Based in</dt><dd>Phoenix, AZ</dd></div>\n' +
-'          <div><dt>Founded by</dt><dd>James Ricks</dd></div>\n' +
-'          <div><dt>Clients at once</dt><dd>Deliberately few</dd></div>\n' +
-'        </dl>\n' +
-'      </div>\n' +
-'    </div>\n' +
-'    <div class="page-hero-media is-left">\n' +
-'      <img src="assets/img/james-portrait.webp" alt="James Ricks, founder of RevHops">\n' +
-'    </div>\n' +
-'  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
-'</section>\n',
-  body:
-    section(
-'    <div class="g-5-7" style="align-items:start">\n' +
-'      <div class="reveal reveal-left">\n' +
-'        <p class="statement">The agencies I hired were good at building what I asked for.</p>\n' +
-'        <p class="statement-note">And bad at telling me when I had asked for the wrong thing.\n' +
-'          That is the reason this shop exists.</p>\n' +
-'      </div>\n' +
-'      <div class="cols-2 reveal reveal-right">\n' +
-'        <p>I am James. Before RevHops I spent [00] years inside revenue teams rather than beside\n' +
-'          them — running the systems, owning the number, and explaining to a board why the\n' +
-'          forecast and the invoices disagreed.</p>\n' +
-'        <p>The people who could tell me the truth were expensive, busy, and gone by month three.\n' +
-'          The ones who stayed did what they were told.</p>\n' +
-'        <p>So RevHops takes fewer clients and keeps the same people on them. It is a less\n' +
-'          scalable business. It is a much better one to be a client of.</p>\n' +
-'      </div>\n' +
-'    </div>\n') +
-'\n<section class="section band">\n' +
-'  <div class="shell">\n' +
-'    <div class="marker reveal" style="border-bottom-color:rgba(250,250,248,.45)">\n' +
-'      <b style="color:var(--on-navy-faint)">What we believe</b>\n' +
-'      <h2 class="h2">Three, and we mean them</h2>\n' +
-'    </div>\n' +
-'    <div class="qcols reveal" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))">\n' +
-      [["Show, don't tell", "We're veteran experts and we know our stuff, but it's the work we do, not our words, that we let do the talking."],
-       ['Seriously, fun', 'Working with us is as enjoyable and fun as it is effective. You know, the whole work hard, play hard thing.'],
-       ['Clarity over comfort', 'The most important thing we can do is guide you down the right path, not the easy or convenient one.']].map(function (c, i) {
-        return '      <div class="qcol" style="border-top-color:rgba(250,250,248,.5)">\n' +
-               '        <span class="qcol-n" style="color:var(--on-navy-faint)">' + ('0' + (i + 1)) + '</span>\n' +
-               '        <h3 class="qcol-t" style="color:var(--paper)">' + c[0] + '</h3>\n' +
-               '        <p class="qcol-c" style="color:var(--on-navy)">' + c[1] + '</p>\n' +
-               '      </div>';
-      }).join('\n') + '\n' +
-'    </div>\n' +
-'  </div>\n' +
-'</section>\n' +
-    logoBand(0) +
-    section(
-'    <div class="marker reveal"><b>In practice</b><h2 class="h2">How we work</h2></div>\n' +
-'    <div class="qrows">\n' +
-      [['Always', 'You talk to the people doing the work', 'The person on the first call is the person doing the build. Start to finish, no exceptions and no account managers in between.'],
-       ['Only', 'Revenue operations, and nothing else', 'Not a generalist shop with a RevOps page. It is the whole business, which is why we are any good at it.'],
-       ['Certified', 'HubSpot Platinum Solutions Partner', 'Current certifications, and a line into HubSpot for when the problem turns out to be on their side rather than yours.'],
-       ['Sometimes', 'The wrong call, and we will say so', 'If you need five bodies on site next week, or the real problem is a hiring problem, you will hear that on the first call.']].map(function (r) {
-        return '      <div class="qrow reveal">\n' +
-               '        <span class="qrow-n">' + r[0] + '</span>\n' +
-               '        <div class="qrow-b">\n' +
-               '          <h3 class="qrow-t">' + r[1] + '</h3>\n' +
-               '          <p class="qrow-c">' + r[2] + '</p>\n' +
-               '        </div>\n' +
-               '      </div>';
-      }).join('\n') + '\n' +
-'    </div>\n' +
-'    <p class="reveal" style="margin-top:clamp(26px,3vw,40px)">\n' +
-'      <a class="text-link" href="/services">What we actually do <span class="arrow">&rarr;</span></a>\n' +
-'    </p>\n')
-};
-
-/* ---------- /contact ----------
-   One job. A short hero, the form at seven twelfths, and the direct routes
-   on a navy panel beside it — the panel is the page's only colour and it is
-   there so "just email us" is as prominent as the form. */
-
-var contact = {
-  file: 'contact.html',
-  depth: 0,
-  navCurrent: '/contact',
-  title: 'Contact RevHops',
-  description: 'Get in touch with RevHops. Tell us what is broken, or book a discovery call directly.',
-  hero:
-'\n<section class="page-hero page-hero-plain" style="padding-bottom:clamp(20px,2.4vw,34px)">\n' +
-'  <div class="shell">\n' +
-'    <div class="page-hero-text" style="max-width:34ch">\n' +
-'      <h1 class="h1">Tell us what is broken</h1>\n' +
-'    </div>\n' +
-'    <p class="lede" style="margin-top:16px">The more specific you are, the more useful the first\n' +
-'      reply will be. We answer everything within a working day, usually with a question rather\n' +
-'      than a pitch.</p>\n' +
-'  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
-'</section>\n',
-  body:
-    section(
-'    <div class="g-7-5" style="align-items:stretch;gap:clamp(28px,3.4vw,56px)">\n' +
-'\n' +
-'      <form class="form reveal reveal-left" method="post" action="#" novalidate>\n' +
-'        <div class="form-row">\n' +
-'          <div class="field">\n' +
-'            <label for="c-name">Your name</label>\n' +
-'            <input id="c-name" name="name" type="text" autocomplete="name" required>\n' +
-'          </div>\n' +
-'          <div class="field">\n' +
-'            <label for="c-email">Work email</label>\n' +
-'            <input id="c-email" name="email" type="email" autocomplete="email" required>\n' +
-'          </div>\n' +
-'        </div>\n' +
-'        <div class="form-row">\n' +
-'          <div class="field">\n' +
-'            <label for="c-company">Company</label>\n' +
-'            <input id="c-company" name="company" type="text" autocomplete="organization">\n' +
-'          </div>\n' +
-'          <div class="field">\n' +
-'            <label for="c-crm">What you are running today</label>\n' +
-'            <select id="c-crm" name="crm">\n' +
-'              <option value="">Pick the closest one</option>\n' +
-'              <option>HubSpot</option>\n' +
-'              <option>Salesforce</option>\n' +
-'              <option>Pipedrive</option>\n' +
-'              <option>Something else</option>\n' +
-'              <option>Spreadsheets, mostly</option>\n' +
-'            </select>\n' +
-'          </div>\n' +
-'        </div>\n' +
-'        <div class="field">\n' +
-'          <label for="c-msg">What is going wrong</label>\n' +
-'          <textarea id="c-msg" name="message" rows="7"\n' +
-'                    placeholder="The symptom is enough. You do not have to have diagnosed it."></textarea>\n' +
-'        </div>\n' +
-'        <div class="form-foot">\n' +
-'          <button class="btn btn-primary" type="submit">Send it over</button>\n' +
-'          <p class="form-note">No newsletter, no sequence. One reply from a person.</p>\n' +
-'        </div>\n' +
-'      </form>\n' +
-'\n' +
-'      <aside class="side-panel reveal reveal-right">\n' +
-'        <h2 class="h3" style="color:var(--paper)">Or skip the form</h2>\n' +
-'        <p class="side-panel-copy">Email lands in the same place and gets the same answer. If you\n' +
-'          would rather just talk, the calendar is open and there is nothing to fill in first.</p>\n' +
-'        <div class="side-panel-routes">\n' +
-'          <a class="text-link" href="mailto:team@revhops.com">team@revhops.com <span class="arrow">&rarr;</span></a>\n' +
-'          <a class="text-link" href="/call">Book a discovery call <span class="arrow">&rarr;</span></a>\n' +
-'        </div>\n' +
-'        <dl class="side-panel-meta">\n' +
-'          <div><dt>Where we are</dt><dd>Phoenix, Arizona</dd></div>\n' +
-'          <div><dt>Who we work with</dt><dd>Teams across the US and Europe</dd></div>\n' +
-'          <div><dt>Reply time</dt><dd>One working day</dd></div>\n' +
-'        </dl>\n' +
-'      </aside>\n' +
-'\n' +
-'    </div>\n')
 };
 
 var hubspot = {
@@ -1899,7 +1197,137 @@ var hubspot = {
 '    </div>\n', 'section to-white')
 };
 
+var about = {
+  file: 'about-us.html',
+  depth: 0,
+  navCurrent: '/about-us',
+  title: 'About RevHops',
+  description: 'RevHops is a small revenue operations consultancy in Phoenix, Arizona. Who we are, how we work, and what we will not do.',
+  h1: 'The team you meet is the team you get',
+  lede: 'A revenue operations consultancy in Phoenix, Arizona. Small on purpose, deep in one thing, and straight with you about the parts that will be difficult.',
+  media: { src: 'assets/img/james-portrait.webp', alt: 'James Ricks, founder of RevHops' },
+  meta: [['Based in', 'Phoenix, AZ'], ['Founded by', 'James Ricks'], ['Clients at once', 'Deliberately few']],
+  body:
+    section(
+'    <div class="split" style="align-items:start">\n' +
+'      <div class="reveal reveal-left">\n' +
+'        <p class="statement">The agencies I hired were good at building what I asked for.</p>\n' +
+'        <p class="statement-note">And bad at telling me when I had asked for the wrong thing.\n' +
+'          That is the reason this shop exists.</p>\n' +
+'      </div>\n' +
+'      <div class="cols-2 reveal reveal-right">\n' +
+'        <p>I am James. Before RevHops I spent [00] years inside revenue teams rather than beside\n' +
+'          them — running the systems, owning the number, and explaining to a board why the\n' +
+'          forecast and the invoices disagreed.</p>\n' +
+'        <p>The people who could tell me the truth were expensive, busy, and gone by month three.\n' +
+'          The ones who stayed did what they were told.</p>\n' +
+'        <p>So RevHops takes fewer clients and keeps the same people on them. It is a less\n' +
+'          scalable business. It is a much better one to be a client of.</p>\n' +
+'      </div>\n' +
+'    </div>\n') +
+    section(
+      secHead('What we <span class="hl">believe</span>') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+      pcards([
+        { n: 'One', title: 'Show, don\'t tell',
+          copy: 'We\'re veteran experts and we know our stuff, but it\'s the work we do, not our words, that we let do the talking.',
+          chips: ['Proof', 'Not promises'] },
+        { n: 'Two', title: 'Seriously, fun',
+          copy: 'Working with us is as enjoyable and fun as it is effective. You know, the whole work hard, play hard thing.',
+          chips: ['Effective', 'Enjoyable'] },
+        { n: 'Three', title: 'Clarity over comfort',
+          copy: 'The most important thing we can do is guide you down the right path, not the easy or convenient one.',
+          chips: ['Honest', 'Direct'] }
+      ]) +
+'    </div>\n', 'section-tight') +
+    logoBand(0) +
+    section(
+      secHead('How we work') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+      pcards([
+        { title: 'You talk to the doers', copy: 'The person on the first call is the person doing the build. Start to finish, no exceptions.',
+          chips: ['No account managers'] },
+        { title: 'RevOps only', copy: 'Not a generalist shop with a RevOps page. It is the whole business, which is why we are any good at it.',
+          chips: ['One discipline'] },
+        { title: 'HubSpot Platinum', copy: 'Certified, current, and with a line into HubSpot when the problem is on their side.',
+          chips: ['Platinum partner'] },
+        { title: 'Wrong for some jobs', copy: 'If you need five bodies on site next week, we are not it, and we will say so on the first call.',
+          chips: ['We will tell you'] }
+      ]) +
+'    </div>\n' +
+'    <p class="reveal" style="margin-top:clamp(26px,3vw,40px)">\n' +
+'      <a class="text-link" href="/services">What we actually do <span class="arrow">&rarr;</span></a>\n' +
+'    </p>\n', 'section to-white')
+};
 
+var contact = {
+  file: 'contact.html',
+  depth: 0,
+  navCurrent: '/contact',
+  title: 'Contact RevHops',
+  description: 'Get in touch with RevHops. Tell us what is broken, or book a discovery call directly.',
+  h1: 'Tell us what is broken',
+  lede: 'The more specific you are, the more useful the first reply will be. We answer everything within a working day, usually with a question rather than a pitch.',
+  media: { src: 'assets/img/case-study-placeholder.svg', alt: '' },
+  meta: [['Reply within', 'One working day'], ['Email', 'team@revhops.com'], ['Based in', 'Phoenix, AZ']],
+  body:
+    section(
+'    <div class="split" style="align-items:start">\n' +
+'\n' +
+'      <!-- Deliberately not inside a card. The form is the page; a frame\n' +
+'           round the only thing on it reads as a widget dropped into a\n' +
+'           layout rather than as the layout. -->\n' +
+'      <form class="form reveal reveal-left" method="post" action="#" novalidate>\n' +
+'        <div class="form-row">\n' +
+'          <div class="field">\n' +
+'            <label for="c-name">Your name</label>\n' +
+'            <input id="c-name" name="name" type="text" autocomplete="name" required>\n' +
+'          </div>\n' +
+'          <div class="field">\n' +
+'            <label for="c-email">Work email</label>\n' +
+'            <input id="c-email" name="email" type="email" autocomplete="email" required>\n' +
+'          </div>\n' +
+'        </div>\n' +
+'        <div class="form-row">\n' +
+'          <div class="field">\n' +
+'            <label for="c-company">Company</label>\n' +
+'            <input id="c-company" name="company" type="text" autocomplete="organization">\n' +
+'          </div>\n' +
+'          <div class="field">\n' +
+'            <label for="c-crm">What you are running today</label>\n' +
+'            <select id="c-crm" name="crm">\n' +
+'              <option value="">Pick the closest one</option>\n' +
+'              <option>HubSpot</option>\n' +
+'              <option>Salesforce</option>\n' +
+'              <option>Pipedrive</option>\n' +
+'              <option>Something else</option>\n' +
+'              <option>Spreadsheets, mostly</option>\n' +
+'            </select>\n' +
+'          </div>\n' +
+'        </div>\n' +
+'        <div class="field">\n' +
+'          <label for="c-msg">What is going wrong</label>\n' +
+'          <textarea id="c-msg" name="message" rows="6"\n' +
+'                    placeholder="The symptom is enough. You do not have to have diagnosed it."></textarea>\n' +
+'        </div>\n' +
+'        <div class="form-foot">\n' +
+'          <button class="btn btn-primary" type="submit">Send it over</button>\n' +
+'          <p class="form-note">No newsletter, no sequence. One reply from a person.</p>\n' +
+'        </div>\n' +
+'      </form>\n' +
+'\n' +
+'      <div class="stack gap-20 reveal reveal-right">\n' +
+'        <h2 class="h2">Or <span class="hl">skip the form</span></h2>\n' +
+'        <p class="small">Email lands in the same place and gets the same answer. If you would\n' +
+'          rather just talk, the calendar is open and there is nothing to fill in first.</p>\n' +
+'        <a class="text-link" href="mailto:team@revhops.com">team@revhops.com <span class="arrow">&rarr;</span></a>\n' +
+'        <a class="text-link" href="/call">Book a discovery call <span class="arrow">&rarr;</span></a>\n' +
+'        <p class="small muted">We are in Phoenix, Arizona, and work with teams across the US and\n' +
+'          Europe. Most of the work happens over video either way.</p>\n' +
+'      </div>\n' +
+'\n' +
+'    </div>\n', 'section to-white')
+};
 
 /* ---------- the two booking pages ----------
    Nothing but the widget. No header band, no closing panel: the page has one
@@ -1950,52 +1378,32 @@ var clientCallPage = meetingPage({
   noindex: true
 });
 
-
-/* ---------- /terms and /privacy ----------
-   No design ambition, but not a wall either: a contents list that sticks to
-   the left while the clauses scroll past it. That is the one thing that
-   actually helps somebody reading a legal page, which is always somebody
-   looking for one specific paragraph. */
+/* ---------- legal ----------
+   Placeholder wording. No design work here on purpose: these two pages are
+   read once, by someone checking a specific clause, and the only thing that
+   helps them is a narrow measure and clear headings. */
 
 function legalPage(o) {
-  var ids = o.sections.map(function (s) {
-    return s[0].toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  });
   return {
     file: o.file,
     depth: 0,
     title: o.title,
     description: o.description,
-    hero:
-'\n<section class="page-hero page-hero-plain" style="padding-bottom:clamp(18px,2.2vw,30px)">\n' +
-'  <div class="shell">\n' +
-'    <p class="qcol-n" style="margin-bottom:14px">Legal</p>\n' +
-'    <h1 class="h1" style="font-size:clamp(1.9rem,1.3rem + 2.2vw,2.9rem)">' + o.h1 + '</h1>\n' +
-'    <p class="lede" style="margin-top:14px">' + o.lede + '</p>\n' +
-'  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
-'</section>\n',
+    h1: o.h1,
+    lede: o.lede,
     body: section(
-'    <div class="g-4-8" style="gap:clamp(28px,4vw,80px)">\n' +
-'      <nav class="legal-index reveal" aria-label="On this page">\n' +
-'        <p class="qcol-n">On this page</p>\n' +
-        o.sections.map(function (s, i) {
-          return '        <a href="#' + ids[i] + '">' + s[0] + '</a>';
-        }).join('\n') + '\n' +
-'      </nav>\n' +
-'      <div class="prose reveal">\n' +
-'        <p class="prose-meta">Last updated [date]. This is placeholder wording and has not been\n' +
-'          reviewed by a lawyer. Replace it before launch.</p>\n' +
-        o.sections.map(function (s, i) {
-          return '        <h2 id="' + ids[i] + '">' + s[0] + '</h2>\n' +
-                 s.slice(1).map(function (para) {
-                   return Array.isArray(para)
-                     ? '        <ul>\n' + para.map(function (li) { return '          <li>' + li + '</li>'; }).join('\n') + '\n        </ul>'
-                     : '        <p>' + para + '</p>';
-                 }).join('\n');
-        }).join('\n') + '\n' +
-'      </div>\n' +
-'    </div>\n')
+'    <div class="prose reveal">\n' +
+'      <p class="prose-meta">Last updated [date]. This is placeholder wording and has not been\n' +
+'        reviewed by a lawyer. Replace it before launch.</p>\n' +
+      o.sections.map(function (s) {
+        return '      <h2>' + s[0] + '</h2>\n' +
+               s.slice(1).map(function (p) {
+                 return Array.isArray(p)
+                   ? '      <ul>\n' + p.map(function (li) { return '        <li>' + li + '</li>'; }).join('\n') + '\n      </ul>'
+                   : '      <p>' + p + '</p>';
+               }).join('\n');
+      }).join('\n') + '\n' +
+'    </div>\n', 'section to-white')
   };
 }
 

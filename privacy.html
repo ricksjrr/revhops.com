@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=bdfeab3c10">
+<link rel="stylesheet" href="assets/css/site.css?v=4041a27eaa">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -71,55 +71,48 @@
 
 <main>
 
-<section class="page-hero page-hero-plain" style="padding-bottom:clamp(18px,2.2vw,30px)">
+<!-- ===================== HERO =====================
+     Type left, artwork bleeding off the right edge. .page-head-end is the
+     zero-height sentinel the nav watches to decide when to collapse. -->
+<section class="page-hero page-hero-plain">
   <div class="shell">
-    <p class="qcol-n" style="margin-bottom:14px">Legal</p>
-    <h1 class="h1" style="font-size:clamp(1.9rem,1.3rem + 2.2vw,2.9rem)">Privacy Policy</h1>
-    <p class="lede" style="margin-top:14px">What we collect, why we collect it, and how to get rid of it. Placeholder wording for now.</p>
+    <div class="page-hero-inner">
+      <div class="page-hero-text">
+        <h1 class="h1">Privacy Policy</h1>
+        <p class="lede">What we collect, why we collect it, and how to get rid of it. Placeholder wording for now.</p>
+      </div>
+    </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
 
-<section class="section">
+<section class="section to-white">
   <div class="shell">
-    <div class="g-4-8" style="gap:clamp(28px,4vw,80px)">
-      <nav class="legal-index reveal" aria-label="On this page">
-        <p class="qcol-n">On this page</p>
-        <a href="#the-short-version">The short version</a>
-        <a href="#what-we-collect">What we collect</a>
-        <a href="#why-we-collect-it">Why we collect it</a>
-        <a href="#cookies-and-tracking">Cookies and tracking</a>
-        <a href="#who-else-sees-it">Who else sees it</a>
-        <a href="#how-long-we-keep-it">How long we keep it</a>
-        <a href="#your-rights">Your rights</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <div class="prose reveal">
-        <p class="prose-meta">Last updated [date]. This is placeholder wording and has not been
-          reviewed by a lawyer. Replace it before launch.</p>
-        <h2 id="the-short-version">The short version</h2>
-        <p>We collect the information you give us and some information about how you use this site. We use it to answer you and to work out which pages are worth keeping. We do not sell it.</p>
-        <h2 id="what-we-collect">What we collect</h2>
-        <ul>
-          <li>Anything you type into a form on this site: name, work email, company and your message.</li>
-          <li>Anything you give us when booking a call through our scheduler.</li>
-          <li>Usage data collected by HubSpot's tracking script: pages viewed, referring source, approximate location and a cookie identifier.</li>
-          <li>[Placeholder. Confirm the full list once analytics is settled.]</li>
-        </ul>
-        <h2 id="why-we-collect-it">Why we collect it</h2>
-        <p>To reply to you, to run an engagement once one starts, and to understand which parts of this site are useful. Marketing email only ever goes to people who asked for it.</p>
-        <h2 id="cookies-and-tracking">Cookies and tracking</h2>
-        <p>This site loads HubSpot's tracking script, which sets cookies to recognize a returning visitor and attribute a form submission to the pages that led to it. You can refuse cookies in your browser; the site works either way.</p>
-        <p>[Placeholder. Add the consent banner detail if one is added.]</p>
-        <h2 id="who-else-sees-it">Who else sees it</h2>
-        <p>Our processors: HubSpot as our CRM and analytics, and our email and calendar providers. They hold it on our behalf and under contract. Nobody buys it from us, because we do not sell it.</p>
-        <h2 id="how-long-we-keep-it">How long we keep it</h2>
-        <p>[Placeholder. Retention periods per data type.]</p>
-        <h2 id="your-rights">Your rights</h2>
-        <p>You can ask what we hold about you, ask for it to be corrected, or ask us to delete it. Email <a href="mailto:team@revhops.com">team@revhops.com</a> and we will action it. If you are in the EU or UK, the GDPR rights apply in full.</p>
-        <h2 id="contact">Contact</h2>
-        <p>RevHops, Phoenix, Arizona. <a href="mailto:team@revhops.com">team@revhops.com</a>.</p>
-      </div>
+    <div class="prose reveal">
+      <p class="prose-meta">Last updated [date]. This is placeholder wording and has not been
+        reviewed by a lawyer. Replace it before launch.</p>
+      <h2>The short version</h2>
+      <p>We collect the information you give us and some information about how you use this site. We use it to answer you and to work out which pages are worth keeping. We do not sell it.</p>
+      <h2>What we collect</h2>
+      <ul>
+        <li>Anything you type into a form on this site: name, work email, company and your message.</li>
+        <li>Anything you give us when booking a call through our scheduler.</li>
+        <li>Usage data collected by HubSpot's tracking script: pages viewed, referring source, approximate location and a cookie identifier.</li>
+        <li>[Placeholder. Confirm the full list once analytics is settled.]</li>
+      </ul>
+      <h2>Why we collect it</h2>
+      <p>To reply to you, to run an engagement once one starts, and to understand which parts of this site are useful. Marketing email only ever goes to people who asked for it.</p>
+      <h2>Cookies and tracking</h2>
+      <p>This site loads HubSpot's tracking script, which sets cookies to recognize a returning visitor and attribute a form submission to the pages that led to it. You can refuse cookies in your browser; the site works either way.</p>
+      <p>[Placeholder. Add the consent banner detail if one is added.]</p>
+      <h2>Who else sees it</h2>
+      <p>Our processors: HubSpot as our CRM and analytics, and our email and calendar providers. They hold it on our behalf and under contract. Nobody buys it from us, because we do not sell it.</p>
+      <h2>How long we keep it</h2>
+      <p>[Placeholder. Retention periods per data type.]</p>
+      <h2>Your rights</h2>
+      <p>You can ask what we hold about you, ask for it to be corrected, or ask us to delete it. Email <a href="mailto:team@revhops.com">team@revhops.com</a> and we will action it. If you are in the EU or UK, the GDPR rights apply in full.</p>
+      <h2>Contact</h2>
+      <p>RevHops, Phoenix, Arizona. <a href="mailto:team@revhops.com">team@revhops.com</a>.</p>
     </div>
   </div>
 </section>
@@ -204,6 +197,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=bdfeab3c10"></script>
+<script src="assets/js/site.js?v=4041a27eaa"></script>
 </body>
 </html>

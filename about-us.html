@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=bdfeab3c10">
+<link rel="stylesheet" href="assets/css/site.css?v=4041a27eaa">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -71,13 +71,15 @@
 
 <main>
 
-<section class="page-hero page-hero-flip">
+<!-- ===================== HERO =====================
+     Type left, artwork bleeding off the right edge. .page-head-end is the
+     zero-height sentinel the nav watches to decide when to collapse. -->
+<section class="page-hero">
   <div class="shell">
-    <div class="page-hero-inner-flip">
-      <div class="page-hero-text order-first">
+    <div class="page-hero-inner">
+      <div class="page-hero-text">
         <h1 class="h1">The team you meet is the team you get</h1>
-        <p class="lede">A revenue operations consultancy in Phoenix, Arizona. Small on purpose,
-          deep in one thing, and straight with you about the parts that will be difficult.</p>
+        <p class="lede">A revenue operations consultancy in Phoenix, Arizona. Small on purpose, deep in one thing, and straight with you about the parts that will be difficult.</p>
         <dl class="hero-meta">
           <div><dt>Based in</dt><dd>Phoenix, AZ</dd></div>
           <div><dt>Founded by</dt><dd>James Ricks</dd></div>
@@ -85,16 +87,16 @@
         </dl>
       </div>
     </div>
-    <div class="page-hero-media is-left">
-      <img src="assets/img/james-portrait.webp" alt="James Ricks, founder of RevHops">
-    </div>
+      <div class="page-hero-media">
+        <img src="assets/img/james-portrait.webp" alt="James Ricks, founder of RevHops">
+      </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
 
 <section class="section">
   <div class="shell">
-    <div class="g-5-7" style="align-items:start">
+    <div class="split" style="align-items:start">
       <div class="reveal reveal-left">
         <p class="statement">The agencies I hired were good at building what I asked for.</p>
         <p class="statement-note">And bad at telling me when I had asked for the wrong thing.
@@ -113,28 +115,41 @@
   </div>
 </section>
 
-<section class="section band">
+<section class="section-tight">
   <div class="shell">
-    <div class="marker reveal" style="border-bottom-color:rgba(250,250,248,.45)">
-      <b style="color:var(--on-navy-faint)">What we believe</b>
-      <h2 class="h2">Three, and we mean them</h2>
+    <div class="sec-head sec-head-left reveal">
+      <h2 class="h2">What we <span class="hl">believe</span></h2>
     </div>
-    <div class="qcols reveal" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))">
-      <div class="qcol" style="border-top-color:rgba(250,250,248,.5)">
-        <span class="qcol-n" style="color:var(--on-navy-faint)">01</span>
-        <h3 class="qcol-t" style="color:var(--paper)">Show, don't tell</h3>
-        <p class="qcol-c" style="color:var(--on-navy)">We're veteran experts and we know our stuff, but it's the work we do, not our words, that we let do the talking.</p>
-      </div>
-      <div class="qcol" style="border-top-color:rgba(250,250,248,.5)">
-        <span class="qcol-n" style="color:var(--on-navy-faint)">02</span>
-        <h3 class="qcol-t" style="color:var(--paper)">Seriously, fun</h3>
-        <p class="qcol-c" style="color:var(--on-navy)">Working with us is as enjoyable and fun as it is effective. You know, the whole work hard, play hard thing.</p>
-      </div>
-      <div class="qcol" style="border-top-color:rgba(250,250,248,.5)">
-        <span class="qcol-n" style="color:var(--on-navy-faint)">03</span>
-        <h3 class="qcol-t" style="color:var(--paper)">Clarity over comfort</h3>
-        <p class="qcol-c" style="color:var(--on-navy)">The most important thing we can do is guide you down the right path, not the easy or convenient one.</p>
-      </div>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards">
+        <div class="pcard reveal">
+          <span class="pcard-n">One</span>
+          <h3 class="pcard-title">Show, don't tell</h3>
+          <p class="pcard-copy">We're veteran experts and we know our stuff, but it's the work we do, not our words, that we let do the talking.</p>
+          <div class="pcard-chips">
+            <span class="chip">Proof</span>
+            <span class="chip">Not promises</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <span class="pcard-n">Two</span>
+          <h3 class="pcard-title">Seriously, fun</h3>
+          <p class="pcard-copy">Working with us is as enjoyable and fun as it is effective. You know, the whole work hard, play hard thing.</p>
+          <div class="pcard-chips">
+            <span class="chip">Effective</span>
+            <span class="chip">Enjoyable</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <span class="pcard-n">Three</span>
+          <h3 class="pcard-title">Clarity over comfort</h3>
+          <p class="pcard-copy">The most important thing we can do is guide you down the right path, not the easy or convenient one.</p>
+          <div class="pcard-chips">
+            <span class="chip">Honest</span>
+            <span class="chip">Direct</span>
+          </div>
+        </div>
+    </div>
     </div>
   </div>
 </section>
@@ -166,38 +181,42 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section to-white">
   <div class="shell">
-    <div class="marker reveal"><b>In practice</b><h2 class="h2">How we work</h2></div>
-    <div class="qrows">
-      <div class="qrow reveal">
-        <span class="qrow-n">Always</span>
-        <div class="qrow-b">
-          <h3 class="qrow-t">You talk to the people doing the work</h3>
-          <p class="qrow-c">The person on the first call is the person doing the build. Start to finish, no exceptions and no account managers in between.</p>
+    <div class="sec-head sec-head-left reveal">
+      <h2 class="h2">How we work</h2>
+    </div>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards">
+        <div class="pcard reveal">
+          <h3 class="pcard-title">You talk to the doers</h3>
+          <p class="pcard-copy">The person on the first call is the person doing the build. Start to finish, no exceptions.</p>
+          <div class="pcard-chips">
+            <span class="chip">No account managers</span>
+          </div>
         </div>
-      </div>
-      <div class="qrow reveal">
-        <span class="qrow-n">Only</span>
-        <div class="qrow-b">
-          <h3 class="qrow-t">Revenue operations, and nothing else</h3>
-          <p class="qrow-c">Not a generalist shop with a RevOps page. It is the whole business, which is why we are any good at it.</p>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">RevOps only</h3>
+          <p class="pcard-copy">Not a generalist shop with a RevOps page. It is the whole business, which is why we are any good at it.</p>
+          <div class="pcard-chips">
+            <span class="chip">One discipline</span>
+          </div>
         </div>
-      </div>
-      <div class="qrow reveal">
-        <span class="qrow-n">Certified</span>
-        <div class="qrow-b">
-          <h3 class="qrow-t">HubSpot Platinum Solutions Partner</h3>
-          <p class="qrow-c">Current certifications, and a line into HubSpot for when the problem turns out to be on their side rather than yours.</p>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">HubSpot Platinum</h3>
+          <p class="pcard-copy">Certified, current, and with a line into HubSpot when the problem is on their side.</p>
+          <div class="pcard-chips">
+            <span class="chip">Platinum partner</span>
+          </div>
         </div>
-      </div>
-      <div class="qrow reveal">
-        <span class="qrow-n">Sometimes</span>
-        <div class="qrow-b">
-          <h3 class="qrow-t">The wrong call, and we will say so</h3>
-          <p class="qrow-c">If you need five bodies on site next week, or the real problem is a hiring problem, you will hear that on the first call.</p>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">Wrong for some jobs</h3>
+          <p class="pcard-copy">If you need five bodies on site next week, we are not it, and we will say so on the first call.</p>
+          <div class="pcard-chips">
+            <span class="chip">We will tell you</span>
+          </div>
         </div>
-      </div>
+    </div>
     </div>
     <p class="reveal" style="margin-top:clamp(26px,3vw,40px)">
       <a class="text-link" href="services">What we actually do <span class="arrow">&rarr;</span></a>
@@ -285,6 +304,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=bdfeab3c10"></script>
+<script src="assets/js/site.js?v=4041a27eaa"></script>
 </body>
 </html>
