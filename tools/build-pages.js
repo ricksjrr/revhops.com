@@ -1779,11 +1779,18 @@ function meetingPage(o) {
    arriving has already read the pitch on the page they clicked from, and a
    band restating it is one more screen before the calendar. */
 
-var CALL_SUB =
+/* Two paragraphs, not one. The turn is at "Then, if we're a good fit" —
+   before it the call is about them, after it it is about us, and running
+   both halves together buries the conditional that makes the second half
+   worth reading. */
+var CALL_SUB = [
   'We’ll talk about you and your team and dive into the problems you’re facing ' +
-  'today and talk about where you’d like to get to. Then, if we’re a good fit, ' +
-  'we’ll walk you through our proven process for solving these challenges and talk ' +
-  'about how we can help you get where you want to go.';
+  'today and talk about where you’d like to get to.',
+
+  'Then, if we’re a good fit, we’ll walk you through our proven process for ' +
+  'solving these challenges and talk about how we can help you get where you ' +
+  'want to go.'
+];
 
 var callPage = {
   file: 'call.html',
@@ -1794,7 +1801,7 @@ var callPage = {
   noClose: true,
   body:
 '\n<div class="page-head-end" data-nav-clear></div>\n' +
-'\n<section class="section">\n' +
+'\n<section class="section call-split">\n' +
 '  <div class="shell">\n' +
 '    <div class="call-layout">\n' +
 '\n' +
@@ -1802,7 +1809,9 @@ var callPage = {
 '           Its scrim is legibility, not decoration; see .call-panel. -->\n' +
 '      <div class="call-panel reveal">\n' +
 '        <h1 class="h1">Schedule a Call</h1>\n' +
-'        <p class="call-sub">' + CALL_SUB + '</p>\n' +
+        CALL_SUB.map(function (p) {
+          return '        <p class="call-sub">' + p + '</p>';
+        }).join('\n') + '\n' +
 '\n' +
 '        <!-- PLACEHOLDER. To ship the real video, replace the whole\n' +
 '             .call-video-ph div with:\n' +
@@ -1834,7 +1843,31 @@ var callPage = {
 '\n' +
 '    </div>\n' +
 '  </div>\n' +
-'</section>\n'
+'</section>\n' +
+
+  /* The marquee off the homepage and /about-us, unchanged. It sits directly
+     under the split because the question the widget raises — "have these
+     people done this before" — is the one a wall of client marks answers
+     without a sentence. */
+  logoBand(0) +
+
+  /* One testimonial, the .cs-testi object off the case study Results
+     section. Same figure, same circle, same cite line: a second quote
+     layout would be a second thing to keep in step for no gain.
+
+     Placeholder copy until James picks the quote. */
+  section(
+'    <figure class="cs-testi call-testi reveal">\n' +
+'      <div class="cs-testi-photo">[Photo]</div>\n' +
+'      <blockquote class="cs-testi-quote quote">\n' +
+'        <p>[One quotation from a client, in their words. Two or three sentences on\n' +
+'          what the work was like and what changed because of it — the thing someone\n' +
+'          hesitating over the calendar above needs to hear.]</p>\n' +
+'        <footer class="quote-by">\n' +
+'          <cite>[Name] <span class="sep">|</span> [Title], [Company]</cite>\n' +
+'        </footer>\n' +
+'      </blockquote>\n' +
+'    </figure>\n', 'section-tight call-testi-section')
 };
 
 var clientCallPage = meetingPage({

@@ -4240,13 +4240,20 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 
 /* 30 / 70 exactly. Same construction as .cs-layout: the gap comes out of the
    right column, so the panel stays at 30% of the shell at every width above
-   the breakpoint. Top-aligned — the two columns are different heights and
-   centring them floats the panel off the scheduler's first row. */
+   the breakpoint.
+
+   `align-items: center` centres the panel against the scheduler rather than
+   hanging it from the top. Note what sets the row height: the HubSpot iframe,
+   which arrives short and grows to its real height once the widget has
+   loaded. So the panel settles downward on load — once, in the first moment,
+   before anyone has read anything. If that ever reads as a jump, the fix is
+   a min-height on .call-embed at the widget's settled height, not going back
+   to top-alignment. */
 .call-layout {
   display: grid;
   grid-template-columns: 30% minmax(0, 1fr);
   gap: clamp(22px, 2.8vw, 44px);
-  align-items: start;
+  align-items: center;
 }
 
 /* ---------- the panel ----------
@@ -4290,11 +4297,15 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   line-height: 1.02;
   letter-spacing: -.035em;
 }
+/* Paragraph spacing inside the panel is tighter than the beat under the
+   title: the two paragraphs are one thought in two halves, and giving them
+   the same gap the h1 gets reads as two separate blocks of copy. */
 .call-sub {
-  margin: clamp(14px, 1.4vw, 20px) 0 0;
+  margin: clamp(10px, 1vw, 14px) 0 0;
   font-size: clamp(.94rem, .9rem + .12vw, 1.02rem);
   line-height: 1.6;
 }
+.call-panel .h1 + .call-sub { margin-top: clamp(14px, 1.4vw, 20px); }
 
 /* ---------- the video ----------
 
@@ -4360,7 +4371,34 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 
 /* One column below 900px, and the panel first — the scheduler is tall on a
    phone, and putting it above the reassurance means nobody reads the
-   reassurance. Same order as the source, so nothing to reorder. */
+   reassurance. Same order as the source, so nothing to reorder.
+
+   `align-items: start` comes back with the single column: centring is a
+   two-column idea, and stacked it does nothing except give a short panel
+   slack it does not need. */
 @media (max-width: 900px) {
-  .call-layout { grid-template-columns: minmax(0, 1fr); }
+  .call-layout {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* ---------- proof under the split ----------
+
+   The marquee and one quote, in that order. Both are borrowed objects: the
+   logo band off the homepage (via logoBand() in the builder) and the .cs-testi
+   figure off the case study Results section. Nothing new is defined for
+   either — what is below is only the spacing that puts them on this page.
+
+   The split's own bottom padding is cut back, because the marquee brings its
+   own lead in --proof-lead and the two together left a dead screen. */
+.call-split { padding-bottom: clamp(40px, 4.4vw, 64px); }
+
+/* The quote alone in a section, rather than at the end of a Results column.
+   Capped and centred: this page's .shell runs to 1680px, and a 76px circle
+   at the far left of that with the words a hand's width away is two objects,
+   not one. The cap is the measure the quote already wants. */
+.call-testi-section .call-testi {
+  margin: 0 auto;
+  max-width: 860px;
 }
