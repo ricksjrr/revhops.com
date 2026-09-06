@@ -3921,3 +3921,306 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   .cs-opt[data-locked]:hover { background: var(--pill-bg); }
   .cs-opt .cs-box { margin-top: 0; }
 }
+
+/* ==========================================================================
+   ONE CASE STUDY — the detail template
+
+   The same two objects as /case-studies, reused rather than reinvented: the
+   header plate from .cs-head, and the 20/80 .cs-layout under it. The plate
+   goes left-aligned and carries a description; the filter column becomes a
+   meta column; the card grid becomes three sections of story.
+
+   Every case study page is generated from this. Change it once in
+   tools/build-pages.js and all of them move together — which is the point
+   of it being a template rather than five pages that resemble each other.
+   ========================================================================== */
+
+/* ---------- the header plate, left-aligned variant ----------
+
+   .cs-head-panel is centred flex because /case-studies has one word in it.
+   Here it holds a title and a paragraph in a two-thirds measure. It stays
+   flex and stays vertically centred — the copy sits in the middle of the
+   plate however tall the description runs — and only the horizontal
+   alignment changes, so the block is left-justified rather than centred.
+
+   THE INK IS PINNED, same as the index. The plate brings its own light ground
+   in both themes, so navy that follows the page would turn pale-on-pale the
+   moment someone switches to dark. The lede is #44536A rather than --body:
+   the scrim under it is what makes it legible, and --body would drop it under
+   4.5:1 on the darker pixels of the artwork. */
+.cs-head-panel.is-detail {
+  justify-content: flex-start;
+  text-align: left;
+}
+.cs-head-copy {
+  position: relative;
+  width: 66.667%;
+}
+.cs-head-lede {
+  margin: clamp(12px, 1.5vw, 18px) 0 0;
+  font-size: clamp(.92rem, .89rem + .2vw, 1rem);
+  line-height: 1.6;
+  color: #44536A;
+}
+@media (max-width: 760px) {
+  /* two thirds of a phone is a column of two-word lines */
+  .cs-head-copy { width: 100%; }
+}
+
+/* ---------- the client's logo ----------
+   Sits above the meta, at the top of the left column. A dashed well like the
+   asset slots, on the card radius, so it reads as a hole waiting for a mark
+   rather than as a box that shipped empty. 3:2 because most wordmarks are
+   wider than they are tall; `object-fit: contain` so a square one is letter-
+   boxed rather than cropped. Drop an <img> in and the dashes go solid. */
+.cs-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 3 / 2;
+  margin: 0 0 clamp(20px, 2.3vw, 30px);
+  padding: 14px;
+  border: 1px dashed var(--plate-line);
+  border-radius: var(--radius-card);
+  background: var(--plate);
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.4;
+  text-align: center;
+  overflow: hidden;
+}
+.cs-logo > img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.cs-logo:has(> img) { border-style: solid; }
+@media (max-width: 1000px) {
+  /* the column goes full width here, and a 3:2 well across the whole shell
+     is a billboard. Capped, and it stays on its own line above the meta row. */
+  .cs-logo { width: min(220px, 42vw); }
+}
+
+/* ---------- the meta column ----------
+   .cs-side already handles the sticky, the scroll cap and the collapse to a
+   full-width block under 1000px, so this only has to describe the rows.
+   Label light and unbolded, value bold underneath it. */
+.cs-meta {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.9vw, 24px);
+  margin: 0;
+}
+.cs-meta-row { display: flex; flex-direction: column; gap: 3px; }
+.cs-meta-label {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: .8rem;
+  line-height: 1.35;
+  color: var(--muted);
+}
+.cs-meta-val {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .9rem;
+  line-height: 1.35;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+@media (max-width: 1000px) {
+  /* the filter column lays its options out as a wrapping row at this width;
+     the meta does the same, so the two pages collapse the same way */
+  .cs-meta { flex-direction: row; flex-wrap: wrap; gap: 14px clamp(24px, 5vw, 56px); }
+}
+
+/* ---------- the three sections ----------
+
+   THE EYEBROWS ARE AN EXCEPTION James asked for, not a change of policy. The
+   rest of the site has none — see README, "No eyebrows" — because a tracked
+   uppercase label above every heading turned into wallpaper. Here there are
+   exactly three on the page and they are the same three on every case study,
+   so they read as structure rather than decoration: you can tell where you
+   are in the story without reading the heading.
+
+   They carry --warm, which is a light peach. On paper that is roughly 1.5:1
+   and would fail as body copy. It is allowed here because the eyebrow is a
+   repeated landmark rather than content — the H2 underneath says the same
+   thing in navy at 12:1 — and because James chose the brand accent over
+   introducing a darker orange. If an eyebrow ever carries information the
+   heading does not, this decision has to be revisited. */
+.cs-body { min-width: 0; }
+.cs-block + .cs-block { margin-top: clamp(48px, 5.6vw, 88px); }
+.cs-eyebrow {
+  display: block;
+  margin: 0 0 clamp(8px, 1vw, 12px);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .78rem;
+  line-height: 1.2;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--warm);
+}
+.cs-block .h2 { margin: 0; }
+.cs-block p {
+  margin: clamp(14px, 1.6vw, 20px) 0 0;
+  max-width: 68ch;
+}
+
+/* ---------- the solution's asset slots ----------
+   A dashed well rather than a grey box: it has to read as a hole waiting for
+   a photo, not as a component that shipped empty. The first one spans the
+   row, because the lead image of a build is never a thumbnail. */
+.cs-assets {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(14px, 1.7vw, 22px);
+  margin-top: clamp(24px, 2.8vw, 36px);
+}
+.cs-asset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 10;
+  padding: 16px;
+  border: 1px dashed var(--plate-line);
+  border-radius: var(--radius-card);
+  background: var(--plate);
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.4;
+  text-align: center;
+}
+.cs-asset.is-wide { grid-column: 1 / -1; aspect-ratio: 16 / 7; }
+/* a real asset dropped in later fills the slot and loses the dashes */
+.cs-asset > img,
+.cs-asset > video,
+.cs-asset > iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: calc(var(--radius-card) - 1px);
+}
+.cs-asset:has(> img),
+.cs-asset:has(> video),
+.cs-asset:has(> iframe) { border-style: solid; padding: 0; overflow: hidden; }
+@media (max-width: 620px) {
+  .cs-assets { grid-template-columns: minmax(0, 1fr); }
+  .cs-asset.is-wide { aspect-ratio: 16 / 10; }
+}
+
+/* ---------- the three key figures ----------
+
+   Navy cards, no border. They are the loudest thing in the 80% column and
+   they should be: the figures are what a visitor scrolls to this section
+   for. Cards rather than the full-bleed navy .figs band the old template
+   used, because this section sits inside a grid track and a bleed cannot.
+
+   THE INK IS FIXED, not tokenised. --navy is the one ground colour that does
+   not flip with the theme — it is the same navy under the footer and the
+   floating bar in both — so --paper on it would resolve to navy on navy the
+   moment someone switches to dark. Literals, for the same reason the close
+   panel and the floating bar's button use them. */
+.cs-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+  margin-top: clamp(24px, 2.8vw, 36px);
+}
+.cs-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(18px, 2.1vw, 28px);
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--navy);
+}
+/* On a dark page the card's navy IS the page ground, so it stops being a
+   card. It steps down to Deep and takes a hairline of light, the same fix
+   the floating bar uses when it ends up navy on navy. */
+:root[data-theme="dark"] .cs-stat {
+  background: var(--deep);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .14);
+}
+.cs-stat > b {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.7rem, 1.2rem + 1.5vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: -.035em;
+  color: #FAFAF8;
+}
+.cs-stat > span {
+  font-size: .82rem;
+  line-height: 1.45;
+  color: #C9D4E2;
+}
+
+/* The direction arrow. Warm, which is the accent doing its declared job —
+   "a rule, a figure" — and 6.4:1 on the navy. Both directions are the same
+   colour on purpose: up is not always the good news (time to close, cost per
+   lead), so the arrow says which way the number moved and the label
+   underneath says whether that was a win. If you ever want green/red here,
+   they have to be measured on the navy first; --ok and --no are tuned for
+   paper and both fail on this ground. */
+.cs-stat-arrow {
+  flex: none;
+  width: .62em;
+  height: .62em;
+  color: var(--warm);
+}
+.cs-stat-arrow svg { display: block; width: 100%; height: 100%; fill: currentColor; }
+.cs-stat-arrow.is-down svg { transform: rotate(180deg); }
+
+@media (max-width: 760px) {
+  .cs-stats { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- the client testimonial ----------
+
+   No card and no warm edge. Both were framing a quote that does not need
+   framing — the section already has three navy cards in it, and a fourth
+   bordered box under them read as a continuation of the row rather than as
+   a person talking.
+
+   A round photo on the left, the words to the right of it, the attribution
+   under the words. The photo is a circle because it is a face; everything
+   else on this page is on the 12px card radius. */
+.cs-testi {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(18px, 2.2vw, 30px);
+  margin: clamp(30px, 3.4vw, 48px) 0 0;
+}
+.cs-testi-photo {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(76px, 7.4vw, 104px);
+  aspect-ratio: 1;
+  border: 1px dashed var(--plate-line);
+  border-radius: 50%;
+  background: var(--plate);
+  color: var(--muted);
+  font-size: .66rem;
+  line-height: 1.3;
+  text-align: center;
+  overflow: hidden;
+}
+.cs-testi-photo > img { width: 100%; height: 100%; object-fit: cover; }
+.cs-testi-photo:has(> img) { border-style: solid; }
+/* .quote supplies the italic body and the 12px stack; this only has to stop
+   the blockquote from being a flex item that refuses to shrink */
+.cs-testi-quote { min-width: 0; margin: 0; }
+.cs-testi-quote p { max-width: 62ch; }
+@media (max-width: 560px) {
+  .cs-testi { flex-direction: column; gap: 16px; }
+}
+
+/* Same pairing as the index: the close bleeds up by --start-bleed and the
+   section above it stops exactly that far short. Change one, change both. */
+.cs-detail .start-section { --start-bleed: 100px; }
+.cs-detail .cs-body-section { padding-bottom: 100px; }

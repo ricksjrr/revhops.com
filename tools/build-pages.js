@@ -713,27 +713,50 @@ var STAGES = [
   ['enterprise', 'Enterprise', '1,000+']
 ];
 
+/* `name` is what the page is called and what its slug is built from, so the
+   URL and the H1 cannot drift apart: /case-studies/case-study-1 is titled
+   "Case Study 1". When these become real clients, change the name and the
+   slug follows. */
 var CASES = [
-  { slug: 'case-study-one',   n: 'one',   figs: [['00', '%'], ['00', 'x']],
+  { slug: 'case-study-1', name: 'Case Study 1', figs: [['00', '%'], ['00', 'x']],
     svc: ['solution-design', 'crm-implementations'],
     crm: 'salesforce', industry: 'b2b-saas', stage: 'growth' },
 
-  { slug: 'case-study-two',   n: 'two',   figs: [['00', '%'], ['00', 'h']],
+  { slug: 'case-study-2', name: 'Case Study 2', figs: [['00', '%'], ['00', 'h']],
     svc: ['crm-implementations', 'lead-to-cash-process-mapping'],
     crm: 'hubspot', industry: 'professional-services', stage: 'scaleup' },
 
-  { slug: 'case-study-three', n: 'three', figs: [['00', '%'], ['00', 'k']],
+  { slug: 'case-study-3', name: 'Case Study 3', figs: [['00', '%'], ['00', 'k']],
     svc: ['hubspot-support-retainers', 'revops-consulting'],
     crm: 'hubspot', industry: 'financial-services', stage: 'maturity' },
 
-  { slug: 'case-study-four',  n: 'four',  figs: [['00', '%'], ['00', 'd']],
+  { slug: 'case-study-4', name: 'Case Study 4', figs: [['00', '%'], ['00', 'd']],
     svc: ['solution-design', 'lead-to-cash-process-mapping'],
     crm: 'hubspot', industry: 'ecommerce', stage: 'startup' },
 
-  { slug: 'case-study-five',  n: 'five',  figs: [['00', 'k'], ['00', 'x']],
+  { slug: 'case-study-5', name: 'Case Study 5', figs: [['00', 'k'], ['00', 'x']],
     svc: ['revops-consulting', 'crm-implementations'],
     crm: 'pipedrive', industry: 'b2b-saas', stage: 'enterprise' }
 ];
+
+/* The filter vocabulary, read back into words for the meta column on a case
+   study page. Both halves of the site therefore agree by construction: a
+   case tagged `crm: 'hubspot'` shows "HubSpot" on its own page and answers
+   the HubSpot checkbox on /case-studies, because both come from these
+   arrays. The lookups are built after SERVICES, CRMS, INDUSTRIES and STAGES
+   are all defined, which is why they sit here rather than at the top. */
+function labelFor(list, val, idx) {
+  for (var i = 0; i < list.length; i++) {
+    if (list[i][0] === val) return list[i][idx];
+  }
+  return val;
+}
+function serviceName(slug) {
+  for (var i = 0; i < SERVICES.length; i++) {
+    if (SERVICES[i].slug === slug) return SERVICES[i].name;
+  }
+  return slug;
+}
 
 /* the client marquee, straight off the homepage. Both runs must stay
    identical or the seam jumps. */
@@ -937,11 +960,163 @@ function servicePage(s) {
 }
 
 /* ---------- one case study page ----------
-   Deliberately unlike the rest of the site: a navy band of three counted
-   figures under the hero, the story in three alternating moves, a centred
-   pull quote, then what it took. */
+
+   THIS IS THE TEMPLATE. Every case study is this shape, and the shape is the
+   argument: the same three moves in the same order on every page, so a
+   visitor comparing two of them is comparing the work rather than learning a
+   new layout twice.
+
+   It borrows both of its objects from /case-studies rather than inventing
+   any. The header plate is .cs-head-panel, left-aligned here and carrying a
+   description under the title. Below it is the same 20/80 .cs-layout: the
+   filter column becomes a meta column listing exactly what the page can be
+   filtered on, and the card grid becomes the story.
+
+   The three sections are fixed — THE PROBLEM, THE SOLUTION, THE RESULTS —
+   and only their headings change per case. Everything inside them is a
+   placeholder, marked with brackets, because the template ships before the
+   copy does.
+
+   No hero. `bare: true` skips pageHero and the plate carries the
+   data-nav-clear sentinel itself, the same way /case-studies does. */
+
+/* The direction arrow beside a figure. One triangle, rotated 180° by CSS for
+   the down case, so there is one path to keep. Decorative: the label under
+   the figure carries the meaning, so it is hidden from assistive tech rather
+   than read out as "up triangle". */
+function csArrow(dir) {
+  return '<span class="cs-stat-arrow is-' + dir + '" aria-hidden="true">' +
+         '<svg viewBox="0 0 16 16"><path d="M8 2.6l6 10.8H2z"/></svg></span>';
+}
+
+/* one fixed section: orange eyebrow, a heading that changes per case, and
+   whatever the section is made of underneath */
+function csBlock(eyebrow, title, inner) {
+  return '      <section class="cs-block">\n' +
+         '        <span class="cs-eyebrow">' + eyebrow + '</span>\n' +
+         '        <h2 class="h2">' + title + '</h2>\n' +
+         inner +
+         '      </section>\n';
+}
 
 function casePage(c, i) {
+  /* the meta column: label light, value bold underneath. One row per axis
+     the shelf can be filtered on, read out of the same arrays the filter
+     checkboxes are built from. */
+  var meta = [
+    ['Service(s) used', c.svc.map(serviceName).join(', ')],
+    ['Tools used',      labelFor(CRMS, c.crm, 1)],
+    ['Industry',        labelFor(INDUSTRIES, c.industry, 1)],
+    ['Team size',       labelFor(STAGES, c.stage, 2) + ' people']
+  ];
+
+  var body = '';
+
+  body += '\n<!-- ===================== HEADER PLATE =====================\n' +
+'     The plate off /case-studies, left-aligned and carrying a description.\n' +
+'     .page-head-end is the sentinel the nav watches to decide when to\n' +
+'     collapse, and it lives here because this page has no .page-hero. -->\n' +
+'<section class="cs-head">\n' +
+'  <div class="shell">\n' +
+'    <div class="cs-head-panel is-detail">\n' +
+'      <div class="cs-head-copy">\n' +
+'        <h1 class="h1">' + c.name + '</h1>\n' +
+'        <p class="cs-head-lede">[One or two sentences on who they are, what was\n' +
+'          broken, and what it is now. The whole story in a paragraph, so the rest of\n' +
+'          the page is detail rather than suspense.]</p>\n' +
+'      </div>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'  <div class="page-head-end" data-nav-clear></div>\n' +
+'</section>\n';
+
+  body += '\n<!-- ===================== THE STORY =====================\n' +
+'     20 / 80, the same split as the shelf. Meta down the left, three fixed\n' +
+'     sections down the right. -->\n' +
+'<section class="section cs-body-section to-white">\n' +
+'  <div class="shell">\n' +
+'    <div class="cs-layout">\n' +
+'      <aside class="cs-side" aria-label="Case study details">\n' +
+'        <div class="cs-logo">[Client logo]</div>\n' +
+'        <div class="cs-meta">\n' +
+      meta.map(function (row) {
+        return '          <div class="cs-meta-row">\n' +
+               '            <p class="cs-meta-label">' + row[0] + '</p>\n' +
+               '            <p class="cs-meta-val">' + row[1] + '</p>\n' +
+               '          </div>';
+      }).join('\n') + '\n' +
+'        </div>\n' +
+'      </aside>\n' +
+'\n' +
+'      <div class="cs-body">\n' +
+
+  csBlock('The problem', '[The heading for this case’s problem]',
+'        <p class="small">[What the business does, how many people sell for it, and what the\n' +
+'          revenue system looked like on the day they called. Name the thing that finally\n' +
+'          made them pick up the phone.]</p>\n' +
+'        <p class="small">[The symptom everyone could see, and the cause nobody had gone\n' +
+'          looking for. What it was costing them while it went unfixed.]</p>\n') +
+
+  csBlock('The solution', '[The heading for what we built]',
+'        <p class="small">[What was scoped, what went first and why. The decisions that were\n' +
+'          argued over, including the ones that went against us.]</p>\n' +
+'        <p class="small">[What it replaced, what stopped being manual, and the part that was\n' +
+'          harder than expected.]</p>\n' +
+'        <div class="cs-assets">\n' +
+'          <div class="cs-asset is-wide">[Asset 1 &mdash; lead image, screen recording or diagram]</div>\n' +
+'          <div class="cs-asset">[Asset 2]</div>\n' +
+'          <div class="cs-asset">[Asset 3]</div>\n' +
+'        </div>\n') +
+
+  csBlock('The results', '[The heading for what changed]',
+'        <p class="small">[What is different now, in the terms the client would use rather\n' +
+'          than the ones we would. What the team can now do for itself, what stopped being\n' +
+'          anyone’s job, and anything that did not work.]</p>\n' +
+'        <div class="cs-stats">\n' +
+      /* one plain, one up, one down — the three shapes a figure can take, so
+         the template shows all of them rather than leaving the arrow to be
+         discovered in the CSS */
+      [[c.figs[0][1], ''], [c.figs[1][1], 'up'], ['%', 'down']].map(function (f) {
+        return '          <div class="cs-stat">\n' +
+               '            <b>' + (f[1] ? csArrow(f[1]) : '') + 'XX' + f[0] + '</b>\n' +
+               '            <span>[What this figure measures]</span>\n' +
+               '          </div>';
+      }).join('\n') + '\n' +
+'        </div>\n' +
+'        <figure class="cs-testi">\n' +
+'          <div class="cs-testi-photo">[Photo]</div>\n' +
+'          <blockquote class="cs-testi-quote quote">\n' +
+'            <p>[One quotation from the person who signed it off. Two or three sentences,\n' +
+'              in their words, not ours.]</p>\n' +
+'            <footer class="quote-by">\n' +
+'              <cite>[Name] <span class="sep">|</span> [Title], [Company]</cite>\n' +
+'            </footer>\n' +
+'          </blockquote>\n' +
+'        </figure>\n') +
+
+'      </div>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n';
+
+  return {
+    file: 'case-studies/' + c.slug + '.html',
+    depth: 1,
+    navCurrent: '/case-studies',
+    mainClass: 'cs-detail',
+    bare: true,
+    title: c.name + ' — case study — RevHops',
+    description: 'How RevHops rebuilt the revenue system at [client name], and what changed as a result.',
+    body: body
+  };
+}
+
+/* ---------- the previous case study page, kept for reference ----------
+   A navy band of three counted figures under a hero, the story in three
+   alternating moves, a centred pull quote, then what it took. Replaced by
+   the template above on 6 September; left here because the counted figures
+   and the alternating splits may come back into it. Nothing calls it. */
+function casePageOld(c, i) {
   var used = [SERVICES[i % SERVICES.length], SERVICES[(i + 2) % SERVICES.length]];
   var body = '';
 
