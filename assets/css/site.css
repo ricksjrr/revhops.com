@@ -3073,6 +3073,62 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 .split-57 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
 @media (max-width: 900px) { .split-75, .split-57 { grid-template-columns: minmax(0, 1fr); } }
 
+
+/* ==========================================================================
+   FULL-BLEED NAVY BAND
+   One per page at most. It is the loudest thing available and stops working
+   the moment there are two.
+   ========================================================================== */
+.band { background: var(--navy); color: var(--on-navy); }
+.band .h2, .band h2 { color: var(--paper); }
+.band .fit li { color: var(--on-navy); }
+.band .fit li b { color: var(--paper); }
+.band .lede { color: var(--on-navy); }
+
+/* ==========================================================================
+   FIT STATEMENTS — who this is for, and who it is not
+
+   Two sections back to back, one on paper and one on navy. The cut between
+   them is the design: no columns, no ticks and crosses, no cards. Each line
+   leads with the phrase that carries it, set in the heading face, and the
+   rest follows in body.
+   ========================================================================== */
+.fit { display: flex; flex-direction: column; gap: clamp(20px, 2.2vw, 32px); max-width: 62ch; margin: 0; }
+.fit li {
+  font-size: clamp(1.02rem, .96rem + .34vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--body);
+}
+.fit li b {
+  color: var(--ink);
+  font-family: var(--font-head);
+  font-weight: 700;
+  letter-spacing: -.016em;
+}
+
+/* ==========================================================================
+   PULL QUOTE — a client, set large, with nothing around it
+
+   Used where a page needs proof and has none of its own to show yet. A real
+   quotation from a real person beats a card full of [square brackets], which
+   is what was there before.
+   ========================================================================== */
+.pull { max-width: 34ch; margin: 0; }
+.pull p {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.45rem, 1rem + 2vw, 2.4rem);
+  line-height: 1.18;
+  letter-spacing: -.032em;
+  color: var(--ink);
+  font-style: normal;
+}
+.pull .quote-by { margin-top: clamp(18px, 2vw, 28px); }
+.pull-aside { display: flex; flex-direction: column; gap: 14px; align-self: end; }
+/* the quote leads at two thirds, the note follows. Not a 50/50. */
+.g-quote { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: clamp(28px, 4vw, 76px); align-items: end; }
+@media (max-width: 900px) { .g-quote { grid-template-columns: minmax(0, 1fr); } .pull-aside { align-self: start; } }
+
 /* ==========================================================================
    DARK THEME
 
@@ -3362,11 +3418,11 @@ a.pcard:hover .arrow { transform: translateX(5px); }
     linear-gradient(to bottom, #FFFFFF 0, rgba(255, 255, 255, 0) var(--start-bleed)),
     url("../img/start-panel-bg.webp");
 }
-:root[data-theme="dark"] .start-section {
-  background-image:
-    linear-gradient(to bottom, #FFFFFF 0, rgba(255, 255, 255, 0) var(--start-bleed)),
-    url("../img/start-panel-bg.webp");
-}
+/* The white-bleed version of this rule used to sit here, AFTER the fix
+   above, so it won and the close went on painting white over dark-mode copy
+   anyway. Declaring a selector twice is ordinary CSS and used deliberately
+   elsewhere in this file, which is exactly why this took so long to spot.
+   The rule that survives is the one two blocks up. */
 :root[data-theme="dark"] .testi-section .testi-title,
 :root[data-theme="dark"] .testi-section .quote p,
 :root[data-theme="dark"] .testi-section .quote-by cite { color: #304157; }

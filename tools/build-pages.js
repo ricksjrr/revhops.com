@@ -965,59 +965,61 @@ var servicesIndex = {
       }).join('\n') + '\n' +
 '    </div>\n') +
 
-    /* SECTION TWO — qualification.
-       Says plainly who gets value here and who should not call, which is
-       worth more to James than another paragraph of pitch. */
+    /* SECTION TWO — qualification, as two bands rather than two columns.
+       The cut from paper to navy is the design: no columns, no ticks and
+       crosses, no cards. Also fixes an <h3> that was nested inside a <ul>,
+       which is invalid and which browsers resolve however they like. */
     section(
-'    <div class="sec-head sec-head-left reveal" style="margin-bottom:clamp(30px,3.6vw,52px)">\n' +
-'      <h2 class="h2">Who this works for, <span class="hl">and who it does not</span></h2>\n' +
+'    <div class="sec-head sec-head-left reveal" style="margin-bottom:clamp(26px,3vw,44px)">\n' +
+'      <h2 class="h2">You are in the right place if</h2>\n' +
 '    </div>\n' +
-'    <div class="split-75 reveal">\n' +
-'      <ul class="fit">\n' +
-'        <h3 class="fit-head">You are in the right place if</h3>\n' +
+'    <ul class="fit reveal">\n' +
       [['Your CRM has drifted', 'away from how the team actually sells, and nobody has had time to pull it back.'],
        ['You are moving onto HubSpot', 'or off something else onto it, with a decade of history that has to come too.'],
        ['The forecast is not trusted', 'by the people who have to present it, and nobody can say exactly why.'],
        ['You are between sizes', 'too small to justify a full-time RevOps hire, too big to keep running on spreadsheets and goodwill.']].map(function (f) {
-        return '        <li><b>' + f[0] + '</b> ' + f[1] + '</li>';
+        return '      <li><b>' + f[0] + '</b> ' + f[1] + '</li>';
       }).join('\n') + '\n' +
-'      </ul>\n' +
-'      <ul class="fit fit-not">\n' +
-'        <h3 class="fit-head">We are the wrong call if</h3>\n' +
+'    </ul>\n') +
+'\n<section class="section band">\n' +
+'  <div class="shell">\n' +
+'    <div class="sec-head sec-head-left reveal" style="margin-bottom:clamp(26px,3vw,44px)">\n' +
+'      <h2 class="h2">We are the wrong call if</h2>\n' +
+'    </div>\n' +
+'    <ul class="fit reveal">\n' +
       [['You need five bodies on site next week', '&mdash; we are small on purpose, and you will hear that on the first call.'],
        ['The work is campaigns and creative', '&mdash; that is a different agency, and we will happily name one.'],
        ['Price is the deciding factor', '&mdash; there is always someone cheaper, and sometimes they are the right answer.']].map(function (f) {
-        return '        <li><b>' + f[0] + '</b> ' + f[1] + '</li>';
+        return '      <li><b>' + f[0] + '</b> ' + f[1] + '</li>';
       }).join('\n') + '\n' +
-'      </ul>\n' +
-'    </div>\n') +
+'    </ul>\n' +
+'  </div>\n' +
+'</section>\n' +
 
     /* SECTION THREE — proof.
-       Everything above asks the reader to take five descriptions on faith.
-       One piece of work and one quote is what pays for that. Bracketed until
-       there are real numbers to put in it. */
+       This was a poster card, a bracketed quote and a bracketed paragraph:
+       three placeholders stacked, which is why it looked unfinished. It is
+       one real client instead, in her own words, with no invented figures.
+       Nothing here is waiting on content that does not exist yet. */
     section(
-'    <div class="sec-head sec-head-left reveal" style="margin-bottom:clamp(30px,3.6vw,52px)">\n' +
-'      <h2 class="h2">What it looks like when it works</h2>\n' +
-'    </div>\n' +
-'    <div class="split-57" style="align-items:center">\n' +
-'      ' + caseCard(CASES[0], 1, 'reveal reveal-left') + '\n' +
-'      <div class="stack gap-20 reveal reveal-right">\n' +
-'        <blockquote class="quote">\n' +
-'          <p>[One quotation from the person who signed the work off. Two or three sentences, in\n' +
-'            their words rather than ours.]</p>\n' +
-'          <footer class="quote-by">\n' +
-'            <div class="stars" role="img" aria-label="Five out of five">\n' +
+'    <div class="g-quote">\n' +
+'      <blockquote class="pull reveal reveal-left">\n' +
+'        <p>James has taken the time to learn our business model, understand the complexities\n' +
+'          and remained confident and transparent on what we can and cannot do within the\n' +
+'          platform.</p>\n' +
+'        <footer class="quote-by">\n' +
+'          <div class="stars" role="img" aria-label="Five out of five">\n' +
       [1, 2, 3, 4, 5].map(function () {
-        return '              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>';
+        return '            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>';
       }).join('\n') + '\n' +
-'            </div>\n' +
-'            <cite>[Name] <span class="sep">|</span> [Title]</cite>\n' +
-'          </footer>\n' +
-'        </blockquote>\n' +
-'        <p class="small">[One paragraph on what was broken when they called, what we did about it,\n' +
-'          and the number that moved because of it.]</p>\n' +
-'        <a class="text-link" href="/case-studies">All case studies <span class="arrow">&rarr;</span></a>\n' +
+'          </div>\n' +
+'          <cite>Deborah <span class="sep">|</span> COO</cite>\n' +
+'        </footer>\n' +
+'      </blockquote>\n' +
+'      <div class="pull-aside reveal reveal-right">\n' +
+'        <p class="small">Every engagement ends with something your team can run without calling\n' +
+'          us. The work below is where that has already happened.</p>\n' +
+'        <a class="text-link" href="/case-studies">Read the case studies <span class="arrow">&rarr;</span></a>\n' +
 '      </div>\n' +
 '    </div>\n', 'section to-white')
 };
