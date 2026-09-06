@@ -351,7 +351,12 @@ module.exports = { render: render, up: up, STAMP: STAMP, ROOT: ROOT };
    sits beside something. Highlight one phrase per page and no more — the
    marker stops meaning anything the moment there are three of them. */
 function secHead(title, sub, cls) {
-  return '    <div class="sec-head reveal' + (cls ? ' ' + cls : '') + '">\n' +
+  /* left by default on these pages: a centred title over a left-aligned card
+     grid is what made them read as unrelated stacked blocks. Pass 'centred'
+     for the few places the content under it is centred too. */
+  var align = cls === 'centred' ? '' : ' sec-head-left';
+  if (cls === 'centred') cls = '';
+  return '    <div class="sec-head' + align + ' reveal' + (cls ? ' ' + cls : '') + '">\n' +
          '      <h2 class="h2">' + title + '</h2>\n' +
          (sub ? '      <p class="sec-sub">' + sub + '</p>\n' : '') +
          '    </div>\n';
@@ -1177,9 +1182,19 @@ var hubspot = {
 '  </div>\n' +
 '</section>\n' +
     section(
-      secHead('If the portal is in good shape we will say that') +
-'    <p class="lede reveal" style="margin-inline:auto;text-align:center;margin-top:14px">And you\n' +
-'      will have spent an hour to find out, which is a better outcome than most audits.</p>\n', 'section-tight to-white')
+'    <div class="split" style="align-items:start">\n' +
+'      <div class="reveal reveal-left">\n' +
+'        <p class="statement">If the portal is in good shape we will tell you that.</p>\n' +
+'        <p class="statement-note">And you will have spent an hour to find out, which is a better\n' +
+'          outcome than most audits manage.</p>\n' +
+'      </div>\n' +
+'      <div class="cols-2 reveal reveal-right">\n' +
+'        <p>Most audits are a sales document with a findings section attached. The findings are\n' +
+'          real, the recommendation is always the same, and it is always the thing being sold.</p>\n' +
+'        <p>This one is an hour and a page. If the answer is leave it alone, that is what the page\n' +
+'          will say, and you can put it in front of whoever asked you to look.</p>\n' +
+'      </div>\n' +
+'    </div>\n', 'section to-white')
 };
 
 var about = {

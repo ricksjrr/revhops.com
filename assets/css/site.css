@@ -2691,7 +2691,7 @@ main { overflow-x: clip; }
 }
 @media (max-width: 760px) { .figs { grid-template-columns: minmax(0, 1fr); gap: 28px; } }
 .fig { display: flex; flex-direction: column; gap: 4px; }
-.fig b {
+.fig > b {
   font-family: var(--font-head);
   font-weight: 700;
   font-size: clamp(2.4rem, 1.5rem + 3.6vw, 4rem);
@@ -2699,7 +2699,10 @@ main { overflow-x: clip; }
   letter-spacing: -.04em;
   color: var(--paper);
 }
-.fig span { font-size: .9rem; line-height: 1.5; color: var(--on-navy); }
+/* Direct child only. `.fig span` also matched the counter's own span inside
+   the <b>, which reset the 64px figure to 14.4px and made the whole navy
+   band read as three lines of small print. */
+.fig > span { font-size: .9rem; line-height: 1.5; color: var(--on-navy); }
 
 /* ==========================================================================
    ROW LIST — the services list, reused
@@ -2910,6 +2913,7 @@ main { overflow-x: clip; }
   color: var(--muted);
 }
 .pcard-title {
+  text-wrap: balance;
   font-family: var(--font-head);
   font-weight: 700;
   font-size: clamp(1.02rem, .95rem + .38vw, 1.24rem);
@@ -2952,8 +2956,12 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 }
 /* copy in two columns beside a statement, so a long explanation does not
    become one 100ch line on a wide screen */
+/* `2 17rem` is a ceiling and a floor: at most two columns, and never one
+   narrower than 272px. Inside a .split column at 1440 that resolves to a
+   single column, which is what it should have been — two columns of 215px
+   is a newspaper, not a paragraph. */
 .cols-2 {
-  columns: 2;
+  columns: 2 17rem;
   column-gap: clamp(24px, 3vw, 56px);
   font-size: .95rem;
   line-height: 1.65;
@@ -2961,6 +2969,35 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 }
 .cols-2 p { break-inside: avoid; margin-bottom: 14px; }
 @media (max-width: 760px) { .cols-2 { columns: 1; } }
+
+/* ==========================================================================
+   SECTION HEADS, LEFT
+
+   .sec-head centres, which is right on the homepage where the content under
+   it is centred too. On the inner pages it sits over a left-aligned grid of
+   cards, and a centred title over a left-aligned grid is the thing that
+   made those pages read as a stack of unrelated blocks.
+   ========================================================================== */
+.sec-head-left { text-align: left; margin-inline: 0; }
+.sec-head-left .h2 { margin-inline: 0; }
+.sec-head-left .sec-sub { max-width: 62ch; }
+
+/* ==========================================================================
+   THE GAP BETWEEN TWO SECTIONS
+
+   Two .section siblings each carry up to 116px of block padding, so the band
+   between them was up to 232px of nothing — which on the inner pages was
+   most of what made them feel empty. The second one drops its top padding
+   and the first one's bottom padding does the separating.
+
+   Exceptions, all of them surfaces rather than plain sections: a navy band,
+   the white testimonial band and the logo rail all need their own padding on
+   both sides, and the close pulls itself up with a negative margin.
+   ========================================================================== */
+main > section:not(.surface-navy):not(.testi-section):not(.logo-band) +
+      section:not(.surface-navy):not(.testi-section):not(.logo-band):not(.start-section) {
+  padding-top: 0;
+}
 
 /* ==========================================================================
    DARK THEME
