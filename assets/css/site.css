@@ -3017,64 +3017,6 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 
 
 /* ==========================================================================
-   NUMBERED STEPS — no rules, no boxes
-
-   A sequence carried by a large faint number and space alone. No hairline
-   above each column and no card around it: James does not want either, and
-   at this size the number is enough of an anchor.
-   ========================================================================== */
-.steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
-  gap: clamp(30px, 3.4vw, 60px) clamp(26px, 2.8vw, 48px);
-}
-.step { display: flex; flex-direction: column; gap: 10px; }
-.step-n {
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: clamp(2rem, 1.5rem + 1.6vw, 2.9rem);
-  line-height: 1;
-  letter-spacing: -.04em;
-  color: var(--mist);
-}
-:root[data-theme="dark"] .step-n { color: rgba(255, 255, 255, .28); }
-.step-t {
-  font-family: var(--font-head); font-weight: 700;
-  font-size: clamp(1.02rem, .96rem + .34vw, 1.2rem);
-  line-height: 1.24; letter-spacing: -.02em; color: var(--ink); margin: 0;
-}
-.step-c { font-size: .93rem; line-height: 1.68; color: var(--body); }
-
-/* ==========================================================================
-   FIT LISTS — who this is for, and who it is not
-
-   Two stacks of statements. Each one leads with the phrase that carries it,
-   set in the heading face, and the rest follows in body. No bullets, no
-   ticks, no rules: the lead-in does the work a bullet would.
-   ========================================================================== */
-.fit { display: flex; flex-direction: column; gap: clamp(18px, 2vw, 28px); }
-.fit-head {
-  font-family: var(--font-head); font-weight: 700;
-  font-size: clamp(1.1rem, 1rem + .5vw, 1.35rem);
-  letter-spacing: -.024em; color: var(--ink); margin: 0;
-}
-.fit li { font-size: .95rem; line-height: 1.68; color: var(--body); }
-.fit li b { color: var(--ink); font-weight: 700; font-family: var(--font-head); letter-spacing: -.012em; }
-.fit-not li b { color: var(--slate); }
-:root[data-theme="dark"] .fit-not li b { color: var(--muted); }
-
-/* the split that carries them. 7/5 rather than half and half. */
-.split-75 {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: clamp(30px, 4vw, 76px);
-  align-items: start;
-}
-.split-57 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
-@media (max-width: 900px) { .split-75, .split-57 { grid-template-columns: minmax(0, 1fr); } }
-
-
-/* ==========================================================================
    FULL-BLEED NAVY BAND
    One per page at most. It is the loudest thing available and stops working
    the moment there are two.

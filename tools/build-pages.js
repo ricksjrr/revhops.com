@@ -943,27 +943,10 @@ var servicesIndex = {
 
     logoBand(1) +
 
-    /* SECTION ONE — what working with us is actually like.
-       The question that follows "what do you sell". Four steps, the same
-       whichever service it is: numbers and space, no rules, no cards. */
-    section(
-'    <div class="sec-head sec-head-left reveal" style="margin-bottom:clamp(30px,3.6vw,52px)">\n' +
-'      <h2 class="h2">How an engagement actually runs</h2>\n' +
-'      <p class="sec-sub" style="max-width:56ch;margin-top:12px">The shape is the same whichever\n' +
-'        service you start with. What changes is how long each part takes.</p>\n' +
-'    </div>\n' +
-'    <div class="steps reveal">\n' +
-      [['01', 'The first call', 'A working session, not a discovery call. By the end of it you will know whether we are the right people for the job, and that is not always yes.'],
-       ['02', 'Scope, written down', 'What good looks like, agreed with the people who have to live with it and signed off before anything is built. This is where the arguing belongs.'],
-       ['03', 'Built in the open', 'Your admin sits in the working sessions. Naming conventions are written down before the first workflow exists, not after it breaks.'],
-       ['04', 'Handed over', 'Documentation, recorded training, and two weeks where we are still on hand while your team takes the controls.']].map(function (st) {
-        return '      <div class="step">\n' +
-               '        <span class="step-n">' + st[0] + '</span>\n' +
-               '        <h3 class="step-t">' + st[1] + '</h3>\n' +
-               '        <p class="step-c">' + st[2] + '</p>\n' +
-               '      </div>';
-      }).join('\n') + '\n' +
-'    </div>\n') +
+    /* There was a numbered "How an engagement actually runs" section here.
+       Cut on James's instruction: it described a fixed four-step process,
+       and engagements do not share one. The numbered treatment was fine; the
+       claim underneath it was not, and a good-looking lie is still a lie. */
 
     /* SECTION TWO — qualification, as two bands rather than two columns.
        The cut from paper to navy is the design: no columns, no ticks and
