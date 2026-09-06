@@ -3261,17 +3261,33 @@ main > section:not(.surface-navy):not(.testi-section):not(.logo-band) +
     var(--paper-step) 0%, var(--paper-step) 52%, #FFFFFF 96%, #FFFFFF 100%);
 }
 :root[data-theme="dark"] .testi-section { background: #FFFFFF; }
-/* the one-section version of the same drift, on every page that is not the
-   homepage: navy ground to the white the close then bleeds over */
-:root[data-theme="dark"] .to-white {
-  background-image: linear-gradient(to bottom,
-    var(--paper) 0%, var(--paper) 34%, #FFFFFF 94%, #FFFFFF 100%);
+
+/* ---- and the inner pages, which have no white band to land on ----
+
+   The white drift is a homepage device. It exists so the close's photograph
+   dissolves into the white testimonial band above it rather than meeting an
+   edge. Inner pages have no such band: their last section is ordinary
+   content on the page ground, and the close bleeds up over the bottom
+   300-odd pixels of it.
+
+   In light that is invisible — navy type on paper, navy type on white. In
+   dark it hid the copy completely: the ink is near-white and it was landing
+   on a white bleed. The service pages' "Often paired with" rows vanished.
+
+   So in dark the drift is off and the close rises out of the page ground
+   instead, except directly under the testimonial band, which is the
+   homepage and the case studies index. Those keep the white. */
+:root[data-theme="dark"] .to-white { background-image: none; }
+:root[data-theme="dark"] .start-section {
+  background-image:
+    linear-gradient(to bottom, var(--paper) 0, rgba(48, 65, 87, 0) var(--start-bleed)),
+    url("../img/start-panel-bg.webp");
 }
-/* Type on that white tail. The section's own copy sits in the top two thirds
-   where the ground is still navy, so only things deliberately placed low —
-   nothing, today — would need this; it is here so a section that grows into
-   the white does not lose its text. */
-:root[data-theme="dark"] .to-white .to-white-foot { color: #304157; }
+:root[data-theme="dark"] .testi-section + .start-section {
+  background-image:
+    linear-gradient(to bottom, #FFFFFF 0, rgba(255, 255, 255, 0) var(--start-bleed)),
+    url("../img/start-panel-bg.webp");
+}
 :root[data-theme="dark"] .start-section {
   background-image:
     linear-gradient(to bottom, #FFFFFF 0, rgba(255, 255, 255, 0) var(--start-bleed)),
