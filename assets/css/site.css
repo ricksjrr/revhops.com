@@ -3277,6 +3277,166 @@ main > section:not(.surface-navy):not(.testi-section):not(.logo-band) +
 /* the clause the index just jumped to should not hide under the floating bar */
 .prose h2 { scroll-margin-top: calc(var(--nav-h) + 24px); }
 
+
+/* ==========================================================================
+   THE RECORD — /hubspot only
+
+   The page is laid out as a CRM record, because the argument it is making is
+   "we live in this tool" and showing is better than saying. Three columns:
+   the record and its properties on the left, an activity timeline in the
+   middle, associated things on the right. Anyone who has used HubSpot
+   recognises it in about a second.
+
+   It is the HubSpot LAYOUT in RevHops colours, not a copy of the chrome.
+   Nothing here imitates HubSpot's branding, and the accent is our warm
+   rather than their orange.
+
+   The middle column's sub-tabs are the hub explorer: they filter the
+   timeline by hub, reusing the case-study filter's attributes exactly
+   (data-filter / data-tags / data-filter-grid) so there is no second script.
+   ========================================================================== */
+.record { background: var(--surface-alt); padding-block: clamp(20px, 2.4vw, 34px) clamp(40px, 5vw, 78px); }
+.record-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+  padding-bottom: clamp(14px, 1.6vw, 20px);
+}
+.record-crumb {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-head); font-weight: 700; font-size: .82rem;
+  color: var(--body);
+}
+.record-crumb:hover { color: var(--ink); }
+.record-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3.1fr) minmax(0, 5.8fr) minmax(0, 3.1fr);
+  gap: clamp(12px, 1.2vw, 18px);
+  align-items: start;
+}
+@media (max-width: 1180px) { .record-grid { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); } .record-right { grid-column: 1 / -1; } }
+@media (max-width: 860px)  { .record-grid { grid-template-columns: minmax(0, 1fr); } .record-right { grid-column: auto; } }
+
+/* every panel on the page */
+.rcard {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: clamp(16px, 1.5vw, 22px);
+}
+.rcard + .rcard { margin-top: clamp(12px, 1.2vw, 18px); }
+.rcard-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 14px;
+}
+.rcard-title {
+  font-family: var(--font-head); font-weight: 700; font-size: .95rem;
+  letter-spacing: -.016em; color: var(--ink); margin: 0;
+}
+.rcard-add { font-family: var(--font-head); font-weight: 700; font-size: .8rem; color: var(--ink-strong); }
+.rcard-add:hover { color: var(--warm); }
+
+/* the record's identity block */
+.record-id { display: flex; align-items: flex-start; gap: 13px; }
+.record-id img { width: 42px; height: 42px; border-radius: 9px; flex: none; background: var(--navy); padding: 6px; }
+.record-name {
+  font-family: var(--font-head); font-weight: 700;
+  font-size: clamp(1.35rem, 1.1rem + 1.1vw, 1.85rem);
+  line-height: 1.12; letter-spacing: -.03em; color: var(--ink); margin: 0;
+}
+.record-org { font-size: .88rem; color: var(--body); margin-top: 3px; }
+.record-mail { display: inline-block; margin-top: 8px; font-size: .86rem; font-weight: 700; color: var(--ink-strong); }
+.record-mail:hover { color: var(--ink-hover); }
+
+/* the round action row under the name */
+/* A four-up grid rather than a wrapping flex row: at 215px the flex version
+   fitted three and left the fourth stranded on its own line. */
+.record-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px 6px; margin-top: 18px; }
+.record-action { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; }
+.record-action span:first-child {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1px solid var(--plate-line); background: var(--plate);
+  display: grid; place-items: center;
+  transition: border-color .25s var(--ease), background .25s var(--ease), transform .3s var(--ease-out);
+}
+.record-action svg { width: 17px; height: 17px; stroke: var(--ink-strong); stroke-width: 1.7; fill: none; }
+.record-action em {
+  font-style: normal; font-size: .69rem; font-weight: 700; letter-spacing: -.01em;
+  color: var(--body); text-align: center; line-height: 1.2;
+}
+.record-action:hover span:first-child { border-color: var(--warm); background: var(--warm); transform: translateY(-2px); }
+.record-action:hover em { color: var(--ink); }
+
+/* the property list */
+.rprops { display: flex; flex-direction: column; gap: 15px; margin: 0; }
+.rprops div { display: flex; flex-direction: column; gap: 2px; }
+.rprops dt { font-size: .78rem; color: var(--muted); }
+.rprops dd { margin: 0; font-size: .9rem; font-weight: 700; color: var(--ink); }
+
+/* tabs across the middle column */
+.rtabs { display: flex; gap: 4px; margin-bottom: clamp(12px, 1.2vw, 18px); }
+.rtab {
+  flex: 1; text-align: center; padding: 13px 10px;
+  background: var(--surface-alt); border: 1px solid var(--line); border-radius: var(--radius-btn);
+  font-family: var(--font-head); font-weight: 700; font-size: .9rem; color: var(--body);
+  text-decoration: none;
+}
+.rtab[aria-current="true"] { background: var(--surface); color: var(--ink); }
+
+/* the hub explorer: sub-tabs that filter the timeline */
+.rsubtabs {
+  display: flex; flex-wrap: wrap; gap: 2px 4px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(14px, 1.6vw, 22px);
+}
+.rsubtab {
+  appearance: none; background: none; border: 0; cursor: pointer;
+  padding: 10px 12px 12px;
+  font-family: var(--font-head); font-weight: 700; font-size: .84rem;
+  color: var(--body); border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: color .25s var(--ease), border-color .25s var(--ease);
+}
+.rsubtab:hover { color: var(--ink); }
+.rsubtab[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--warm); }
+.rsubtab:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: -2px; border-radius: 4px; }
+
+/* the timeline */
+.rgroup {
+  font-family: var(--font-head); font-weight: 700; font-size: .82rem;
+  color: var(--body); margin: clamp(18px, 2vw, 26px) 0 10px;
+}
+.rgroup:first-child { margin-top: 0; }
+.rentry {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: clamp(15px, 1.4vw, 20px);
+  margin-bottom: 10px;
+  transition: border-color .3s var(--ease), transform .4s var(--ease-out);
+}
+.rentry[hidden] { display: none; }
+.rentry:hover { border-color: var(--mist); transform: translateY(-2px); }
+/* Grid, not flex-wrap: with a long title, wrap put the timestamp on its own
+   line under it, which is not what a record timeline looks like. */
+.rentry-top {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline; gap: 6px 18px; margin-bottom: 7px;
+}
+@media (max-width: 560px) { .rentry-top { grid-template-columns: minmax(0, 1fr); } }
+.rentry-title { font-size: .93rem; color: var(--ink); margin: 0; font-weight: 400; }
+.rentry-title b { font-family: var(--font-head); font-weight: 700; letter-spacing: -.014em; }
+.rentry-when { font-size: .76rem; color: var(--muted); white-space: nowrap; flex: none; }
+.rentry-body { font-size: .89rem; line-height: 1.6; color: var(--body); }
+.rentry-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
+.rentry-chips .chip { font-size: .7rem; padding: 3px 9px; }
+
+/* the right-hand column's association cards */
+.rassoc { display: flex; flex-direction: column; gap: 9px; }
+.rassoc a { display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  font-size: .87rem; font-weight: 700; color: var(--ink-strong); }
+.rassoc a:hover { color: var(--warm); }
+.rassoc a small { font-weight: 400; font-size: .76rem; color: var(--muted); }
+.rempty { font-size: .85rem; line-height: 1.55; color: var(--muted); }
+
 /* ==========================================================================
    DARK THEME
 
@@ -3556,6 +3716,14 @@ main > section:not(.surface-navy):not(.testi-section):not(.logo-band) +
    instead, except directly under the testimonial band, which is the
    homepage and the case studies index. Those keep the white. */
 :root[data-theme="dark"] .to-white { background-image: none; }
+
+/* The record page inverts oddly on the token swap: --surface-alt is the
+   LIGHTEST navy in dark, so the app ground came out paler than the cards on
+   it. The ground takes the darkest token instead, which is the relationship
+   the light theme has. */
+:root[data-theme="dark"] .record { background: var(--paper); }
+:root[data-theme="dark"] .rtab { background: var(--paper); }
+:root[data-theme="dark"] .rtab[aria-current="true"] { background: var(--surface); }
 :root[data-theme="dark"] .start-section {
   background-image:
     linear-gradient(to bottom, var(--paper) 0, rgba(48, 65, 87, 0) var(--start-bleed)),
