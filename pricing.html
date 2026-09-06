@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=4041a27eaa">
+<link rel="stylesheet" href="assets/css/site.css?v=2d5b9f1211">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -71,136 +71,143 @@
 
 <main>
 
-<!-- ===================== HERO =====================
-     Type left, artwork bleeding off the right edge. .page-head-end is the
-     zero-height sentinel the nav watches to decide when to collapse. -->
-<section class="page-hero">
+<section class="page-hero page-hero-plain">
   <div class="shell">
-    <div class="page-hero-inner">
-      <div class="page-hero-text">
-        <h1 class="h1">What it costs before we talk</h1>
-        <p class="lede">Published, because chasing an agency for a number is a waste of everyone's afternoon. These are starting points, and we will tell you on the first call if you are about to overspend.</p>
-        <dl class="hero-meta">
-          <div><dt>Projects from</dt><dd>$4,500</dd></div>
-          <div><dt>Monthly from</dt><dd>$2,500</dd></div>
-          <div><dt>Discovery call</dt><dd>Free</dd></div>
-        </dl>
-      </div>
+    <div class="page-hero-text" style="align-items:center;text-align:center;max-width:24ch;margin-inline:auto">
+      <h1 class="h1">What it costs before we talk</h1>
     </div>
-      <div class="page-hero-media">
-        <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true">
-      </div>
+    <p class="lede" style="text-align:center;margin-inline:auto;margin-top:18px;max-width:56ch">Published,
+      because chasing an agency for a number is a waste of everyone's afternoon. These are starting
+      points, and we will tell you on the first call if you are about to overspend.</p>
+    <div style="max-width:420px;margin:clamp(26px,3.4vw,48px) auto 0"><svg class="page-art " viewBox="0 0 620 400" role="img" aria-label="Five ascending steps">
+    <rect x="26" y="266" width="86" height="64" rx="8" fill="#C6D3E0" opacity="0.30"/>
+    <rect x="142" y="222" width="86" height="108" rx="8" fill="#C6D3E0" opacity="0.44"/>
+    <rect x="258" y="178" width="86" height="152" rx="8" fill="#C6D3E0" opacity="0.58"/>
+    <rect x="374" y="134" width="86" height="196" rx="8" fill="#C6D3E0" opacity="0.72"/>
+    <rect x="490" y="80" width="86" height="250" rx="8" fill="#F2C39B" opacity=".95"/>
+    <rect x="20" y="336" width="580" height="2" rx="1" fill="#C6D3E0"/>
+  </svg></div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
 
 <section class="section">
   <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">Project work with <span class="hl">a fixed scope and a fixed price</span></h2>
-      <p class="sec-sub">Quoted once the scope is written down. If the scope moves we requote before the work starts, not after.</p>
+    <div class="marker reveal"><b>Project work</b><h2 class="h2">Fixed scope, <span class="hl">fixed price</span></h2></div>
+    <div class="qrows">
+      <div class="qrow reveal">
+        <span class="qrow-n">2–3 weeks</span>
+        <div class="qrow-b">
+          <div class="g-7-5" style="gap:clamp(12px,2vw,32px);align-items:baseline">
+            <h3 class="qrow-t">Solution design</h3>
+            <span class="price-teaser-fig" style="font-size:clamp(1.3rem,1rem + 1vw,1.8rem)">$6,500</span>
+          </div>
+          <p class="qrow-c">The plan before the build. Data model, lifecycle, process map and how you will measure it, signed off by the people who have to live with it.</p>
+          <a class="text-link" href="services/solution-design">What is in it <span class="arrow">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="qrow reveal">
+        <span class="qrow-n">2–3 weeks</span>
+        <div class="qrow-b">
+          <div class="g-7-5" style="gap:clamp(12px,2vw,32px);align-items:baseline">
+            <h3 class="qrow-t">Lead to cash process mapping</h3>
+            <span class="price-teaser-fig" style="font-size:clamp(1.3rem,1rem + 1vw,1.8rem)">$4,500</span>
+          </div>
+          <p class="qrow-c">Every step from first touch to paid invoice, on one page. Usually the first time anyone has seen the whole thing at once.</p>
+          <a class="text-link" href="services/lead-to-cash-process-mapping">What is in it <span class="arrow">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="qrow reveal">
+        <span class="qrow-n">6–12 weeks</span>
+        <div class="qrow-b">
+          <div class="g-7-5" style="gap:clamp(12px,2vw,32px);align-items:baseline">
+            <h3 class="qrow-t">CRM implementations</h3>
+            <span class="price-teaser-fig" style="font-size:clamp(1.3rem,1rem + 1vw,1.8rem)">$18,000</span>
+          </div>
+          <p class="qrow-c">Portal builds and platform migrations. Built once, documented, and handed over so your team can run it without us.</p>
+          <a class="text-link" href="services/crm-implementations">What is in it <span class="arrow">&rarr;</span></a>
+        </div>
+      </div>
     </div>
-    <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">
-      <a class="price-teaser-cell" href="services/solution-design" style="text-decoration:none">
-        <span class="price-teaser-label">Solution design</span>
-        <span class="price-teaser-fig">Starting at $6,500<small>2–3 weeks</small></span>
-        <p class="price-teaser-note">The plan before the build. Data model, lifecycle, process map and how you will measure it, signed off by the people who have to live with it.</p>
-      </a>
-      <a class="price-teaser-cell" href="services/lead-to-cash-process-mapping" style="text-decoration:none">
-        <span class="price-teaser-label">Lead to cash process mapping</span>
-        <span class="price-teaser-fig">Starting at $4,500<small>2–3 weeks</small></span>
-        <p class="price-teaser-note">Every step from first touch to paid invoice, on one page. Usually the first time anyone has seen the whole thing at once.</p>
-      </a>
-      <a class="price-teaser-cell" href="services/crm-implementations" style="text-decoration:none">
-        <span class="price-teaser-label">CRM implementations</span>
-        <span class="price-teaser-fig">Starting at $18,000<small>6–12 weeks</small></span>
-        <p class="price-teaser-note">Portal builds and platform migrations. Built once, documented, and handed over so your team can run it without us.</p>
-      </a>
-    </div>
-  </div>
-</section>
 
-<section class="section-tight">
-  <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">Monthly work with no lock-in</h2>
-      <p class="sec-sub">Thirty days notice, both ways. Nobody has ever done better work because the client was contractually stuck with them.</p>
-    </div>
-    <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">
-      <a class="price-teaser-cell" href="services/hubspot-support-retainers" style="text-decoration:none">
-        <span class="price-teaser-label">HubSpot support retainers</span>
-        <span class="price-teaser-fig">From $2,500 a month<small>Tiered by hours, not by seats</small></span>
-        <p class="price-teaser-note">A HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon.</p>
-      </a>
-      <a class="price-teaser-cell" href="services/revops-consulting" style="text-decoration:none">
-        <span class="price-teaser-label">RevOps consulting</span>
-        <span class="price-teaser-fig">From $3,500 a month<small>Fractional, not full-time</small></span>
-        <p class="price-teaser-note">Someone to think it through with. What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money.</p>
-      </a>
-      <div class="price-teaser-cell">
-        <span class="price-teaser-label">Something else</span>
-        <span class="price-teaser-fig">Ask<small>We will say if it is not us</small></span>
-        <p class="price-teaser-note">Audits, one-off training, a second opinion on someone else's build. Smaller pieces get quoted on the call.</p>
+    <div class="marker reveal" style="margin-top:clamp(48px,5.5vw,86px)"><b>Monthly</b><h2 class="h2">No lock-in, thirty days notice</h2></div>
+    <div class="qrows">
+      <div class="qrow reveal">
+        <span class="qrow-n">Rolling</span>
+        <div class="qrow-b">
+          <div class="g-7-5" style="gap:clamp(12px,2vw,32px);align-items:baseline">
+            <h3 class="qrow-t">HubSpot support retainers</h3>
+            <span class="price-teaser-fig" style="font-size:clamp(1.3rem,1rem + 1vw,1.8rem)">$2,500 a month</span>
+          </div>
+          <p class="qrow-c">A HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon.</p>
+          <a class="text-link" href="services/hubspot-support-retainers">What is in it <span class="arrow">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="qrow reveal">
+        <span class="qrow-n">Rolling</span>
+        <div class="qrow-b">
+          <div class="g-7-5" style="gap:clamp(12px,2vw,32px);align-items:baseline">
+            <h3 class="qrow-t">RevOps consulting</h3>
+            <span class="price-teaser-fig" style="font-size:clamp(1.3rem,1rem + 1vw,1.8rem)">$3,500 a month</span>
+          </div>
+          <p class="qrow-c">Someone to think it through with. What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money.</p>
+          <a class="text-link" href="services/revops-consulting">What is in it <span class="arrow">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="qrow reveal">
+        <span class="qrow-n">Ask</span>
+        <div class="qrow-b">
+          <h3 class="qrow-t">Something else</h3>
+          <p class="qrow-c">Audits, one-off training, a second opinion on someone else's build.
+            Smaller pieces get quoted on the call, and we will say if it is not us.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section-tight">
+<section class="section band">
   <div class="shell">
-    <div class="split" style="align-items:start">
-      <div class="reveal reveal-left">
-        <p class="statement">Almost never the software.</p>
-        <p class="statement-note">What moves the price is how many teams have to agree, how much
-          of the data has to be cleaned before it can move, and how many systems are already
-          holding a version of the truth.</p>
-      </div>
-      <div class="cols-2 reveal reveal-right">
-        <p>A twelve-person company with one pipeline and a clean import sits at the bottom of
-          every range on this page.</p>
-        <p>Four business units, two CRMs and a decade of history does not, and no amount of
-          scoping will make it. We would rather show you why than average it away.</p>
+    <div class="g-4-8" style="align-items:start">
+      <p class="statement reveal" style="color:var(--paper)">Almost never the software.</p>
+      <div class="reveal">
+        <div class="cols-2" style="color:var(--on-navy)">
+          <p>What moves the price is how many teams have to agree, how much of the data has to be
+            cleaned before it can move, and how many systems are already holding a version of the
+            truth.</p>
+          <p>A twelve-person company with one pipeline and a clean import sits at the bottom of
+            every range on this page. Four business units, two CRMs and a decade of history does
+            not, and no amount of scoping will make it.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section to-white">
+<section class="section">
   <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">Included whatever you spend</h2>
-    </div>
-    <div style="margin-top:clamp(22px,2.6vw,34px)">
-    <div class="pcards">
-        <div class="pcard reveal">
-          <h3 class="pcard-title">Documentation</h3>
-          <p class="pcard-copy">Part of the work, not a line item that gets cut when the budget tightens.</p>
-          <div class="pcard-chips">
-            <span class="chip">Always</span>
-          </div>
-        </div>
-        <div class="pcard reveal">
-          <h3 class="pcard-title">The same people</h3>
-          <p class="pcard-copy">First call to handover. No introduction to a delivery team you have never met.</p>
-          <div class="pcard-chips">
-            <span class="chip">Always</span>
-          </div>
-        </div>
-        <div class="pcard reveal">
-          <h3 class="pcard-title">A written scope</h3>
-          <p class="pcard-copy">Approved by you before anything is built, and requoted before it changes.</p>
-          <div class="pcard-chips">
-            <span class="chip">Always</span>
-          </div>
-        </div>
-        <div class="pcard reveal">
-          <h3 class="pcard-title">The free first call</h3>
-          <p class="pcard-copy">Where we work out whether this is a fit. No charge and no obligation either way.</p>
-          <div class="pcard-chips">
-            <span class="chip">Free</span>
-          </div>
-        </div>
-    </div>
+    <div class="marker reveal"><b>Whatever you spend</b><h2 class="h2">Included either way</h2></div>
+    <div class="qcols reveal">
+      <div class="qcol">
+        <span class="qcol-n">01</span>
+        <h3 class="qcol-t">Documentation</h3>
+        <p class="qcol-c">Part of the work, not a line item that gets cut when the budget tightens.</p>
+      </div>
+      <div class="qcol">
+        <span class="qcol-n">02</span>
+        <h3 class="qcol-t">The same people</h3>
+        <p class="qcol-c">First call to handover. No introduction to a delivery team you have never met.</p>
+      </div>
+      <div class="qcol">
+        <span class="qcol-n">03</span>
+        <h3 class="qcol-t">A written scope</h3>
+        <p class="qcol-c">Approved by you before anything is built, and requoted before it changes.</p>
+      </div>
+      <div class="qcol">
+        <span class="qcol-n">04</span>
+        <h3 class="qcol-t">The first call</h3>
+        <p class="qcol-c">Where we work out whether this is a fit. No charge and no obligation either way.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -285,6 +292,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=4041a27eaa"></script>
+<script src="assets/js/site.js?v=2d5b9f1211"></script>
 </body>
 </html>

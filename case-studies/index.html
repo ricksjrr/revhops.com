@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="../assets/css/site.css?v=4041a27eaa">
+<link rel="stylesheet" href="../assets/css/site.css?v=2d5b9f1211">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -71,73 +71,47 @@
 
 <main>
 
-<!-- ===================== HERO =====================
-     Type left, artwork bleeding off the right edge. .page-head-end is the
-     zero-height sentinel the nav watches to decide when to collapse. -->
-<section class="page-hero">
+<section class="page-hero page-hero-plain" style="padding-bottom:clamp(26px,3vw,44px)">
   <div class="shell">
-    <div class="page-hero-inner">
+    <div class="g-7-5" style="align-items:end">
       <div class="page-hero-text">
         <h1 class="h1">Proof beats a pitch deck</h1>
-        <p class="lede">Five engagements, what was broken when we arrived, and what the numbers did afterwards. The awkward ones are in here too.</p>
-        <dl class="hero-meta">
-          <div><dt>Engagements</dt><dd>Five</dd></div>
-          <div><dt>Sectors</dt><dd>[to fill in]</dd></div>
-        </dl>
+        <p class="lede">Five engagements, what was broken when we arrived, and what the numbers did
+          afterwards. The awkward ones are in here too.</p>
       </div>
     </div>
-      <div class="page-hero-media">
-        <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true">
-      </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
 
-<section class="logo-band" aria-label="Clients we have worked with" style="--proof-lead:clamp(18px,2.4vw,40px)">
-  <div class="logo-rail">
-    <ul class="logo-run">
-      <li><img src="../assets/img/logos/dg.webp" alt="DG" loading="lazy"></li>
-      <li><img src="../assets/img/logos/woodside-homes.webp" alt="Woodside Homes" loading="lazy"></li>
-      <li><img src="../assets/img/logos/core-income.webp" alt="Core Income" loading="lazy"></li>
-      <li><img src="../assets/img/logos/ignite-group.webp" alt="Ignite Group" data-solid loading="lazy"></li>
-      <li><img src="../assets/img/logos/key-tree.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/cialdini-institute.webp" alt="Cialdini Institute" loading="lazy"></li>
-      <li><img src="../assets/img/logos/casadomaine.webp" alt="Casadomaine Custom Homes" loading="lazy"></li>
-      <li><img src="../assets/img/logos/financial-lease.webp" alt="Financial Lease" loading="lazy"></li>
-      <li><img src="../assets/img/logos/inbox-storage.webp" alt="Inbox Storage" loading="lazy"></li>
-    </ul>
-    <ul class="logo-run" aria-hidden="true">
-      <li><img src="../assets/img/logos/dg.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/woodside-homes.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/core-income.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/ignite-group.webp" alt="" data-solid loading="lazy"></li>
-      <li><img src="../assets/img/logos/key-tree.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/cialdini-institute.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/casadomaine.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/financial-lease.webp" alt="" loading="lazy"></li>
-      <li><img src="../assets/img/logos/inbox-storage.webp" alt="" loading="lazy"></li>
-    </ul>
+<section class="section band" style="padding-block:clamp(40px,5vw,72px)">
+  <div class="shell">
+    <div class="figs reveal">
+      <div class="fig"><b><span data-count="00" data-suffix="">00</span></b><span>Engagements shipped</span></div>
+      <div class="fig"><b><span data-count="00" data-suffix="%">00%</span></b><span>[aggregate measure across the five]</span></div>
+      <div class="fig"><b><span data-count="00" data-suffix="">00</span></b><span>[aggregate measure across the five]</span></div>
+    </div>
   </div>
 </section>
 
-<section class="section case-section">
+<section class="section">
   <div class="shell">
-
-    <div class="case-head">
-      <span aria-hidden="true"></span>
-      <div class="sec-head reveal">
-        <h2 class="h2">We've hopped with <span class="hl">some of the best</span></h2>
-      </div>
-      <div class="case-nav reveal">
-        <button type="button" data-case-prev aria-label="Previous case studies">&larr;</button>
-        <button type="button" data-case-next aria-label="More case studies">&rarr;</button>
-      </div>
+    <div class="marker reveal" style="flex-wrap:wrap;gap:14px 22px">
+      <b>The work</b>
+      <h2 class="h2" style="flex:1 1 16ch">We've hopped with <span class="hl">some of the best</span></h2>
     </div>
-
-    <div class="case-rail-wrap">
-      <div class="case-rail" data-case-rail tabindex="0" aria-label="Case studies">
-        <a class="case-card reveal" href="../case-studies/case-study-one">
-          <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+    <div class="filters reveal" style="margin-bottom:clamp(22px,2.6vw,34px)" role="group" aria-label="Filter case studies">
+      <button class="filter" type="button" data-filter="all" aria-pressed="true">Everything</button>
+      <button class="filter" type="button" data-filter="solution-design" aria-pressed="false">Solution design</button>
+      <button class="filter" type="button" data-filter="crm-implementations" aria-pressed="false">CRM implementations</button>
+      <button class="filter" type="button" data-filter="hubspot-support-retainers" aria-pressed="false">HubSpot support retainers</button>
+      <button class="filter" type="button" data-filter="revops-consulting" aria-pressed="false">RevOps consulting</button>
+      <button class="filter" type="button" data-filter="lead-to-cash-process-mapping" aria-pressed="false">Lead to cash process mapping</button>
+      <span class="filter-count" data-filter-count aria-live="polite"></span>
+    </div>
+    <div class="case-grid" data-filter-grid>
+      <a class="case-card reveal" data-tags="solution-design hubspot-support-retainers" href="../case-studies/case-study-one">
+          <svg class="case-art" viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="cs0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8EEF5"/><stop offset="1" stop-color="#B9C7D8"/></linearGradient></defs><rect width="600" height="450" fill="url(#cs0)"/><circle cx="430" cy="118" r="52" fill="#F2C39B" opacity=".9"/><path d="M0 300 L150 190 L300 268 L450 150 L600 244 L600 450 L0 450 Z" fill="#6D7F99" opacity=".88"/><path d="M0 372 L180 330 L340 366 L490 328 L600 358 L600 450 L0 450 Z" fill="#304157"/></svg>
           <div class="case-body">
             <div class="case-text">
               <h3 class="case-title">[Client name]</h3>
@@ -149,8 +123,8 @@
             <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
         </a>
-        <a class="case-card reveal" href="../case-studies/case-study-two">
-          <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+      <a class="case-card reveal" data-tags="crm-implementations revops-consulting" href="../case-studies/case-study-two">
+          <svg class="case-art" viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="cs1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EFEAF3"/><stop offset="1" stop-color="#C7C2D6"/></linearGradient></defs><rect width="600" height="450" fill="url(#cs1)"/><circle cx="456" cy="109" r="57" fill="#E9B8C6" opacity=".9"/><path d="M0 268 L120 214 L268 160 L420 246 L600 178 L600 450 L0 450 Z" fill="#7D7897" opacity=".88"/><path d="M0 358 L160 392 L330 344 L470 384 L600 340 L600 450 L0 450 Z" fill="#3A3557"/></svg>
           <div class="case-body">
             <div class="case-text">
               <h3 class="case-title">[Client name]</h3>
@@ -162,8 +136,8 @@
             <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
         </a>
-        <a class="case-card reveal" href="../case-studies/case-study-three">
-          <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+      <a class="case-card reveal" data-tags="hubspot-support-retainers lead-to-cash-process-mapping" href="../case-studies/case-study-three">
+          <svg class="case-art" viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="cs2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E7F1EE"/><stop offset="1" stop-color="#B3CFC7"/></linearGradient></defs><rect width="600" height="450" fill="url(#cs2)"/><circle cx="482" cy="100" r="62" fill="#EBD79B" opacity=".9"/><path d="M0 288 L170 168 L330 250 L470 186 L600 262 L600 450 L0 450 Z" fill="#6B948A" opacity=".88"/><path d="M0 380 L200 342 L360 380 L520 344 L600 372 L600 450 L0 450 Z" fill="#2E4A45"/></svg>
           <div class="case-body">
             <div class="case-text">
               <h3 class="case-title">[Client name]</h3>
@@ -175,8 +149,8 @@
             <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
         </a>
-        <a class="case-card reveal" href="../case-studies/case-study-four">
-          <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+      <a class="case-card reveal" data-tags="revops-consulting solution-design" href="../case-studies/case-study-four">
+          <svg class="case-art" viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="cs3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2EDE6"/><stop offset="1" stop-color="#D6C7B5"/></linearGradient></defs><rect width="600" height="450" fill="url(#cs3)"/><circle cx="508" cy="91" r="67" fill="#B8CBD8" opacity=".9"/><path d="M0 250 L140 250 L140 190 L330 190 L330 262 L470 262 L470 206 L600 206 L600 450 L0 450 Z" fill="#9C876C" opacity=".88"/><path d="M0 356 L150 356 L150 400 L360 400 L360 350 L600 350 L600 450 L0 450 Z" fill="#4A3E30"/></svg>
           <div class="case-body">
             <div class="case-text">
               <h3 class="case-title">[Client name]</h3>
@@ -188,8 +162,8 @@
             <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
         </a>
-        <a class="case-card reveal" href="../case-studies/case-study-five">
-          <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
+      <a class="case-card reveal" data-tags="lead-to-cash-process-mapping crm-implementations" href="../case-studies/case-study-five">
+          <svg class="case-art" viewBox="0 0 600 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false"><defs><linearGradient id="cs4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9EDF2"/><stop offset="1" stop-color="#BFC9D6"/></linearGradient></defs><rect width="600" height="450" fill="url(#cs4)"/><circle cx="534" cy="82" r="72" fill="#F2C39B" opacity=".9"/><path d="M0 310 L110 236 L240 292 L390 200 L510 268 L600 224 L600 450 L0 450 Z" fill="#7A879A" opacity=".88"/><path d="M0 366 L130 400 L300 352 L450 396 L600 348 L600 450 L0 450 Z" fill="#2A3340"/></svg>
           <div class="case-body">
             <div class="case-text">
               <h3 class="case-title">[Client name]</h3>
@@ -201,50 +175,10 @@
             <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
         </a>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section class="section-tight">
-  <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">What the work usually involves</h2>
-    </div>
-    <div style="margin-top:clamp(22px,2.6vw,34px)">
-    <div class="pcards">
-        <div class="pcard reveal">
-          <h3 class="pcard-title">A system nobody trusts</h3>
-          <p class="pcard-copy">The most common starting point. The CRM says one thing, the invoices say another, and leadership has stopped believing either.</p>
-          <div class="pcard-chips">
-            <span class="chip">Bad data</span>
-            <span class="chip">No single source</span>
-          </div>
-        </div>
-        <div class="pcard reveal">
-          <h3 class="pcard-title">Growth that outran the setup</h3>
-          <p class="pcard-copy">What worked at eight people falls over at thirty. Usually the routing, the stages and the reporting all at once.</p>
-          <div class="pcard-chips">
-            <span class="chip">Scaling</span>
-            <span class="chip">Handoffs</span>
-          </div>
-        </div>
-        <div class="pcard reveal">
-          <h3 class="pcard-title">A migration nobody wants to run</h3>
-          <p class="pcard-copy">Moving platforms with a decade of history attached, without losing the history or the quarter.</p>
-          <div class="pcard-chips">
-            <span class="chip">Migration</span>
-            <span class="chip">Reconciliation</span>
-          </div>
-        </div>
-    </div>
     </div>
   </div>
 </section>
 
-<!-- The testimonials, same three quotes as the homepage. No heading on the
-     page: each quote carries its own title, so the h2 is for the outline. -->
 <section class="section-tight testi-section">
   <div class="shell">
     <h2 class="sr-only">What clients say about working with us</h2>
@@ -396,6 +330,6 @@
   </svg>
 </button>
 
-<script src="../assets/js/site.js?v=4041a27eaa"></script>
+<script src="../assets/js/site.js?v=2d5b9f1211"></script>
 </body>
 </html>

@@ -1683,7 +1683,8 @@ main { overflow-x: clip; }
   transform: translateY(-4px);
   box-shadow: 0 26px 52px -28px rgba(28, 38, 53, .45);
 }
-.case-card img {
+.case-card img,
+.case-card .case-art {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1691,7 +1692,8 @@ main { overflow-x: clip; }
   object-fit: cover;
   transition: transform .7s var(--ease-out);
 }
-.case-card:hover img { transform: scale(1.045); }
+.case-card:hover img,
+.case-card:hover .case-art { transform: scale(1.045); }
 
 .case-body {
   position: absolute;
@@ -2998,6 +3000,282 @@ main > section:not(.surface-navy):not(.testi-section):not(.logo-band) +
       section:not(.surface-navy):not(.testi-section):not(.logo-band):not(.start-section) {
   padding-top: 0;
 }
+
+/* ==========================================================================
+   ASYMMETRIC GRIDS
+
+   James does not want 50/50. Two equal columns read as a table of contents
+   rather than as a composition, and every inner page having the same one is
+   most of what made the site feel templated.
+
+   These are the four ratios used across the site. Pick by weight: the wider
+   column is the one carrying the argument.
+   ========================================================================== */
+.g-7-5, .g-5-7, .g-8-4, .g-4-8 {
+  display: grid;
+  gap: clamp(28px, 4vw, 76px);
+  align-items: start;
+}
+.g-7-5 { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+.g-5-7 { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+.g-8-4 { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); }
+.g-4-8 { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); }
+@media (max-width: 960px) {
+  .g-7-5, .g-5-7, .g-8-4, .g-4-8 { grid-template-columns: minmax(0, 1fr); }
+}
+/* on a narrow screen the copy should lead, whatever the source order */
+@media (max-width: 960px) { .order-first { order: -1; } }
+
+/* ==========================================================================
+   QUIET ROWS AND COLUMNS
+
+   A list of things without a card around each one. Cards were doing this job
+   and they turned every section into the same grid of rounded rectangles;
+   these carry the same content on hairlines and space instead.
+
+   .qrows  full-width rows, a marker on the left
+   .qcols  three or four abreast, each under its own heavy rule
+   ========================================================================== */
+.qrows { display: grid; }
+.qrow {
+  display: grid;
+  grid-template-columns: minmax(84px, auto) minmax(0, 1fr);
+  gap: clamp(14px, 2.4vw, 44px);
+  padding: clamp(20px, 2.4vw, 34px) 0;
+  border-top: 1px solid var(--line);
+}
+.qrows > .qrow:last-child { border-bottom: 1px solid var(--line); }
+.qrow-n {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: .5em;
+}
+.qrow-b { display: flex; flex-direction: column; gap: 9px; }
+.qrow-t {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.06rem, .98rem + .42vw, 1.3rem);
+  line-height: 1.2;
+  letter-spacing: -.022em;
+  color: var(--ink);
+  margin: 0;
+}
+.qrow-c { font-size: .93rem; line-height: 1.65; color: var(--body); max-width: 62ch; }
+@media (max-width: 640px) {
+  .qrow { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+}
+
+/* Under a heavy rule rather than in a box. The rule is 2px of ink, which is
+   what gives a column its weight when there is no border around it. */
+/* The floor and the gap decide the column count together: at 220px with a
+   56px gap, four columns needed 1009px and only got 880, so they wrapped to
+   2x2 inside a .g-4-8. Tighter on both counts, so four fit where four are
+   meant to. */
+.qcols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 186px), 1fr));
+  gap: clamp(22px, 2.2vw, 38px);
+}
+.qcol { display: flex; flex-direction: column; gap: 10px; padding-top: clamp(14px, 1.6vw, 20px);
+        border-top: 2px solid var(--ink); }
+.qcol-n {
+  font-family: var(--font-head); font-weight: 700; font-size: .7rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+}
+.qcol-t {
+  font-family: var(--font-head); font-weight: 700;
+  font-size: clamp(1rem, .95rem + .3vw, 1.16rem);
+  line-height: 1.24; letter-spacing: -.02em; color: var(--ink); margin: 0;
+  text-wrap: balance;
+}
+.qcol-c { font-size: .9rem; line-height: 1.62; color: var(--body); }
+
+/* ==========================================================================
+   PAGE ARTWORK
+
+   Drawn per page in SVG from the six brand colours — no photography and no
+   stock. Each page gets its own motif, which is what stops the site reading
+   as one template with the words swapped.
+
+   currentColor is not used: these are decorative and must not invert with
+   the theme, because they are built from the fixed palette. They do drop
+   their opacity slightly on the dark ground.
+   ========================================================================== */
+.page-art { display: block; width: 100%; height: auto; }
+:root[data-theme="dark"] .page-art { opacity: .82; }
+
+/* ==========================================================================
+   FILTER BAR — the case studies index
+   ========================================================================== */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filter {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: transparent;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .78rem;
+  letter-spacing: -.01em;
+  color: var(--body);
+  cursor: pointer;
+  transition: background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
+}
+.filter:hover { border-color: var(--mist); color: var(--ink); }
+.filter[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: var(--paper); }
+:root[data-theme="dark"] .filter[aria-pressed="true"] { background: #F2F6FA; border-color: #F2F6FA; color: #304157; }
+.filter:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 3px; }
+.filter-count { font-size: .82rem; color: var(--muted); margin-left: 4px; }
+
+/* the grid the filter drives. Cards fade rather than vanish, so the reflow
+   reads as a change of state and not as the page rebuilding itself. */
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: clamp(16px, 1.8vw, 26px);
+}
+.case-grid .case-card { width: auto; }
+.case-grid .case-card[hidden] { display: none; }
+
+/* ==========================================================================
+   A NUMBERED INDEX, for a hero that lists what is below it
+   ========================================================================== */
+.hero-index { display: flex; flex-direction: column; width: 100%; }
+.hero-index a {
+  display: grid;
+  grid-template-columns: 1.7rem minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: baseline;
+  padding: 11px 0;
+  border-top: 1px solid var(--line);
+  text-decoration: none;
+  transition: color .3s var(--ease);
+}
+.hero-index a:last-child { border-bottom: 1px solid var(--line); }
+.hero-index b {
+  font-family: var(--font-head); font-weight: 700; font-size: .72rem;
+  letter-spacing: .1em; color: var(--muted);
+}
+.hero-index span { font-family: var(--font-head); font-weight: 700; font-size: .95rem;
+  letter-spacing: -.018em; color: var(--ink); }
+.hero-index i { font-style: normal; font-size: .76rem; color: var(--muted); white-space: nowrap; }
+.hero-index a:hover span { color: var(--ink-hover); }
+.hero-index a:hover i { color: var(--body); }
+
+/* ==========================================================================
+   A RULE WITH A LABEL ON IT — the section marker used instead of a centred
+   heading on the pages that do not want one.
+   ========================================================================== */
+.marker {
+  display: flex; align-items: baseline; gap: 14px;
+  padding-bottom: clamp(14px, 1.6vw, 22px);
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: clamp(24px, 3vw, 44px);
+}
+.marker b {
+  font-family: var(--font-head); font-weight: 700; font-size: .72rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted); flex: none;
+}
+.marker h2 { margin: 0; }
+
+/* ==========================================================================
+   FULL-BLEED COLOUR BAND
+   A section that runs edge to edge in navy with no card inside it. One per
+   page at most — it is the loudest thing available and stops working if
+   there are two.
+   ========================================================================== */
+.band { background: var(--navy); color: var(--on-navy); }
+.band .h2, .band h2, .band h3 { color: var(--paper); }
+.band .lede { color: var(--on-navy); }
+
+
+/* ==========================================================================
+   THE ABOUT HERO — the one that runs the other way
+
+   Everything else on the site puts artwork on the right. This puts the
+   portrait off the LEFT edge with the type beside it, which is the reason
+   the page is recognisable from the scrollbar. The media is absolutely
+   positioned inside .shell, which is full-bleed, so `left: 0` is the screen
+   edge.
+   ========================================================================== */
+.page-hero-flip { position: relative; }
+.page-hero-inner-flip {
+  display: grid;
+  grid-template-columns: var(--hero-media-w) minmax(0, 1fr);
+  --hero-media-w: min(38vw, 560px);
+  gap: clamp(28px, 4vw, 68px);
+  align-items: center;
+  min-height: clamp(280px, 28vw, 430px);
+}
+.page-hero-inner-flip > .page-hero-text { grid-column: 2; }
+.page-hero-media.is-left {
+  right: auto;
+  left: 0;
+  width: var(--hero-media-w, min(38vw, 560px));
+  border-radius: 0 var(--radius-card) var(--radius-card) 0;
+}
+@media (max-width: 960px) {
+  .page-hero-inner-flip { grid-template-columns: minmax(0, 1fr); min-height: 0; }
+  .page-hero-inner-flip > .page-hero-text { grid-column: 1; }
+  .page-hero-media.is-left {
+    position: static; width: auto; aspect-ratio: 3 / 2;
+    border-radius: var(--radius-card); margin-top: clamp(24px, 5vw, 36px);
+  }
+}
+
+/* ==========================================================================
+   SIDE PANEL — the navy block beside the contact form
+
+   The page's only colour, and it is there so "just email us" carries the
+   same weight as the form rather than sitting under it as a footnote.
+   ========================================================================== */
+.side-panel {
+  background: var(--navy);
+  border-radius: var(--radius-card);
+  padding: clamp(24px, 2.6vw, 38px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.8vw, 24px);
+  align-self: start;
+}
+.side-panel-copy { font-size: .92rem; line-height: 1.65; color: var(--on-navy); }
+.side-panel-routes { display: flex; flex-direction: column; gap: 12px; }
+.side-panel-routes .text-link { color: var(--paper); }
+.side-panel-routes .text-link:hover { color: var(--warm); }
+.side-panel-meta {
+  display: flex; flex-direction: column; gap: 12px;
+  margin: 0; padding-top: clamp(16px, 1.8vw, 22px);
+  border-top: 1px solid var(--on-navy-line);
+}
+.side-panel-meta div { display: flex; flex-direction: column; gap: 2px; }
+.side-panel-meta dt {
+  font-family: var(--font-head); font-weight: 700; font-size: .68rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--on-navy-faint);
+}
+.side-panel-meta dd { margin: 0; font-size: .9rem; color: var(--on-navy-strong); }
+
+/* ==========================================================================
+   LEGAL INDEX — sticks while the clauses scroll past
+
+   The only thing that helps somebody on a terms page, because they are
+   always looking for one specific paragraph.
+   ========================================================================== */
+.legal-index { display: flex; flex-direction: column; gap: 9px; position: sticky; top: calc(var(--nav-h) + 18px); }
+.legal-index a {
+  font-size: .88rem; line-height: 1.4; color: var(--body);
+  padding: 3px 0 3px 12px; border-left: 2px solid var(--line);
+  transition: color .25s var(--ease), border-color .25s var(--ease);
+}
+.legal-index a:hover { color: var(--ink); border-left-color: var(--warm); }
+.legal-index .qcol-n { margin-bottom: 4px; }
+@media (max-width: 960px) { .legal-index { position: static; } }
+/* the clause the index just jumped to should not hide under the floating bar */
+.prose h2 { scroll-margin-top: calc(var(--nav-h) + 24px); }
 
 /* ==========================================================================
    DARK THEME

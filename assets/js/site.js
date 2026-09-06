@@ -482,3 +482,48 @@
 
   sync();
 })();
+
+/* ==========================================================================
+   RevHops — case study filter
+
+   On /case-studies. Buttons carry data-filter, cards carry data-tags, and
+   the grid hides what does not match. Progressive: with no script the
+   buttons do nothing and every card is visible, which is the right failure.
+
+   `hidden` rather than a class, because the attribute also takes the card
+   out of the accessibility tree, and .case-grid .case-card[hidden] restores
+   `display: none` over the grid's own display rule.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var grid = document.querySelector('[data-filter-grid]');
+  if (!grid) return;
+
+  var buttons = [].slice.call(document.querySelectorAll('[data-filter]'));
+  var cards = [].slice.call(grid.querySelectorAll('[data-tags]'));
+  var count = document.querySelector('[data-filter-count]');
+
+  function apply(key) {
+    var shown = 0;
+    cards.forEach(function (card) {
+      var match = key === 'all' || (' ' + card.getAttribute('data-tags') + ' ').indexOf(' ' + key + ' ') > -1;
+      card.hidden = !match;
+      if (match) shown++;
+    });
+    buttons.forEach(function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-filter') === key ? 'true' : 'false');
+    });
+    if (count) {
+      count.textContent = key === 'all'
+        ? shown + (shown === 1 ? ' case study' : ' case studies')
+        : shown + ' of ' + cards.length;
+    }
+  }
+
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { apply(b.getAttribute('data-filter')); });
+  });
+
+  apply('all');
+})();

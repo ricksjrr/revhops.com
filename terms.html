@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=4041a27eaa">
+<link rel="stylesheet" href="assets/css/site.css?v=2d5b9f1211">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -71,48 +71,54 @@
 
 <main>
 
-<!-- ===================== HERO =====================
-     Type left, artwork bleeding off the right edge. .page-head-end is the
-     zero-height sentinel the nav watches to decide when to collapse. -->
-<section class="page-hero page-hero-plain">
+<section class="page-hero page-hero-plain" style="padding-bottom:clamp(18px,2.2vw,30px)">
   <div class="shell">
-    <div class="page-hero-inner">
-      <div class="page-hero-text">
-        <h1 class="h1">Terms of Service</h1>
-        <p class="lede">The terms you agree to by using this site. Placeholder wording for now.</p>
-      </div>
-    </div>
+    <p class="qcol-n" style="margin-bottom:14px">Legal</p>
+    <h1 class="h1" style="font-size:clamp(1.9rem,1.3rem + 2.2vw,2.9rem)">Terms of Service</h1>
+    <p class="lede" style="margin-top:14px">The terms you agree to by using this site. Placeholder wording for now.</p>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
 
-<section class="section to-white">
+<section class="section">
   <div class="shell">
-    <div class="prose reveal">
-      <p class="prose-meta">Last updated [date]. This is placeholder wording and has not been
-        reviewed by a lawyer. Replace it before launch.</p>
-      <h2>Who we are</h2>
-      <p>RevHops is a revenue operations consultancy based in Phoenix, Arizona. In these terms, "we", "us" and "RevHops" mean RevHops; "you" means the person or company using this website or engaging our services.</p>
-      <p>Questions about anything on this page go to <a href="mailto:team@revhops.com">team@revhops.com</a>.</p>
-      <h2>Using this website</h2>
-      <p>You may use this site for lawful purposes. You may not attempt to gain unauthorized access to it, interfere with its operation, or scrape it in a way that degrades service for anyone else.</p>
-      <p>[Placeholder. Expand with the specific restrictions counsel recommends.]</p>
-      <h2>Our services</h2>
-      <p>Consulting, implementation and support work is governed by the individual statement of work or service agreement signed for that engagement. Where those documents conflict with this page, those documents win.</p>
-      <ul>
-        <li>Scope, fees and timelines are set out in the relevant statement of work.</li>
-        <li>Either party may end a monthly engagement on thirty days written notice.</li>
-        <li>[Placeholder. Payment terms, late payment and expenses.]</li>
-      </ul>
-      <h2>Intellectual property</h2>
-      <p>Everything on this site — text, design, code and marks — belongs to RevHops unless credited otherwise. Deliverables produced during a client engagement transfer as set out in that engagement's agreement.</p>
-      <p>[Placeholder. Confirm the assignment and licence wording with counsel.]</p>
-      <h2>Liability</h2>
-      <p>[Placeholder. Limitation of liability, exclusions and cap, to be drafted.]</p>
-      <h2>Changes to these terms</h2>
-      <p>We may update this page. The date at the top says when it last changed. Continuing to use the site after a change means you accept the updated terms.</p>
-      <h2>Governing law</h2>
-      <p>[Placeholder. Arizona law, and the venue for disputes.]</p>
+    <div class="g-4-8" style="gap:clamp(28px,4vw,80px)">
+      <nav class="legal-index reveal" aria-label="On this page">
+        <p class="qcol-n">On this page</p>
+        <a href="#who-we-are">Who we are</a>
+        <a href="#using-this-website">Using this website</a>
+        <a href="#our-services">Our services</a>
+        <a href="#intellectual-property">Intellectual property</a>
+        <a href="#liability">Liability</a>
+        <a href="#changes-to-these-terms">Changes to these terms</a>
+        <a href="#governing-law">Governing law</a>
+      </nav>
+      <div class="prose reveal">
+        <p class="prose-meta">Last updated [date]. This is placeholder wording and has not been
+          reviewed by a lawyer. Replace it before launch.</p>
+        <h2 id="who-we-are">Who we are</h2>
+        <p>RevHops is a revenue operations consultancy based in Phoenix, Arizona. In these terms, "we", "us" and "RevHops" mean RevHops; "you" means the person or company using this website or engaging our services.</p>
+        <p>Questions about anything on this page go to <a href="mailto:team@revhops.com">team@revhops.com</a>.</p>
+        <h2 id="using-this-website">Using this website</h2>
+        <p>You may use this site for lawful purposes. You may not attempt to gain unauthorized access to it, interfere with its operation, or scrape it in a way that degrades service for anyone else.</p>
+        <p>[Placeholder. Expand with the specific restrictions counsel recommends.]</p>
+        <h2 id="our-services">Our services</h2>
+        <p>Consulting, implementation and support work is governed by the individual statement of work or service agreement signed for that engagement. Where those documents conflict with this page, those documents win.</p>
+        <ul>
+          <li>Scope, fees and timelines are set out in the relevant statement of work.</li>
+          <li>Either party may end a monthly engagement on thirty days written notice.</li>
+          <li>[Placeholder. Payment terms, late payment and expenses.]</li>
+        </ul>
+        <h2 id="intellectual-property">Intellectual property</h2>
+        <p>Everything on this site — text, design, code and marks — belongs to RevHops unless credited otherwise. Deliverables produced during a client engagement transfer as set out in that engagement's agreement.</p>
+        <p>[Placeholder. Confirm the assignment and licence wording with counsel.]</p>
+        <h2 id="liability">Liability</h2>
+        <p>[Placeholder. Limitation of liability, exclusions and cap, to be drafted.]</p>
+        <h2 id="changes-to-these-terms">Changes to these terms</h2>
+        <p>We may update this page. The date at the top says when it last changed. Continuing to use the site after a change means you accept the updated terms.</p>
+        <h2 id="governing-law">Governing law</h2>
+        <p>[Placeholder. Arizona law, and the venue for disputes.]</p>
+      </div>
     </div>
   </div>
 </section>
@@ -197,6 +203,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=4041a27eaa"></script>
+<script src="assets/js/site.js?v=2d5b9f1211"></script>
 </body>
 </html>
