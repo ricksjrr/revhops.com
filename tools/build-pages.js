@@ -172,6 +172,15 @@ function pageHero(p) {
     ? '        <div class="btn-row">\n' + p.headButtons + '\n        </div>\n'
     : '';
 
+  /* An eyebrow that is a link back up a level, sitting above the H1. Only
+     the service pages use it so far: they are the one place on the site
+     that is a leaf of a list, and the back link is how you get to the
+     siblings without going through the nav. */
+  var eyebrow = p.eyebrow
+    ? '        <a class="hero-back" href="' + p.eyebrow[1] + '">' +
+      '<span class="arrow" aria-hidden="true">&larr;</span> ' + p.eyebrow[0] + '</a>\n'
+    : '';
+
   var media = m
     ? '      <div class="page-hero-media' + (m.mark ? ' is-mark' : '') + '">\n' +
       '        <img src="' + a + m.src + '" alt="' + m.alt + '"' + (m.alt ? '' : ' aria-hidden="true"') + '>\n' +
@@ -181,7 +190,7 @@ function pageHero(p) {
   return '\n<!-- ===================== HERO =====================\n' +
 '     Type left, artwork bleeding off the right edge. .page-head-end is the\n' +
 '     zero-height sentinel the nav watches to decide when to collapse. -->\n' +
-'<section class="page-hero' + (p.media ? '' : ' page-hero-plain') + '">\n' +
+'<section class="page-hero' + (p.heroClass ? ' ' + p.heroClass : (p.media ? '' : ' page-hero-plain')) + '">\n' +
 '  <div class="shell">\n' +
 '    <div class="page-hero-inner">\n' +
 '      <div class="page-hero-text">\n' +
@@ -329,7 +338,7 @@ function render(p) {
   return relativise(
     head(p) +
     nav(p) +
-    '\n<main>\n' +
+    '\n<main' + (p.mainClass ? ' class="' + p.mainClass + '"' : '') + '>\n' +
     (p.bare ? '' : pageHero(p)) +
     p.body +
     (p.noClose ? '' : closePanel()) +
@@ -440,6 +449,17 @@ var SERVICES = [
     price: ['Starting at $6,500', 'Fixed scope, fixed price'],
     dur: ['2–3 weeks', 'Two workshops, one review'],
     next: ['Usually a build', 'Design does not oblige you to build with us'],
+    results: 'Immediate',
+    quad: [
+      ['A written specification for your revenue system, produced before anyone touches a portal. Object model, lifecycle, pipelines, process map and the reports that depend on all of it.',
+       'It is a document rather than a deck, detailed enough to hand to any competent builder.'],
+      ['Builds that stall in week nine because nobody agreed in week one what a qualified lead was. Reports that three teams read three different ways.',
+       'The disagreement is cheaper to have now, on paper, than later, in a change request.'],
+      ['Two workshops with the people who actually work the system. Then the model written down and circulated as a draft, argued with, and revised.',
+       'It closes with a walkthrough, a decision log and a build estimate that holds because the scope has stopped moving.'],
+      ['Teams about to spend real money on an implementation, and teams who have already spent it once and would rather not repeat the experience.',
+       'It works best when sales, marketing and finance can all put someone in the room.']
+    ],
     caseIdx: 0
   },
   {
@@ -475,6 +495,17 @@ var SERVICES = [
     price: ['Starting at $18,000', 'Scope-dependent, quoted after design'],
     dur: ['6–12 weeks', 'Weekly working sessions'],
     next: ['Hypercare included', 'Most teams move onto a retainer afterwards'],
+    results: '6–8 weeks',
+    quad: [
+      ['[Placeholder] A HubSpot portal built or migrated end to end, by the same people who scoped it, and documented well enough that your team can run it without calling us.',
+       '[Placeholder] Second short paragraph.'],
+      ['[Placeholder] The build that only one person understands, and that person has left. Two pipelines called Renewals and nobody sure which is live.',
+       '[Placeholder] Second short paragraph.'],
+      ['[Placeholder] Foundations first, then build and migrate in weekly working sessions with your admin in the room, then parallel running until the numbers agree.',
+       '[Placeholder] Handover is recorded training, written documentation and two weeks of hypercare.'],
+      ['[Placeholder] Teams standing up a new portal, or moving onto HubSpot with a decade of history that has to come with them.',
+       '[Placeholder] Second short paragraph.']
+    ],
     caseIdx: 1
   },
   {
@@ -509,6 +540,17 @@ var SERVICES = [
     price: ['From $2,500 a month', 'Tiered by hours, not by seats'],
     dur: ['Rolling monthly', 'Thirty days notice either way'],
     next: ['Unused hours roll', 'Within the quarter, so a quiet month is not wasted'],
+    results: 'First month',
+    quad: [
+      ['[Placeholder] A named HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon.',
+       '[Placeholder] Second short paragraph.'],
+      ['[Placeholder] A portal that rots quietly because the person who half-knows it has a day job, and a full-time admin costs forty hours to get eight of real work.',
+       '[Placeholder] Second short paragraph.'],
+      ['[Placeholder] One standing call a month, a roadmap review each quarter, and a shared channel rather than a ticket form for anything that breaks.',
+       '[Placeholder] Hours roll over within the quarter.'],
+      ['[Placeholder] Teams live on HubSpot who need an admin but not a full-time one.',
+       '[Placeholder] Second short paragraph.']
+    ],
     caseIdx: 2
   },
   {
@@ -543,6 +585,17 @@ var SERVICES = [
     price: ['From $3,500 a month', 'Fractional, not full-time'],
     dur: ['Rolling monthly', 'Fortnightly sessions'],
     next: ['Advice, not delivery', 'Build work is scoped and priced on its own'],
+    results: '4–6 weeks',
+    quad: [
+      ['[Placeholder] Fractional revenue operations leadership. What the system should be doing, what it is doing instead, and which of those gaps is costing you money.',
+       '[Placeholder] Advice, with no build attached.'],
+      ['[Placeholder] Forecast accuracy nobody trusts, stages that mean different things to different reps, and a sales team measured on something it cannot control.',
+       '[Placeholder] Second short paragraph.'],
+      ['[Placeholder] A first month spent finding where revenue actually stalls, then a fortnightly standing session with whoever owns revenue, written up rather than left in a recording.',
+       '[Placeholder] Each quarter closes with an order of operations rather than a wish list.'],
+      ['[Placeholder] Founders and revenue leaders who need someone to think it through with before they commit to a build.',
+       '[Placeholder] Second short paragraph.']
+    ],
     caseIdx: 3
   },
   {
@@ -583,12 +636,17 @@ var SERVICES = [
 
 /* ---------- the five case studies, all placeholder ---------- */
 
+/* `svc` is which services the story belongs to, as service slugs. It is what
+   the filters on /services match against, and it is placeholder like
+   everything else here — set it properly when the real stories land, or the
+   filter will confidently show the wrong work. */
+
 var CASES = [
-  { slug: 'case-study-one',   n: 'one',   figs: [['00', '%'], ['00', 'x']] },
-  { slug: 'case-study-two',   n: 'two',   figs: [['00', '%'], ['00', 'h']] },
-  { slug: 'case-study-three', n: 'three', figs: [['00', '%'], ['00', 'k']] },
-  { slug: 'case-study-four',  n: 'four',  figs: [['00', '%'], ['00', 'd']] },
-  { slug: 'case-study-five',  n: 'five',  figs: [['00', 'k'], ['00', 'x']] }
+  { slug: 'case-study-one',   n: 'one',   figs: [['00', '%'], ['00', 'x']], svc: ['solution-design', 'crm-implementations'] },
+  { slug: 'case-study-two',   n: 'two',   figs: [['00', '%'], ['00', 'h']], svc: ['crm-implementations', 'lead-to-cash-process-mapping'] },
+  { slug: 'case-study-three', n: 'three', figs: [['00', '%'], ['00', 'k']], svc: ['hubspot-support-retainers', 'revops-consulting'] },
+  { slug: 'case-study-four',  n: 'four',  figs: [['00', '%'], ['00', 'd']], svc: ['solution-design', 'lead-to-cash-process-mapping'] },
+  { slug: 'case-study-five',  n: 'five',  figs: [['00', 'k'], ['00', 'x']], svc: ['revops-consulting', 'crm-implementations'] }
 ];
 
 /* the client marquee, straight off the homepage. Both runs must stay
@@ -614,7 +672,8 @@ function logoBand(depth) {
 
 /* one poster card off the homepage rail */
 function caseCard(c, depth, cls) {
-  return '<a class="case-card' + (cls ? ' ' + cls : '') + '" href="' + '/case-studies/' + c.slug + '">\n' +
+  var svc = c.svc ? '\n           data-services="' + c.svc.join(' ') + '"' : '';
+  return '<a class="case-card' + (cls ? ' ' + cls : '') + '" href="' + '/case-studies/' + c.slug + '"' + svc + '>\n' +
     '          <img src="' + up(depth) + 'assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">\n' +
     '          <div class="case-body">\n' +
     '            <div class="case-text">\n' +
@@ -915,6 +974,16 @@ var TESTIMONIALS =
 
 /* ---------- the standalone pages ---------- */
 
+/* ---------- /services ----------
+
+   Stripped back on 6 September. It was the five, a logo band, two
+   qualification lists, a testimonial and the close: five sections of copy
+   arguing for expertise the list itself already demonstrates. It is now the
+   title, the five, the work, and the ask.
+
+   Everything on it sits on flat paper. No discs, no navy band, no artwork
+   except the close's own plate. */
+
 var servicesIndex = {
   file: 'services/index.html',
   depth: 1,
@@ -923,12 +992,22 @@ var servicesIndex = {
   description: 'Solution design, CRM implementations, HubSpot support retainers, RevOps consulting and lead to cash process mapping.',
   h1: 'Services',
   lede: 'RevOps services that scale with you, no matter what stage you\'re at.',
-  media: { src: 'assets/img/case-study-placeholder.svg', alt: '' },
-  headButtons: '          <a class="btn btn-primary" href="/call">Schedule a call</a>',
+
+  /* No artwork column, but not .page-hero-plain either: that steps the
+     headline down, and with the image gone the type is the only thing
+     holding the top of the page. See .page-hero-nomedia in site.css. */
+  heroClass: 'page-hero-nomedia',
+
+  /* sets the page's spacing rhythm and the shorter --start-bleed the rail
+     above the close needs */
+  mainClass: 'svc-index',
+
   body:
 
-    /* THE LIST. No section title above it: the page is called Services and
-       the subheading has already said what they are. */
+    /* THE LIST, and the prompt under it. No section title above either: the
+       page is called Services and the subheading has already said what they
+       are, and the prompt is easier to answer once you have read the five
+       than it was sitting up in the header. */
     section(
 '    <div class="svc-list">\n' +
       SERVICES.map(function (s) {
@@ -939,72 +1018,45 @@ var servicesIndex = {
                '        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>\n' +
                '      </a>';
       }).join('\n') + '\n' +
-'    </div>\n') +
-
-    logoBand(1) +
-
-    /* There was a numbered "How an engagement actually runs" section here.
-       Cut on James's instruction: it described a fixed four-step process,
-       and engagements do not share one. The numbered treatment was fine; the
-       claim underneath it was not, and a good-looking lie is still a lie. */
-
-    /* SECTION TWO — qualification, as two bands rather than two columns.
-       The cut from paper to navy is the design: no columns, no ticks and
-       crosses, no cards. Also fixes an <h3> that was nested inside a <ul>,
-       which is invalid and which browsers resolve however they like. */
-    section(
-'    <div class="sec-head sec-head-left reveal" style="margin-bottom:clamp(26px,3vw,44px)">\n' +
-'      <h2 class="h2">You are in the right place if</h2>\n' +
 '    </div>\n' +
-'    <ul class="fit reveal">\n' +
-      [['Your CRM has drifted', 'away from how the team actually sells, and nobody has had time to pull it back.'],
-       ['You are moving onto HubSpot', 'or off something else onto it, with a decade of history that has to come too.'],
-       ['The forecast is not trusted', 'by the people who have to present it, and nobody can say exactly why.'],
-       ['You are between sizes', 'too small to justify a full-time RevOps hire, too big to keep running on spreadsheets and goodwill.']].map(function (f) {
-        return '      <li><b>' + f[0] + '</b> ' + f[1] + '</li>';
-      }).join('\n') + '\n' +
-'    </ul>\n') +
-'\n<section class="section band">\n' +
-'  <div class="shell">\n' +
-'    <div class="sec-head sec-head-left reveal" style="margin-bottom:clamp(26px,3vw,44px)">\n' +
-'      <h2 class="h2">We are the wrong call if</h2>\n' +
-'    </div>\n' +
-'    <ul class="fit reveal">\n' +
-      [['You need five bodies on site next week', '&mdash; we are small on purpose, and you will hear that on the first call.'],
-       ['The work is campaigns and creative', '&mdash; that is a different agency, and we will happily name one.'],
-       ['Price is the deciding factor', '&mdash; there is always someone cheaper, and sometimes they are the right answer.']].map(function (f) {
-        return '      <li><b>' + f[0] + '</b> ' + f[1] + '</li>';
-      }).join('\n') + '\n' +
-'    </ul>\n' +
-'  </div>\n' +
-'</section>\n' +
+'\n' +
+'    <div class="svc-cta reveal">\n' +
+'      <p>Not sure what your team needs?</p>\n' +
+'      <a class="btn btn-primary" href="/call">Schedule a call</a>\n' +
+'    </div>\n', 'section svc-section') +
 
-    /* SECTION THREE — proof.
-       This was a poster card, a bracketed quote and a bracketed paragraph:
-       three placeholders stacked, which is why it looked unfinished. It is
-       one real client instead, in her own words, with no invented figures.
-       Nothing here is waiting on content that does not exist yet. */
+    /* THE WORK — the homepage's rail with five checkboxes over it.
+
+       Every card carries data-services and shows if it matches ANY checked
+       box; all five load checked, so the default state is the homepage's
+       rail and the control only ever takes work away. One box always stays
+       on — see the filter module in site.js.
+
+       Service is the only axis here. The rest of them belong on
+       /case-studies, where there is room for the control to be real. */
     section(
-'    <div class="g-quote">\n' +
-'      <blockquote class="pull reveal reveal-left">\n' +
-'        <p>James has taken the time to learn our business model, understand the complexities\n' +
-'          and remained confident and transparent on what we can and cannot do within the\n' +
-'          platform.</p>\n' +
-'        <footer class="quote-by">\n' +
-'          <div class="stars" role="img" aria-label="Five out of five">\n' +
-      [1, 2, 3, 4, 5].map(function () {
-        return '            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>';
-      }).join('\n') + '\n' +
-'          </div>\n' +
-'          <cite>Deborah <span class="sep">|</span> COO</cite>\n' +
-'        </footer>\n' +
-'      </blockquote>\n' +
-'      <div class="pull-aside reveal reveal-right">\n' +
-'        <p class="small">Every engagement ends with something your team can run without calling\n' +
-'          us. The work below is where that has already happened.</p>\n' +
-'        <a class="text-link" href="/case-studies">Read the case studies <span class="arrow">&rarr;</span></a>\n' +
+'    <div class="case-head">\n' +
+      secHead('See these services in action') +
+'      <div class="case-nav reveal">\n' +
+'        <button type="button" data-case-prev aria-label="Previous case studies">&larr;</button>\n' +
+'        <button type="button" data-case-next aria-label="More case studies">&rarr;</button>\n' +
 '      </div>\n' +
-'    </div>\n', 'section to-white')
+'    </div>\n' +
+'\n' +
+'    <div class="cs-filters reveal" data-case-filters role="group" aria-label="Filter by service">\n' +
+      SERVICES.map(function (s) {
+        return '      <button class="cs-filter" type="button" role="checkbox" aria-checked="true" data-service="' + s.slug + '">\n' +
+               '        <span class="cs-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 6.3l2.6 2.6L10 3.2"/></svg></span>\n' +
+               '        ' + s.name + '\n' +
+               '      </button>';
+      }).join('\n') + '\n' +
+'    </div>\n' +
+'\n' +
+'    <div class="case-rail-wrap">\n' +
+'      <div class="case-rail" data-case-rail tabindex="0" aria-label="Case studies">\n' +
+'        ' + CASES.map(function (c) { return caseCard(c, 1, 'reveal'); }).join('\n        ') + '\n' +
+'      </div>\n' +
+'    </div>\n', 'section case-section to-white')
 };
 
 var caseIndex = {

@@ -3374,3 +3374,164 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 :root[data-theme="dark"] .start-shout { color: #304157; }
 :root[data-theme="dark"] .start-section .btn-primary { background: #304157; color: #FAFAF8; }
 :root[data-theme="dark"] .start-section .btn-primary:hover { background: var(--warm); color: #304157; }
+
+/* ==========================================================================
+   SERVICES INDEX — the simplified page
+   Header, the list, the filtered case rail, the close. Nothing else, and
+   nothing behind any of it: this page is flat paper end to end.
+
+   The rhythm is set once here rather than per section, so the bands are
+   separated by the same distance and the page reads as one column rather
+   than a stack of unrelated blocks.
+   ========================================================================== */
+.svc-index .section { padding-block: clamp(56px, 6.4vw, 92px); }
+
+/* No artwork column, so the grid drops to one — but the headline keeps the
+   full .page-hero size rather than stepping down the way .page-hero-plain
+   does. With the image gone the type is the only thing holding the top of
+   the page down, and shrinking it as well left nothing there. */
+.page-hero-nomedia .page-hero-inner {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 0;
+}
+/* 30px more between the nav and the title than the shared header gives. The
+   base padding already clears the bar (--nav-h) plus its own beat; this adds
+   to that rather than replacing it, so the bar's height stays accounted for.
+
+   The header is two lines of type and nothing else, so the gap below it is
+   the list section's to give — the header carries none of its own. */
+.page-hero-nomedia {
+  padding-top: calc(var(--nav-h) + clamp(26px, 3vw, 48px) + 30px);
+  padding-bottom: 0;
+}
+.page-hero-nomedia .lede { max-width: 54ch; }
+
+/* The list is the page. It gets more air than the standard rhythm on both
+   sides: above, so the header reads as a title rather than a first row;
+   below, so the prompt under it and then the rail each arrive as their own
+   thing rather than as more list. */
+.svc-index .svc-section {
+  padding-top: clamp(60px, 7vw, 100px);
+  padding-bottom: clamp(78px, 8.8vw, 128px);
+}
+
+/* .svc-cta already centres the prompt and the button under the list; it
+   only wants a longer beat above it here, where it is closing a page rather
+   than a section. */
+.svc-index .svc-cta { margin-top: clamp(40px, 4.6vw, 66px); }
+
+/* The rail sits under the list on the page's own rhythm rather than the
+   homepage's tighter one, where it follows a centred heading. */
+.svc-index .case-section { padding-top: 0; }
+
+/* Heading hard left with the two nudges opposite it, rather than the
+   homepage's centred three-column head. */
+.svc-index .case-head {
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin-bottom: clamp(18px, 2vw, 26px);
+}
+.svc-index .case-head > span { display: none; }
+@media (max-width: 700px) {
+  .svc-index .case-head { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ==========================================================================
+   CASE FILTERS
+   Five checkboxes, not five tabs: any combination is valid and all five are
+   on when the page loads, so the default state shows everything and the
+   control only ever takes work away.
+
+   Real buttons with role="checkbox" rather than input + label — the tick is
+   drawn, the whole chip is the target, and the checked state is one
+   attribute that both the stylesheet and the script read.
+   ========================================================================== */
+.cs-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: clamp(24px, 2.8vw, 38px);
+}
+/* Navy on, plate off. The Do / Don't pair was tried here and read as a
+   verdict on each service rather than as the state of a checkbox — the page
+   is a menu, and nothing on it is the wrong answer. */
+.cs-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 15px 9px 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--plate-line);
+  background: var(--plate);
+  color: var(--plate-ink);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .82rem;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background .22s var(--ease), color .22s var(--ease),
+              border-color .22s var(--ease), transform .22s var(--ease-out);
+}
+.cs-filter:hover { transform: translateY(-1px); border-color: var(--track-ring); }
+.cs-filter:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 3px; }
+
+/* the box: an empty square when off, filled with the tick when on */
+.cs-box {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  border-radius: 4px;
+  border: 1.5px solid var(--plate-line);
+  display: grid;
+  place-items: center;
+  transition: background .22s var(--ease), border-color .22s var(--ease);
+}
+.cs-box svg {
+  width: 11px;
+  height: 11px;
+  fill: none;
+  stroke: var(--paper);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform: scale(.6);
+  transition: opacity .18s var(--ease), transform .22s var(--ease-out);
+}
+.cs-filter[aria-checked="true"] {
+  border-color: var(--ink-strong);
+  background: var(--pill-bg);
+  color: var(--ink-strong);
+}
+.cs-filter[aria-checked="true"] .cs-box {
+  background: var(--ink-strong);
+  border-color: var(--ink-strong);
+}
+.cs-filter[aria-checked="true"] .cs-box svg { opacity: 1; transform: scale(1); }
+
+/* The last one still on cannot be turned off — an empty rail is not a state
+   worth being able to reach. It stays in its checked colours and stops
+   offering the interaction rather than going grey, which would read as
+   broken rather than as held. */
+.cs-filter[data-locked] { cursor: default; }
+.cs-filter[data-locked]:hover { transform: none; }
+
+/* ==========================================================================
+   THE CLOSE AND THE RAIL ABOVE IT
+
+   The close pulls itself up over the section above by --start-bleed and
+   paints its plate across that distance. On the homepage the thing above is
+   a short centred testimonial, so 430px of bleed never reaches its content.
+   A rail of 3:4 posters is a different shape: at the homepage's bleed the
+   bottom third of every card sat over the plate.
+
+   So the bleed is shorter here and the rail's bottom padding matches it
+   exactly — the plate starts where the rail's content stops, and the
+   artwork still fades in rather than arriving at a line. The rail keeps
+   .to-white so the ground has already reached white by then.
+
+   100px, flat, on both: the two have to be the same number or the plate
+   either eats the cards or leaves a gap the artwork does not cover, so
+   changing one means changing the other.
+   ========================================================================== */
+.svc-index .start-section { --start-bleed: 100px; }
+.svc-index .case-section { padding-bottom: 100px; }

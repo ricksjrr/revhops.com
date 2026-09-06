@@ -482,3 +482,74 @@
 
   sync();
 })();
+
+/* ==========================================================================
+   RevHops — case study filters
+
+   Five checkboxes over the rail. Every card carries data-services, a space
+   separated list of the service slugs it belongs to, and a card shows when
+   it matches ANY checked box. All five start checked, so the page loads
+   showing everything and the control only ever removes.
+
+   One box always stays on. An empty rail is not a state worth being able to
+   reach, so the last checked box locks: the click is ignored and the chip
+   stops advertising the interaction. data-locked is written by apply()
+   rather than by the handler, so the DOM says which one is held and the
+   stylesheet reads the same attribute.
+
+   The rail's own arrow module measures the cards it can see and re-syncs on
+   resize, so filtering fires a resize rather than reaching into it. That
+   keeps the two modules independent: either can be replaced without the
+   other knowing.
+
+   No URL state and no persistence, on purpose — this page's filter is a
+   glance, not a saved view. The Case studies page is where that belongs.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var box = document.querySelector('[data-case-filters]');
+  var rail = document.querySelector('[data-case-rail]');
+  if (!box || !rail) return;
+
+  var chips = Array.prototype.slice.call(box.querySelectorAll('[data-service]'));
+  var cards = Array.prototype.slice.call(rail.querySelectorAll('[data-services]'));
+  if (!chips.length || !cards.length) return;
+
+  function checked(chip) { return chip.getAttribute('aria-checked') === 'true'; }
+
+  function apply() {
+    var on = chips.filter(checked);
+    var slugs = on.map(function (c) { return c.getAttribute('data-service'); });
+
+    cards.forEach(function (card) {
+      var tags = (card.getAttribute('data-services') || '').split(/\s+/);
+      card.hidden = !slugs.some(function (s) { return tags.indexOf(s) !== -1; });
+    });
+
+    /* the last one on is held, and says so */
+    chips.forEach(function (chip) {
+      if (on.length === 1 && checked(chip)) {
+        chip.setAttribute('data-locked', '');
+        chip.setAttribute('aria-disabled', 'true');
+      } else {
+        chip.removeAttribute('data-locked');
+        chip.removeAttribute('aria-disabled');
+      }
+    });
+
+    /* back to the first visible card, then let the arrows re-measure */
+    rail.scrollLeft = 0;
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      if (chip.hasAttribute('data-locked')) return;
+      chip.setAttribute('aria-checked', checked(chip) ? 'false' : 'true');
+      apply();
+    });
+  });
+
+  apply();
+})();
