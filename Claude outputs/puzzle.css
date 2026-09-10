@@ -1,0 +1,303 @@
+/* ==========================================================================
+   THE REVOPS PUZZLE — /puzzle
+
+   A 3x3 sliding puzzle. Eight tiles and a gap on a navy board, a timer and a
+   move count beside it, and a win dialog. Added 10 September. Everything
+   here is scoped to .pz-* so none of it can reach another page, and its dark
+   rules live with it rather than in the dark block, for the same reason.
+
+   How a tile is drawn: every tile carries the WHOLE picture as its
+   background, sized to three tiles across (300%), and shows the third that
+   belongs to its home cell via background-position (0 / 50% / 100%). Where
+   it sits on the board is a separate thing, set with --r and --c. The gap
+   between tiles is not part of the picture, so when --pz-gap animates to
+   zero on a win the eight pieces close up into one seamless image.
+   ========================================================================== */
+
+/* Registered so it can transition. Without @property the gap would snap
+   shut on a win instead of closing; everything else still works. */
+@property --pz-gap {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 8px;
+}
+
+.pz-section { padding-top: clamp(8px, 1.4vw, 20px); }
+
+.pz {
+  display: grid;
+  grid-template-columns: minmax(0, 540px) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 80px);
+  align-items: center;
+}
+
+/* ---------- the board ---------- */
+.pz-board {
+  --pz-gap: 8px;
+  --pz-pad: clamp(8px, 1.2vw, 12px);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  padding: var(--pz-pad);
+  border-radius: var(--radius-card);
+  background: var(--navy);
+  box-shadow: 0 30px 60px -34px rgba(28, 38, 53, .55);
+  transition: --pz-gap .5s var(--ease-out), box-shadow .5s var(--ease);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+.pz-grid { position: relative; width: 100%; height: 100%; }
+
+/* the nine empty slots, faintly, so the gap reads as a hole in a tray */
+.pz-slot {
+  position: absolute;
+  width: calc((100% - 2 * var(--pz-gap)) / 3);
+  height: calc((100% - 2 * var(--pz-gap)) / 3);
+  transform: translate(calc(var(--c) * (100% + var(--pz-gap))), calc(var(--r) * (100% + var(--pz-gap))));
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, .06);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, .25);
+}
+
+.pz-tile {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc((100% - 2 * var(--pz-gap)) / 3);
+  height: calc((100% - 2 * var(--pz-gap)) / 3);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: var(--mist);
+  background-image: var(--pz-pic);
+  background-size: 300% 300%;
+  background-repeat: no-repeat;
+  transform: translate(calc(var(--c) * (100% + var(--pz-gap))), calc(var(--r) * (100% + var(--pz-gap))));
+  transition: transform .16s var(--ease), box-shadow .2s var(--ease), border-radius .5s var(--ease);
+  box-shadow: 0 6px 14px -8px rgba(0, 0, 0, .55);
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+}
+.pz-tile.is-movable { cursor: pointer; }
+.pz-tile.is-movable:hover { box-shadow: 0 0 0 3px var(--warm), 0 10px 18px -8px rgba(0, 0, 0, .55); }
+.pz-tile:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--warm), 0 0 0 6px rgba(242, 195, 155, .35); }
+
+/* the ninth piece: only ever shown once the other eight are home */
+.pz-tile.is-last { opacity: 0; pointer-events: none; transition: opacity .5s var(--ease) .15s, border-radius .5s var(--ease); }
+
+/* the shuffle, when the clock starts: tiles take the long way round */
+.pz-board.is-shuffling .pz-tile { transition-duration: .55s; transition-timing-function: var(--ease-out); }
+
+/* ---------- solved ---------- */
+.pz-board.is-solved { --pz-gap: 0px; box-shadow: 0 0 0 4px var(--warm), 0 30px 60px -30px rgba(28, 38, 53, .6); }
+.pz-board.is-solved .pz-tile { border-radius: 0; box-shadow: none; cursor: default; }
+.pz-board.is-solved .pz-tile.is-last { opacity: 1; }
+.pz-board.is-solved .pz-slot { opacity: 0; }
+
+/* ---------- the start cover ---------- */
+.pz-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 14px;
+  padding: 24px;
+  border-radius: var(--radius-card);
+  background: rgba(28, 38, 53, .52);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  text-align: center;
+  transition: opacity .3s var(--ease), visibility .3s;
+}
+.pz-cover.is-off { opacity: 0; visibility: hidden; pointer-events: none; }
+.pz-cover p { color: #FAFAF8; font-weight: 700; font-size: .92rem; text-shadow: 0 1px 8px rgba(0, 0, 0, .35); }
+/* on the navy veil, the start button is paper; hover lands on warm like every button */
+.pz-cover .btn { background: #FAFAF8; color: #304157; }
+.pz-cover .btn:hover { background: var(--warm); color: #304157; }
+
+/* ---------- the side panel ---------- */
+.pz-panel { display: flex; flex-direction: column; gap: clamp(22px, 2.4vw, 32px); align-items: flex-start; }
+
+.pz-stats {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 6px clamp(22px, 3vw, 44px);
+  margin: 0;
+}
+.pz-stats div { display: flex; flex-direction: column; gap: 2px; }
+.pz-stats dt {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pz-stats dd {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+/* the clock is the point of the game, so it picks up a warm underline while
+   it runs. An underline rather than a marker behind the figures: in dark the
+   figures are near-white, and near-white on warm cannot be read. */
+.pz-stats .pz-time { min-width: 4.6ch; }
+.pz.is-playing .pz-stats .pz-time {
+  text-decoration: underline;
+  text-decoration-color: var(--warm);
+  text-decoration-thickness: .14em;
+  text-underline-offset: .14em;
+}
+
+.pz-preview { display: flex; align-items: center; gap: 16px; }
+.pz-preview img {
+  width: clamp(88px, 9vw, 116px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 22px -14px rgba(28, 38, 53, .6);
+}
+.pz-preview .label { font-size: .95rem; }
+.pz-preview .small { color: var(--muted); }
+
+.pz-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+.pz-actions .text-link { align-self: center; background: none; border: 0; padding: 0; cursor: pointer; }
+.pz-help { color: var(--muted); max-width: 40ch; }
+
+/* ---------- the win dialog ---------- */
+.pz-win {
+  width: min(460px, calc(100vw - 32px));
+  max-width: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+.pz-win::backdrop { background: rgba(28, 38, 53, .55); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+.pz-win:focus { outline: none; }
+/* The card, not the dialog, carries the surface and the pop. A transform on
+   the dialog itself would make it the containing block for the confetti
+   canvas inside it, and the confetti would fall inside the card instead of
+   down the whole screen. */
+.pz-win-card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: clamp(34px, 5vw, 44px) clamp(22px, 4vw, 36px) clamp(26px, 4vw, 34px);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--body);
+  box-shadow: 0 40px 80px -30px rgba(28, 38, 53, .6);
+  text-align: center;
+}
+.pz-win[open] .pz-win-card { animation: pz-pop .55s cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes pz-pop {
+  from { transform: scale(.7) rotate(-3deg); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+/* the burst behind the headline: warm, a little too much, on purpose */
+.pz-burst {
+  width: 84px;
+  height: 84px;
+  margin-top: -76px;
+  margin-bottom: 2px;
+  filter: drop-shadow(0 10px 16px rgba(28, 38, 53, .3));
+}
+/* only the rays turn; a turning tick reads as a clock hand */
+.pz-burst-rays { transform-origin: 50px 50px; animation: pz-spin 9s linear infinite; }
+@keyframes pz-spin { to { transform: rotate(360deg); } }
+.pz-win h2 { font-size: clamp(1.9rem, 1.5rem + 1.6vw, 2.4rem); }
+.pz-win p { max-width: 32ch; font-size: 1.05rem; }
+.pz-win-stats {
+  display: flex;
+  gap: 10px 26px;
+  margin: 6px 0 2px;
+  padding: 12px 22px;
+  border-radius: var(--radius-btn);
+  background: var(--surface-alt);
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.pz-win-stats span { display: flex; flex-direction: column; font-size: 1.35rem; line-height: 1.15; }
+.pz-win-stats small { font-family: var(--font-body); font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.pz-record {
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--warm);
+  color: #304157;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .85rem;
+}
+.pz-win .btn-row { justify-content: center; margin-top: 8px; }
+/* the second button is an outline, so the pair reads as one choice, not two
+   equal shouts */
+.pz-win .btn-outline { background: transparent; color: var(--ink-strong); border-color: var(--ink-strong); }
+.pz-win .btn-outline:hover { background: var(--warm); border-color: var(--warm); color: #304157; }
+.pz-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.pz-close:hover { color: var(--ink-strong); background: var(--surface-alt); }
+.pz-close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+
+.pz-confetti { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0; }
+
+/* ---------- narrow screens ---------- */
+@media (max-width: 900px) {
+  /* One column. The panel dissolves (display: contents) so its parts can be
+     ordered around the board: the clock and moves go ABOVE it, so they stay
+     on screen while a thumb is on the tiles, and the picture, buttons and
+     help go below. */
+  .pz { display: flex; flex-direction: column; gap: 20px; align-items: stretch; }
+  .pz-panel { display: contents; }
+  .pz-stats { order: -1; }
+  .pz-board { max-width: 540px; margin-inline: auto; }
+  .pz-preview { order: 1; }
+  .pz-actions { order: 2; }
+  .pz-help { order: 3; }
+  .pz-preview img { width: 72px; }
+}
+@media (max-width: 560px) {
+  .pz-board { --pz-gap: 5px; }
+  .pz-actions .btn { width: auto; }
+  .pz-win .btn-row { flex-direction: column; align-items: stretch; }
+  .pz-win .btn { width: 100%; }
+}
+
+/* ---------- dark ----------
+   The board is a navy chip; on a navy page it would disappear, so it steps
+   down to the deep navy and picks up an edge. */
+:root[data-theme="dark"] .pz-board { background: #1C2635; box-shadow: 0 0 0 1px rgba(255, 255, 255, .14), 0 30px 60px -30px rgba(0, 0, 0, .6); }
+:root[data-theme="dark"] .pz-board.is-solved { box-shadow: 0 0 0 4px var(--warm), 0 30px 60px -30px rgba(0, 0, 0, .6); }
+:root[data-theme="dark"] .pz-win-card { background: #3A4E68; }
+:root[data-theme="dark"] .pz-win-stats { background: rgba(255, 255, 255, .08); }
+:root[data-theme="dark"] .pz-win .btn-primary { background: #F2F6FA; color: #304157; }
+:root[data-theme="dark"] .pz-win .btn-primary:hover { background: var(--warm); color: #304157; }
+:root[data-theme="dark"] .pz-actions .btn-primary { background: #F2F6FA; color: #304157; }
+
+/* .btn sets display:inline-flex, which beats the browser's own [hidden] */
+.pz [hidden], .pz-win [hidden] { display: none !important; }
+.pz-stats dd.is-empty { font-size: clamp(1rem, .9rem + .4vw, 1.2rem); color: var(--muted); padding-top: .35em; }

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Privacy Policy — RevHops</title>
-<meta name="description" content="What data RevHops collects through this website, why, and what you can ask us to do with it.">
+<title>The RevOps puzzle — RevHops</title>
+<meta name="description" content="A sliding tile puzzle from RevHops. Put the pieces of your revenue operations back in the right place, against the clock.">
 <link rel="icon" href="assets/img/revhops-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,44 +78,77 @@
   <div class="shell">
     <div class="page-hero-inner">
       <div class="page-hero-text">
-        <h1 class="h1">Privacy Policy</h1>
-        <p class="lede">What we collect, why we collect it, and how to get rid of it. Placeholder wording for now.</p>
+        <h1 class="h1">Put your RevOps back together</h1>
+        <p class="lede">Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.</p>
       </div>
     </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
 
-<section class="section to-white">
+<section class="section pz-section to-white">
   <div class="shell">
-    <div class="prose reveal">
-      <p class="prose-meta">Last updated [date]. This is placeholder wording and has not been
-        reviewed by a lawyer. Replace it before launch.</p>
-      <h2>The short version</h2>
-      <p>We collect the information you give us and some information about how you use this site. We use it to answer you and to work out which pages are worth keeping. We do not sell it.</p>
-      <h2>What we collect</h2>
-      <ul>
-        <li>Anything you type into a form on this site: name, work email, company and your message.</li>
-        <li>Anything you give us when booking a call through our scheduler.</li>
-        <li>Usage data collected by HubSpot's tracking script: pages viewed, referring source, approximate location and a cookie identifier.</li>
-        <li>[Placeholder. Confirm the full list once analytics is settled.]</li>
-      </ul>
-      <h2>Why we collect it</h2>
-      <p>To reply to you, to run an engagement once one starts, and to understand which parts of this site are useful. Marketing email only ever goes to people who asked for it.</p>
-      <h2>Cookies and tracking</h2>
-      <p>This site loads HubSpot's tracking script, which sets cookies to recognize a returning visitor and attribute a form submission to the pages that led to it. You can refuse cookies in your browser; the site works either way.</p>
-      <p>[Placeholder. Add the consent banner detail if one is added.]</p>
-      <h2>Who else sees it</h2>
-      <p>Our processors: HubSpot as our CRM and analytics, and our email and calendar providers. They hold it on our behalf and under contract. Nobody buys it from us, because we do not sell it.</p>
-      <h2>How long we keep it</h2>
-      <p>[Placeholder. Retention periods per data type.]</p>
-      <h2>Your rights</h2>
-      <p>You can ask what we hold about you, ask for it to be corrected, or ask us to delete it. Email <a href="mailto:team@revhops.com">team@revhops.com</a> and we will action it. If you are in the EU or UK, the GDPR rights apply in full.</p>
-      <h2>Contact</h2>
-      <p>RevHops, Phoenix, Arizona. <a href="mailto:team@revhops.com">team@revhops.com</a>.</p>
+    <div class="pz" data-puzzle data-img-base="assets/img/puzzle/">
+
+      <div class="pz-board" data-pz-board>
+        <div class="pz-grid" data-pz-grid role="group" aria-label="Puzzle board"></div>
+        <div class="pz-cover" data-pz-cover>
+          <button class="btn btn-primary btn-lg" type="button" data-pz-start>Start the clock</button>
+          <p>The timer starts the moment you press it.</p>
+        </div>
+      </div>
+
+      <div class="pz-panel">
+        <dl class="pz-stats" aria-live="off">
+          <div><dt>Time</dt><dd class="pz-time" data-pz-time>0:00.0</dd></div>
+          <div><dt>Moves</dt><dd data-pz-moves>0</dd></div>
+          <div><dt>Your best</dt><dd data-pz-best>None yet</dd></div>
+        </dl>
+        <div class="pz-preview">
+          <img data-pz-thumb src="assets/img/puzzle/dashboard.svg" alt="" width="116" height="116">
+          <div class="stack gap-8">
+            <p class="label" data-pz-name>The revenue dashboard</p>
+            <p class="small">What the eight pieces make</p>
+          </div>
+        </div>
+        <div class="pz-actions">
+          <button class="btn btn-primary" type="button" data-pz-restart hidden>Shuffle again</button>
+          <button class="text-link" type="button" data-pz-next>Try a different picture <span class="arrow">&rarr;</span></button>
+        </div>
+        <p class="small pz-help">Click any tile in line with the gap to slide it across.
+          On a keyboard, the arrow keys work too.</p>
+      </div>
+
     </div>
   </div>
 </section>
+
+<!-- The win dialog. The canvas sits inside it so the confetti draws above
+     the backdrop and below the card. -->
+<dialog class="pz-win" data-pz-win aria-labelledby="pz-win-title">
+  <canvas class="pz-confetti" data-pz-confetti aria-hidden="true"></canvas>
+  <div class="pz-win-card">
+    <button class="pz-close" type="button" data-pz-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <svg class="pz-burst" viewBox="0 0 100 100" aria-hidden="true">
+      <path class="pz-burst-rays" fill="#F2C39B" d="M50 2l8.6 15.4 16-7.4-1.8 17.5 17.5-1.8-7.4 16L98 50l-15.4 8.6 7.4 16-17.5-1.8 1.8 17.5-16-7.4L50 98l-8.6-15.4-16 7.4 1.8-17.5-17.5 1.8 7.4-16L2 50l15.4-8.6-7.4-16 17.5 1.8-1.8-17.5 16 7.4z"/>
+      <circle cx="50" cy="50" r="27" fill="#304157"/>
+      <path d="M38 51l8 8 17-18" fill="none" stroke="#F2C39B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <h2 class="h2" id="pz-win-title">You did it!</h2>
+    <p>You got all the pieces of your revenue operations in the right place!</p>
+    <div class="pz-win-stats">
+      <span><small>Time</small><b data-pz-win-time>0:00.0</b></span>
+      <span><small>Moves</small><b data-pz-win-moves>0</b></span>
+    </div>
+    <p class="pz-record" data-pz-record hidden>New personal best</p>
+    <div class="btn-row">
+      <button class="btn btn-primary" type="button" data-pz-again>Play again</button>
+      <a class="btn btn-outline" href="call">Schedule a call</a>
+    </div>
+  </div>
+</dialog>
 
 <!-- ===================== NEXT STEPS =====================
      The page's closing full stop. Pulled up over the section above by
@@ -199,5 +232,6 @@
 </button>
 
 <script src="assets/js/site.js?v=bc7f83b426"></script>
+<script src="assets/js/puzzle.js?v=bc7f83b426"></script>
 </body>
 </html>

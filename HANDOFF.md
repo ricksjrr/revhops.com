@@ -26,6 +26,30 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 10 September: the puzzle page
+
+**`/puzzle`** is a 3x3 sliding tile game, linked from the footer only
+("RevOps puzzle", under Company, in both `footer()` and `index.html`).
+
+- **Page** is in `PAGES` in `tools/build-pages.js` as `puzzle`. `tail()` now
+  takes an optional `scripts` list, so `assets/js/puzzle.js` loads on this
+  page and nowhere else. `puzzle.js` is in the STAMP hash.
+- **Game logic** is all in `assets/js/puzzle.js`. Shuffles are uniformly
+  random and only solvable layouts are kept (even inversion count), never
+  fewer than 12 tile-steps from solved. The clock starts on "Start the
+  clock". Best time is per browser in `localStorage` as `revhops-puzzle-best`.
+- **Win** closes the gaps, drops in the ninth piece, then opens a
+  `<dialog>` with confetti, the time, moves, "New personal best" when it is
+  one, Play again and Schedule a call (`/call`).
+- **Pictures** are five branded SVG illustrations in `assets/img/puzzle/`,
+  listed in `PICTURES` at the top of `puzzle.js`. The image sites were
+  blocked from the build session, so these stand in for stock photos. A
+  square photo dropped in that folder and added to the list works the same.
+- **CSS** is one `.pz-*` block in `site.css`, just before the dark theme,
+  with its own dark rules inside it.
+- **Exception to the button rule:** Start, Shuffle again and Play again are
+  boxed `.btn`s even though they do not book anything. Asked for.
+
 ## Where we got to, 9 September
 
 Two sessions. The first was polish on the homepage; the second built the

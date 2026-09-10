@@ -47,7 +47,8 @@ var ROOT = path.resolve(__dirname, '..');
    bottom of this file rewrites its stamp too. */
 var STAMP = (function () {
   var h = require('crypto').createHash('sha1');
-  ['assets/css/site.css', 'assets/js/site.js', 'assets/js/maturity-slider.js']
+  ['assets/css/site.css', 'assets/js/site.js', 'assets/js/maturity-slider.js',
+   'assets/js/puzzle.js']
     .forEach(function (f) { h.update(fs.readFileSync(path.join(ROOT, f))); });
   return h.digest('hex').slice(0, 10);
 })();
@@ -255,6 +256,7 @@ function footer(p) {
 '            <li><a href="/about-us">About us</a></li>\n' +
 '            <li><a href="/pricing">Pricing</a></li>\n' +
 '            <li><a href="/contact">Contact</a></li>\n' +
+'            <li><a href="/puzzle">RevOps puzzle</a></li>\n' +
 '          </ul>\n' +
 '        </div>\n' +
 '      </nav>\n' +
@@ -295,6 +297,9 @@ function tail(p) {
 '</button>\n' +
 '\n' +
 '<script src="' + a + 'assets/js/site.js?v=' + STAMP + '"></script>\n' +
+(p.scripts || []).map(function (s) {
+    return '<script src="' + a + s + '?v=' + STAMP + '"></script>\n';
+  }).join('') +
 '</body>\n' +
 '</html>\n';
 }
@@ -1968,13 +1973,94 @@ var privacy = legalPage({
   ]
 });
 
+/* ---------- the puzzle ----------
+   A sliding tile game, linked from the footer only. The board, clock and
+   dialog are markup here; everything that moves is assets/js/puzzle.js,
+   which only this page loads (see `scripts` in tail()). The pictures are
+   branded illustrations in assets/img/puzzle/, listed in puzzle.js. */
+
+var puzzle = {
+  file: 'puzzle.html',
+  depth: 0,
+  title: 'The RevOps puzzle — RevHops',
+  description: 'A sliding tile puzzle from RevHops. Put the pieces of your revenue operations back in the right place, against the clock.',
+  h1: 'Put your RevOps back together',
+  lede: 'Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.',
+  heroClass: 'page-hero-plain',
+  scripts: ['assets/js/puzzle.js'],
+  body:
+'\n<section class="section pz-section to-white">\n' +
+'  <div class="shell">\n' +
+'    <div class="pz" data-puzzle data-img-base="assets/img/puzzle/">\n' +
+'\n' +
+'      <div class="pz-board" data-pz-board>\n' +
+'        <div class="pz-grid" data-pz-grid role="group" aria-label="Puzzle board"></div>\n' +
+'        <div class="pz-cover" data-pz-cover>\n' +
+'          <button class="btn btn-primary btn-lg" type="button" data-pz-start>Start the clock</button>\n' +
+'          <p>The timer starts the moment you press it.</p>\n' +
+'        </div>\n' +
+'      </div>\n' +
+'\n' +
+'      <div class="pz-panel">\n' +
+'        <dl class="pz-stats" aria-live="off">\n' +
+'          <div><dt>Time</dt><dd class="pz-time" data-pz-time>0:00.0</dd></div>\n' +
+'          <div><dt>Moves</dt><dd data-pz-moves>0</dd></div>\n' +
+'          <div><dt>Your best</dt><dd data-pz-best>None yet</dd></div>\n' +
+'        </dl>\n' +
+'        <div class="pz-preview">\n' +
+'          <img data-pz-thumb src="assets/img/puzzle/dashboard.svg" alt="" width="116" height="116">\n' +
+'          <div class="stack gap-8">\n' +
+'            <p class="label" data-pz-name>The revenue dashboard</p>\n' +
+'            <p class="small">What the eight pieces make</p>\n' +
+'          </div>\n' +
+'        </div>\n' +
+'        <div class="pz-actions">\n' +
+'          <button class="btn btn-primary" type="button" data-pz-restart hidden>Shuffle again</button>\n' +
+'          <button class="text-link" type="button" data-pz-next>Try a different picture <span class="arrow">&rarr;</span></button>\n' +
+'        </div>\n' +
+'        <p class="small pz-help">Click any tile in line with the gap to slide it across.\n' +
+'          On a keyboard, the arrow keys work too.</p>\n' +
+'      </div>\n' +
+'\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n' +
+'\n' +
+'<!-- The win dialog. The canvas sits inside it so the confetti draws above\n' +
+'     the backdrop and below the card. -->\n' +
+'<dialog class="pz-win" data-pz-win aria-labelledby="pz-win-title">\n' +
+'  <canvas class="pz-confetti" data-pz-confetti aria-hidden="true"></canvas>\n' +
+'  <div class="pz-win-card">\n' +
+'    <button class="pz-close" type="button" data-pz-close aria-label="Close">\n' +
+'      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>\n' +
+'    </button>\n' +
+'    <svg class="pz-burst" viewBox="0 0 100 100" aria-hidden="true">\n' +
+'      <path class="pz-burst-rays" fill="#F2C39B" d="M50 2l8.6 15.4 16-7.4-1.8 17.5 17.5-1.8-7.4 16L98 50l-15.4 8.6 7.4 16-17.5-1.8 1.8 17.5-16-7.4L50 98l-8.6-15.4-16 7.4 1.8-17.5-17.5 1.8 7.4-16L2 50l15.4-8.6-7.4-16 17.5 1.8-1.8-17.5 16 7.4z"/>\n' +
+'      <circle cx="50" cy="50" r="27" fill="#304157"/>\n' +
+'      <path d="M38 51l8 8 17-18" fill="none" stroke="#F2C39B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>\n' +
+'    </svg>\n' +
+'    <h2 class="h2" id="pz-win-title">You did it!</h2>\n' +
+'    <p>You got all the pieces of your revenue operations in the right place!</p>\n' +
+'    <div class="pz-win-stats">\n' +
+'      <span><small>Time</small><b data-pz-win-time>0:00.0</b></span>\n' +
+'      <span><small>Moves</small><b data-pz-win-moves>0</b></span>\n' +
+'    </div>\n' +
+'    <p class="pz-record" data-pz-record hidden>New personal best</p>\n' +
+'    <div class="btn-row">\n' +
+'      <button class="btn btn-primary" type="button" data-pz-again>Play again</button>\n' +
+'      <a class="btn btn-outline" href="/call">Schedule a call</a>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</dialog>\n'
+};
+
 /* ---------- write everything ---------- */
 
 var PAGES = [servicesIndex]
   .concat(SERVICES.map(servicePage))
   .concat([caseIndex])
   .concat(CASES.map(casePage))
-  .concat([pricing, hubspot, about, contact, terms, privacy, callPage, clientCallPage]);
+  .concat([pricing, hubspot, about, contact, terms, privacy, callPage, clientCallPage, puzzle]);
 
 var written = 0;
 if (require.main === module) {
