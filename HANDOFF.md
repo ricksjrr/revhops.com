@@ -50,6 +50,45 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 - **Exception to the button rule:** Start, Shuffle again and Play again are
   boxed `.btn`s even though they do not book anything. Asked for.
 
+## 10 September: the run page
+
+**`/hop`** is a side-scrolling runner in the spirit of Chrome's dino game,
+linked from the footer only ("RevOps run", under Company, after the puzzle,
+in both `footer()` and `index.html`).
+
+- **Page** is `hop` in `PAGES` in `tools/build-pages.js`, built exactly like
+  the puzzle: `page-hero-plain`, a `.to-white` section, the close. Loads
+  `assets/js/hop.js` via `scripts`, and `hop.js` is in the STAMP hash.
+- **The rabbit is the brand icon**, `revhops-icon-white.png`, drawn on a
+  canvas. It runs as a string of small hops, tilts with its jump, and
+  squashes flat to duck.
+- **Fires** sit on the ground and are jumped; one, two or three together as
+  the score climbs. **Requests** are paper chips with a warm dot and a short
+  label ("Quick field?", "Per my last email"), from score 150. Three heights:
+  head height (duck), just off the ground (jump), and above the head (run
+  under it; jumping hits it, from score 350).
+- **Speed** starts at 400 world units a second and climbs 7.5 a second,
+  capped at 1200: about 1.9x after a minute. The Speed stat shows the
+  multiple. Score is about 10 a second at the start and blinks every 100.
+- **Controls:** Space, Up or W to jump, held for a higher hop; Down or S to
+  duck, or to drop faster mid-air. A tap on the board jumps. Touch screens
+  get Duck and Jump pads under the board (`(hover: none) and (pointer:
+  coarse)`). Esc or P pauses, and leaving the tab pauses.
+- **Fairness:** the gap after every obstacle is at least the ground a jump
+  covers plus a margin, hit boxes sit inside the drawn shapes, and a jump
+  pressed up to 0.12s before landing still fires. A scripted bot survived 70
+  seconds to 2.3x in headless Chromium, so the late game is beatable.
+- **World size** is fixed at 240 units tall; width follows the board, which
+  is 3:1 on desktop and 2:1 under 700px. Narrow boards run up to 28% slower
+  so a phone gets roughly the same reaction time.
+- **End of run** shakes the board, then opens the puzzle's dialog pattern:
+  a title by cause ("Too close to the fire" / "A request got you"), Score,
+  Top speed, Time, "New personal best" with confetti only when it is one,
+  Run again and Schedule a call. Best score is per browser in
+  `localStorage` as `revhops-hop-best`.
+- **CSS** is one `.hp-*` block in `site.css` right after the puzzle's, dark
+  rules inside it. Same exception to the button rule as the puzzle.
+
 ## Where we got to, 9 September
 
 Two sessions. The first was polish on the homepage; the second built the

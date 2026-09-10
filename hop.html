@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pricing — RevHops</title>
-<meta name="description" content="What RevOps work with RevHops costs: project pricing for design, mapping and implementation, monthly pricing for retainers and consulting.">
+<title>The RevOps run — RevHops</title>
+<meta name="description" content="A side-scrolling runner from RevHops. Jump the fires, duck the requests and see how far you get as the pace picks up.">
 <link rel="icon" href="assets/img/revhops-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,7 +48,7 @@
       <a href="services">Services</a>
       <a href="case-studies">Case studies</a>
       <a href="hubspot">HubSpot</a>
-      <a href="pricing" aria-current="page">Pricing</a>
+      <a href="pricing">Pricing</a>
       <a href="about-us">About</a>
       <a href="contact">Contact</a>
     </nav>
@@ -74,136 +74,78 @@
 <!-- ===================== HERO =====================
      Type left, artwork bleeding off the right edge. .page-head-end is the
      zero-height sentinel the nav watches to decide when to collapse. -->
-<section class="page-hero">
+<section class="page-hero page-hero-plain">
   <div class="shell">
     <div class="page-hero-inner">
       <div class="page-hero-text">
-        <h1 class="h1">What it costs before we talk</h1>
-        <p class="lede">Published, because chasing an agency for a number is a waste of everyone's afternoon. These are starting points, and we will tell you on the first call if you are about to overspend.</p>
-        <dl class="hero-meta">
-          <div><dt>Projects from</dt><dd>$4,500</dd></div>
-          <div><dt>Monthly from</dt><dd>$2,500</dd></div>
-          <div><dt>Discovery call</dt><dd>Free</dd></div>
-        </dl>
+        <h1 class="h1">Outrun the request queue</h1>
+        <p class="lede">Jump the fires and duck the requests. The pace picks up the longer you last, so see how far you get.</p>
       </div>
     </div>
-      <div class="page-hero-media">
-        <img src="assets/img/case-study-placeholder.svg" alt="" aria-hidden="true">
-      </div>
   </div>
   <div class="page-head-end" data-nav-clear></div>
 </section>
 
-<section class="section">
+<section class="section hp-section to-white">
   <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">Project work with <span class="hl">a fixed scope and a fixed price</span></h2>
-      <p class="sec-sub">Quoted once the scope is written down. If the scope moves we requote before the work starts, not after.</p>
-    </div>
-    <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">
-      <a class="price-teaser-cell" href="services/solution-design" style="text-decoration:none">
-        <span class="price-teaser-label">Solution design</span>
-        <span class="price-teaser-fig">Starting at $6,500<small>2–3 weeks</small></span>
-        <p class="price-teaser-note">The plan before the build. Data model, lifecycle, process map and how you will measure it, signed off by the people who have to live with it.</p>
-      </a>
-      <a class="price-teaser-cell" href="services/lead-to-cash-process-mapping" style="text-decoration:none">
-        <span class="price-teaser-label">Lead to cash process mapping</span>
-        <span class="price-teaser-fig">Starting at $4,500<small>2–3 weeks</small></span>
-        <p class="price-teaser-note">Every step from first touch to paid invoice, on one page. Usually the first time anyone has seen the whole thing at once.</p>
-      </a>
-      <a class="price-teaser-cell" href="services/crm-implementations" style="text-decoration:none">
-        <span class="price-teaser-label">CRM implementations</span>
-        <span class="price-teaser-fig">Starting at $18,000<small>6–12 weeks</small></span>
-        <p class="price-teaser-note">Portal builds and platform migrations. Built once, documented, and handed over so your team can run it without us.</p>
-      </a>
+    <div class="hp" data-hop data-img-base="assets/img/">
+
+      <div class="hp-top">
+        <dl class="hp-stats" aria-live="off">
+          <div><dt>Score</dt><dd class="hp-score" data-hp-score>0</dd></div>
+          <div><dt>Speed</dt><dd data-hp-speed>1.0x</dd></div>
+          <div><dt>Your best</dt><dd data-hp-best>None yet</dd></div>
+        </dl>
+        <p class="small hp-help">
+          <span class="hp-help-keys">Space or the up arrow to jump, and hold it for a higher hop. The down arrow ducks.</span>
+          <span class="hp-help-touch">Tap the board or Jump to hop, and hold it for a higher one. Hold Duck to get under a request.</span>
+        </p>
+      </div>
+
+      <div class="hp-stage" data-hp-stage tabindex="0" role="application" aria-label="The RevOps run. Space to jump, down arrow to duck.">
+        <canvas class="hp-canvas" data-hp-canvas aria-hidden="true"></canvas>
+        <div class="hp-cover" data-hp-cover>
+          <button class="btn btn-primary btn-lg" type="button" data-hp-start>Start running</button>
+          <p data-hp-cover-msg>Jump the fires. Duck the requests.</p>
+        </div>
+      </div>
+
+      <div class="hp-pads">
+        <button class="hp-pad" type="button" data-hp-duck>Duck</button>
+        <button class="hp-pad" type="button" data-hp-jump>Jump</button>
+      </div>
+
     </div>
   </div>
 </section>
 
-<section class="section-tight">
-  <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">Monthly work with no lock-in</h2>
-      <p class="sec-sub">Thirty days notice, both ways. Nobody has ever done better work because the client was contractually stuck with them.</p>
+<!-- The end-of-run dialog. The canvas sits inside it so the confetti, for
+     a new best only, draws above the backdrop and below the card. -->
+<dialog class="hp-over" data-hp-over aria-labelledby="hp-over-title">
+  <canvas class="hp-confetti" data-hp-confetti aria-hidden="true"></canvas>
+  <div class="hp-over-card">
+    <button class="hp-close" type="button" data-hp-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <svg class="hp-burst" viewBox="0 0 100 100" aria-hidden="true">
+      <path class="hp-burst-rays" fill="#F2C39B" d="M50 2l8.6 15.4 16-7.4-1.8 17.5 17.5-1.8-7.4 16L98 50l-15.4 8.6 7.4 16-17.5-1.8 1.8 17.5-16-7.4L50 98l-8.6-15.4-16 7.4 1.8-17.5-17.5 1.8 7.4-16L2 50l15.4-8.6-7.4-16 17.5 1.8-1.8-17.5 16 7.4z"/>
+      <circle cx="50" cy="50" r="27" fill="#304157"/>
+      <image href="assets/img/revhops-icon-white.png" x="34" y="33" width="33" height="33"/>
+    </svg>
+    <h2 class="h2" id="hp-over-title" data-hp-over-title>A request got you</h2>
+    <p data-hp-over-text>They never stop coming. Hop back in and beat your score.</p>
+    <div class="hp-over-stats">
+      <span><small>Score</small><b data-hp-over-score>0</b></span>
+      <span><small>Top speed</small><b data-hp-over-speed>1.0x</b></span>
+      <span><small>Time</small><b data-hp-over-time>0:00.0</b></span>
     </div>
-    <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">
-      <a class="price-teaser-cell" href="services/hubspot-support-retainers" style="text-decoration:none">
-        <span class="price-teaser-label">HubSpot support retainers</span>
-        <span class="price-teaser-fig">From $2,500 a month<small>Tiered by hours, not by seats</small></span>
-        <p class="price-teaser-note">A HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon.</p>
-      </a>
-      <a class="price-teaser-cell" href="services/revops-consulting" style="text-decoration:none">
-        <span class="price-teaser-label">RevOps consulting</span>
-        <span class="price-teaser-fig">From $3,500 a month<small>Fractional, not full-time</small></span>
-        <p class="price-teaser-note">Someone to think it through with. What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money.</p>
-      </a>
-      <div class="price-teaser-cell">
-        <span class="price-teaser-label">Something else</span>
-        <span class="price-teaser-fig">Ask<small>We will say if it is not us</small></span>
-        <p class="price-teaser-note">Audits, one-off training, a second opinion on someone else's build. Smaller pieces get quoted on the call.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-tight">
-  <div class="shell">
-    <div class="split" style="align-items:start">
-      <div class="reveal reveal-left">
-        <p class="statement">Almost never the software.</p>
-        <p class="statement-note">What moves the price is how many teams have to agree, how much
-          of the data has to be cleaned before it can move, and how many systems are already
-          holding a version of the truth.</p>
-      </div>
-      <div class="cols-2 reveal reveal-right">
-        <p>A twelve-person company with one pipeline and a clean import sits at the bottom of
-          every range on this page.</p>
-        <p>Four business units, two CRMs and a decade of history does not, and no amount of
-          scoping will make it. We would rather show you why than average it away.</p>
-      </div>
+    <p class="hp-record" data-hp-record hidden>New personal best</p>
+    <div class="btn-row">
+      <button class="btn btn-primary" type="button" data-hp-again>Run again</button>
+      <a class="btn btn-outline" href="call">Schedule a call</a>
     </div>
   </div>
-</section>
-
-<section class="section to-white">
-  <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">Included whatever you spend</h2>
-    </div>
-    <div style="margin-top:clamp(22px,2.6vw,34px)">
-    <div class="pcards">
-        <div class="pcard reveal">
-          <h3 class="pcard-title">Documentation</h3>
-          <p class="pcard-copy">Part of the work, not a line item that gets cut when the budget tightens.</p>
-          <div class="pcard-chips">
-            <span class="chip">Always</span>
-          </div>
-        </div>
-        <div class="pcard reveal">
-          <h3 class="pcard-title">The same people</h3>
-          <p class="pcard-copy">First call to handover. No introduction to a delivery team you have never met.</p>
-          <div class="pcard-chips">
-            <span class="chip">Always</span>
-          </div>
-        </div>
-        <div class="pcard reveal">
-          <h3 class="pcard-title">A written scope</h3>
-          <p class="pcard-copy">Approved by you before anything is built, and requoted before it changes.</p>
-          <div class="pcard-chips">
-            <span class="chip">Always</span>
-          </div>
-        </div>
-        <div class="pcard reveal">
-          <h3 class="pcard-title">The free first call</h3>
-          <p class="pcard-copy">Where we work out whether this is a fit. No charge and no obligation either way.</p>
-          <div class="pcard-chips">
-            <span class="chip">Free</span>
-          </div>
-        </div>
-    </div>
-    </div>
-  </div>
-</section>
+</dialog>
 
 <!-- ===================== NEXT STEPS =====================
      The page's closing full stop. Pulled up over the section above by
@@ -288,5 +230,6 @@
 </button>
 
 <script src="assets/js/site.js?v=44b64ee56f"></script>
+<script src="assets/js/hop.js?v=44b64ee56f"></script>
 </body>
 </html>

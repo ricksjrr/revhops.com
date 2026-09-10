@@ -48,7 +48,7 @@ var ROOT = path.resolve(__dirname, '..');
 var STAMP = (function () {
   var h = require('crypto').createHash('sha1');
   ['assets/css/site.css', 'assets/js/site.js', 'assets/js/maturity-slider.js',
-   'assets/js/puzzle.js']
+   'assets/js/puzzle.js', 'assets/js/hop.js']
     .forEach(function (f) { h.update(fs.readFileSync(path.join(ROOT, f))); });
   return h.digest('hex').slice(0, 10);
 })();
@@ -257,6 +257,7 @@ function footer(p) {
 '            <li><a href="/pricing">Pricing</a></li>\n' +
 '            <li><a href="/contact">Contact</a></li>\n' +
 '            <li><a href="/puzzle">RevOps puzzle</a></li>\n' +
+'            <li><a href="/hop">RevOps run</a></li>\n' +
 '          </ul>\n' +
 '        </div>\n' +
 '      </nav>\n' +
@@ -2054,13 +2055,91 @@ var puzzle = {
 '</dialog>\n'
 };
 
+/* ---------- the run ----------
+   A side-scrolling runner, linked from the footer only, beside the puzzle.
+   The stats, board, cover, touch pads and dialog are markup here;
+   everything that moves is assets/js/hop.js, which only this page loads.
+   The rabbit is the brand icon, revhops-icon-white.png. */
+
+var hop = {
+  file: 'hop.html',
+  depth: 0,
+  title: 'The RevOps run — RevHops',
+  description: 'A side-scrolling runner from RevHops. Jump the fires, duck the requests and see how far you get as the pace picks up.',
+  h1: 'Outrun the request queue',
+  lede: 'Jump the fires and duck the requests. The pace picks up the longer you last, so see how far you get.',
+  heroClass: 'page-hero-plain',
+  scripts: ['assets/js/hop.js'],
+  body:
+'\n<section class="section hp-section to-white">\n' +
+'  <div class="shell">\n' +
+'    <div class="hp" data-hop data-img-base="assets/img/">\n' +
+'\n' +
+'      <div class="hp-top">\n' +
+'        <dl class="hp-stats" aria-live="off">\n' +
+'          <div><dt>Score</dt><dd class="hp-score" data-hp-score>0</dd></div>\n' +
+'          <div><dt>Speed</dt><dd data-hp-speed>1.0x</dd></div>\n' +
+'          <div><dt>Your best</dt><dd data-hp-best>None yet</dd></div>\n' +
+'        </dl>\n' +
+'        <p class="small hp-help">\n' +
+'          <span class="hp-help-keys">Space or the up arrow to jump, and hold it for a higher hop. The down arrow ducks.</span>\n' +
+'          <span class="hp-help-touch">Tap the board or Jump to hop, and hold it for a higher one. Hold Duck to get under a request.</span>\n' +
+'        </p>\n' +
+'      </div>\n' +
+'\n' +
+'      <div class="hp-stage" data-hp-stage tabindex="0" role="application" aria-label="The RevOps run. Space to jump, down arrow to duck.">\n' +
+'        <canvas class="hp-canvas" data-hp-canvas aria-hidden="true"></canvas>\n' +
+'        <div class="hp-cover" data-hp-cover>\n' +
+'          <button class="btn btn-primary btn-lg" type="button" data-hp-start>Start running</button>\n' +
+'          <p data-hp-cover-msg>Jump the fires. Duck the requests.</p>\n' +
+'        </div>\n' +
+'      </div>\n' +
+'\n' +
+'      <div class="hp-pads">\n' +
+'        <button class="hp-pad" type="button" data-hp-duck>Duck</button>\n' +
+'        <button class="hp-pad" type="button" data-hp-jump>Jump</button>\n' +
+'      </div>\n' +
+'\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n' +
+'\n' +
+'<!-- The end-of-run dialog. The canvas sits inside it so the confetti, for\n' +
+'     a new best only, draws above the backdrop and below the card. -->\n' +
+'<dialog class="hp-over" data-hp-over aria-labelledby="hp-over-title">\n' +
+'  <canvas class="hp-confetti" data-hp-confetti aria-hidden="true"></canvas>\n' +
+'  <div class="hp-over-card">\n' +
+'    <button class="hp-close" type="button" data-hp-close aria-label="Close">\n' +
+'      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>\n' +
+'    </button>\n' +
+'    <svg class="hp-burst" viewBox="0 0 100 100" aria-hidden="true">\n' +
+'      <path class="hp-burst-rays" fill="#F2C39B" d="M50 2l8.6 15.4 16-7.4-1.8 17.5 17.5-1.8-7.4 16L98 50l-15.4 8.6 7.4 16-17.5-1.8 1.8 17.5-16-7.4L50 98l-8.6-15.4-16 7.4 1.8-17.5-17.5 1.8 7.4-16L2 50l15.4-8.6-7.4-16 17.5 1.8-1.8-17.5 16 7.4z"/>\n' +
+'      <circle cx="50" cy="50" r="27" fill="#304157"/>\n' +
+'      <image href="assets/img/revhops-icon-white.png" x="34" y="33" width="33" height="33"/>\n' +
+'    </svg>\n' +
+'    <h2 class="h2" id="hp-over-title" data-hp-over-title>A request got you</h2>\n' +
+'    <p data-hp-over-text>They never stop coming. Hop back in and beat your score.</p>\n' +
+'    <div class="hp-over-stats">\n' +
+'      <span><small>Score</small><b data-hp-over-score>0</b></span>\n' +
+'      <span><small>Top speed</small><b data-hp-over-speed>1.0x</b></span>\n' +
+'      <span><small>Time</small><b data-hp-over-time>0:00.0</b></span>\n' +
+'    </div>\n' +
+'    <p class="hp-record" data-hp-record hidden>New personal best</p>\n' +
+'    <div class="btn-row">\n' +
+'      <button class="btn btn-primary" type="button" data-hp-again>Run again</button>\n' +
+'      <a class="btn btn-outline" href="/call">Schedule a call</a>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</dialog>\n'
+};
+
 /* ---------- write everything ---------- */
 
 var PAGES = [servicesIndex]
   .concat(SERVICES.map(servicePage))
   .concat([caseIndex])
   .concat(CASES.map(casePage))
-  .concat([pricing, hubspot, about, contact, terms, privacy, callPage, clientCallPage, puzzle]);
+  .concat([pricing, hubspot, about, contact, terms, privacy, callPage, clientCallPage, puzzle, hop]);
 
 var written = 0;
 if (require.main === module) {
