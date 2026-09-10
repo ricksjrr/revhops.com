@@ -41,10 +41,10 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 - **Win** closes the gaps, drops in the ninth piece, then opens a
   `<dialog>` with confetti, the time, moves, "New personal best" when it is
   one, Play again and Schedule a call (`/call`).
-- **Pictures** are five branded SVG illustrations in `assets/img/puzzle/`,
-  listed in `PICTURES` at the top of `puzzle.js`. The image sites were
-  blocked from the build session, so these stand in for stock photos. A
-  square photo dropped in that folder and added to the list works the same.
+- **Pictures** are five branded SVG illustrations and one photograph
+  (`portrait.webp`, 960px square, cropped from the top of the portrait James
+  supplied) in `assets/img/puzzle/`, listed in `PICTURES` at the top of
+  `puzzle.js`. The gap is always the bottom-right piece.
 - **CSS** is one `.pz-*` block in `site.css`, just before the dark theme,
   with its own dark rules inside it.
 - **Exception to the button rule:** Start, Shuffle again and Play again are

@@ -21,15 +21,18 @@
   var root = document.querySelector('[data-puzzle]');
   if (!root) return;
 
-  /* The pictures. Branded illustrations for now; a photo dropped into the
-     same folder works the same way, as long as it is square. */
+  /* The pictures: five branded illustrations and one photograph. Anything
+     square dropped into the same folder and added here works the same way. */
   var BASE = root.getAttribute('data-img-base') || 'assets/img/puzzle/';
   var PICTURES = [
     { file: 'dashboard.svg',    name: 'The revenue dashboard' },
     { file: 'funnel.svg',       name: 'The Q3 funnel' },
     { file: 'deal-board.svg',   name: 'The deal board' },
     { file: 'lead-to-cash.svg', name: 'Lead to cash' },
-    { file: 'desk.svg',         name: 'The RevOps desk' }
+    { file: 'desk.svg',         name: 'The RevOps desk' },
+    /* a photograph, cropped square from the top of a portrait so the head
+       sits in the top two rows and the bottom-right piece is jacket */
+    { file: 'portrait.webp',    name: 'Say cheese' }
   ];
 
   var BEST_KEY = 'revhops-puzzle-best';
