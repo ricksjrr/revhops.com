@@ -27,6 +27,183 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 11 September: the pricing page, and the first real numbers
+
+**`/pricing` was rebuilt from scratch** against James' brief: the /services
+header, a two-card chooser under it, one-time projects, monthly retainers,
+the close, the footer. Everything that used to be between the retainers and
+the close is gone — the "what moves the price" statement split and the
+"Included whatever you spend" cards. He listed the sections he wanted and
+neither was in the list.
+
+**THE PRICES ARE REAL NOW.** Every figure on the site before today was a
+plausible placeholder, and the old note saying so is retired. What James
+gave, on 11 September:
+
+| | |
+| --- | --- |
+| Solution design | $3,000, fixed |
+| Lead to cash process mapping | $4,200, fixed |
+| CRM implementations | project-based, from $5,000 |
+| Retainer, month to month | $4,250 a month |
+| Retainer, 3 month commitment | $3,850 a month |
+| Retainer, 6+ month commitment | $3,500 a month |
+
+**Project prices live in `SERVICES`, not in the pricing object.** The service
+detail pages and /pricing read the same two fields, so a price is one edit
+and it changes in both places. `price[0]` is the figure as it should be read
+("$3,000", "From $5,000") and `price[1]` is what kind of number it is
+("Fixed price", "Scoped and quoted after design"). The header meta row on a
+service page now labels itself off the shape of `price[0]`: "From" when it
+starts with From or Starting at, "Price" when it does not, because "From
+$3,000" on a fixed price was a lie the old template told automatically.
+
+**The retainer ladder is the one set of numbers that is NOT in `SERVICES`.**
+RevOps consulting and HubSpot support are sold as one retainer — James'
+call — so the ladder belongs to the page rather than to either service.
+`RETAINERS` sits just above the pricing object.
+
+**Both retainer services still say "From $3,500 a month"** on their own
+pages, which is the floor of the ladder and correct.
+
+**Two things you should read as unfinished, not as decisions:**
+
+1. **`/services/hubspot-support-retainers` still sells rolling hours.** Its
+   prose, one of its `leave` cards and its `next` line all say hours roll
+   over within the quarter. The retainer now has no limit on monthly hours,
+   which is a different promise. The `price` and `next` lines were corrected;
+   the prose and the `leave` card were left alone because rewriting the
+   page's argument is more than a price change and wants James. Flagged to
+   him on 11 September.
+2. **There is no `.hl` highlight on /pricing.** /services has none either, so
+   it is consistent, but it is the one accent this page could take if it
+   reads flat.
+
+**The chooser is two cards, not two buttons.** `.pick` / `.pick-card`,
+built on `.price-teaser-cell`'s shape on purpose: the visitor meets the pair
+first and the price cells second, and the second should read as more of the
+first. Both are plain fragment links, which `relativise()` leaves alone.
+Buttons were considered and rejected under the standing rule — a boxed
+button on this site means booking or requesting, and these move you down a
+page you are already on.
+
+**The Schedule a call link in the header is a `.text-link`, not a `.btn`.**
+Asked for as "a link". It sits in the shared `headButtons` row, which
+`.page-hero-text`'s flex gap spaces for free.
+
+**Anchored sections carry `scroll-margin-top`.** Nothing else on the site
+has an in-page anchor that a visitor clicks, so this is the first time it
+was needed: without it the section's top edge tucks under the floating pill.
+`calc(var(--nav-float-gap) + 66px)`, which is the pill's offset plus its
+height.
+
+**The retainer cells do not lift on hover** (`.pr-static`). They are divs,
+not links, and a card that moves under the pointer promises a click that is
+not there. The rest of `.price-teaser-cell` is untouched.
+
+**New CSS is one block at the foot of `site.css`**, after RESOURCES, and it
+carries no dark rules by design: every colour in it is a token that already
+inverts. Checked in both themes at 1440, 820 and 390.
+
+**Verified** with `node tools/smoke.js` and `node tools/resources-smoke.js`,
+both passing, plus headless Chromium screenshots of the page at three widths
+in both themes and a click through both anchors.
+
+### And a warning, again
+
+**A second session was writing to this folder while this was built**, the
+same way it happened earlier in the day. It was mid-way through rebuilding
+`/hubspot` into `hubspot/index.html` with a `HUBS` list and six hub pages.
+Rebuilding the pricing object meant replacing everything between
+`var pricing` and `var hubspot`, and `var HUBS` was sitting in that gap, so
+it went. The other session rewrote it within the minute and nothing was
+lost, but it broke the build in between.
+
+**The lesson is narrower than "check git log".** When you replace a slice of
+`tools/build-pages.js` between two markers, read what is actually in the
+slice first. A file that another session is editing will grow declarations
+in gaps that were empty when you last looked at it.
+
+---
+
+## 11 September: the HubSpot page, rebuilt and moved
+
+`/hubspot` is now `hubspot/index.html`, not `hubspot.html`. The old file is
+deleted. This matters more than it sounds: the six hub cards on the page
+point at `/hubspot/sales-hub` and five siblings that do not exist yet, and a
+`hubspot.html` file sitting beside a `hubspot/` folder leaves two things
+answering one URL on GitHub Pages. It is the same shape `/services` and
+`/case-studies` already have. Build the hub pages as
+`hubspot/<slug>.html` and they need nothing else.
+
+The page it replaced argued for the partner tier: what Platinum means, what
+it is not, a wall of certification chips and a free-audit band. All of it was
+about the badge. The new one is four sections.
+
+**The header is the shared `.page-hero`**, same component as every other
+page, with two things this page alone does: two buttons rather than a button
+and a text link, and the Platinum badge in the artwork column. James asked
+for both. The `meta` row came off, which is what exposed a bug that had been
+hiding behind it — see the badge note below.
+
+**The badge was cropping.** `.page-hero-media img` sets `width: 100%` for
+the photographs, and a portrait badge given the full column width computes
+taller than the band, where the column's `overflow: hidden` takes the bottom
+off it. It had been propped up by the old page's three-row `meta` block
+making the band taller. The fix is on `.page-hero-media.is-mark img`:
+`width: auto` so it is sized by height, and **`min-height: 0`**, which is the
+half that actually does it. A grid item's automatic minimum size is its
+content, which for an image is the height its ratio gives at the width
+`max-width` allows, and that minimum outranks `max-height: 100%`. Without it
+the badge computed 584px inside a 308px box and `max-height` did nothing.
+
+**Six hub cards**, in James' order: Sales, Marketing, Revenue, Service, Data,
+Content. Ordinary `.pcard`s with a href, so they carry their own Learn more
+link. They use a new `.pcards-3`, which pins the grid to three columns: the
+default `.pcards` is `auto-fit`, which lays six cards out four-then-two on a
+wide display, and the orphan row reads as a card that failed to load.
+
+**The partner reviews section** is the one new component, `.prof`. A title,
+a subheading, five navy stars and the profile link hold still on the left
+while three reviews travel past on the right. Sticky, not a script. Two
+things in it are load-bearing and both are commented in `site.css`:
+
+- The sticky element is a CHILD of the grid item, not the item itself. Grid
+  items stretch to the row height by default and the sticky child then has
+  that height to travel inside. Put `position: sticky` on the item and add
+  `align-items: start` to the grid, which is the obvious way to write it, and
+  the item shrinks to its content and nothing appears to happen.
+- Each review carries a `min-height`, because three quotes are shorter than a
+  tall screen and a sticky column that never sticks is just two columns. Add
+  a fourth review and that number can come down.
+
+The three quotes are the homepage's, verbatim. Their `.hl` marks came off:
+the page spends its one highlight on the hubs heading, and four would retire
+the device. If more reviews arrive, they go in `REVIEWS` in
+`tools/build-pages.js` and nothing else changes.
+
+**Ways we can help** is James' four, in his words and his order, as
+`.svc-list-plain` rows. Rows rather than a second card grid: six cards then
+four cards reads as ten cards, and these four are the ask rather than the
+subject. Each row links somewhere real — the audit to `/contact`, the fit
+question to `/call`, the other two to the service pages.
+
+**`.btn-outline` is now global**, defined beside `.btn-light`, for the second
+header button. The two `.btn-outline` rules further down are scoped to the
+puzzle and run overlays and still win inside them.
+
+**It happened again.** Partway through this session the top eighty-five lines
+of the new `/hubspot` block — the `HUBS`, `REVIEWS` and `WAYS` data and the
+star helper — vanished from `tools/build-pages.js` between one build and the
+next, leaving the page body referencing three undefined variables. Nothing in
+this session removed them. Read the 11 September note below about two
+sessions in this folder at once, then **run `node tools/build-pages.js` and
+both smoke suites again before you believe any of your own work is
+finished.** A missing `var` shows up immediately; a silently reverted string
+does not.
+
+---
+
 ## 11 September: the resources page
 
 **`/resources`** is the central shelf for everything RevHops publishes. It is
@@ -313,9 +490,10 @@ Run it from the repo root: `node tools/build-pages.js`.
 - **Case study pages look different on purpose**: a full-width navy band of
   three counted figures, then the story in three alternating splits, then a
   centred pull quote. No cards anywhere on them.
-- **Prices are plausible placeholders**, chosen because James asked for
-  numbers rather than `[$X]` slots. They are not figures he gave us. Check
-  them before launch.
+- **Prices were plausible placeholders** when this was written, chosen
+  because James asked for numbers rather than `[$X]` slots. They are real
+  now — see "the pricing page, and the first real numbers" at the top of this
+  file. Nothing on the site still carries an invented figure.
 - **Case study slugs are `case-study-one` … `-five`** and every specific in
   them is in `[square brackets]`. No invented client results anywhere.
 

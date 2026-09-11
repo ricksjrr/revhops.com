@@ -455,7 +455,7 @@ var SERVICES = [
       { title: 'A decision log', copy: 'Every call and the reason behind it, so in six months nobody has to guess why it works that way.' },
       { title: 'A ranked backlog', copy: 'Split into what ships first and what can wait, sized so you can start on Monday.' }
     ],
-    price: ['Starting at $6,500', 'Fixed scope, fixed price'],
+    price: ['$3,000', 'Fixed price'],
     dur: ['2–3 weeks', 'Two workshops, one review'],
     next: ['Usually a build', 'Design does not oblige you to build with us'],
     kind: 'Project',
@@ -502,7 +502,7 @@ var SERVICES = [
       { title: 'Full documentation', copy: 'Every object, workflow and integration, with the reasoning attached rather than just the settings.' },
       { title: 'A list of what we did not build', copy: 'And why. The things deliberately left out are as useful to know as the things shipped.' }
     ],
-    price: ['Starting at $18,000', 'Scope-dependent, quoted after design'],
+    price: ['From $5,000', 'Scoped and quoted after design'],
     dur: ['6–12 weeks', 'Weekly working sessions'],
     next: ['Hypercare included', 'Most teams move onto a retainer afterwards'],
     kind: 'Project',
@@ -548,9 +548,9 @@ var SERVICES = [
       { title: 'Hours that roll', copy: 'Within the quarter, so a quiet month is banked rather than burned on filler.' },
       { title: 'No lock-in', copy: 'Thirty days notice, both ways. Nobody has ever done better work because the client was stuck with them.' }
     ],
-    price: ['From $2,500 a month', 'Tiered by hours, not by seats'],
+    price: ['From $3,500 a month', 'Set by how long you commit'],
     dur: ['Rolling monthly', 'Thirty days notice either way'],
-    next: ['Unused hours roll', 'Within the quarter, so a quiet month is not wasted'],
+    next: ['No cap on hours', 'The rate is set by the commitment, not by the clock'],
     kind: 'Retainer',
     results: 'First month',
     quad: [
@@ -594,7 +594,7 @@ var SERVICES = [
       { title: 'Written positions', copy: 'Including the ones you disagree with. We will put those in writing too.' },
       { title: 'A plan with an order', copy: 'Sequenced by what unblocks the most, not by what is easiest to sell you.' }
     ],
-    price: ['From $3,500 a month', 'Fractional, not full-time'],
+    price: ['From $3,500 a month', 'Set by how long you commit'],
     dur: ['Rolling monthly', 'Fortnightly sessions'],
     next: ['Advice, not delivery', 'Build work is scoped and priced on its own'],
     kind: 'Retainer',
@@ -640,7 +640,7 @@ var SERVICES = [
       { title: 'Measured stalls', copy: 'Where records sit and for how long, in days rather than in adjectives.' },
       { title: 'A ranked fix list', copy: 'Cheapest and highest impact first, with what it costs to leave each one alone.' }
     ],
-    price: ['Starting at $4,500', 'Fixed scope, fixed price'],
+    price: ['$4,200', 'Fixed price'],
     dur: ['2–3 weeks', 'Interviews, then one findings session'],
     next: ['Stands alone', 'Often the first step before a design engagement'],
     kind: 'Project',
@@ -957,7 +957,8 @@ function servicePage(s) {
     eyebrow: ['All services', '/services'],
     meta: [
       ['Timeline', s.time],
-      ['From', s.price[0].replace(/^(Starting at |From )/, '')],
+      [/^(Starting at |From )/.test(s.price[0]) ? 'From' : 'Price',
+       s.price[0].replace(/^(Starting at |From )/, '')],
       ['Time to results', s.results],
       ['Type', s.kind]
     ],
@@ -1425,169 +1426,296 @@ var caseIndex = {
 '</section>\n'
 };
 
+/* ---------- /pricing ----------
+
+   Two shapes of engagement and nothing else on the page: a project with an
+   end date, or a monthly retainer. The chooser under the header is the only
+   navigation on it, and both of its cards are in-page anchors — the page is
+   short enough that splitting it in two would make two thin pages and a
+   click between them.
+
+   PROJECT PRICES LIVE IN `SERVICES`, NOT HERE. The service detail pages read
+   the same fields, so a price changed in one place changes in both. Changing
+   it here instead is how the two drift apart.
+
+   The retainer ladder is the one set of numbers on this page that is not in
+   SERVICES, because RevOps consulting and HubSpot support are sold as one
+   retainer. Putting the ladder on either service would mean two copies of it.
+
+   Figures are James', 11 September. Everything before that date was a
+   plausible placeholder and none of it survives.
+   ---------------------------------------------------------------------- */
+
+/* Order is James': the two fixed prices first, then the one that is scoped.
+   Reading the certain numbers before the ranged one is what makes the ranged
+   one read as honest rather than as a dodge. */
+var PROJECTS = [SERVICES[0], SERVICES[4], SERVICES[1]];
+
+var RETAINERS = [
+  { term: 'Month to month', fig: '$4,250', per: 'a month',
+    note: 'No commitment. Thirty days notice, either way.' },
+  { term: '3 month commitment', fig: '$3,850', per: 'a month',
+    note: 'Long enough to finish the work that does not fit inside one month.' },
+  { term: '6+ month commitment', fig: '$3,500', per: 'a month',
+    note: 'Adds one full day on site every quarter, at our expense.' }
+];
+
 var pricing = {
   file: 'pricing.html',
   depth: 0,
   navCurrent: '/pricing',
   title: 'Pricing — RevHops',
-  description: 'What RevOps work with RevHops costs: project pricing for design, mapping and implementation, monthly pricing for retainers and consulting.',
-  h1: 'What it costs before we talk',
-  lede: 'Published, because chasing an agency for a number is a waste of everyone\'s afternoon. These are starting points, and we will tell you on the first call if you are about to overspend.',
-  media: { src: 'assets/img/case-study-placeholder.svg', alt: '' },
-  meta: [['Projects from', '$4,500'], ['Monthly from', '$2,500'], ['Discovery call', 'Free']],
-  body:
-    section(
-      secHead('Project work with <span class="hl">a fixed scope and a fixed price</span>',
-              'Quoted once the scope is written down. If the scope moves we requote before the work starts, not after.') +
-'    <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-      [SERVICES[0], SERVICES[4], SERVICES[1]].map(function (s) {
-        return '      <a class="price-teaser-cell" href="/services/' + s.slug + '" style="text-decoration:none">\n' +
-               '        <span class="price-teaser-label">' + s.name + '</span>\n' +
-               '        <span class="price-teaser-fig">' + s.price[0] + '<small>' + s.dur[0] + '</small></span>\n' +
-               '        <p class="price-teaser-note">' + s.row + '</p>\n' +
-               '      </a>';
-      }).join('\n') + '\n' +
-'    </div>\n') +
-    section(
-      secHead('Monthly work with no lock-in',
-              'Thirty days notice, both ways. Nobody has ever done better work because the client was contractually stuck with them.') +
-'    <div class="price-teaser reveal" style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-      [SERVICES[2], SERVICES[3]].map(function (s) {
-        return '      <a class="price-teaser-cell" href="/services/' + s.slug + '" style="text-decoration:none">\n' +
-               '        <span class="price-teaser-label">' + s.name + '</span>\n' +
-               '        <span class="price-teaser-fig">' + s.price[0] + '<small>' + s.price[1] + '</small></span>\n' +
-               '        <p class="price-teaser-note">' + s.row + '</p>\n' +
-               '      </a>';
-      }).join('\n') + '\n' +
-'      <div class="price-teaser-cell">\n' +
-'        <span class="price-teaser-label">Something else</span>\n' +
-'        <span class="price-teaser-fig">Ask<small>We will say if it is not us</small></span>\n' +
-'        <p class="price-teaser-note">Audits, one-off training, a second opinion on someone else\'s build. Smaller pieces get quoted on the call.</p>\n' +
-'      </div>\n' +
-'    </div>\n', 'section-tight') +
-    section(
-'    <div class="split" style="align-items:start">\n' +
-'      <div class="reveal reveal-left">\n' +
-'        <p class="statement">Almost never the software.</p>\n' +
-'        <p class="statement-note">What moves the price is how many teams have to agree, how much\n' +
-'          of the data has to be cleaned before it can move, and how many systems are already\n' +
-'          holding a version of the truth.</p>\n' +
-'      </div>\n' +
-'      <div class="cols-2 reveal reveal-right">\n' +
-'        <p>A twelve-person company with one pipeline and a clean import sits at the bottom of\n' +
-'          every range on this page.</p>\n' +
-'        <p>Four business units, two CRMs and a decade of history does not, and no amount of\n' +
-'          scoping will make it. We would rather show you why than average it away.</p>\n' +
-'      </div>\n' +
-'    </div>\n', 'section-tight') +
-    section(
-      secHead('Included whatever you spend') +
-'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-      pcards([
-        { title: 'Documentation', copy: 'Part of the work, not a line item that gets cut when the budget tightens.', chips: ['Always'] },
-        { title: 'The same people', copy: 'First call to handover. No introduction to a delivery team you have never met.', chips: ['Always'] },
-        { title: 'A written scope', copy: 'Approved by you before anything is built, and requoted before it changes.', chips: ['Always'] },
-        { title: 'The free first call', copy: 'Where we work out whether this is a fit. No charge and no obligation either way.', chips: ['Free'] }
-      ]) +
-'    </div>\n', 'section to-white')
-};
+  description: 'What RevOps work with RevHops costs. Fixed prices for solution design and process mapping, project pricing for CRM implementations, and one monthly retainer priced by commitment.',
+  h1: 'Pricing',
+  lede: 'Published, so you can work out whether we are in your range before you book anything.',
 
-var hubspot = {
-  file: 'hubspot.html',
-  depth: 0,
-  navCurrent: '/hubspot',
-  title: 'HubSpot Platinum Solutions Partner — RevHops',
-  description: 'RevHops is a HubSpot Platinum Solutions Partner. Portal builds, migrations, admin retainers and a free portal audit.',
-  h1: 'Platinum partner and full-time resident',
-  lede: 'We build portals, migrate teams onto them and keep them running afterwards. And we will tell you when HubSpot is the wrong answer, which happens.',
-  media: { src: 'assets/img/hubspot-platinum-badge.webp', alt: 'HubSpot Platinum Solutions Partner', mark: true },
-  meta: [['Tier', 'Platinum'], ['Hubs', 'All five'], ['Portal audit', 'Free']],
-  headButtons: '          <a class="btn btn-primary" href="/contact">Request a free portal audit</a>\n' +
-               '          <a class="text-link" href="/call">Or just book a call <span class="arrow">&rarr;</span></a>',
+  /* the /services header: title, subheading, no artwork column */
+  heroClass: 'page-hero-nomedia',
+  headButtons: '          <a class="text-link" href="/call">Schedule a call <span class="arrow">&rarr;</span></a>',
+
+  /* sets the page rhythm and the shorter --start-bleed above the close */
+  mainClass: 'pricing-index',
+
   body:
-    section(
-'    <div class="split" style="align-items:start">\n' +
-'      <div class="reveal reveal-left">\n' +
-'        <p class="statement">Platinum is a real bar, and it is not the top one.</p>\n' +
-'        <p class="statement-note">Anyone whose pitch is their partner tier is selling you their\n' +
-'          partner tier. Here is what it is actually worth knowing.</p>\n' +
-'      </div>\n' +
-'      <div class="cols-2 reveal reveal-right">\n' +
-'        <p>HubSpot ranks partners on how much software they sell and how well the customers who\n' +
-'          buy it do afterwards. Platinum is the third tier of five.</p>\n' +
-'        <p>What it is good for: the certifications are current, the portals we have built are\n' +
-'          still in use, and we have a channel into HubSpot when something is broken on their side\n' +
-'          rather than ours. That last one saves more time than the badge does.</p>\n' +
-'        <p>What it is not: a reason to buy HubSpot. If you own Salesforce and it is working, we\n' +
-'          will say so and you will have saved a migration.</p>\n' +
-'      </div>\n' +
-'    </div>\n') +
-    section(
-      secHead('Where we spend our time <span class="hl">in the platform</span>') +
-'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-      pcards([
-        { title: 'Marketing Hub', copy: 'Lifecycle, scoring, campaign attribution and the reports that make any of it defensible.',
-          chips: ['Lifecycle', 'Scoring', 'Attribution'] },
-        { title: 'Sales Hub', copy: 'Pipelines, sequences, routing and a forecast built on something other than optimism.',
-          chips: ['Pipelines', 'Routing', 'Forecasting'] },
-        { title: 'Service Hub', copy: 'Tickets, SLAs, and the handoff from sales that usually turns out to be the actual problem.',
-          chips: ['Tickets', 'SLAs', 'Handoffs'] },
-        { title: 'Operations Hub', copy: 'Data sync, programmable automation and quality rules, which is where the difficult work lives.',
-          chips: ['Data sync', 'Custom code', 'Quality'] },
-        { title: 'Content Hub', copy: 'Where it earns its place, and where a separate stack is the cheaper answer.',
-          chips: ['CMS', 'Themes'] },
-        { title: 'Custom objects', copy: 'Built when the data model genuinely needs one, and talked you out of when it does not.',
-          chips: ['Modelling', 'Migration'] }
-      ]) +
-'    </div>\n', 'section-tight') +
-    section(
-      secHead('Certifications the team holds',
-              'Current, and re-sat when they expire. HubSpot retires these on a schedule and a lapsed certification is worth exactly nothing.') +
-'    <div class="pcards" style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-'      <div class="pcard reveal" style="grid-column:1/-1">\n' +
-'        <div class="pcard-chips" style="margin-top:0">\n' +
-      ['HubSpot Solutions Partner', 'Revenue Operations', 'Marketing Hub Implementation',
-       'Sales Hub Implementation', 'Service Hub Implementation', 'Data Integrations',
-       'CRM Data Management', 'Reporting and Dashboards', 'Marketing Automation',
-       'Objectives-based Onboarding'].map(function (c) {
-        return '          <span class="chip">' + c + '</span>';
-      }).join('\n') + '\n' +
-'        </div>\n' +
-'        <p class="pcard-copy" style="margin-top:14px">[Certification badges go here once James\n' +
-'          supplies the artwork. Chips stand in until then.]</p>\n' +
-'      </div>\n' +
-'    </div>\n', 'section-tight') +
-'\n<section class="section surface-navy">\n' +
+
+    /* THE FORK. No section head over it: the two cards are the question and
+       the header has already asked it. Both are plain fragment links, which
+       relativise() leaves alone. */
+'\n<!-- ===================== THE FORK =====================\n' +
+'     Which half of the page you want. Anchors, not pages. -->\n' +
+'<section class="section pick-section">\n' +
 '  <div class="shell">\n' +
-'    <div class="split" style="align-items:center">\n' +
-'      <div class="stack gap-20 reveal reveal-left">\n' +
-'        <h2 class="h2">A free look at your portal</h2>\n' +
-'        <p class="lede">An hour inside it and a written page back: what is set up well, what is\n' +
-'          quietly costing you, and the three things worth fixing first.</p>\n' +
-'        <div class="btn-row">\n' +
-'          <a class="btn btn-light" href="/contact">Request the audit</a>\n' +
-'        </div>\n' +
-'      </div>\n' +
-'      <div class="figs reveal reveal-right" style="grid-template-columns:repeat(2,minmax(0,1fr))">\n' +
-'        <div class="fig"><b>1 hr</b><span>In your portal, with you or without you</span></div>\n' +
-'        <div class="fig"><b>$0</b><span>No purchase, no deck, no follow-up sequence</span></div>\n' +
-'      </div>\n' +
+'    <div class="pick">\n' +
+'      <a class="pick-card reveal" href="#projects">\n' +
+'        <span class="pick-title">One-time project</span>\n' +
+'        <p class="pick-copy">A defined piece of work with a start and an end date. Solution design, process mapping, or a build.</p>\n' +
+'        <span class="text-link">See project pricing <span class="arrow">&rarr;</span></span>\n' +
+'      </a>\n' +
+'      <a class="pick-card reveal" href="#retainers">\n' +
+'        <span class="pick-title">Ongoing monthly support</span>\n' +
+'        <p class="pick-copy">A monthly retainer for consulting and HubSpot admin work, priced by how long you commit.</p>\n' +
+'        <span class="text-link">See retainer pricing <span class="arrow">&rarr;</span></span>\n' +
+'      </a>\n' +
 '    </div>\n' +
 '  </div>\n' +
 '</section>\n' +
+
+    /* PROJECTS. Three cells off SERVICES, each linking to its own page. The
+       figure is price[0] and the line under it is price[1], so a cell says
+       what the number is and what kind of number it is. */
+'\n<!-- ===================== ONE-TIME PROJECTS ===================== -->\n' +
+'<section class="section" id="projects">\n' +
+'  <div class="shell">\n' +
+    secHead('One-time projects',
+            'Scope written down and agreed before anything starts. If the scope moves we requote before the work does, not after.') +
+'    <div class="price-teaser pr-grid reveal">\n' +
+      PROJECTS.map(function (s) {
+        return '      <a class="price-teaser-cell" href="/services/' + s.slug + '">\n' +
+               '        <span class="price-teaser-label">' + s.name + '</span>\n' +
+               '        <span class="price-teaser-fig">' + s.price[0] + '<small>' + s.price[1] + '</small></span>\n' +
+               '        <p class="price-teaser-note">' + s.row + '</p>\n' +
+               '        <span class="text-link pr-cell-go">Read more <span class="arrow">&rarr;</span></span>\n' +
+               '      </a>';
+      }).join('\n') + '\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n' +
+
+    /* RETAINERS. One offering, three commitments. .to-white because the
+       close bleeds up over whatever section is last. */
+'\n<!-- ===================== MONTHLY RETAINER =====================\n' +
+'     One retainer covering both RevOps consulting and HubSpot support. The\n' +
+'     only variable is the term, which is why the three cells differ in one\n' +
+'     line each and not in a feature matrix. -->\n' +
+'<section class="section to-white" id="retainers">\n' +
+'  <div class="shell">\n' +
+    secHead('Ongoing monthly support',
+            'RevOps consulting and HubSpot support on one retainer. The rate is set by how long you commit, not by how many hours you use.') +
+'    <div class="price-teaser pr-grid reveal">\n' +
+      RETAINERS.map(function (r) {
+        return '      <div class="price-teaser-cell pr-static">\n' +
+               '        <span class="price-teaser-label">' + r.term + '</span>\n' +
+               '        <span class="price-teaser-fig">' + r.fig + '<small>' + r.per + '</small></span>\n' +
+               '        <p class="price-teaser-note">' + r.note + '</p>\n' +
+               '      </div>';
+      }).join('\n') + '\n' +
+'    </div>\n' +
+'\n' +
+'    <div class="pr-inc reveal">\n' +
+'      <p class="label">In every retainer</p>\n' +
+'      <ul class="ticks ticks-2">\n' +
+'        <li>No limit on monthly hours</li>\n' +
+'        <li>Bi-weekly standups</li>\n' +
+'      </ul>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n'
+};
+
+/* ---------- /hubspot ----------
+
+   Rebuilt 11 September. It was a page about the partner tier: what Platinum
+   means, what it is not, a wall of certification chips and a free-audit
+   band. All of that argued for the badge, and none of it said what we
+   actually do inside the platform.
+
+   It is now the header, the six hubs, the reviews on the partner profile
+   and the four ways in.
+
+   IT MOVED FROM hubspot.html TO hubspot/index.html. The hub cards point at
+   /hubspot/sales-hub and its five siblings, which do not exist yet. A
+   hubspot.html file and a hubspot/ folder both answering /hubspot is a coin
+   toss on GitHub Pages, so the page became the folder's index the way
+   /services and /case-studies already are. Delete hubspot.html if a copy of
+   it ever comes back; two files answering one URL is the failure here.
+
+   Flat paper end to end, same as /services. No disc, no navy band. */
+
+var HUBS = [
+  { slug: 'sales-hub', name: 'Sales Hub',
+    copy: 'Pipelines, sequences, routing and a forecast built on something other than optimism.' },
+  { slug: 'marketing-hub', name: 'Marketing Hub',
+    copy: 'Lifecycle stages, scoring, campaigns and the attribution that makes any of it defensible.' },
+  { slug: 'revenue-hub', name: 'Revenue Hub',
+    copy: 'Quotes, payments and subscriptions, so the number in the CRM is the number finance sees.' },
+  { slug: 'service-hub', name: 'Service Hub',
+    copy: 'Tickets, SLAs, and the handoff from sales that usually turns out to be the actual problem.' },
+  { slug: 'data-hub', name: 'Data Hub',
+    copy: 'Syncs, custom code and quality rules. The unglamorous half, and where most portals break.' },
+  { slug: 'content-hub', name: 'Content Hub',
+    copy: 'Pages, blog and forms on the same record as everything else. Also where a separate stack is sometimes the cheaper answer.' }
+];
+
+/* Five navy stars. Same path the homepage quotes use; `fill` comes from
+   --ink-strong, so they invert to white on the dark theme without a rule. */
+function fiveStars(cls) {
+  var svg = '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+            '<path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9z"/></svg>';
+  var out = '';
+  for (var i = 0; i < 5; i++) out += '            ' + svg + '\n';
+  return '          <div class="stars' + (cls ? ' ' + cls : '') +
+         '" role="img" aria-label="Five out of five">\n' + out + '          </div>\n';
+}
+
+/* The reviews, verbatim off the partner profile and the same three the
+   homepage carries. The homepage marks one phrase of each with .hl; they
+   come out here, because the page already spends its one highlight on the
+   hubs heading and three more would retire the device. */
+var REVIEWS = [
+  { title: 'Superior expertise', by: 'Deborah', role: 'COO',
+    body: 'Our experience working with RevHops to build out specific functionality, reporting, ' +
+          'workflows, sequences and dashboards has exceeded expectations. James has taken the time ' +
+          'to learn our business model, understand the complexities and remained confident and ' +
+          'transparent on what we can and cannot do within the platform. Looking forward to ' +
+          'continued partnership with RevHops.' },
+  { title: 'Responsive &amp; Thorough', by: 'Amy', role: 'VP of Client Services',
+    body: 'We partnered with RevHops on a complex HubSpot Marketing Hub Enterprise implementation, ' +
+          'and the experience was excellent from start to finish. James was highly responsive, ' +
+          'extremely well-organized, and thorough. RevHops put together a clear, structured plan, ' +
+          'communicated recommendations in a way that was easy to align on, and followed up ' +
+          'proactively to ensure everyone fully understood the strategy and next steps.' },
+  { title: 'Great team to work with!', by: 'Adam', role: 'CEO',
+    body: 'James set our small company up for success through his proven process and knowledge of ' +
+          'HubSpot after meeting with key people on my team and then mapping everything out for us ' +
+          'for the first time. His team was organized in their implementation and tracked our ' +
+          'progress throughout the project. We will be using RevHops more in the near future. ' +
+          'Highly recommend!!' }
+];
+
+/* Rows rather than a second grid of cards: six cards then four cards reads
+   as ten cards, and these four are the ask rather than the subject. Same
+   component /services and the case pages use. */
+var WAYS = [
+  { title: 'Request a HubSpot audit', href: '/contact', go: 'Request the audit',
+    copy: 'An hour inside your portal and a written page back. What is set up well, what is quietly costing you, and the three things worth fixing first.' },
+  { title: 'Work out whether HubSpot is right for you', href: '/call', go: 'Talk it through',
+    copy: 'Before anyone signs anything. If you already own a CRM and it is working, we will say so and you will have saved yourself a migration.' },
+  { title: 'Buy and implement HubSpot', href: '/services/crm-implementations', go: 'See the work',
+    copy: 'The tier decision, the build and the handover: objects, data, workflows and training your team still uses after we have gone.' },
+  { title: 'Optimize the portal you already have', href: '/services/hubspot-support-retainers', go: 'See the work',
+    copy: 'Inherited, half-built or eight years deep. We fix what is there rather than starting again, unless starting again is honestly cheaper.' }
+];
+
+var hubspot = {
+  file: 'hubspot/index.html',
+  depth: 1,
+  navCurrent: '/hubspot',
+  title: 'HubSpot Platinum Solutions Partner — RevHops',
+  description: 'RevHops is a HubSpot Platinum Solutions Partner working across all six hubs: Sales, Marketing, Revenue, Service, Data and Content.',
+  h1: 'HubSpot',
+  lede: 'A Platinum Solutions Partner across all six hubs. We will implement it, optimize it, or tell you it is not the right fit.',
+
+  /* The badge, contained rather than cropped — see .page-hero-media.is-mark.
+     It is the only mark on the site that sits in this column. */
+  media: { src: 'assets/img/hubspot-platinum-badge.webp', alt: 'HubSpot Platinum Solutions Partner', mark: true },
+
+  /* Two buttons, and only here. Everywhere else the second action is a text
+     link: this is the one page where the audit and the call are two real
+     starting points rather than one ask and an afterthought. */
+  headButtons: '          <a class="btn btn-primary" href="/contact">Request a HubSpot audit</a>\n' +
+               '          <a class="btn btn-outline" href="/call">Schedule a call</a>',
+
+  body:
+
+    /* THE SIX HUBS. Cards rather than rows, because each one is a page in
+       waiting and a card carries its own link without the row's hairlines
+       implying an order. None of the six exist yet. */
     section(
-'    <div class="split" style="align-items:start">\n' +
-'      <div class="reveal reveal-left">\n' +
-'        <p class="statement">If the portal is in good shape we will tell you that.</p>\n' +
-'        <p class="statement-note">And you will have spent an hour to find out, which is a better\n' +
-'          outcome than most audits manage.</p>\n' +
+      secHead('We work across <span class="hl">all six hubs</span>') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+      pcards(HUBS.map(function (h) {
+        return { title: h.name, copy: h.copy, href: '/hubspot/' + h.slug, link: 'Learn more' };
+      }), 'pcards-3') +
+'    </div>\n') +
+
+    /* THE PARTNER PROFILE. Title, stars and the link hold still on the left
+       while the reviews travel past them. It is CSS sticky, not a script:
+       see PARTNER REVIEWS in site.css for why the sticky element is a child
+       of the grid item rather than the grid item itself. */
+    section(
+'    <div class="prof">\n' +
+'      <div class="prof-side">\n' +
+'        <div class="prof-side-inner">\n' +
+'          <div class="prof-side-body reveal reveal-left">\n' +
+'            <h2 class="h2">Every review is five stars</h2>\n' +
+'            <p class="sec-sub">Clients rate us on the HubSpot partner directory. Every one of\n' +
+'              them has left five stars.</p>\n' +
+'          </div>\n' +
+      fiveStars('prof-stars') +
+'          <a class="text-link" href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"\n' +
+'             target="_blank" rel="noopener">View our partner profile <span class="arrow">&rarr;</span></a>\n' +
+'        </div>\n' +
 '      </div>\n' +
-'      <div class="cols-2 reveal reveal-right">\n' +
-'        <p>Most audits are a sales document with a findings section attached. The findings are\n' +
-'          real, the recommendation is always the same, and it is always the thing being sold.</p>\n' +
-'        <p>This one is an hour and a page. If the answer is leave it alone, that is what the page\n' +
-'          will say, and you can put it in front of whoever asked you to look.</p>\n' +
+'\n' +
+'      <div class="prof-reviews">\n' +
+      REVIEWS.map(function (r) {
+        return '        <article class="prof-review reveal">\n' +
+               '          <h3 class="testi-title"><span class="q">&ldquo;</span>&thinsp;' + r.title +
+               '&thinsp;<span class="q">&rdquo;</span></h3>\n' +
+               '          <blockquote class="quote">\n' +
+               '            <p>' + r.body + '</p>\n' +
+               '            <footer class="quote-by">\n' +
+               fiveStars().replace(/^ {10}/gm, '              ') +
+               '              <cite>' + r.by + ' <span class="sep">|</span> ' + r.role + '</cite>\n' +
+               '            </footer>\n' +
+               '          </blockquote>\n' +
+               '        </article>';
+      }).join('\n') + '\n' +
 '      </div>\n' +
+'    </div>\n', 'section prof-section') +
+
+    /* THE ASK. James' four, in his order. .to-white because the closing
+       panel bleeds up over whatever section is last. */
+    section(
+      secHead('Ways we can help') +
+'    <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">\n' +
+      WAYS.map(function (w) {
+        return '      <a class="svc-row" href="' + w.href + '">\n' +
+               '        <h3 class="svc-title">' + w.title + '</h3>\n' +
+               '        <p class="svc-copy">' + w.copy + '</p>\n' +
+               '        <span class="svc-go">' + w.go + ' <span class="arrow">&rarr;</span></span>\n' +
+               '      </a>';
+      }).join('\n') + '\n' +
 '    </div>\n', 'section to-white')
 };
 

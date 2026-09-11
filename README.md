@@ -79,7 +79,9 @@ matching number of `../`.
 index.html              Home — maturity slider hero. Hand-maintained.
 services/               Services index + the five service pages
 case-studies/           Case studies index + the five case study pages
-pricing.html  hubspot.html  about-us.html  contact.html
+hubspot/                HubSpot index. The six hub pages go here too.
+resources/              Resources index + a page per gated resource
+pricing.html  about.html  contact.html
 terms.html  privacy.html
 call.html               Meetings embed, nothing else. Every CTA points here.
 client-call.html        Same, client scheduler, noindex, unlinked

@@ -230,6 +230,20 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .btn-light { background: var(--paper); color: var(--navy); }
 .btn-light:hover { background: var(--warm); color: #304157; box-shadow: 0 12px 26px -16px rgba(0,0,0,.45); }
+/* The quiet second button. Only used where a page offers two real actions
+   rather than one ask and a text link after it — /hubspot's header is the
+   first. Navy on the light theme and white on the dark one, both through
+   --ink-strong, and warm on hover like every other button.
+
+   The two .btn-outline rules further down are scoped to the puzzle and run
+   overlays, which sit on a fixed navy board in both themes. They come later
+   in the file and are more specific, so they still win inside those. */
+.btn-outline {
+  background: transparent;
+  color: var(--ink-strong);
+  border-color: var(--ink-strong);
+}
+.btn-outline:hover { background: var(--warm); border-color: var(--warm); color: #304157; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 
 /* ---------- pills, chips, cards ---------- */
@@ -2861,7 +2875,28 @@ main { overflow-x: clip; }
   place-items: center;
   padding: clamp(10px, 1.6vw, 26px);
 }
-.page-hero-media.is-mark img { object-fit: contain; height: auto; max-height: 100%; }
+/* `width: auto` matters. .page-hero-media img sets width: 100% for the
+   photographs, and a portrait badge given the full column width overflows
+   the band's height, where the column's own overflow: hidden crops it —
+   which on 11 September took the bottom off SOLUTIONS PARTNER as soon as
+   the page lost the meta row that had been propping the band taller. Sized
+   by height instead, it fits whatever the band is. */
+.page-hero-media.is-mark img {
+  object-fit: contain;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  /* AND `min-height: 0`, which is the half that actually does it. A grid
+     item's automatic minimum size is its content — for an image, the height
+     its intrinsic ratio gives at the width max-width allows — and that
+     minimum outranks max-height. Without this the badge computes 584px tall
+     inside a 308px box and the overflow: hidden above takes the bottom off
+     it, which is exactly what it looks like: artwork cropped rather than
+     scaled. */
+  min-height: 0;
+  min-width: 0;
+}
 
 @media (max-width: 900px) {
   /* the artwork comes back into the flow and runs the width of the column,
@@ -2905,6 +2940,12 @@ main { overflow-x: clip; }
 /* when a page wants exactly two, side by side, and not three-up on a wide
    screen — in scope / out of scope, and the like */
 .pcards-2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); }
+/* when a page wants exactly three, because the count divides by three and
+   auto-fit does not know that: six hub cards fit four-then-two on a wide
+   display, and the orphan row reads as a card that failed to load */
+.pcards-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 980px) { .pcards-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .pcards-3 { grid-template-columns: minmax(0, 1fr); } }
 .pcard {
   background: var(--card-veil);
   -webkit-backdrop-filter: blur(16px) saturate(1.15);
@@ -5520,3 +5561,193 @@ div.res-card .res-go { color: var(--muted); }
     rgba(255, 255, 255, .07) 0 10px, rgba(255, 255, 255, 0) 10px 20px);
 }
 :root[data-theme="dark"] .res-lock { background: rgba(28, 38, 53, .92); }
+
+/* ==========================================================================
+   PARTNER REVIEWS — /hubspot
+
+   A column that holds still on the left while the reviews travel past it on
+   the right. Sticky, not fixed and not a script: fixed takes the title out
+   of flow, which collapses the section to the height of the reviews and
+   leaves the title floating over whatever comes next.
+
+   THE STICKY ELEMENT IS A CHILD OF THE GRID ITEM, NOT THE ITEM ITSELF.
+   A grid item stretches to the row height by default and the sticky child
+   then has that whole height to travel inside. Put `position: sticky` on the
+   item and add `align-items: start` to the grid — the obvious way to write
+   this — and the item shrinks to its own content, which leaves sticky with
+   nowhere to go and nothing appears to happen at all.
+
+   The reveal sits on a wrapper INSIDE the sticky element rather than on it.
+   .reveal animates `transform`, and a transform on the sticky element is a
+   second thing moving the same box while it is stuck.
+
+   Each review carries a min-height, because three quotes are shorter than a
+   tall screen and a sticky column that never gets to stick is just a
+   two-column layout. Add a fourth review and the min-height can come down.
+   ========================================================================== */
+.prof {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  gap: clamp(30px, 5vw, 80px);
+}
+.prof-side-inner {
+  position: sticky;
+  /* the floating bar's height plus a beat, so the title clears it rather
+     than sliding under it on the way down */
+  top: calc(var(--nav-h) + clamp(26px, 4vh, 52px));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(16px, 1.8vw, 24px);
+}
+.prof-side-body { display: flex; flex-direction: column; gap: clamp(10px, 1.2vw, 14px); }
+.prof-side-body .h2 { margin: 0; }
+.prof-side-body .sec-sub {
+  margin: 0;
+  max-width: 38ch;
+  font-size: .95rem;
+  line-height: 1.65;
+  color: var(--body);
+}
+/* Larger than the five on the end of a quote. Here they are the point of
+   the column rather than an attribution, and at 17px under a 2.3rem heading
+   they read as a decoration on the paragraph above them. */
+.prof-stars svg { width: 23px; height: 23px; }
+
+.prof-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6vw, 84px);
+}
+.prof-review {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(12px, 1.6vw, 18px);
+  min-height: min(52vh, 380px);
+}
+/* a step up on the homepage's quote: this column is wider than a third of
+   the page and the quotes are the content here, not proof beside it */
+.prof-review .quote p { font-size: clamp(1rem, .95rem + .4vw, 1.16rem); }
+
+@media (max-width: 900px) {
+  /* One column, and the title stops travelling. Stuck at the top of a phone
+     screen it would sit on the review it is introducing for the whole
+     length of the section. */
+  .prof { grid-template-columns: minmax(0, 1fr); gap: clamp(26px, 6vw, 40px); }
+  .prof-side-inner { position: static; }
+  .prof-review { min-height: 0; }
+  .prof-reviews { gap: clamp(34px, 8vw, 54px); }
+}
+
+/* ==========================================================================
+   PRICING — /pricing
+
+   Three things that are not on any other page: the fork under the header,
+   the margin above a price grid, and the included-in-every-retainer strip.
+   Everything else on the page is .price-teaser, .sec-head-left and .ticks,
+   already here and already dark-safe.
+
+   No dark block at the foot of this one, on purpose. Every colour below is
+   a token that already inverts — --card-veil, --line, --ink, --body,
+   --mist. The moment one of them becomes a literal, this needs one.
+   ========================================================================== */
+
+/* The page rhythm, matching /services: one value for every section so the
+   fork, the projects and the retainers all sit on the same beat. */
+.pricing-index .section { padding-block: clamp(56px, 6.4vw, 92px); }
+
+/* The header carries no bottom padding of its own (.page-hero-nomedia), so
+   the air under the Schedule a call link is this section's to give. */
+.pricing-index .pick-section { padding-top: clamp(46px, 5.4vw, 78px); }
+
+/* The close bleeds up over the retainer section. 100px, the same as
+   /services and /case-studies — the homepage's full bleed is tuned to the
+   testimonial block and would swallow the included strip here. */
+.pricing-index .start-section { --start-bleed: 100px; }
+
+/* An anchored section must clear the floating bar, which is a pill 20px
+   down from the top of the screen. The section's own padding does the rest;
+   this only stops the top edge tucking under the bar. */
+.pricing-index .section[id] { scroll-margin-top: calc(var(--nav-float-gap) + 66px); }
+
+/* ---------- the fork ----------
+
+   Two panels, one question. Written as two cards rather than two buttons
+   because a boxed button on this site means booking or requesting, and
+   these do neither — they move you down the page you are already on.
+
+   Built on .price-teaser-cell's shape deliberately: the visitor meets this
+   pair first and the price cells second, and the second should read as more
+   of the first rather than as a different kind of object. */
+.pick {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 26px);
+}
+.pick-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(26px, 3vw, 40px);
+  background: var(--card-veil);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+          backdrop-filter: blur(16px) saturate(1.15);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  text-decoration: none;
+  transition: border-color .3s var(--ease), transform .5s var(--ease-out);
+}
+.pick-card:hover { border-color: var(--mist); transform: translateY(-3px); }
+.pick-card:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 4px; }
+/* a span, not a heading: the two sections below carry the real h2s and a
+   heading here would put the same two titles in the outline twice */
+.pick-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(1.24rem, 1.02rem + .95vw, 1.75rem);
+  line-height: 1.12;
+  letter-spacing: -.032em;
+  color: var(--ink);
+}
+.pick-copy {
+  font-size: .95rem;
+  line-height: 1.6;
+  color: var(--body);
+  max-width: 40ch;
+}
+/* the link sits at the bottom of the card whichever copy is longer */
+.pick-card .text-link { margin-top: auto; padding-top: 6px; }
+.pick-card:hover .arrow { transform: translateX(5px); }
+
+@media (max-width: 760px) {
+  .pick { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- the grids under a section head ---------- */
+/* Was an inline style on the old page. Same number, in the stylesheet. */
+.pr-grid { margin-top: clamp(22px, 2.6vw, 34px); }
+
+/* A price cell that is a link gets the site's arrow, pinned to the bottom so
+   three cells with different amounts of copy still line their links up. */
+.pr-cell-go { margin-top: auto; padding-top: 10px; }
+.price-teaser-cell:hover .pr-cell-go .arrow { transform: translateX(5px); }
+
+/* ---------- what every retainer includes ----------
+
+   Two lines, so a card each would be two mostly-empty boxes. A ticked list
+   under a label reads as a footnote to the three prices above it, which is
+   what it is. */
+.pr-inc {
+  margin-top: clamp(24px, 2.8vw, 38px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pr-inc .ticks-2 { max-width: 62ch; }
+
+/* A price cell that is not a link does not lift. The hover on
+   .price-teaser-cell is there to answer a cursor that is about to click, and
+   the three retainer cells have nowhere to go — a card that moves under the
+   pointer promises a click that is not there. */
+.pr-static:hover { transform: none; border-color: var(--line); }
