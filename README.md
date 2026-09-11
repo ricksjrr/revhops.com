@@ -36,6 +36,8 @@ case-studies/index.html                 /case-studies
 case-studies/case-study-one.html        /case-studies/case-study-one
 resources/index.html                    /resources
 resources/gated-download.html           /resources/gated-download
+hubspot/index.html                      /hubspot
+pipedrive/index.html                    /pipedrive
 ```
 
 Nothing goes deeper than one level, and nothing else becomes a folder unless

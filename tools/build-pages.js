@@ -255,6 +255,7 @@ function footer(p) {
 '            <li><a href="/case-studies">Case studies</a></li>\n' +
 '            <li><a href="/resources">Resources</a></li>\n' +
 '            <li><a href="/hubspot">HubSpot</a></li>\n' +
+'            <li><a href="/pipedrive">Pipedrive</a></li>\n' +
 '            <li><a href="/about">About us</a></li>\n' +
 '            <li><a href="/pricing">Pricing</a></li>\n' +
 '            <li><a href="/contact">Contact</a></li>\n' +
@@ -2768,6 +2769,149 @@ function resourcePage(r) {
 
 var GATED = RESOURCES.filter(function (r) { return r.gated; });
 
+/* ---------- /pipedrive ----------
+
+   Added 11 September. Same shape as /hubspot minus the hub cards: Pipedrive
+   is one product with four price tiers, not six hubs, so a grid of six
+   cards would be inventing a structure the platform does not have.
+
+   The header badge is Pipedrive's own Authorized Partner artwork, the same
+   file the homepage tool band already carries, so nothing new was drawn for
+   it. The co-branded banner under the header is Pipedrive's export with our
+   lockup set in the slot their template leaves for a partner mark.
+
+   THE PRIMARY ACTION IS THE TRIAL, NOT THE CALL. It is the one page on the
+   site where the first click goes somewhere else entirely, which is why the
+   disclosure sits with the artwork rather than in the footer: it has to be
+   on screen at the same time as the button.
+
+   Flat paper end to end, same as /hubspot. No disc, no navy band. */
+
+var PD_TRIAL = 'https://app.pipedrive.com/affiliate/pdp-revhops' +
+               '?utm_source=RevHops&amp;utm_medium=partners_program' +
+               '&amp;utm_content=copy_text&amp;utm_term=pdp-revhops';
+
+/* What the product actually does, in the order a sales team meets it. Cards
+   without links, unlike the six hubs: none of these is a page in waiting,
+   and a "Learn more" arrow that goes nowhere is worse than no arrow. */
+var PD_FEATURES = [
+  { title: 'Pipeline and deals',
+    copy: 'Stages you define per pipeline, dragged across a board anyone can read at a glance, with rotting alerts when a deal has sat too long.',
+    chips: ['Multiple pipelines', 'Deal rotting', 'Required fields'] },
+  { title: 'Activity-based selling',
+    copy: 'Every open deal carries a next step. It is the one opinion the product has, and it is the reason Pipedrive stays current when other CRMs do not.',
+    chips: ['Activities', 'Reminders', 'Calendar sync'] },
+  { title: 'Automation',
+    copy: 'Stage changes that create the follow-up, update the field and tell the right person, built in the workflow editor rather than by a developer.',
+    chips: ['Triggers', 'Sequences', 'Webhooks'] },
+  { title: 'Email and Campaigns',
+    copy: 'Two-way inbox sync, templates and group email on the record. Campaigns adds the marketing sends if that side of the house lives here too.',
+    chips: ['Inbox sync', 'Templates', 'Campaigns'] },
+  { title: 'Insights and forecasting',
+    copy: 'Dashboards, goals and a revenue forecast built off deal data, so the number in the review is the number in the CRM.',
+    chips: ['Dashboards', 'Goals', 'Revenue forecast'] },
+  { title: 'Quotes, docs and delivery',
+    copy: 'Smart Docs for quotes and e-signatures, and Projects for the work that starts the moment the deal closes.',
+    chips: ['Smart Docs', 'E-signatures', 'Projects'] }
+];
+
+/* The four tiers, in Pipedrive's order. Prices deliberately left out: they
+   move, and a number that is six months stale on a page about being the
+   expert is worse than no number. */
+var PD_PLANS = [
+  '<b>Lite</b> is a pipeline, contacts and email sync. Enough for a small team getting deals out of a spreadsheet, and no further.',
+  '<b>Growth</b> adds workflow automation, products and the document tooling. Most teams land here and stay.',
+  '<b>Premium</b> adds team management, projects and the reporting depth a sales manager asks for by month three.',
+  '<b>Ultimate</b> adds permission sets, security controls and the higher automation ceilings. Worth it above roughly 25 seats, rarely below.',
+  'The add-ons, LeadBooster, Campaigns, Projects, Web Visitors and Smart Docs, are priced on top. We will tell you which two you need and which three you do not.'
+];
+
+var PD_WAYS = [
+  { title: 'Set Pipedrive up from scratch', href: '/contact', go: 'Start here',
+    copy: 'Pipelines and stages that match how you actually sell, fields people will fill in, automations that remove admin rather than add it, and training your team still uses after we have gone.' },
+  { title: 'Clean up the account you already have', href: '/contact', go: 'Request an audit',
+    copy: 'Inherited, half-built, or three admins deep. We fix what is there, starting with the pipeline and the data, unless starting again is honestly cheaper.' },
+  { title: 'Migrate onto Pipedrive', href: '/services/crm-implementations', go: 'See the work',
+    copy: 'Off spreadsheets, or off a CRM that grew in the wrong direction. Deals, contacts, history and integrations moved without losing the audit trail.' },
+  { title: 'Connect it to the rest of the stack', href: '/services/lead-to-cash-process-mapping', go: 'See the work',
+    copy: 'Quoting, billing, support and marketing. The API, the webhooks and the marketplace, wired so finance and sales are reading the same number.' },
+  { title: 'Work out whether Pipedrive is right for you', href: '/call', go: 'Talk it through',
+    copy: 'Before anyone signs anything. Pipedrive is a sales CRM and a very good one. If what you need is a marketing engine and a service desk on the same record, we will say so.' }
+];
+
+var pipedrive = {
+  file: 'pipedrive/index.html',
+  depth: 1,
+  navCurrent: '/pipedrive',
+  title: 'Pipedrive Authorized Partner — RevHops',
+  description: 'RevHops is an Authorized Pipedrive Partner. We set Pipedrive up, clean up the account you already have, and connect it to the rest of your stack.',
+  h1: 'Pipedrive',
+  lede: 'An Authorized Pipedrive Partner. We will set it up properly, fix the one you already have, or tell you it is not the right fit.',
+
+  /* Pipedrive's own partner artwork, contained rather than cropped, in the
+     slot the Platinum badge sits in on /hubspot. */
+  media: { src: 'assets/img/tools/pipedrive.webp', alt: 'Pipedrive Authorized Partner', mark: true },
+
+  /* The trial first. Everywhere else on the site the primary button is our
+     call; here the honest first step is thirty days inside the product. */
+  headButtons: '          <a class="btn btn-primary" href="' + PD_TRIAL + '"\n' +
+               '             target="_blank" rel="noopener sponsored">Start a free 30-day trial</a>\n' +
+               '          <a class="btn btn-outline" href="/call">Schedule a call</a>',
+
+  body:
+
+    /* THE BANNER. Vendor artwork with our mark in it, and the disclosure
+       under it rather than buried in the footer. */
+    section(
+      secHead('The CRM a sales team will <span class="hl">actually keep current</span>',
+              'Pipedrive is narrow on purpose. It is a sales CRM that a rep can learn in an afternoon, ' +
+              'which is why the data in it tends to be true. Our job is the part that decides whether ' +
+              'that holds twelve months in: the pipeline design, the fields, the automations and the reporting.') +
+'    <figure class="partner-shot reveal" style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+'      <img src="' + up(1) + 'assets/img/pipedrive-revhops.webp"\n' +
+'           alt="Pipedrive and RevHops: the easy and effective sales CRM" loading="lazy">\n' +
+'      <figcaption>RevHops is an authorized Pipedrive partner. The trial links on this page are\n' +
+'        partner links, so we may earn a commission if you subscribe. It costs you nothing, it does\n' +
+'        not change what we would recommend, and we will say so when Pipedrive is the wrong answer.</figcaption>\n' +
+'    </figure>\n') +
+
+    /* WHAT IT DOES. Six cards, none of them linked. */
+    section(
+      secHead('What you get out of the box') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+      pcards(PD_FEATURES, 'pcards-3') +
+'    </div>\n') +
+
+    /* THE TIERS. A list rather than a pricing table: the table is on
+       Pipedrive's site and would be wrong here within a quarter. */
+    section(
+      secHead('Which plan you actually need',
+              'Four tiers and five add-ons. Most teams are sold more than they use, so here is the short version.') +
+'    <div class="reveal" style="margin-top:clamp(18px,2.2vw,28px);max-width:64ch">\n' +
+'      ' + ticks(PD_PLANS) + '\n' +
+'      <div class="btn-row" style="margin-top:clamp(22px,2.6vw,32px)">\n' +
+'        <a class="btn btn-primary" href="' + PD_TRIAL + '"\n' +
+'           target="_blank" rel="noopener sponsored">Start a free 30-day trial</a>\n' +
+'        <a class="btn btn-outline" href="/contact">Ask us which one</a>\n' +
+'      </div>\n' +
+'      <p class="partner-note">Partner link. Thirty days, no card, and no obligation to talk to us afterwards.</p>\n' +
+'    </div>\n') +
+
+    /* THE ASK. Same rows /hubspot and /services use. .to-white because the
+       closing panel bleeds up over whatever section is last. */
+    section(
+      secHead('Ways we can help') +
+'    <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">\n' +
+      PD_WAYS.map(function (w) {
+        return '      <a class="svc-row" href="' + w.href + '">\n' +
+               '        <h3 class="svc-title">' + w.title + '</h3>\n' +
+               '        <p class="svc-copy">' + w.copy + '</p>\n' +
+               '        <span class="svc-go">' + w.go + ' <span class="arrow">&rarr;</span></span>\n' +
+               '      </a>';
+      }).join('\n') + '\n' +
+'    </div>\n', 'section to-white')
+};
+
 /* ---------- write everything ---------- */
 
 var PAGES = [servicesIndex]
@@ -2776,7 +2920,7 @@ var PAGES = [servicesIndex]
   .concat(CASES.map(casePage))
   .concat([resourcesIndex])
   .concat(GATED.map(resourcePage))
-  .concat([pricing, hubspot, about, contact, terms, privacy, callPage, clientCallPage, puzzle, hop]);
+  .concat([pricing, hubspot, pipedrive, about, contact, terms, privacy, callPage, clientCallPage, puzzle, hop]);
 
 var written = 0;
 if (require.main === module) {

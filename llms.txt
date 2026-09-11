@@ -38,6 +38,8 @@ between roughly 10 and 500 employees in the US and Europe.
   downloadable templates and a couple of games, in one filterable list
 - [HubSpot](https://revhops.com/hubspot) — Platinum partner, the six hubs, client
   reviews and the four ways in
+- [Pipedrive](https://revhops.com/pipedrive) — Authorized Pipedrive partner:
+  what the product does, which plan to buy, and the five ways in
 - [Pricing](https://revhops.com/pricing) — published starting prices
 - [About us](https://revhops.com/about) — who runs it and how it works
 - [Contact](https://revhops.com/contact) — form and email

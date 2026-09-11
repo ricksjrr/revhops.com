@@ -27,6 +27,53 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 11 September: the Pipedrive page
+
+`/pipedrive` is `pipedrive/index.html`, built from `tools/build-pages.js` like
+everything else. James asked for it to be `/hubspot` without the hub cards,
+and that is what it is: header, a co-branded banner, six feature cards, the
+plan tiers, and five ways in.
+
+**The primary button is not our call.** It goes to the Pipedrive affiliate
+trial link, in a new tab, with `rel="noopener sponsored"`. It is the only page
+on the site whose first click leaves the site, and it is deliberate: thirty
+days inside the product is a better first step than a discovery call for
+someone who has not decided yet. The call is the outline button beside it.
+
+**The affiliate disclosure is attached to the artwork, not the footer.** It is
+the `<figcaption>` under the banner, with a second short line under the CTA
+further down the page. A disclosure you have to scroll to find is not a
+disclosure, and the trial button is in the header.
+
+**The banner is Pipedrive's own export with our lockup in it.** Their file
+(`The easy and effective sales CRM.ai`, 850x520pt) leaves a slot after the
+divider bar marked `<logo>`. The RevHops lockup is set into that slot, scaled
+so the x-height of `revhops` matches the x-height of `pipedrive` and sitting on
+the same baseline, then the whole thing exported to
+`assets/img/pipedrive-revhops.webp` at 2000px. Redo it from the .ai file if
+the lockup ever changes; do not rescale the webp.
+
+The white lockup on that purple is a deliberate exception to the brand sheet's
+"never reverse the logo" rule. The alternative is the navy lockup on a
+saturated purple, which is worse, and the co-brand only works if both marks are
+the same weight. Same reasoning as the footer and the floating nav.
+
+**The tier list carries no prices.** Pipedrive moves them, and a stale number
+on a page whose whole argument is that we know the product is worse than no
+number. The tiers are named and characterised; the pricing table stays on
+Pipedrive's site.
+
+**`/pipedrive` is linked from the footer's Company column, not the nav.**
+James' call. The nav is at seven items and an eighth crowds it. That meant
+narrowing a smoke assertion: `tools/smoke.js` used to fail on the string
+`pipedrive` appearing anywhere in the footer, which was written to catch a
+*second partner badge* coming back to the badge slot. It now checks
+`.footer-badges` for the badge, and separately asserts the Company column link
+exists.
+
+The homepage footer is hand-maintained, so its Company column was edited
+directly in `index.html` to match.
+
 ## 11 September: the pricing page, and the first real numbers
 
 **`/pricing` was rebuilt from scratch** against James' brief: the /services

@@ -576,9 +576,18 @@ console.log('\n— footer —');
     ? ok('badge links to the partner directory') : bad('badge is not linked, or the URL is wrong');
   (link && link.getAttribute('rel') === 'noopener' && link.getAttribute('target') === '_blank')
     ? ok('opens in a new tab with rel=noopener') : bad('external link is missing target or rel');
-  // scoped to the footer on purpose: the tool clump still carries Pipedrive
-  /pipedrive/.test(d.querySelector('footer.footer').innerHTML)
-    ? bad('Pipedrive came back to the footer') : ok('no Pipedrive in the footer');
+  // Scoped to the badge slot, not the whole footer. What was removed here was
+  // a SECOND partner mark beside the Platinum badge: two marks in that slot
+  // read as a logo wall and neither one landed. The Company column links to
+  // /pipedrive from 11 September and that is a link, not a badge, so the
+  // check is on .footer-badges rather than on footer.innerHTML.
+  /pipedrive/.test(d.querySelector('.footer-badges').innerHTML)
+    ? bad('a Pipedrive badge came back to the footer badge slot')
+    : ok('one partner mark in the badge slot, no Pipedrive badge');
+  const pdLink = [...d.querySelectorAll('.footer-links a')]
+    .find(a => /pipedrive/.test(a.getAttribute('href')));
+  pdLink ? ok('/pipedrive is linked from the Company column')
+         : bad('/pipedrive is not linked from the footer, so nothing points at it');
   /background: rgba\(250, 250, 248/.test(rule('.footer-badges img'))
     ? bad('the paper chips came back') : ok('no paper chip behind the badge');
   // tied to the link columns rather than a fixed number, so it stays in step

@@ -5817,3 +5817,31 @@ div.res-card .res-go { color: var(--muted); }
     gap: clamp(44px, 7vw, 64px);
   }
 }
+
+/* ==========================================================================
+   PARTNER ARTWORK  (/pipedrive)
+
+   One piece of vendor artwork, the full width of the shell, on the card
+   radius. The file is exported at 2000px for a slot that is never wider than
+   about 1400, so it never scales up.
+
+   The caption is the affiliate disclosure and it is deliberately attached to
+   the picture rather than tucked into the footer: the trial button is in the
+   page header, and a disclosure you have to scroll to find is not one.
+   ========================================================================== */
+.partner-shot { margin: 0; }
+.partner-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-card);
+}
+.partner-shot figcaption,
+.partner-note {
+  margin: clamp(10px, 1.2vw, 14px) 0 0;
+  max-width: 72ch;
+  font-size: .78rem;
+  line-height: 1.65;
+  color: var(--muted);
+  text-wrap: pretty;
+}
