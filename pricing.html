@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=3ac0bc41b1">
+<link rel="stylesheet" href="assets/css/site.css?v=0be756743c">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -216,40 +216,67 @@
         <div>
           <h4>Company</h4>
           <ul class="stack gap-8">
-            <li><a href="case-studies">Case studies</a></li>
-            <li><a href="resources">Resources</a></li>
             <li><a href="hubspot">HubSpot</a></li>
             <li><a href="pipedrive">Pipedrive</a></li>
             <li><a href="about">About us</a></li>
             <li><a href="pricing">Pricing</a></li>
             <li><a href="contact">Contact</a></li>
-            <li><a href="puzzle">RevOps puzzle</a></li>
-            <li><a href="hop">RevOps run</a></li>
+          </ul>
+        </div>
+        <!-- RESOURCES, added 11 September. Four destinations that already
+             exist: the blog lives in HubSpot at blog.revhops.com, and the
+             other three are the shelves on /resources. Case studies, the
+             puzzle and the run moved out of Company on the same day rather
+             than being listed in both places. -->
+        <div>
+          <h4>Resources</h4>
+          <ul class="stack gap-8">
+            <li><a href="https://blog.revhops.com" target="_blank" rel="noopener">Blog</a></li>
+            <li><a href="case-studies">Case studies</a></li>
+            <li><a href="newsletter">Newsletter</a></li>
+            <li><a href="resources#games">Games</a></li>
           </ul>
         </div>
       </nav>
 
-      <!-- Reversed Platinum badge, sized to the height of the link columns
-           beside it. HubSpot's own white artwork, so it needs no chip and no
-           filter: 0% of its ink falls under 3:1 on the navy. -->
+      <!-- Two reversed partner marks, stacked and set to one width so they
+           read as a single lockup rather than the logo wall that got the
+           first Pipedrive badge pulled. Both are white artwork on the navy:
+           no chip, no filter, and 0% of either mark's ink falls under 3:1.
+           The Pipedrive mark is the green Authorized Partner badge with its
+           box dropped, so it is the same artwork, reversed. -->
       <div class="footer-badges">
-        <a href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"
+        <a class="footer-badge footer-badge-hubspot"
+           href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"
            target="_blank" rel="noopener"
            aria-label="RevHops on the HubSpot partner directory">
           <img src="assets/img/hubspot-platinum-badge-white.webp"
                alt="HubSpot Platinum Solutions Partner" loading="lazy">
         </a>
+        <a class="footer-badge footer-badge-pipedrive"
+           href="https://app.pipedrive.com/affiliate/pdp-revhops?utm_source=RevHops&amp;utm_medium=partners_program&amp;utm_content=copy_text&amp;utm_term=pdp-revhops"
+           target="_blank" rel="noopener"
+           aria-label="RevHops is a Pipedrive Authorized Partner">
+          <img src="assets/img/pipedrive-partner-badge-white.webp"
+               alt="Pipedrive Authorized Partner" loading="lazy">
+        </a>
       </div>
 
     </div>
 
+    <!-- The legal line sits on its own row above the copyright, slashes
+         between the three, both rows centred. It used to sit beside the
+         copyright, which read as one long sentence that happened to have
+         links in it. -->
     <div class="footer-bottom">
-      <span>&copy; <span data-year>2026</span> RevHops. All rights reserved.</span>
-      <span class="footer-legal">
+      <nav class="footer-legal" aria-label="Legal">
         <a href="terms">Terms of Service</a>
+        <span class="footer-legal-sep" aria-hidden="true">/</span>
         <a href="privacy">Privacy Policy</a>
+        <span class="footer-legal-sep" aria-hidden="true">/</span>
         <a href="llms.txt">LLMs.txt</a>
-      </span>
+      </nav>
+      <span class="footer-copy">&copy; <span data-year>2026</span> RevHops. All rights reserved.</span>
     </div>
 
   </div>
@@ -261,6 +288,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=3ac0bc41b1"></script>
+<script src="assets/js/site.js?v=0be756743c"></script>
 </body>
 </html>

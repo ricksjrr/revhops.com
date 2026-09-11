@@ -564,11 +564,16 @@ console.log('\n— footer —');
   (mail && mail.getAttribute('href') === 'mailto:team@revhops.com') ? ok('address is a display link')
                                                                    : bad('no display address');
   const badges = [...d.querySelectorAll('.footer-badges img')];
-  badges.length === 1 ? ok('one partner mark') : bad(badges.length + ' partner marks, Pipedrive was removed');
-  // the reversed artwork, which is what let the chip and the filter go
+  badges.length === 2 ? ok('two partner marks, HubSpot over Pipedrive')
+                      : bad(badges.length + ' partner marks in the badge slot, expected 2');
+  // both are the vendors' own reversed artwork, which is what let the paper
+  // chip and the filter go
   /hubspot-platinum-badge-white/.test(badges[0].getAttribute('src'))
-    ? ok('reversed white badge, 0% of its ink under 3:1 on the navy')
-    : bad('not the reversed badge: ' + badges[0].getAttribute('src'));
+    ? ok('reversed white HubSpot badge, 0% of its ink under 3:1 on the navy')
+    : bad('not the reversed HubSpot badge: ' + badges[0].getAttribute('src'));
+  (badges[1] && /pipedrive-partner-badge-white/.test(badges[1].getAttribute('src')))
+    ? ok('reversed white Pipedrive mark under it')
+    : bad('not the reversed Pipedrive mark: ' + (badges[1] && badges[1].getAttribute('src')));
   /filter/.test(rule('.footer-badges img')) ? bad('a filter is being used to fake the reverse')
                                             : ok('no filter needed on the badge');
   const link = d.querySelector('.footer-badges a');
@@ -576,27 +581,55 @@ console.log('\n— footer —');
     ? ok('badge links to the partner directory') : bad('badge is not linked, or the URL is wrong');
   (link && link.getAttribute('rel') === 'noopener' && link.getAttribute('target') === '_blank')
     ? ok('opens in a new tab with rel=noopener') : bad('external link is missing target or rel');
-  // Scoped to the badge slot, not the whole footer. What was removed here was
-  // a SECOND partner mark beside the Platinum badge: two marks in that slot
-  // read as a logo wall and neither one landed. The Company column links to
-  // /pipedrive from 11 September and that is a link, not a badge, so the
-  // check is on .footer-badges rather than on footer.innerHTML.
-  /pipedrive/.test(d.querySelector('.footer-badges').innerHTML)
-    ? bad('a Pipedrive badge came back to the footer badge slot')
-    : ok('one partner mark in the badge slot, no Pipedrive badge');
+  // A Pipedrive badge was pulled from this slot once: two marks BESIDE each
+  // other read as a logo wall and neither landed. It came back on 11
+  // September as a reversed mark STACKED under the Platinum badge and set to
+  // the same column width, which is the thing that makes the pair read as
+  // one lockup. That single width is what this now guards, because losing it
+  // is how the logo wall comes back.
+  const pdBadge = d.querySelector('.footer-badges .footer-badge-pipedrive img');
+  pdBadge ? ok('the Pipedrive mark is in the badge slot, reversed')
+          : bad('no Pipedrive mark in the badge slot');
+  (/flex-direction: column/.test(rule('.footer-badges')) &&
+   /--badge-w:/.test(rule('.footer-badges')) &&
+   /width: var\(--badge-w\)/.test(rule('.footer-badges img')))
+    ? ok('the two marks stack on one width, so they read as one lockup')
+    : bad('the marks are not stacked on a shared width, the logo wall is back');
   const pdLink = [...d.querySelectorAll('.footer-links a')]
     .find(a => /pipedrive/.test(a.getAttribute('href')));
   pdLink ? ok('/pipedrive is linked from the Company column')
          : bad('/pipedrive is not linked from the footer, so nothing points at it');
+  // the Resources column, added 11 September. Four destinations, and the one
+  // that did not exist before it was linked is /newsletter, built the same
+  // day for exactly that reason.
+  {
+    const res = [...d.querySelectorAll('.footer-links > div')]
+      .find(c => c.querySelector('h4') && /Resources/i.test(c.querySelector('h4').textContent));
+    if (!res) { bad('no Resources column in the footer'); }
+    else {
+      const hrefs = [...res.querySelectorAll('a')].map(a => a.getAttribute('href'));
+      hrefs.length === 4 ? ok('Resources column has its four links')
+                         : bad('Resources column has ' + hrefs.length + ' links, expected 4');
+      hrefs.some(h => /blog\.revhops\.com/.test(h)) ? ok('Blog points at the HubSpot blog')
+                                                     : bad('Blog does not point at blog.revhops.com');
+      hrefs.some(h => /newsletter/.test(h)) ? ok('Newsletter points at /newsletter')
+                                            : bad('no Newsletter link');
+      hrefs.some(h => /#games$/.test(h)) ? ok('Games points at the shelf on /resources')
+                                          : bad('Games does not point at the games shelf');
+    }
+  }
   /background: rgba\(250, 250, 248/.test(rule('.footer-badges img'))
     ? bad('the paper chips came back') : ok('no paper chip behind the badge');
-  // tied to the link columns rather than a fixed number, so it stays in step
-  // when a link is added
-  (/align-items: stretch/.test(rule('.footer-badges')) && /height: 100%/.test(rule('.footer-badges img')))
-    ? ok('badge stretches to the height of the link columns') : bad('badge height is not tied to the columns');
+  // height: 100% tied the single badge to the link columns beside it. With
+  // two marks stacked that is the wrong rule — it would stretch each one to
+  // the full slot — so the pair is sized off --badge-w instead, checked
+  // above, and all that is left to guard here is that the images still
+  // scale rather than crop.
+  /object-fit: contain/.test(rule('.footer-badges img'))
+    ? ok('the marks scale rather than crop') : bad('the marks are not set to contain');
   // mobile: everything centred, link columns stay two abreast
   {
-    const mob = css.slice(css.indexOf('MOBILE FOOTER'), css.indexOf('MOBILE FOOTER') + 900);
+    const mob = css.slice(css.indexOf('MOBILE FOOTER'), css.indexOf('MOBILE FOOTER') + 1400);
     /justify-items: center/.test(mob) ? ok('footer content centres on mobile') : bad('footer not centred on mobile');
     /\.footer-badges \{ justify-self: center; \}/.test(mob) ? ok('badge centres on mobile') : bad('badge not centred on mobile');
     /\.footer-links \{\s*grid-template-columns: repeat\(2/.test(mob)
@@ -757,7 +790,9 @@ console.log('\n— known —');
   // <name>/index.html one level down — /services is a folder because the five
   // service pages live under it. Both count as built.
   const built = h => {
-    const rel = h.replace(/^[./]+/, '');
+    // an in-page fragment rides along on some of these (resources#games);
+    // what has to exist is the page, not the anchor
+    const rel = h.replace(/[#?].*$/, '').replace(/^[./]+/, '');
     return fs.existsSync(path.join(ROOT, rel + '.html')) ||
            fs.existsSync(path.join(ROOT, rel, 'index.html'));
   };

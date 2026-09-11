@@ -252,40 +252,67 @@ function footer(p) {
 '        <div>\n' +
 '          <h4>Company</h4>\n' +
 '          <ul class="stack gap-8">\n' +
-'            <li><a href="/case-studies">Case studies</a></li>\n' +
-'            <li><a href="/resources">Resources</a></li>\n' +
 '            <li><a href="/hubspot">HubSpot</a></li>\n' +
 '            <li><a href="/pipedrive">Pipedrive</a></li>\n' +
 '            <li><a href="/about">About us</a></li>\n' +
 '            <li><a href="/pricing">Pricing</a></li>\n' +
 '            <li><a href="/contact">Contact</a></li>\n' +
-'            <li><a href="/puzzle">RevOps puzzle</a></li>\n' +
-'            <li><a href="/hop">RevOps run</a></li>\n' +
+'          </ul>\n' +
+'        </div>\n' +
+'        <!-- RESOURCES, added 11 September. Four destinations that already\n' +
+'             exist: the blog lives in HubSpot at blog.revhops.com, and the\n' +
+'             other three are the shelves on /resources. Case studies, the\n' +
+'             puzzle and the run moved out of Company on the same day rather\n' +
+'             than being listed in both places. -->\n' +
+'        <div>\n' +
+'          <h4>Resources</h4>\n' +
+'          <ul class="stack gap-8">\n' +
+'            <li><a href="https://blog.revhops.com" target="_blank" rel="noopener">Blog</a></li>\n' +
+'            <li><a href="/case-studies">Case studies</a></li>\n' +
+'            <li><a href="/newsletter">Newsletter</a></li>\n' +
+'            <li><a href="/resources#games">Games</a></li>\n' +
 '          </ul>\n' +
 '        </div>\n' +
 '      </nav>\n' +
 '\n' +
-'      <!-- Reversed Platinum badge, sized to the height of the link columns\n' +
-'           beside it. HubSpot\'s own white artwork, so it needs no chip and no\n' +
-'           filter: 0% of its ink falls under 3:1 on the navy. -->\n' +
+'      <!-- Two reversed partner marks, stacked and set to one width so they\n' +
+'           read as a single lockup rather than the logo wall that got the\n' +
+'           first Pipedrive badge pulled. Both are white artwork on the navy:\n' +
+'           no chip, no filter, and 0% of either mark\'s ink falls under 3:1.\n' +
+'           The Pipedrive mark is the green Authorized Partner badge with its\n' +
+'           box dropped, so it is the same artwork, reversed. -->\n' +
 '      <div class="footer-badges">\n' +
-'        <a href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"\n' +
+'        <a class="footer-badge footer-badge-hubspot"\n' +
+'           href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"\n' +
 '           target="_blank" rel="noopener"\n' +
 '           aria-label="RevHops on the HubSpot partner directory">\n' +
 '          <img src="' + a + 'assets/img/hubspot-platinum-badge-white.webp"\n' +
 '               alt="HubSpot Platinum Solutions Partner" loading="lazy">\n' +
 '        </a>\n' +
+'        <a class="footer-badge footer-badge-pipedrive"\n' +
+'           href="https://app.pipedrive.com/affiliate/pdp-revhops?utm_source=RevHops&amp;utm_medium=partners_program&amp;utm_content=copy_text&amp;utm_term=pdp-revhops"\n' +
+'           target="_blank" rel="noopener"\n' +
+'           aria-label="RevHops is a Pipedrive Authorized Partner">\n' +
+'          <img src="' + a + 'assets/img/pipedrive-partner-badge-white.webp"\n' +
+'               alt="Pipedrive Authorized Partner" loading="lazy">\n' +
+'        </a>\n' +
 '      </div>\n' +
 '\n' +
 '    </div>\n' +
 '\n' +
+'    <!-- The legal line sits on its own row above the copyright, slashes\n' +
+'         between the three, both rows centred. It used to sit beside the\n' +
+'         copyright, which read as one long sentence that happened to have\n' +
+'         links in it. -->\n' +
 '    <div class="footer-bottom">\n' +
-'      <span>&copy; <span data-year>2026</span> RevHops. All rights reserved.</span>\n' +
-'      <span class="footer-legal">\n' +
+'      <nav class="footer-legal" aria-label="Legal">\n' +
 '        <a href="/terms">Terms of Service</a>\n' +
+'        <span class="footer-legal-sep" aria-hidden="true">/</span>\n' +
 '        <a href="/privacy">Privacy Policy</a>\n' +
+'        <span class="footer-legal-sep" aria-hidden="true">/</span>\n' +
 '        <a href="' + a + 'llms.txt">LLMs.txt</a>\n' +
-'      </span>\n' +
+'      </nav>\n' +
+'      <span class="footer-copy">&copy; <span data-year>2026</span> RevHops. All rights reserved.</span>\n' +
 '    </div>\n' +
 '\n' +
 '  </div>\n' +
@@ -2912,6 +2939,56 @@ var pipedrive = {
 '    </div>\n', 'section to-white')
 };
 
+
+/* ---------- the newsletter opt-in ----------
+   Added 11 September, because the new Resources column in the footer links
+   to it and a link with nowhere to land is worse than no link.
+
+   THE FORM ID IS A PLACEHOLDER. Portal 46722926 is right; the id below is
+   not a real form yet. Create the newsletter form in HubSpot, paste its id
+   here and rebuild, and the embed renders. Until then the page still reads
+   as a page — the three cards under the form carry the promise — but the
+   fields will not appear, so do this before the link goes out anywhere. */
+var newsletter = {
+  file: 'newsletter.html',
+  depth: 0,
+  navCurrent: '',
+  title: 'The RevHops newsletter',
+  description: 'One email a month on what breaks in revenue systems, what it costs to leave it, and what we did about it. No sequence, no pitch.',
+  heroClass: 'page-hero-nomedia',
+  h1: 'One email a month',
+  lede: 'What broke in somebody\'s revenue system, what it cost them to leave it, and what the fix actually looked like. Written the week it goes out, not queued up in a sequence six months ago.',
+  body:
+    /* The embed is not wrapped in .reveal: that class animates with
+       transform and filter, which makes the wrapper a containing block and
+       lands HubSpot's own error toasts in the wrong place. The head above
+       it carries the reveal instead, exactly as /contact does. */
+    section(
+'    <div class="optin-wrap">\n' +
+'      <div class="contact-col-head reveal" style="text-align:center;align-items:center">\n' +
+'        <h2>Sign up</h2>\n' +
+'        <p>An email address is all we ask for. Unsubscribe is one click and we do not chase it.</p>\n' +
+'      </div>\n' +
+'      <!-- HubSpot form, portal 46722926. See the note above this page in\n' +
+'           tools/build-pages.js: the form id is a placeholder. -->\n' +
+'      <script src="https://js.hsforms.net/forms/embed/46722926.js" defer><\/script>\n' +
+'      <div class="hs-form-frame" data-region="na1"\n' +
+'           data-form-id="[NEWSLETTER-FORM-ID]"\n' +
+'           data-portal-id="46722926"></div>\n' +
+'    </div>\n') +
+
+    section(
+      secHead('What you are signing up for') +
+      pcards([
+        { n: '01', title: 'One story, told properly',
+          copy: 'A system that was not working, what it was costing, and the change that fixed it. Long enough to be useful, short enough to read standing up.' },
+        { n: '02', title: 'Monthly, and that is all',
+          copy: 'One send a month. No drip sequence behind it, no second email three days later asking whether you saw the first one.' },
+        { n: '03', title: 'Nothing sold to you',
+          copy: 'We do not rent the list, we do not pass it to anyone, and the only thing we ever ask is whether the last one was worth your time.' }
+      ], 'pcards-3'), 'section to-white')
+};
+
 /* ---------- write everything ---------- */
 
 var PAGES = [servicesIndex]
@@ -2920,7 +2997,7 @@ var PAGES = [servicesIndex]
   .concat(CASES.map(casePage))
   .concat([resourcesIndex])
   .concat(GATED.map(resourcePage))
-  .concat([pricing, hubspot, pipedrive, about, contact, terms, privacy, callPage, clientCallPage, puzzle, hop]);
+  .concat([pricing, hubspot, pipedrive, about, contact, newsletter, terms, privacy, callPage, clientCallPage, puzzle, hop]);
 
 var written = 0;
 if (require.main === module) {

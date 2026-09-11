@@ -628,15 +628,24 @@ main > section > .shell {
   width: auto;
   align-self: flex-start;
 }
-/* space-between was there to push a second item to the far edge; with only
-   the copyright line left it just pinned it to the left */
+/* Two centred rows from 11 September: the legal links on their own line,
+   the copyright under it. Side by side they read as one long sentence that
+   happened to have links in it, and the slashes now do the separating that
+   26px of gap was failing to do. */
 .footer-bottom {
   margin-top: 14px; padding-top: 8px;
-  display: flex; flex-wrap: wrap; gap: 12px 26px;
+  display: flex; flex-direction: column; gap: 8px;
   justify-content: center; align-items: center;
   text-align: center;
   font-size: .8rem; color: var(--on-navy-faint);
 }
+.footer-legal {
+  display: flex; flex-wrap: wrap; gap: 4px 10px;
+  justify-content: center; align-items: baseline;
+}
+/* aria-hidden in the markup: it is punctuation, not a list item, and a
+   screen reader reading "slash" between three links helps nobody */
+.footer-legal-sep { color: var(--on-navy-faint); opacity: .55; user-select: none; }
 
 /* ---------- reveal on scroll ---------- */
 .reveal {
@@ -1440,7 +1449,16 @@ main { overflow-x: clip; }
   .price-teaser { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* ---------- newsletter opt-in, footer ---------- */
+/* ---------- newsletter opt-in (/newsletter) ---------- */
+/* One narrow centred column. The HubSpot form sets its own field widths and
+   will run the full shell if nothing caps it, which on a 1240px page puts
+   an email field a metre wide in front of somebody. */
+.optin-wrap {
+  max-width: 34rem;
+  margin-inline: auto;
+  width: 100%;
+}
+
 /* ==========================================================================
    CARD HOVER — defined last, deliberately.
 
@@ -2277,7 +2295,11 @@ main { overflow-x: clip; }
    ========================================================================== */
 .footer-top {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto;
+  /* three link columns since 11 September. The brand column gives up room to
+     pay for the third one: at the old 1.1fr the longest service names —
+     "HubSpot support retainers", "Lead to cash mapping" — each wrapped to two
+     lines, which turned a five-item column into a nine-line one. */
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.75fr) auto;
   gap: clamp(28px, 4vw, 68px);
   /* tightened on 4 September: there was more air above the copyright line
      than under the columns it separates */
@@ -2311,42 +2333,61 @@ main { overflow-x: clip; }
 
 .footer-links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(24px, 4vw, 56px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 36px);
   width: 100%;
-  max-width: 420px;
+  max-width: 660px;
 }
 
-/* HubSpot's own reversed artwork, stretched to the height of the link
-   columns beside it. `align-items: stretch` plus `height: 100%` ties it to
-   the columns rather than to a number that would drift out of step the
-   moment a link is added.
+/* TWO REVERSED PARTNER MARKS, STACKED.
 
-   The white version solved the problem the paper chip was covering for:
-   0% of its ink measures under 3:1 on the navy, where about 20% of the
-   colour badge did. No chip, no filter. */
+   Both are the vendors' own white artwork — HubSpot ships the reversed
+   Platinum badge, and the Pipedrive mark is their green Authorized Partner
+   badge with the green box dropped, which is why neither needs the paper
+   chip or the filter the colour versions did. 0% of either mark's ink
+   measures under 3:1 on the navy; about 20% of the colour badge did.
+
+   A Pipedrive badge was pulled from this slot once for reading as a logo
+   wall beside the Platinum badge. What fixed that is the single column
+   width below: both marks are set to --badge-w and centred, so the pair
+   reads as one lockup with two lines rather than two competing objects. */
 .footer-badges {
+  --badge-w: clamp(104px, 9.5vw, 138px);
   display: flex;
-  align-items: stretch;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 1.8vw, 24px);
   justify-self: end;
 }
 .footer-badges a {
   display: flex;
   align-items: center;
+  justify-content: center;
   transition: opacity .25s var(--ease), transform .35s var(--ease-out);
 }
 .footer-badges a:hover { opacity: .82; transform: translateY(-2px); }
 .footer-badges a:focus-visible { outline: 2px solid var(--warm); outline-offset: 6px; border-radius: 6px; }
 .footer-badges img {
   display: block;
-  height: 100%;
-  width: auto;
+  width: var(--badge-w);
+  height: auto;
+  max-width: 100%;
   max-height: 150px;
   object-fit: contain;
 }
+/* the Pipedrive lockup is a wordmark over a rule over two words, so it
+   carries less ink per pixel of width than the badge above it and needs a
+   little more of it to sit at the same visual weight */
+.footer-badge-pipedrive img { width: calc(var(--badge-w) * 1.14); }
 
 @media (max-width: 1040px) {
-  .footer-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  /* the badges leave the row here, so the two that remain split it — but not
+     evenly: three link columns need most of the width or every service name
+     wraps, and the brand block is a lockup, two lines and an address */
+  .footer-top { grid-template-columns: minmax(0, .68fr) minmax(0, 2fr); }
+  /* the badges drop to their own full-width row here, so the pair goes back
+     side by side: stacked, they would leave a column of air beside them */
   .footer-badges { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-self: start; }
 }
 @media (max-width: 820px) {
@@ -2354,7 +2395,7 @@ main { overflow-x: clip; }
   .footer-links { max-width: none; }
 }
 @media (max-width: 460px) {
-  .footer-links { gap: 18px; }
+  .footer-links { gap: 18px 14px; }
 }
 
 
@@ -2459,11 +2500,16 @@ main { overflow-x: clip; }
   .footer-top { justify-items: center; text-align: center; }
   .footer-brand { align-items: center; }
   .footer-pitch { max-width: 40ch; }
+  /* three columns, two abreast: Resources wraps under Services and Company
+     rather than squeezing three columns of link text onto a phone. The third
+     column then spans the row, because a lone column sitting in the left half
+     of a footer where everything else is centred reads as a mistake. */
   .footer-links {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     justify-self: center;
     max-width: 26rem;
   }
+  .footer-links > div:nth-child(3) { grid-column: 1 / -1; }
   .footer-badges { justify-self: center; }
 }
 /* the 460px rule below used to drop the link columns to one; they stay at

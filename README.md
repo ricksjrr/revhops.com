@@ -84,6 +84,7 @@ case-studies/           Case studies index + the five case study pages
 hubspot/                HubSpot index. The six hub pages go here too.
 resources/              Resources index + a page per gated resource
 pricing.html  about.html  contact.html
+newsletter.html         Opt-in page. Its HubSpot form id is a placeholder.
 terms.html  privacy.html
 call.html               Meetings embed, nothing else. Every CTA points here.
 client-call.html        Same, client scheduler, noindex, unlinked
@@ -101,6 +102,9 @@ assets/
     revhops-icon-white.png  White bunny, 1000x1000 — slider thumb
     hubspot-platinum-badge-white.webp   Footer, and the HubSpot page header
     hubspot-platinum-badge.webp         Colour original, unused
+    pipedrive-partner-badge-white.webp  Footer. Derived from tools/pipedrive.webp
+                                        by dropping the green box, 11 Sep.
+    pipedrive-revhops.webp              Co-branded banner on the Pipedrive page
     start-panel-bg.webp     Artwork behind the close
     case-study-placeholder.svg
     hop.webp / hop-still.webp   Orphaned. Nothing references them.
@@ -293,11 +297,14 @@ with placeholder text. Also swap `SHOT_SRC` for a real photo.
 
 **5. One form posts nowhere** — the hero's capture card. The hidden `stage`
 field already tracks the slider, so whatever receives it knows which stage was
-picked. The footer newsletter was removed on 4 September and is not coming
-back.
+picked. The footer newsletter *opt-in block* was removed on 4 September and is
+not coming back; `/newsletter`, added 11 September, is a page rather than a
+footer widget, and its form id is a placeholder — see item 6.
 
-**6. HubSpot form ID** for the contact page form when that page is rebuilt.
-Portal `46722926` is known. The meetings slug is `revhops/discovery-call`.
+**6. HubSpot form IDs.** The contact page form when that page is rebuilt, and
+the newsletter form, which `/newsletter` ships with as the literal placeholder
+`[NEWSLETTER-FORM-ID]`. Portal `46722926` is known. The meetings slug is
+`revhops/discovery-call`.
 
 ## Conventions
 
@@ -777,7 +784,11 @@ Nothing is fully pill-shaped.
   the top so discs spill over the nav band and off the screen edges, but never
   into the section below the hero.
 - The footer uses the white lockup (`revhops-logo-white.png`) directly on navy.
-  This is the supplied white artwork, not the navy logo reversed in CSS.
+  This is the supplied white artwork, not the navy logo reversed in CSS. The
+  same holds for both partner marks in the badge slot: HubSpot ships the
+  reversed Platinum badge, and `pipedrive-partner-badge-white.webp` is their
+  green Authorized Partner badge with the box dropped. No CSS filter fakes
+  either one.
 
 ## Components added for the inner pages
 

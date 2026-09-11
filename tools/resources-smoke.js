@@ -88,7 +88,7 @@ const probe=d.createElement('button');probe.setAttribute('data-video','abc123');
 /frame\.textContent = ''/.test(js) ? ok('and tears the iframe down on close, so nothing keeps playing') : bad('the iframe survives close');
 
 // links resolve
-const built=h=>{const rel=h.replace(/^[./]+/,'');return fs.existsSync(path.join(ROOT,rel+'.html'))||fs.existsSync(path.join(ROOT,rel,'index.html'));};
+const built=h=>{const rel=h.replace(/[#?].*$/,'').replace(/^[./]+/,'');return fs.existsSync(path.join(ROOT,rel+'.html'))||fs.existsSync(path.join(ROOT,rel,'index.html'));};
 const internal=[...d.querySelectorAll('a[href]')].map(a=>a.getAttribute('href')).filter(h=>!/^(https?:|mailto:|tel:|#|\/\/)/.test(h));
 const dead=[...new Set(internal.filter(h=>h!=='./'&&h!=='../'&&!/\.(txt|html)$/.test(h)&&!built(h)))];
 dead.length?bad('dead links: '+dead.join(', ')):ok('every internal link on /resources resolves');

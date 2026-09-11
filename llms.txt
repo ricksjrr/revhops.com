@@ -43,6 +43,7 @@ between roughly 10 and 500 employees in the US and Europe.
 - [Pricing](https://revhops.com/pricing) — published starting prices
 - [About us](https://revhops.com/about) — who runs it and how it works
 - [Contact](https://revhops.com/contact) — form and email
+- [Newsletter](https://revhops.com/newsletter) — one email a month, sign-up form
 - [Schedule a call](https://revhops.com/call) — the booking page
 - [Terms of Service](https://revhops.com/terms)
 - [Privacy Policy](https://revhops.com/privacy)

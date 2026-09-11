@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `cb208f43d3` — derived from a hash of the assets by
+**Current build stamp:** `0be756743c` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -26,6 +26,59 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   not work as written. See "Deploying to GitHub Pages" in the README.
 
 ---
+
+## 11 September: the footer, rebuilt
+
+Four changes, all of them in `footer()` in `tools/build-pages.js` **and** in
+the hand-maintained copy in `index.html`. Change one, change the other, or the
+homepage is the one page that drifts.
+
+**A third link column, Resources.** Blog, Case studies, Newsletter, Games.
+Blog goes to `https://blog.revhops.com` in a new tab, which is where the posts
+actually live; Games goes to `/resources#games`, the shelf that was already
+anchored. **Case studies, Resources, RevOps puzzle and RevOps run came out of
+Company** on the same pass rather than being listed in two columns at once, so
+Company is now HubSpot, Pipedrive, About us, Pricing, Contact.
+
+The brand column gave up the width: `.footer-top` went from `1.1fr 1fr auto`
+to `.82fr 1.75fr auto`, because at the old split "HubSpot support retainers"
+and "Lead to cash mapping" each wrapped to two lines. Below 1040px the badges
+leave the row and the two that remain split it `.68fr 2fr`, for the same
+reason. On mobile the three columns stay two abreast and Resources spans the
+row — a lone third column in the left half of a centred footer reads as a
+mistake.
+
+**The legal links moved onto their own line above the copyright**, centred,
+with slashes between them. `.footer-bottom` is a column now. The slashes are
+`<span class="footer-legal-sep" aria-hidden="true">`, because they are
+punctuation and a screen reader saying "slash" three times helps nobody.
+
+**The Pipedrive mark is back in the badge slot, reversed.** It was pulled once
+for reading as a logo wall beside the Platinum badge; what fixes that is the
+stack. Both marks sit in one column, both set to `--badge-w` on
+`.footer-badges`, so the pair reads as one lockup with two lines. The artwork
+is `assets/img/pipedrive-partner-badge-white.webp` — Pipedrive's own green
+Authorized Partner badge with the green box dropped and the ink left white, so
+like the HubSpot badge it needs no paper chip and no CSS filter. It links to
+the same affiliate URL the `/pipedrive` page uses. The Pipedrive mark carries
+less ink per pixel of width than the badge above it, so it runs at
+`--badge-w * 1.14` to sit at the same visual weight.
+
+`tools/smoke.js` moved with it: two marks expected in the slot, both reversed,
+and the guard is now on the shared width rather than on Pipedrive's absence.
+The dead-link check in both smoke files also strips `#fragment` before looking
+for the file, which `resources#games` needed.
+
+**`/newsletter` is new**, because the Resources column links to it and a link
+with nowhere to land is worse than no link. Standard chrome, a centred
+`.optin-wrap` with a HubSpot form frame, three cards under it on what the
+subscription actually is, and the usual closing panel.
+
+> **THE NEWSLETTER FORM ID IS A PLACEHOLDER.** `data-form-id="[NEWSLETTER-FORM-ID]"`.
+> Portal `46722926` is right. Create the form in HubSpot, paste the id into
+> the `newsletter` page object in `tools/build-pages.js`, rebuild. Until then
+> the page reads fine but no fields appear, so do it before the link goes
+> anywhere.
 
 ## 11 September: the Pipedrive page
 
@@ -69,7 +122,8 @@ narrowing a smoke assertion: `tools/smoke.js` used to fail on the string
 `pipedrive` appearing anywhere in the footer, which was written to catch a
 *second partner badge* coming back to the badge slot. It now checks
 `.footer-badges` for the badge, and separately asserts the Company column link
-exists.
+exists. **That badge assertion was inverted later the same day** — see "the
+footer, rebuilt" below. The Pipedrive mark is back in the slot, reversed.
 
 The homepage footer is hand-maintained, so its Company column was edited
 directly in `index.html` to match.
