@@ -27,6 +27,56 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 11 September: /audit
+
+**`/audit` is new**, and it is where every "request an audit" click on the
+site now lands. Three of them existed before it and all three went to
+`/contact`: the primary button in the `/hubspot` header, the first of the four
+ways in on that page, and "Clean up the account you already have" on
+`/pipedrive`. All three are repointed. `/contact` keeps its own form and its
+own job.
+
+**Its form is its own.** Portal `46722926`, form
+`579026d7-b138-4813-a166-c3d970e76dae`, which exists so an audit request
+arrives as an audit request rather than as a general enquiry. It is embedded
+the way every other form on the site is — the `js.hsforms.net/forms/embed/`
+script and an `.hs-form-frame` div — not the older `hbspt.forms.create` call,
+so it picks up the same type and spacing as `/contact` and `/newsletter`.
+Unlike the newsletter's, **this id is real**, so the page works today.
+
+**The turnaround is a typed string.** A `.pill` under the nav says
+`Turnaround 2–3 business days`, and the same figure is in the hero meta row
+and in `llms.txt`. Nothing derives it and no test checks it. If the queue
+gets longer, change it in the `audit` page object and in `llms.txt`, or take
+the pill out. A stale promise at the top of the page is worse than no promise.
+
+`.pill` and `.pill-dot` were already in `site.css` and were being used
+nowhere. `pageHero()` in `tools/build-pages.js` takes an optional `pill`
+string now, rendered above the H1; `/audit` is the only page passing one.
+
+**It is free, and it says so twice** — the meta row and the third card of what
+comes back — because `llms.txt` already promised a free portal audit and a
+page that hedged on it would contradict the file. If it ever stops being
+free, both change together.
+
+**HubSpot first, with a two-row aside.** James' call. The six things we look
+at are named the way HubSpot names them, and writing them platform-neutral
+would have made all six vaguer. Pipedrive and everything else get two rows at
+the bottom pointing at `/pipedrive` and `/contact`.
+
+**The homepage slider link moved with it.** The first in-card link on the
+maturity hero reads "Request a free tech stack audit" and pointed at the
+scheduler, because both in-card links shared one `data-cta-url`. The audit one
+now takes its own, `AUDIT_CTA` in `maturity-slider.js`, defaulting to `audit`
+and overridable with `data-audit-url` on the mount the same way. The second
+link still books a call.
+
+**It is in the footer's Services column, not the nav.** The bar is at seven
+items and the eighth was already ruled out when `/pipedrive` came up. That
+means the footer link had to go into `footer()` in `tools/build-pages.js`
+**and** into the hand-maintained copy in `index.html` — the usual two places,
+or the homepage is the one page missing the link.
+
 ## 11 September: the footer, rebuilt
 
 Four changes, all of them in `footer()` in `tools/build-pages.js` **and** in

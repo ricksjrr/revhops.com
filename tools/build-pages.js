@@ -178,6 +178,16 @@ function pageHero(p) {
      the service pages use it so far: they are the one place on the site
      that is a leaf of a list, and the back link is how you get to the
      siblings without going through the nav. */
+  /* A status pill above the H1. Only /audit uses it, and what it carries
+     there is a turnaround promise. IT IS A TYPED STRING, not a derived one:
+     nothing on this site knows how long the queue is, so if the queue gets
+     longer the pill changes here or it comes out. A stale promise at the top
+     of a page is worse than no promise. */
+  var pill = p.pill
+    ? '        <span class="pill"><span class="pill-dot" aria-hidden="true"></span>' +
+      p.pill + '</span>\n'
+    : '';
+
   var eyebrow = p.eyebrow
     ? '        <a class="hero-back" href="' + p.eyebrow[1] + '">' +
       '<span class="arrow" aria-hidden="true">&larr;</span> ' + p.eyebrow[0] + '</a>\n'
@@ -196,6 +206,7 @@ function pageHero(p) {
 '  <div class="shell">\n' +
 '    <div class="page-hero-inner">\n' +
 '      <div class="page-hero-text">\n' +
+pill +
 eyebrow +
 '        <h1 class="h1">' + p.h1 + '</h1>\n' +
 '        <p class="lede">' + p.lede + '</p>\n' +
@@ -247,6 +258,7 @@ function footer(p) {
 '            <li><a href="/services/hubspot-support-retainers">HubSpot support retainers</a></li>\n' +
 '            <li><a href="/services/revops-consulting">RevOps consulting</a></li>\n' +
 '            <li><a href="/services/lead-to-cash-process-mapping">Lead to cash mapping</a></li>\n' +
+'            <li><a href="/audit">Free HubSpot audit</a></li>\n' +
 '          </ul>\n' +
 '        </div>\n' +
 '        <div>\n' +
@@ -1654,7 +1666,7 @@ var REVIEWS = [
    as ten cards, and these four are the ask rather than the subject. Same
    component /services and the case pages use. */
 var WAYS = [
-  { title: 'Request a HubSpot audit', href: '/contact', go: 'Request the audit',
+  { title: 'Request a HubSpot audit', href: '/audit', go: 'Request the audit',
     copy: 'An hour inside your portal and a written page back. What is set up well, what is quietly costing you, and the three things worth fixing first.' },
   { title: 'Work out whether HubSpot is right for you', href: '/call', go: 'Talk it through',
     copy: 'Before anyone signs anything. If you already own a CRM and it is working, we will say so and you will have saved yourself a migration.' },
@@ -1680,7 +1692,7 @@ var hubspot = {
   /* Two buttons, and only here. Everywhere else the second action is a text
      link: this is the one page where the audit and the call are two real
      starting points rather than one ask and an afterthought. */
-  headButtons: '          <a class="btn btn-primary" href="/contact">Request a HubSpot audit</a>\n' +
+  headButtons: '          <a class="btn btn-primary" href="/audit">Request a HubSpot audit</a>\n' +
                '          <a class="btn btn-outline" href="/call">Schedule a call</a>',
 
   body:
@@ -2856,7 +2868,7 @@ var PD_PLANS = [
 var PD_WAYS = [
   { title: 'Set Pipedrive up from scratch', href: '/contact', go: 'Start here',
     copy: 'Pipelines and stages that match how you actually sell, fields people will fill in, automations that remove admin rather than add it, and training your team still uses after we have gone.' },
-  { title: 'Clean up the account you already have', href: '/contact', go: 'Request an audit',
+  { title: 'Clean up the account you already have', href: '/audit', go: 'Request an audit',
     copy: 'Inherited, half-built, or three admins deep. We fix what is there, starting with the pipeline and the data, unless starting again is honestly cheaper.' },
   { title: 'Migrate onto Pipedrive', href: '/services/crm-implementations', go: 'See the work',
     copy: 'Off spreadsheets, or off a CRM that grew in the wrong direction. Deals, contacts, history and integrations moved without losing the audit trail.' },
@@ -2989,6 +3001,135 @@ var newsletter = {
       ], 'pcards-3'), 'section to-white')
 };
 
+
+/* ---------- /audit ----------
+   Added 11 September, because three buttons on this site said "request an
+   audit" and all three landed on /contact, which is a general form with a
+   general question on it. An audit request arrived looking like a support
+   enquiry, and the promise /hubspot makes at the top of the page - an hour
+   in the portal, a written page back - was made once and then never
+   mentioned again on the page that took the click.
+
+   THE FORM IS ITS OWN, and that is the point of the page. Portal 46722926,
+   form 579026d7-b138-4813-a166-c3d970e76dae, which exists so an audit
+   request lands as an audit request. Do not swap it for the /contact form
+   id; the two are not interchangeable.
+
+   THE TURNAROUND IS A TYPED STRING. The pill under the nav says two to
+   three business days and nothing derives or checks it. If the queue gets
+   longer, change it here or take the pill out - see `pill` in pageHero.
+
+   HUBSPOT FIRST, and a short aside at the bottom for everyone else. Most of
+   what arrives is a HubSpot portal, the six things we look at are named the
+   way HubSpot names them, and pretending the page is platform-neutral would
+   make all six of them vaguer. The aside is two rows, not a second half.
+
+   Free, and said plainly twice: in the meta row at the top and in the third
+   card of what comes back. llms.txt says the same thing, so if this ever
+   stops being free, both change. */
+
+var AUDIT_LOOK = [
+  { title: 'Data and objects',
+    copy: 'Contacts, companies, deals and anything custom. Duplicates, properties nobody has filled in since the year they were made, and the fields your reporting quietly depends on.' },
+  { title: 'Pipelines and lifecycle',
+    copy: 'Whether the stages match how you actually sell, and whether a lifecycle stage means the same thing to marketing, to sales and to whoever built the dashboard.' },
+  { title: 'Automation',
+    copy: 'Every live workflow, what fires it, and which two are fighting each other over the same property. Usually the fastest thing to fix and the last thing anyone looks at.' },
+  { title: 'Reporting',
+    copy: 'The dashboards people open, the ones they do not, and whether the number at the top of them is one you could defend in a board meeting.' },
+  { title: 'Integrations and sync',
+    copy: 'What writes into the portal, what reads out of it, and the place a record gets overwritten every night by something upstream that nobody owns.' },
+  { title: 'Access and adoption',
+    copy: 'Who is in the portal, what they can see, and the spreadsheet your team invented to get around the bit that does not work.' }
+];
+
+var AUDIT_ELSE = [
+  { title: 'Pipedrive', href: '/pipedrive', go: 'See the page',
+    copy: 'Same hour, same written page. We are an Authorized Partner there too, and the pipeline and the data are where we start.' },
+  { title: 'Something else entirely', href: '/contact', go: 'Tell us what you run',
+    copy: 'Salesforce, Zoho, Dynamics, or a spreadsheet that became a CRM somewhere along the way. Send it through the contact form. If it is not something we know well enough to be useful in an hour, we will say so rather than charge you to find out.' }
+];
+
+var audit = {
+  file: 'audit.html',
+  depth: 0,
+  /* No nav item: the bar is at seven and James ruled an eighth crowds it
+     when /pipedrive came up. This is linked from the footer's Services
+     column, from both audit CTAs on /hubspot and from /pipedrive. */
+  navCurrent: '',
+  title: 'Free HubSpot audit — RevHops',
+  description: 'A free audit of your HubSpot portal. An hour inside it and a written page back: what is set up well, what is quietly costing you, and the three things worth fixing first.',
+  heroClass: 'page-hero-nomedia',
+  pill: 'Turnaround 2–3 business days',
+  h1: 'Free HubSpot audit',
+  lede: 'An hour inside your portal and a written page back. What is set up well, what is quietly costing you, and the three things worth fixing first. No purchase, and if the honest answer is that nothing needs doing, that is what the page will say.',
+  meta: [
+    ['Cost', 'Free'],
+    ['Turnaround', '2–3 business days'],
+    ['What we need', 'Read-only access'],
+    ['Commitment', 'None']
+  ],
+
+  body:
+    /* THE FORM, first thing under the header. Same placement as
+       /newsletter, and for the same reason: the page has one job and the
+       sections under it are the argument for doing it, not a preamble to
+       scroll past.
+
+       The embed is not wrapped in .reveal. That class animates with
+       transform and filter, which makes the wrapper a containing block and
+       lands HubSpot's own error toasts in the wrong place. The head above
+       it carries the reveal, exactly as /contact and /newsletter do. */
+    section(
+'    <div class="optin-wrap">\n' +
+'      <div class="contact-col-head reveal" style="text-align:center;align-items:center">\n' +
+'        <h2>Request your audit</h2>\n' +
+'        <p>Tell us which portal and what is bothering you. If something is actually on fire, say so and we will look at that first.</p>\n' +
+'      </div>\n' +
+'      <!-- HubSpot form, portal 46722926. THIS ID IS THE AUDIT FORM and is\n' +
+'           not the one /contact uses. See the note above this page in\n' +
+'           tools/build-pages.js. -->\n' +
+'      <script src="https://js.hsforms.net/forms/embed/46722926.js" defer><\/script>\n' +
+'      <div class="hs-form-frame" data-region="na1"\n' +
+'           data-form-id="579026d7-b138-4813-a166-c3d970e76dae"\n' +
+'           data-portal-id="46722926"></div>\n' +
+'    </div>\n') +
+
+    /* THE SIX. The page's one highlight is spent here. */
+    section(
+      secHead('What we <span class="hl">look at</span>',
+              'Six passes through the portal, in this order, because each one changes what the next one means.') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+      pcards(AUDIT_LOOK, 'pcards-3') +
+'    </div>\n') +
+
+    section(
+      secHead('What comes back') +
+      pcards([
+        { n: '01', title: 'One written page',
+          copy: 'Not a sixty-slide deck and not a call you have to sit through to hear the findings. One page, in plain words, that you can forward to the person who owns the budget.' },
+        { n: '02', title: 'Three things, ranked',
+          copy: 'Everything we find is ordered by what it costs you to leave it, with an honest guess at the effort beside each one. The top three are the ones worth doing this quarter.' },
+        { n: '03', title: 'No obligation, and we mean it',
+          copy: 'The audit is free and it is yours. Take the page and fix it in-house if you want to; plenty do. There is no sequence behind this form and nobody chases you either way.' }
+      ], 'pcards-3')) +
+
+    /* THE ASIDE. Two rows, not a second half of the page. .to-white because
+       the closing panel bleeds up into whatever sits above it. */
+    section(
+      secHead('Not on HubSpot?',
+              'The audit is shaped around HubSpot because most of what arrives is a HubSpot portal. It is not the only thing we know.') +
+'    <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">\n' +
+      AUDIT_ELSE.map(function (w) {
+        return '      <a class="svc-row" href="' + w.href + '">\n' +
+               '        <h3 class="svc-title">' + w.title + '</h3>\n' +
+               '        <p class="svc-copy">' + w.copy + '</p>\n' +
+               '        <span class="svc-go">' + w.go + ' <span class="arrow">&rarr;</span></span>\n' +
+               '      </a>';
+      }).join('\n') + '\n' +
+'    </div>\n', 'section to-white')
+};
+
 /* ---------- write everything ---------- */
 
 var PAGES = [servicesIndex]
@@ -2997,7 +3138,7 @@ var PAGES = [servicesIndex]
   .concat(CASES.map(casePage))
   .concat([resourcesIndex])
   .concat(GATED.map(resourcePage))
-  .concat([pricing, hubspot, pipedrive, about, contact, newsletter, terms, privacy, callPage, clientCallPage, puzzle, hop]);
+  .concat([pricing, hubspot, pipedrive, about, contact, audit, newsletter, terms, privacy, callPage, clientCallPage, puzzle, hop]);
 
 var written = 0;
 if (require.main === module) {

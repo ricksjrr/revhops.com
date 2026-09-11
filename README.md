@@ -16,7 +16,7 @@ is still gone.
 
 No remote is configured yet. See "Deploying to GitHub Pages" below.
 
-**Twenty-one pages exist.** `index.html` is hand-maintained. The other twenty
+**Twenty-two pages exist.** `index.html` is hand-maintained. The other twenty
 are written by `tools/build-pages.js` and **will be overwritten by the next
 run of it** — edit the generator, not the HTML, or fold your change back in
 afterwards. See "The page builder" below.
@@ -85,6 +85,7 @@ hubspot/                HubSpot index. The six hub pages go here too.
 resources/              Resources index + a page per gated resource
 pricing.html  about.html  contact.html
 newsletter.html         Opt-in page. Its HubSpot form id is a placeholder.
+audit.html              Free HubSpot audit request. Its own HubSpot form id.
 terms.html  privacy.html
 call.html               Meetings embed, nothing else. Every CTA points here.
 client-call.html        Same, client scheduler, noindex, unlinked

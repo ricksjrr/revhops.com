@@ -286,6 +286,12 @@
        uses folder URLs, and this module could sit at any depth. */
     var CTA = root.getAttribute('data-cta-url') || 'call';
 
+    /* The first in-card link asks for the free audit and goes to /audit; the
+       second books a call and goes to CTA. They shared one URL until /audit
+       existed on 11 September, which sent "Request a free tech stack audit"
+       to the scheduler. data-audit-url overrides it the same way. */
+    var AUDIT_CTA = root.getAttribute('data-audit-url') || 'audit';
+
     var cfg = build(root);
     var last = cfg.last;
 
@@ -371,7 +377,7 @@
           '<h3 class="mcard-subhead">Your tech stack probably includes</h3>' +
           stackChips(s.have, s.missing) +
         '</div>' +
-        '<a class="mcard-link" href="' + esc(CTA) + '">' +
+        '<a class="mcard-link" href="' + esc(AUDIT_CTA) + '">' +
           'Request a free tech stack audit <span class="arrow">&rarr;</span></a>',
 
         list(s.problems) +
