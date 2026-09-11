@@ -1839,65 +1839,47 @@ var contact = {
   depth: 0,
   navCurrent: '/contact',
   title: 'Contact RevHops',
-  description: 'Get in touch with RevHops. Tell us what is broken, or book a discovery call directly.',
-  h1: 'Tell us what is broken',
-  lede: 'The more specific you are, the more useful the first reply will be. We answer everything within a working day, usually with a question rather than a pitch.',
-  media: { src: 'assets/img/case-study-placeholder.svg', alt: '' },
-  meta: [['Reply within', 'One working day'], ['Email', 'team@revhops.com'], ['Based in', 'Phoenix, AZ']],
+  description: 'Get in touch with RevHops. Send us a message, or book a discovery call directly.',
+  /* The /services header treatment: a title and a subhead, no artwork
+     column. See .page-hero-nomedia in site.css. */
+  heroClass: 'page-hero-nomedia',
+  h1: 'Get in touch',
+  lede: 'Fill in the form or grab a time on the calendar. We answer everything within a working day, usually with a question rather than a pitch.',
+  /* No closing panel. The page already has two calls to action side by
+     side; a third one under them competes with both. */
+  noClose: true,
   body:
+    /* Two third-party embeds and their labels. Neither embed is wrapped in
+       .reveal: that class animates with transform and filter, and both make
+       the wrapper a containing block for anything the widget positions
+       fixed — HubSpot's date picker and its error toasts land in the wrong
+       place inside one. The heads above them carry the reveal instead. */
     section(
-'    <div class="split" style="align-items:start">\n' +
+'    <div class="contact-split">\n' +
 '\n' +
-'      <!-- Deliberately not inside a card. The form is the page; a frame\n' +
-'           round the only thing on it reads as a widget dropped into a\n' +
-'           layout rather than as the layout. -->\n' +
-'      <form class="form reveal reveal-left" method="post" action="#" novalidate>\n' +
-'        <div class="form-row">\n' +
-'          <div class="field">\n' +
-'            <label for="c-name">Your name</label>\n' +
-'            <input id="c-name" name="name" type="text" autocomplete="name" required>\n' +
-'          </div>\n' +
-'          <div class="field">\n' +
-'            <label for="c-email">Work email</label>\n' +
-'            <input id="c-email" name="email" type="email" autocomplete="email" required>\n' +
-'          </div>\n' +
+'      <div class="contact-col">\n' +
+'        <div class="contact-col-head reveal reveal-left">\n' +
+'          <h2>Send us a message</h2>\n' +
+'          <p>The symptom is enough. You do not have to have diagnosed it.</p>\n' +
 '        </div>\n' +
-'        <div class="form-row">\n' +
-'          <div class="field">\n' +
-'            <label for="c-company">Company</label>\n' +
-'            <input id="c-company" name="company" type="text" autocomplete="organization">\n' +
-'          </div>\n' +
-'          <div class="field">\n' +
-'            <label for="c-crm">What you are running today</label>\n' +
-'            <select id="c-crm" name="crm">\n' +
-'              <option value="">Pick the closest one</option>\n' +
-'              <option>HubSpot</option>\n' +
-'              <option>Salesforce</option>\n' +
-'              <option>Pipedrive</option>\n' +
-'              <option>Something else</option>\n' +
-'              <option>Spreadsheets, mostly</option>\n' +
-'            </select>\n' +
-'          </div>\n' +
-'        </div>\n' +
-'        <div class="field">\n' +
-'          <label for="c-msg">What is going wrong</label>\n' +
-'          <textarea id="c-msg" name="message" rows="6"\n' +
-'                    placeholder="The symptom is enough. You do not have to have diagnosed it."></textarea>\n' +
-'        </div>\n' +
-'        <div class="form-foot">\n' +
-'          <button class="btn btn-primary" type="submit">Send it over</button>\n' +
-'          <p class="form-note">No newsletter, no sequence. One reply from a person.</p>\n' +
-'        </div>\n' +
-'      </form>\n' +
+'        <!-- HubSpot form, portal 46722926. The script renders into the\n' +
+'             .hs-form-frame div below and brings its own type and spacing. -->\n' +
+'        <script src="https://js.hsforms.net/forms/embed/46722926.js" defer><\/script>\n' +
+'        <div class="hs-form-frame" data-region="na1"\n' +
+'             data-form-id="99d30994-ee79-447b-af6e-bce1cb2728ac"\n' +
+'             data-portal-id="46722926"></div>\n' +
+'      </div>\n' +
 '\n' +
-'      <div class="stack gap-20 reveal reveal-right">\n' +
-'        <h2 class="h2">Or <span class="hl">skip the form</span></h2>\n' +
-'        <p class="small">Email lands in the same place and gets the same answer. If you would\n' +
-'          rather just talk, the calendar is open and there is nothing to fill in first.</p>\n' +
-'        <a class="text-link" href="mailto:team@revhops.com">team@revhops.com <span class="arrow">&rarr;</span></a>\n' +
-'        <a class="text-link" href="/call">Book a discovery call <span class="arrow">&rarr;</span></a>\n' +
-'        <p class="small muted">We are in Phoenix, Arizona, and work with teams across the US and\n' +
-'          Europe. Most of the work happens over video either way.</p>\n' +
+'      <div class="contact-col">\n' +
+'        <div class="contact-col-head reveal reveal-right">\n' +
+'          <h2>Or <span class="hl">book a call</span></h2>\n' +
+'          <p>Nothing to fill in first. Pick a time and we will meet you there.</p>\n' +
+'        </div>\n' +
+'        <!-- Start of Meetings Embed Script -->\n' +
+'        <div class="meetings-iframe-container"\n' +
+'             data-src="https://revhops.com/meetings/revhops/discovery-call?embed=true"></div>\n' +
+'        <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"><\/script>\n' +
+'        <!-- End of Meetings Embed Script -->\n' +
 '      </div>\n' +
 '\n' +
 '    </div>\n', 'section to-white')

@@ -5751,3 +5751,69 @@ div.res-card .res-go { color: var(--muted); }
    the three retainer cells have nowhere to go — a card that moves under the
    pointer promises a click that is not there. */
 .pr-static:hover { transform: none; border-color: var(--line); }
+
+/* ==========================================================================
+   /contact
+   Two embeds side by side and nothing else: the HubSpot form on the left,
+   the meetings scheduler on the right. Both are third-party widgets that
+   bring their own type and spacing, so the page's job here is only to give
+   each one a column of the right width and a label above it.
+   ========================================================================== */
+
+/* Slightly wider on the right. The scheduler's month grid has a minimum it
+   will not go below before it drops its date picker onto a second row, and
+   the form is happy narrower — 46/54 is where both land at their best on a
+   1240px shell. `align-items: start` so a short form does not stretch to
+   the height of the calendar. */
+.contact-split {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  gap: clamp(32px, 4.4vw, 64px);
+  align-items: start;
+}
+
+.contact-col { min-width: 0; }
+
+/* The label over each embed. Small, not an .h2 — these are signposts on a
+   two-item page, and a full section head over each one would compete with
+   the page title rather than serve it. */
+.contact-col-head {
+  margin-bottom: clamp(16px, 1.8vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.contact-col-head h2 {
+  font-family: var(--font-head);
+  font-size: clamp(1.22rem, 1.6vw, 1.5rem);
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 0;
+}
+.contact-col-head p {
+  font-size: .92rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* The HubSpot form ships its own styles. All this does is stop it running
+   wider than its column and keep the fields from inheriting a max-width
+   from anything above. */
+.hs-form-frame { width: 100%; min-width: 0; }
+.hs-form-frame iframe { width: 100% !important; max-width: 100% !important; }
+
+/* .meetings-iframe-container is already width:100% globally. Here it needs
+   a floor as well: below about 320px the widget's own layout breaks before
+   the column does. */
+.contact-col .meetings-iframe-container { min-height: 620px; }
+
+/* One column below 900px, form first — someone who wanted the calendar can
+   still scroll, and someone who wanted the form would otherwise scroll past
+   a full-height scheduler to reach it. Source order already does this. */
+@media (max-width: 900px) {
+  .contact-split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(44px, 7vw, 64px);
+  }
+}
