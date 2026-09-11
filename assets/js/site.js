@@ -679,3 +679,149 @@
 
   apply();
 })();
+
+/* ==========================================================================
+   RESOURCES — the type filter
+
+   One row of choices, single selection, All by default. It shows and hides
+   whole SECTIONS rather than individual cards, which is the honest reading
+   of a page that is a shelf of shelves: filtering to Videos should leave
+   you on the videos shelf, not on five headings with one card under each.
+
+   It reads data-res-pick and data-res-section and nothing else, so a sixth
+   resource type is a sixth pair of those in the markup and no change here.
+   ========================================================================== */
+(function () {
+  var box = document.querySelector('[data-res-filter]');
+  if (!box) return;
+
+  var tabs = Array.prototype.slice.call(box.querySelectorAll('[data-res-pick]'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('[data-res-section]'));
+  if (!tabs.length || !sections.length) return;
+
+  function pick(val) {
+    tabs.forEach(function (t) {
+      t.setAttribute('aria-pressed', t.getAttribute('data-res-pick') === val ? 'true' : 'false');
+    });
+    sections.forEach(function (s) {
+      s.hidden = !(val === 'all' || s.getAttribute('data-res-section') === val);
+    });
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { pick(t.getAttribute('data-res-pick')); });
+  });
+
+  /* A link to /resources#videos lands on the videos shelf with the filter
+     already set, rather than on the whole page scrolled to a heading. */
+  var hash = (location.hash || '').replace('#', '');
+  if (hash && sections.some(function (s) { return s.getAttribute('data-res-section') === hash; })) {
+    pick(hash);
+  }
+})();
+
+/* ==========================================================================
+   RESOURCES — pagination
+
+   Any shelf whose markup contains a pager pages through its own cards in
+   groups of data-res-per. Each shelf runs its own instance, so two of them
+   on a page do not share a page number.
+
+   The cards are HIDDEN rather than removed, which keeps the reveal
+   animation, the DOM order and anything else looking at them intact. The
+   buttons are disabled rather than hidden at the ends of the run: a control
+   that disappears moves the one beside it.
+   ========================================================================== */
+Array.prototype.forEach.call(document.querySelectorAll('[data-res-pager]'), function (pager) {
+  var shelf = pager.closest ? pager.closest('[data-res-section]') : null;
+  var grid = shelf && shelf.querySelector('[data-res-grid]');
+  if (!grid) return;
+
+  var cards = Array.prototype.slice.call(grid.children);
+  var per = parseInt(grid.getAttribute('data-res-per'), 10) || 8;
+  var pages = Math.ceil(cards.length / per) || 1;
+  if (pages < 2) return;
+
+  var prev = pager.querySelector('[data-res-prev]');
+  var next = pager.querySelector('[data-res-next]');
+  var label = pager.querySelector('[data-res-page-count]');
+  var page = 0;
+
+  function draw() {
+    cards.forEach(function (c, i) {
+      c.hidden = Math.floor(i / per) !== page;
+    });
+    if (label) label.textContent = 'Page ' + (page + 1) + ' of ' + pages;
+    if (prev) prev.disabled = page === 0;
+    if (next) next.disabled = page === pages - 1;
+  }
+
+  function go(delta) {
+    var wanted = Math.min(pages - 1, Math.max(0, page + delta));
+    if (wanted === page) return;
+    page = wanted;
+    draw();
+    /* back to the top of the shelf, not the top of the page: the row you
+       just replaced is the thing you want to be looking at */
+    shelf.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  }
+
+  if (prev) prev.addEventListener('click', function () { go(-1); });
+  if (next) next.addEventListener('click', function () { go(1); });
+  draw();
+});
+
+/* ==========================================================================
+   RESOURCES — the video lightbox
+
+   Every ungated video card is a <button data-video="youtube id">, and one
+   <dialog> serves all of them.
+
+   THE IFRAME IS BUILT ON OPEN AND DESTROYED ON CLOSE. Setting the src once
+   and leaving it there keeps YouTube playing behind a closed dialog, which
+   is audible; clearing the src alone leaves a dead iframe holding a network
+   connection. Replacing the whole element is the only version of this that
+   reliably stops the sound.
+
+   showModal() gives the focus trap, the backdrop and Escape for free. If
+   the browser has no <dialog> — which now means a very old one — the card
+   does nothing rather than throwing, and the gated route is unaffected.
+   ========================================================================== */
+(function () {
+  var dlg = document.querySelector('[data-res-lightbox]');
+  var frame = dlg && dlg.querySelector('[data-res-lightbox-frame]');
+  if (!dlg || !frame || typeof dlg.showModal !== 'function') return;
+
+  var closer = dlg.querySelector('[data-res-lightbox-close]');
+
+  function open(id) {
+    var f = document.createElement('iframe');
+    f.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(id) +
+            '?autoplay=1&rel=0&modestbranding=1';
+    f.title = 'Video';
+    f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture';
+    f.allowFullscreen = true;
+    frame.textContent = '';
+    frame.appendChild(f);
+    dlg.showModal();
+  }
+
+  function shut() { if (dlg.open) dlg.close(); }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-video]'), function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      open(el.getAttribute('data-video'));
+    });
+  });
+
+  if (closer) closer.addEventListener('click', shut);
+
+  /* Clicking the backdrop closes it. The dialog's own box is the frame, so
+     a click landing on the dialog element itself is a click outside it. */
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) shut(); });
+
+  /* Fires for the close button, for Escape and for the backdrop alike, so
+     the iframe is torn down once rather than in three places. */
+  dlg.addEventListener('close', function () { frame.textContent = ''; });
+})();

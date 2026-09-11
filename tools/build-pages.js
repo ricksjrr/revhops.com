@@ -61,9 +61,10 @@ function up(depth) { return depth === 0 ? '' : '../'.repeat(depth); }
 var NAV_ITEMS = [
   ['/services',     'Services'],
   ['/case-studies', 'Case studies'],
+  ['/resources',    'Resources'],
   ['/hubspot',      'HubSpot'],
   ['/pricing',      'Pricing'],
-  ['/about-us',     'About'],
+  ['/about',        'About'],
   ['/contact',      'Contact']
 ];
 
@@ -252,8 +253,9 @@ function footer(p) {
 '          <h4>Company</h4>\n' +
 '          <ul class="stack gap-8">\n' +
 '            <li><a href="/case-studies">Case studies</a></li>\n' +
+'            <li><a href="/resources">Resources</a></li>\n' +
 '            <li><a href="/hubspot">HubSpot</a></li>\n' +
-'            <li><a href="/about-us">About us</a></li>\n' +
+'            <li><a href="/about">About us</a></li>\n' +
 '            <li><a href="/pricing">Pricing</a></li>\n' +
 '            <li><a href="/contact">Contact</a></li>\n' +
 '            <li><a href="/puzzle">RevOps puzzle</a></li>\n' +
@@ -1589,36 +1591,97 @@ var hubspot = {
 '    </div>\n', 'section to-white')
 };
 
+/* ---------- the team ----------
+
+   One person today and more soon, which is why this is a list and not a
+   hand-written card. Add a member here and the section grows; nothing in
+   the markup below has to change.
+
+   [PLACEHOLDER] the LinkedIn URL. It is the one thing on this page that
+   cannot be guessed, and a wrong href is worse than an obvious blank. */
+var TEAM = [
+  {
+    name: 'James Ricks',
+    role: 'Founder',
+    photo: 'assets/img/james-portrait.webp',
+    bio: 'Spent [00] years running revenue systems from the inside before ' +
+         'starting RevHops, which means he has been the one explaining the ' +
+         'forecast to a board as well as the one building it. HubSpot certified, ' +
+         'Phoenix based, and the person on your first call and your last.',
+    linkedin: 'https://www.linkedin.com/in/[placeholder]'
+  }
+];
+
+/* The LinkedIn glyph, inline rather than an image file: it is one path, it
+   has to take currentColor so it works in both themes, and a 400 byte file
+   is not worth a request. */
+var LI_ICON =
+'          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13m1.78 13.02H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0"/></svg>\n';
+
+function teamCard(m) {
+  return '      <div class="team-card reveal">\n' +
+'        <img class="team-photo" src="' + m.photo + '" alt="' + m.name + '" loading="lazy">\n' +
+'        <h3 class="team-name">' + m.name + '</h3>\n' +
+'        <p class="team-role">' + m.role + '</p>\n' +
+'        <p class="team-bio">' + m.bio + '</p>\n' +
+'        <a class="team-social" href="' + m.linkedin + '" target="_blank" rel="noopener"\n' +
+'           aria-label="' + m.name + ' on LinkedIn">\n' +
+LI_ICON +
+'          LinkedIn\n' +
+'        </a>\n' +
+'      </div>';
+}
+
+/* /about, not /about-us. Renamed on 11 September: the URL is the shorter
+   one everywhere now — NAV_ITEMS, the footer column, llms.txt and the
+   homepage's hand-maintained nav — and about-us.html is deleted rather than
+   left behind as a stale second copy of the same page.
+
+   The head takes the /services treatment: a title and a subhead, no artwork
+   column. Below it the portrait block off the homepage, the client marquee,
+   the values under their own name, and the team. */
 var about = {
-  file: 'about-us.html',
+  file: 'about.html',
   depth: 0,
-  navCurrent: '/about-us',
+  navCurrent: '/about',
   title: 'About RevHops',
   description: 'RevHops is a small revenue operations consultancy in Phoenix, Arizona. Who we are, how we work, and what we will not do.',
-  h1: 'The team you meet is the team you get',
+  /* Not .page-hero-plain, which steps the type down a size. See
+     .page-hero-nomedia in site.css. */
+  heroClass: 'page-hero-nomedia',
+  h1: 'About us',
   lede: 'A revenue operations consultancy in Phoenix, Arizona. Small on purpose, deep in one thing, and straight with you about the parts that will be difficult.',
-  media: { src: 'assets/img/james-portrait.webp', alt: 'James Ricks, founder of RevHops' },
-  meta: [['Based in', 'Phoenix, AZ'], ['Founded by', 'James Ricks'], ['Clients at once', 'Deliberately few']],
   body:
+    /* The portrait block off the homepage, minus the Platinum badge that
+       overhangs it there — .about-stack-solo drops the padding that was
+       holding space for it. */
     section(
-'    <div class="split" style="align-items:start">\n' +
-'      <div class="reveal reveal-left">\n' +
-'        <p class="statement">The agencies I hired were good at building what I asked for.</p>\n' +
-'        <p class="statement-note">And bad at telling me when I had asked for the wrong thing.\n' +
-'          That is the reason this shop exists.</p>\n' +
+'    <div class="split about-split" style="align-items:center">\n' +
+'\n' +
+'      <div class="about-stack about-stack-solo reveal reveal-left" data-tilt>\n' +
+'        <img class="about-img about-img-back" src="assets/img/james-portrait.webp"\n' +
+'             alt="James Ricks, founder of RevHops">\n' +
 '      </div>\n' +
-'      <div class="cols-2 reveal reveal-right">\n' +
+'\n' +
+'      <div class="stack gap-20 reveal reveal-right">\n' +
+'        <h2 class="h2">The shop I wish I could have hired</h2>\n' +
 '        <p>I am James. Before RevHops I spent [00] years inside revenue teams rather than beside\n' +
-'          them — running the systems, owning the number, and explaining to a board why the\n' +
-'          forecast and the invoices disagreed.</p>\n' +
-'        <p>The people who could tell me the truth were expensive, busy, and gone by month three.\n' +
-'          The ones who stayed did what they were told.</p>\n' +
-'        <p>So RevHops takes fewer clients and keeps the same people on them. It is a less\n' +
-'          scalable business. It is a much better one to be a client of.</p>\n' +
+'          them, running the systems, owning the number, and explaining to a board why the\n' +
+'          forecast and the invoices disagreed. The agencies I hired were good at building\n' +
+'          exactly what I asked for and bad at telling me when I had asked for the wrong thing.\n' +
+'          The people who could tell me the truth were expensive, busy, and gone by month three.\n' +
+'          So RevHops takes fewer clients and keeps the same people on them. It is a less\n' +
+'          scalable business, and a much better one to be a client of.</p>\n' +
 '      </div>\n' +
+'\n' +
 '    </div>\n') +
+
+    logoBand(0) +
+
+    /* The values, under their own name rather than "core values" — the
+       phrase is on every consultancy About page and means nothing by now. */
     section(
-      secHead('What we <span class="hl">believe</span>') +
+      secHead('How we <span class="hl">hop-erate</span>') +
 '    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
       pcards([
         { n: 'One', title: 'Show, don\'t tell',
@@ -1632,24 +1695,15 @@ var about = {
           chips: ['Honest', 'Direct'] }
       ]) +
 '    </div>\n', 'section-tight') +
-    logoBand(0) +
+
+    /* .to-white because the closing panel bleeds up into whatever is above
+       it. The last section on every page carries this. */
     section(
-      secHead('How we work') +
-'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-      pcards([
-        { title: 'You talk to the doers', copy: 'The person on the first call is the person doing the build. Start to finish, no exceptions.',
-          chips: ['No account managers'] },
-        { title: 'RevOps only', copy: 'Not a generalist shop with a RevOps page. It is the whole business, which is why we are any good at it.',
-          chips: ['One discipline'] },
-        { title: 'HubSpot Platinum', copy: 'Certified, current, and with a line into HubSpot when the problem is on their side.',
-          chips: ['Platinum partner'] },
-        { title: 'Wrong for some jobs', copy: 'If you need five bodies on site next week, we are not it, and we will say so on the first call.',
-          chips: ['We will tell you'] }
-      ]) +
-'    </div>\n' +
-'    <p class="reveal" style="margin-top:clamp(26px,3vw,40px)">\n' +
-'      <a class="text-link" href="/services">What we actually do <span class="arrow">&rarr;</span></a>\n' +
-'    </p>\n', 'section to-white')
+      secHead('Meet the team',
+              'One of us today and more shortly. Whoever you meet on the first call is the person who does the work.') +
+'    <div class="team-grid">\n' +
+      TEAM.map(teamCard).join('\n') + '\n' +
+'    </div>\n', 'section to-white')
 };
 
 var contact = {
@@ -1851,7 +1905,7 @@ var callPage = {
 '  </div>\n' +
 '</section>\n' +
 
-  /* The marquee off the homepage and /about-us, unchanged. It sits directly
+  /* The marquee off the homepage and /about, unchanged. It sits directly
      under the split because the question the widget raises — "have these
      people done this before" — is the one a wall of client marks answers
      without a sentence. */
@@ -2133,12 +2187,485 @@ var hop = {
 '</dialog>\n'
 };
 
+/* ==========================================================================
+   RESOURCES — one list, five shelves
+
+   EVERY RESOURCE ON THE SITE IS ONE OBJECT IN `RESOURCES` AND NOTHING ELSE.
+   Adding one is a single entry here: give it a `type` from RESOURCE_TYPES
+   and the page rebuilds itself around it. The shelf it lands on, the count,
+   the pagination, the filter at the top and the lightbox all follow from
+   the data. Nothing on /resources is hand-written markup.
+
+   THE FIELDS
+
+     type      required. One of the RESOURCE_TYPES slugs below.
+     title     what the card says. Square brackets mean placeholder, and a
+               placeholder card renders as a div rather than a link — a card
+               that looks clickable and goes nowhere is worse than one that
+               plainly says it is not filled in yet.
+     copy      a line or two under the title.
+     meta      the small fact in the card's top line: a read time, a run
+               time, a file format. Optional.
+     href      where the card goes. Internal links are written
+               root-absolute and relativised at render like everywhere else.
+     video     a YouTube id. The card opens the lightbox instead of
+               navigating, which is what "ungated video" means here. Do not
+               also give it an href.
+     gated     true generates /resources/<slug> as a landing page carrying
+               the form, and points the card there. Works for a video or a
+               download; it is the flag, not the type, that gates a thing.
+     slug      required when gated, because it becomes the URL.
+     file      for an ungated download: the path to the asset. The card
+               links straight at it and gets a download attribute.
+     featured  exactly one resource carries this. It is the full-width
+               gradient card at the top of the page. Move the flag to
+               feature something else; nothing else has to change.
+
+   CASE STUDIES ARE NOT LISTED HERE. They already exist in CASES, they
+   already have cards and pages, and copying them into a second array is how
+   the two lists drift apart. The case studies shelf reads CASES directly.
+   ========================================================================== */
+
+/* `all` is the See-all destination. A type with one shows four cards and a
+   button; a type without one shows eight in a 4x2 grid and paginates. That
+   is the whole difference between the two kinds of shelf, and it is a data
+   difference rather than two blocks of markup. */
+var RESOURCE_TYPES = [
+  { slug: 'blog', name: 'Blog',
+    sub: 'What breaks in a revenue system, and what we do about it.',
+    all: 'https://blog.revhops.com', allLabel: 'View all blog posts', external: true },
+
+  { slug: 'case-studies', name: 'Case studies',
+    sub: 'What we were handed, what changed, and what it was worth.',
+    all: '/case-studies', allLabel: 'View all case studies' },
+
+  { slug: 'videos', name: 'Videos',
+    sub: 'Walkthroughs and teardowns. Most play right here.' },
+
+  { slug: 'downloadables', name: 'Downloadables',
+    sub: 'Templates, checklists and maps you can use without us.' },
+
+  { slug: 'games', name: 'Games',
+    sub: 'RevOps, but the version you can play at your desk.' }
+];
+
+var RESOURCES = [
+
+  /* ---- blog ----
+     The real posts will live in HubSpot at blog.revhops.com and are not
+     mirrored here. These four are the shelf waiting for them: replace a
+     title and add an href and the card goes live. */
+  { type: 'blog', title: '[Blog post title]', meta: '[0] min read',
+    copy: '[One line on what the post argues.]' },
+  { type: 'blog', title: '[Blog post title]', meta: '[0] min read',
+    copy: '[One line on what the post argues.]' },
+  { type: 'blog', title: '[Blog post title]', meta: '[0] min read',
+    copy: '[One line on what the post argues.]' },
+  { type: 'blog', title: '[Blog post title]', meta: '[0] min read',
+    copy: '[One line on what the post argues.]' },
+
+  /* ---- videos ----
+     `video` is a YouTube id and opens the lightbox. `gated: true` sends the
+     card to its own page instead. Both kinds sit on the same shelf. */
+  { type: 'videos', title: '[Video title]', meta: '[00:00]',
+    copy: '[One line on what it shows.]' },
+  { type: 'videos', title: '[Video title]', meta: '[00:00]',
+    copy: '[One line on what it shows.]' },
+  { type: 'videos', title: '[Video title]', meta: '[00:00]',
+    copy: '[One line on what it shows.]' },
+  { type: 'videos', title: '[Gated video title]', meta: '[00:00]', gated: true,
+    slug: 'gated-video', copy: '[One line on what it shows.] Ask for an email first.' },
+
+  /* ---- downloadables ----
+     Gated per item rather than per type: some of these are worth a form and
+     some are worth more as something people can pass around. */
+  { type: 'downloadables', title: '[Download title]', meta: '[PDF]',
+    copy: '[One line on what it is for.]' },
+  { type: 'downloadables', title: '[Download title]', meta: '[XLSX]',
+    copy: '[One line on what it is for.]' },
+  { type: 'downloadables', title: '[Gated download title]', meta: '[PDF]', gated: true,
+    slug: 'gated-download', copy: '[One line on what it is for.] Ask for an email first.' },
+  { type: 'downloadables', title: '[Download title]', meta: '[PDF]',
+    copy: '[One line on what it is for.]' },
+
+  /* ---- games ----
+     The two real ones. Both are finished and both link out, which is why
+     the featured card is one of them rather than a bracketed placeholder. */
+  { type: 'games', title: 'The RevOps puzzle', meta: 'Plays in the browser',
+    href: '/puzzle', featured: true,
+    copy: 'Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.' },
+  { type: 'games', title: 'The RevOps run', meta: 'Plays in the browser',
+    href: '/hop',
+    copy: 'Jump the fires and duck the requests. The pace picks up the longer you last.' }
+];
+
+/* ---------- what the data means, worked out once ---------- */
+
+/* A bracketed title is the site's placeholder convention, the same one the
+   case study cards use. Here it also decides whether the card is a link:
+   nothing is gained by making an empty card clickable. */
+function isPlaceholder(r) { return /^\[/.test(r.title); }
+
+/* Where a card goes, in one place, because four things can decide it and
+   scattering that logic is how a gated item quietly starts linking at its
+   ungated file. Order matters: gated wins over everything. */
+function resHref(r) {
+  if (r.gated) return '/resources/' + r.slug;
+  if (r.file)  return r.file;
+  return r.href || '';
+}
+
+function resOfType(slug) {
+  return RESOURCES.filter(function (r) { return r.type === slug; });
+}
+
+function typeByslug(slug) {
+  for (var i = 0; i < RESOURCE_TYPES.length; i++) {
+    if (RESOURCE_TYPES[i].slug === slug) return RESOURCE_TYPES[i];
+  }
+  return null;
+}
+
+/* ---------- one resource card ----------
+
+   The same object on every shelf, so the five sections read as one page
+   rather than five. A card is one of three things and the markup says
+   which:
+
+     a link      the ordinary case
+     a button    an ungated video, which opens the lightbox in place
+     a div       a placeholder, inert on purpose
+
+   NO LABEL ABOVE THE TITLE. The shelf's own heading already says what type
+   these are, and a per-card kind label on top of that is the eyebrow this
+   site does not use. What is worth knowing per card — a read time, a run
+   time, a file format — sits in the footer beside the link, where it reads
+   as a fact about the thing rather than as a category.
+
+   The thumbnail is 16:9 on every type including the downloads. A grid where
+   one shelf's cards are a different shape stops being a grid. */
+function resCard(r, depth) {
+  var a = up(depth);
+  var ph = isPlaceholder(r);
+  var href = resHref(r);
+  var isVideo = r.type === 'videos';
+
+  /* A gated item links even while its copy is bracketed: its landing page
+     is generated, so the link is never dead, and the skeleton is the only
+     way to see the gate before the copy is written. Everything else that is
+     still a placeholder stays inert. */
+  var live = !ph || r.gated;
+
+  var tag = 'div', attrs = ' class="res-card reveal"';
+  if (live && r.video) {
+    tag = 'button';
+    attrs = ' class="res-card reveal" type="button" data-video="' + r.video + '"';
+  } else if (live && href) {
+    tag = 'a';
+    attrs = ' class="res-card reveal" href="' + href + '"' +
+            (r.file ? ' download' : '') +
+            (/^https?:/.test(href) ? ' target="_blank" rel="noopener"' : '');
+  }
+
+  /* A dashed well rather than a grey block, the same as the case study logo
+     slot: an empty frame reads as "no artwork yet" where a filled grey
+     rectangle reads as a broken image. Give the entry a `thumb` and it goes
+     solid. */
+  var media = r.thumb
+    ? '<img src="' + a + r.thumb + '" alt="" aria-hidden="true" loading="lazy">'
+    : '<span class="res-thumb-ph" aria-hidden="true"></span>';
+
+  /* The play badge means "this one plays here", so a gated video does not
+     get it: that card goes to a form, and a play button on it promises
+     something the click does not do. */
+  var badge = isVideo && !r.gated
+    ? '\n            <span class="res-play" aria-hidden="true">' +
+      '<svg viewBox="0 0 24 24"><path d="M8 5.1v13.8L19 12z"/></svg></span>'
+    : '';
+
+  /* The one place a chip sits on a card, and it is a state rather than a
+     category: this one asks for an email and the others do not. */
+  var lock = r.gated ? '\n            <span class="res-lock">Gated</span>' : '';
+
+  /* `live`, not `ph`: a gated item is still a placeholder in its copy but
+     its page exists, so the card is a link and saying "Coming soon" on a
+     link that goes somewhere is a lie. */
+  var go = !live   ? 'Coming soon'
+         : r.video ? 'Watch <span class="arrow" aria-hidden="true">&rarr;</span>'
+         : r.gated ? 'Get it <span class="arrow" aria-hidden="true">&rarr;</span>'
+         : r.file  ? 'Download <span class="arrow" aria-hidden="true">&rarr;</span>'
+         :           'Open <span class="arrow" aria-hidden="true">&rarr;</span>';
+
+  return '        <' + tag + attrs + ' data-res-type="' + r.type + '">\n' +
+    '          <span class="res-thumb">' + media + badge + lock + '\n          </span>\n' +
+    '          <h3 class="res-title">' + r.title + '</h3>\n' +
+    (r.copy ? '          <p class="res-copy">' + r.copy + '</p>\n' : '') +
+    '          <span class="res-foot">\n' +
+    '            <span class="res-go">' + go + '</span>\n' +
+    (r.meta ? '            <span class="res-fact">' + r.meta + '</span>\n' : '') +
+    '          </span>\n' +
+    '        </' + tag + '>';
+}
+
+/* A case study rendered as a resource card, so that shelf sits in the same
+   grid as the other four. The poster card off the homepage is a 3:4
+   portrait, and a row of those beside rows of 16:9 cards reads as two
+   designs on one page. The link, the figures and the placeholder client
+   name all still come from CASES — this is a second view of that data, not
+   a copy of it. */
+function caseResCard(c, depth) {
+  var a = up(depth);
+  return '        <a class="res-card reveal" href="/case-studies/' + c.slug + '" data-res-type="case-studies">\n' +
+    '          <span class="res-thumb">\n' +
+    '            <img src="' + a + 'assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">\n' +
+    '          </span>\n' +
+    '          <h3 class="res-title">[Client name]</h3>\n' +
+    '          <p class="res-copy"><b>' + c.figs[0][0] + c.figs[0][1] + '</b> [measure] &nbsp;&middot;&nbsp; ' +
+                 '<b>' + c.figs[1][0] + c.figs[1][1] + '</b> [measure]</p>\n' +
+    '          <span class="res-foot">\n' +
+    '            <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>\n' +
+    '            <span class="res-fact">' + serviceName(c.svc[0]) + '</span>\n' +
+    '          </span>\n' +
+    '        </a>';
+}
+
+/* ---------- one shelf ----------
+
+   Every section is this function. What differs between them is in the data:
+   a type with an `all` destination shows one row of four and a link under
+   it, a type without one shows two rows of four and pages through the rest.
+
+   PAGINATION IS IN THE MARKUP ONLY WHEN IT IS NEEDED. Eight cards at a page
+   size of eight means no control at all, which is why the games shelf has
+   none and nothing had to be special-cased to get that.
+
+   See-all is a .text-link and not a button. Boxed buttons on this site mean
+   booking or requesting, and nothing else — see the ground rules.
+
+   The section carries data-res-section so the filter at the top can hide it
+   whole. Filtering by hiding sections rather than cards is deliberate: this
+   page is a shelf of shelves, and a filter that leaves five headings behind
+   with one card under each is answering a different question. */
+function resShelf(type, cards, depth, cls) {
+  var per = type.all ? 4 : 8;
+
+  /* A shelf with a See-all destination is a TEASER: it shows one row and
+     sends you to the full list for the rest. Without this slice the fifth
+     case study started a second row on its own, which reads as a broken
+     grid and makes the See-all link pointless. A shelf without a See-all
+     keeps every card and pages through them instead. */
+  if (type.all) cards = cards.slice(0, per);
+
+  var pages = Math.ceil(cards.length / per) || 1;
+
+  var all = type.all
+    ? '\n      <div class="res-all">\n' +
+      '        <a class="text-link" href="' + type.all + '"' +
+      (type.external ? ' target="_blank" rel="noopener"' : '') + '>' +
+      type.allLabel + ' <span class="arrow" aria-hidden="true">&rarr;</span></a>\n' +
+      '      </div>\n'
+    : '';
+
+  var pager = (!type.all && pages > 1)
+    ? '\n      <div class="res-pager" data-res-pager>\n' +
+      '        <button class="res-page-btn" type="button" data-res-prev aria-label="Previous ' +
+        type.name.toLowerCase() + '">&larr;</button>\n' +
+      '        <span class="res-page-count" data-res-page-count role="status">Page 1 of ' + pages + '</span>\n' +
+      '        <button class="res-page-btn" type="button" data-res-next aria-label="More ' +
+        type.name.toLowerCase() + '">&rarr;</button>\n' +
+      '      </div>\n'
+    : '';
+
+  return '\n<section class="section res-shelf' + (cls ? ' ' + cls : '') +
+    '" data-res-section="' + type.slug + '" id="' + type.slug + '">\n' +
+    '  <div class="shell">\n' +
+    '    <div class="res-shelf-head">\n' +
+    '      <h2 class="h2">' + type.name + '</h2>\n' +
+    '      <p class="sec-sub sec-sub-left">' + type.sub + '</p>\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <div class="res-grid" data-res-grid data-res-per="' + per + '">\n' +
+    cards.join('\n') + '\n' +
+    '    </div>\n' +
+    all + pager +
+    '  </div>\n' +
+    '</section>\n';
+}
+
+/* ---------- the featured card ----------
+
+   The one resource carrying `featured: true`, in a full-width card on the
+   brand gradient. It is the homepage disc's own ramp — warm at the top left
+   running out to mist — laid flat across a card rather than drawn as a
+   circle, so the page opens with the site's one decorative device without
+   putting another disc on another page.
+
+   THE INK IS PINNED, the same as .cs-head-panel and .call-panel. The card
+   brings its own light ground with it, so navy that followed the page would
+   turn pale-on-pale the moment someone switched to dark. Navy measures
+   6.4:1 on the mist end of the ramp and 6.9:1 on the warm end, so the type
+   holds wherever on it the words land.
+
+   No label above the title. A full-width gradient card at the top of the
+   page is already saying it is the featured one. */
+function resFeatured(depth) {
+  var r = null;
+  for (var i = 0; i < RESOURCES.length; i++) { if (RESOURCES[i].featured) r = RESOURCES[i]; }
+  if (!r) return '';
+
+  var type = typeByslug(r.type);
+  var href = resHref(r);
+  var go = r.video ? 'Watch it' : r.type === 'games' ? 'Play it' : r.gated ? 'Get it' : 'Open it';
+  var link = r.video
+    ? '<button class="res-feature-go" type="button" data-video="' + r.video + '">'
+    : '<a class="res-feature-go" href="' + href + '">';
+
+  return '\n<!-- ===================== FEATURED =====================\n' +
+'     One resource on the gradient. Move `featured: true` in RESOURCES to\n' +
+'     feature something else; nothing here is written by hand. -->\n' +
+'<section class="res-feature-section">\n' +
+'  <div class="shell">\n' +
+'    <div class="res-feature reveal">\n' +
+'      <div class="res-feature-text">\n' +
+'        <h2 class="res-feature-title">' + r.title + '</h2>\n' +
+'        <p class="res-feature-copy">' + r.copy + '</p>\n' +
+'        ' + link + go + ' <span class="arrow" aria-hidden="true">&rarr;</span>' +
+        (r.video ? '</button>' : '</a>') + '\n' +
+'      </div>\n' +
+'      <p class="res-feature-fact">' + type.name.replace(/s$/, '') +
+        (r.meta ? ' &middot; ' + r.meta : '') + '</p>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n';
+}
+
+/* ---------- the type filter ----------
+
+   One row of pills, single choice, All by default. It hides whole SECTIONS
+   rather than individual cards, which is the honest reading of a page that
+   is a shelf of shelves: filtering to Videos should leave you on the videos
+   shelf, not on five headings with one card under each.
+
+   Generated from RESOURCE_TYPES, so a sixth type is a sixth pill and no
+   edit here. site.js reads data-res-pick and nothing else. */
+function resFilter() {
+  return '\n<!-- ===================== TYPE FILTER =====================\n' +
+'     Generated from RESOURCE_TYPES. Hides sections, not cards. -->\n' +
+'<section class="res-filter-section">\n' +
+'  <div class="shell">\n' +
+'    <div class="res-filter reveal" data-res-filter role="group" aria-label="Filter by resource type">\n' +
+'      <button class="res-tab" type="button" aria-pressed="true" data-res-pick="all">All</button>\n' +
+  RESOURCE_TYPES.map(function (t) {
+    return '      <button class="res-tab" type="button" aria-pressed="false" data-res-pick="' +
+           t.slug + '">' + t.name + '</button>';
+  }).join('\n') + '\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n';
+}
+
+/* ---------- the page ----------
+
+   Header, featured card, filter, then one shelf per type in the order
+   RESOURCE_TYPES declares them. The last shelf carries .to-white because
+   the closing panel bleeds up over whatever is above it.
+
+   The lightbox sits at the end of main, once, outside every section: a
+   <dialog> in the top layer does not care where it is in the document, and
+   one of them serves every video card on the page. */
+var resourcesIndex = {
+  file: 'resources/index.html',
+  depth: 1,
+  navCurrent: '/resources',
+  title: 'Resources — RevHops',
+  description: 'RevOps resources from RevHops: blog posts, case studies, videos, downloadable templates and a couple of games.',
+  h1: 'Resources',
+  lede: 'Everything we have written, recorded, drawn up or built, in one place.',
+
+  /* No artwork column, same as /services: the type is the only thing
+     holding the top of the page and .page-hero-plain steps it down. */
+  heroClass: 'page-hero-nomedia',
+  mainClass: 'res-index',
+
+  body:
+    resFeatured(1) +
+    resFilter() +
+    RESOURCE_TYPES.map(function (t, i) {
+      var cards = t.slug === 'case-studies'
+        ? CASES.map(function (c) { return caseResCard(c, 1); })
+        : resOfType(t.slug).map(function (r) { return resCard(r, 1); });
+      return resShelf(t, cards, 1, i === RESOURCE_TYPES.length - 1 ? 'to-white' : '');
+    }).join('') +
+
+'\n<!-- ===================== VIDEO LIGHTBOX =====================\n' +
+'     One dialog for every ungated video on the page. site.js writes the\n' +
+'     iframe src on open and REMOVES it on close: leaving the src in place\n' +
+'     keeps YouTube playing behind a closed dialog, which is audible. -->\n' +
+'<dialog class="res-lightbox" data-res-lightbox aria-label="Video player">\n' +
+'  <button class="res-lightbox-close" type="button" data-res-lightbox-close aria-label="Close video">\n' +
+'    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>\n' +
+'  </button>\n' +
+'  <div class="res-lightbox-frame" data-res-lightbox-frame></div>\n' +
+'</dialog>\n'
+};
+
+/* ---------- a gated resource's own page ----------
+
+   Generated for every resource carrying `gated: true`, at /resources/<slug>.
+   The left half says what the thing is; the right half is the form that
+   hands it over. Same two-column split /call uses, and for the same reason:
+   the reassurance has to be beside the thing you are asking someone to fill
+   in, not above it where it scrolls away on a phone.
+
+   THE FORM IS A PLACEHOLDER AND SAYS SO. HubSpot portal 46722926 is already
+   in the head of every page; what is missing is the form id. Dropping the
+   embed in replaces .res-form-ph and nothing else moves. */
+function resourcePage(r) {
+  var type = typeByslug(r.type);
+  return {
+    file: 'resources/' + r.slug + '.html',
+    depth: 1,
+    navCurrent: '/resources',
+    title: r.title + ' — RevHops',
+    description: r.copy,
+    h1: r.title,
+    lede: r.copy,
+    heroClass: 'page-hero-nomedia',
+    eyebrow: ['All resources', '/resources'],
+    meta: [['Type', type.name.replace(/s$/, '')], ['Format', r.meta || '—'], ['Cost', 'Free']],
+    noClose: true,
+    body:
+'\n<section class="section res-gate-section to-white">\n' +
+'  <div class="shell">\n' +
+'    <div class="res-gate">\n' +
+'      <div class="res-gate-text reveal reveal-left">\n' +
+'        <p class="statement">[What this is, in a line.]</p>\n' +
+'        <p class="statement-note">[Two or three sentences on who it is for and what they will\n' +
+'          be able to do with it that they cannot do now.]</p>\n' +
+'      </div>\n' +
+'      <div class="res-gate-form reveal reveal-right">\n' +
+'        <h2 class="res-gate-title">Where should we send it?</h2>\n' +
+'        <div class="res-form-ph">\n' +
+'          <span class="res-form-note">HubSpot form</span>\n' +
+'          <p>Portal 46722926 is already loaded. Drop the form id in and this block goes.</p>\n' +
+'        </div>\n' +
+'      </div>\n' +
+'    </div>\n' +
+'  </div>\n' +
+'</section>\n'
+  };
+}
+
+var GATED = RESOURCES.filter(function (r) { return r.gated; });
+
 /* ---------- write everything ---------- */
 
 var PAGES = [servicesIndex]
   .concat(SERVICES.map(servicePage))
   .concat([caseIndex])
   .concat(CASES.map(casePage))
+  .concat([resourcesIndex])
+  .concat(GATED.map(resourcePage))
   .concat([pricing, hubspot, about, contact, terms, privacy, callPage, clientCallPage, puzzle, hop]);
 
 var written = 0;
