@@ -34,6 +34,8 @@ between roughly 10 and 500 employees in the US and Europe.
 - [RevOps consulting](https://revhops.com/services/revops-consulting)
 - [Lead to cash process mapping](https://revhops.com/services/lead-to-cash-process-mapping)
 - [Case studies](https://revhops.com/case-studies) — client work and results
+- [Resources](https://revhops.com/resources) — blog, case studies, videos,
+  downloadable templates and a couple of games, in one filterable list
 - [HubSpot](https://revhops.com/hubspot) — partner status, certifications, and
   the free portal audit
 - [Pricing](https://revhops.com/pricing) — published starting prices

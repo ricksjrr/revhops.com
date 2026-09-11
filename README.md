@@ -34,6 +34,8 @@ services/index.html                     /services
 services/solution-design.html           /services/solution-design
 case-studies/index.html                 /case-studies
 case-studies/case-study-one.html        /case-studies/case-study-one
+resources/index.html                    /resources
+resources/gated-download.html           /resources/gated-download
 ```
 
 Nothing goes deeper than one level, and nothing else becomes a folder unless
@@ -125,12 +127,58 @@ cannot drift.
 - `NAV_ITEMS` is the navigation. One edit, every page.
 - `SERVICES` and `CASES` drive the five service pages and the five case study
   pages, plus the lists that link to them.
+- `RESOURCES` and `RESOURCE_TYPES` drive the whole of `/resources` — the
+  shelves, the filter, the pagination, the video lightbox and a generated
+  landing page for every gated item. **Adding a resource is one object in
+  `RESOURCES` and a rebuild**; see "Adding a resource" below.
 - `STAMP` is the cache stamp, and has to match `index.html` by hand.
 - `index.html` is deliberately not in `PAGES`. The maturity hero is one of a
   kind and templating it would cost more than it saved.
 
 Editing a generated page by hand works until the next run, which is to say it
 does not. Put the change in the generator.
+
+This is not hypothetical. `about.html` was renamed to `about-us.html` and
+rewritten by hand on 10 September without the generator being told, so the
+next run wrote the old copy back to the old filename and the nav kept
+pointing at it. It was folded back in on 11 September, and the page has since
+moved back to `/about`.
+
+## Adding a resource
+
+One object in `RESOURCES` in `tools/build-pages.js`, then
+`node tools/build-pages.js`. There is no second step: the shelf, the filter,
+the pagination, the lightbox and the gated landing page all follow from it.
+
+```js
+{ type: 'videos', title: 'How to fix a lifecycle', meta: '8 min',
+  copy: 'One line on what it shows.', video: 'dQw4w9WgXcQ' }
+
+{ type: 'downloadables', title: 'Lead to cash map template', meta: 'XLSX',
+  copy: 'The one we use on every mapping engagement.',
+  file: 'assets/files/lead-to-cash-map.xlsx' }
+
+{ type: 'downloadables', title: 'The RevOps audit checklist', meta: 'PDF',
+  copy: 'Forty questions, in the order we ask them.',
+  gated: true, slug: 'revops-audit-checklist' }
+```
+
+- `type` is one of the `RESOURCE_TYPES` slugs: `blog`, `case-studies`,
+  `videos`, `downloadables`, `games`.
+- A **bracketed** title means placeholder, and the card renders inert rather
+  than as a link that goes nowhere.
+- `video` opens the lightbox in place. `gated: true` generates
+  `/resources/<slug>` with the form on it and sends the card there instead —
+  gated is a flag rather than a type, so a video and a download are gated the
+  same way.
+- `featured: true` puts it in the gradient card at the top. Exactly one entry
+  carries it.
+- **Case studies are not in `RESOURCES`.** That shelf reads `CASES` directly,
+  so the two lists cannot drift apart.
+
+A type with an `all` destination in `RESOURCE_TYPES` shows four cards and a
+See-all link; one without shows eight and paginates. That single field is the
+whole difference between the two kinds of shelf.
 
 ## Verifying a change
 
@@ -144,8 +192,21 @@ cd ~/Downloads/Claude/revhops.com && node tools/smoke.js
 It lives in the repo on purpose — it was rebuilt from scratch three times after
 `/tmp` was cleared between sessions.
 
-It loads the homepage, runs both scripts, and checks the structure, the cache
-stamp, every local file reference, stylesheet brace balance, that the document
+There is a second suite for `/resources`, since `smoke.js` reads the homepage
+and nothing else:
+
+```
+node tools/resources-smoke.js
+```
+
+It checks the shelves and their order, the See-all links, that placeholder
+cards are inert, that gated items route to their own generated page, that the
+lightbox tears its iframe down on close, and every internal link on the page.
+Pagination is tested against a synthetic twelve-card shelf, because no real
+shelf is long enough to page yet.
+
+`smoke.js` loads the homepage, runs both scripts, and checks the structure,
+the cache stamp, every local file reference, stylesheet brace balance, that the document
 appears exactly once, the dark theme's contrast figures recomputed from the
 stylesheet, and a long list of things that were removed and must stay removed.
 

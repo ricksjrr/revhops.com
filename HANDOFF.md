@@ -5,7 +5,8 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `202609091500`
+**Current build stamp:** `cb208f43d3` — derived from a hash of the assets by
+`tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
 
@@ -23,6 +24,168 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   disk for exactly this reason.
 - **there is no remote yet**, so the Pushing section at the end still does
   not work as written. See "Deploying to GitHub Pages" in the README.
+
+---
+
+## 11 September: the resources page
+
+**`/resources`** is the central shelf for everything RevHops publishes. It is
+in the nav between Case studies and HubSpot, and in the footer's Company
+column.
+
+**HOW TO ADD A RESOURCE — read this before anything else.** Adding one is a
+single object in `RESOURCES` in `tools/build-pages.js`, then
+`node tools/build-pages.js`. Nothing else. Not the page, not the CSS, not
+the JavaScript, not the filter, not the pagination.
+
+```js
+{ type: 'videos', title: 'How to fix a lifecycle', meta: '8 min',
+  copy: 'One line on what it shows.', video: 'dQw4w9WgXcQ' }
+```
+
+The fields, in full:
+
+| field | what it does |
+| --- | --- |
+| `type` | required, one of the `RESOURCE_TYPES` slugs: `blog`, `case-studies`, `videos`, `downloadables`, `games` |
+| `title` | what the card says. **Square brackets mean placeholder** and the card renders as an inert div rather than a dead link |
+| `copy` | a line or two under the title |
+| `meta` | the small fact in the card's footer: a read time, a run time, a file format |
+| `href` | where the card goes. Write it root-absolute (`/puzzle`); `relativise()` handles the rest |
+| `video` | a YouTube id. Opens the lightbox instead of navigating. Do not also give it an `href` |
+| `gated` | `true` generates `/resources/<slug>` as a landing page with the form on it and points the card there |
+| `slug` | required when `gated`, because it becomes the URL |
+| `file` | for an ungated download, the path to the asset. The card links straight at it with a `download` attribute |
+| `featured` | exactly one entry carries this. It is the gradient card at the top |
+
+**Gated is a flag, not a type.** A video and a download are gated the same
+way and by the same field, which is why "some videos will be gated and some
+will not" costs nothing. A gated card gets the chip, loses the play badge —
+it goes to a form, and a play button would promise something the click does
+not do — and links to its own generated page.
+
+**Case studies are not in `RESOURCES`.** They are already in `CASES`, they
+already have cards and pages, and a second copy of them is how two lists
+drift apart. The case studies shelf reads `CASES` directly through
+`caseResCard()`, which is a second view of that data rather than a copy.
+
+**The two kinds of shelf, and the one line that decides which.** A type with
+an `all` destination in `RESOURCE_TYPES` is a **teaser**: it shows four cards
+and a See-all link, and `resShelf()` slices the rest away. A type without one
+shows eight in a 4x2 grid and pages through the remainder. That is the whole
+difference between them, and it is a data difference rather than two blocks
+of markup.
+
+- Blog's See-all is `https://blog.revhops.com`, where the HubSpot blog will
+  live. **Nothing is there yet**, so that link 404s until James stands the
+  page up. It opens in a new tab, since it leaves the site.
+- Case studies' See-all is `/case-studies`.
+- Videos, Downloadables and Games have no See-all and paginate instead.
+
+**See-all is a `.text-link`, not a `.btn`.** Boxed buttons on this site mean
+booking or requesting, and a See-all does neither. Same for the featured
+card's link. The resources smoke test checks this, because it is the kind of
+thing that gets "improved" back into a button.
+
+**The filter hides sections, not cards.** One row of choices above the
+shelves, single selection, All by default, generated from `RESOURCE_TYPES`.
+Filtering to Videos leaves you on the videos shelf; filtering by hiding
+individual cards would leave five headings with one card under each, which
+answers a different question. `/resources#videos` lands with the filter
+already set, so the footer or an email can deep-link to one shelf.
+
+**Pagination is in the markup only when it is needed.** Eight cards at a page
+size of eight produces no control at all, which is why the games shelf has
+none and nothing had to be special-cased to get that. Cards are hidden rather
+than removed, so the reveal animation and the DOM order survive, and the
+arrows disable rather than disappear at the ends of the run — a control that
+vanishes moves the one beside it.
+
+**One `<dialog>` serves every ungated video.** It sits at the end of `main`,
+outside every section, because a dialog in the top layer does not care where
+it is in the document and cannot be clipped by a section's overflow.
+
+**The iframe is built on open and destroyed on close.** Setting `src` once and
+leaving it there keeps YouTube playing behind a closed dialog, which is
+audible; clearing `src` alone leaves a dead iframe holding a connection.
+Replacing the whole element is the only version that reliably stops the
+sound. The teardown hangs off the dialog's own `close` event, so the close
+button, Escape and a backdrop click all go through one path. Embeds are
+`youtube-nocookie.com`.
+
+**The featured card is the one real gradient below the homepage.** It is the
+hero disc's own ramp — warm at the top left running out to mist — laid flat
+across a full-width card rather than drawn as a circle. The disc itself stays
+the homepage's device; putting one on every page is what made it wallpaper
+the first time.
+
+Its ink is **pinned**, like `.cs-head-panel` and `.call-panel`: the card
+brings its own light ground with it, so navy that followed the page would go
+pale-on-pale the moment someone switched to dark. Navy measures 6.5:1 on the
+warm end of the ramp and 7.7:1 on the palest; the fact line's `#44536A` holds
+4.8:1 on the worst of it. Re-measure if the ramp changes.
+
+**It currently features the RevOps puzzle**, because that and the run are the
+only finished resources on the site. Move `featured: true` to something else
+and the card follows; nothing there is written by hand.
+
+**The chosen filter tab is a literal in both directions.** Written with
+`--navy` and `--paper` it disappeared on a dark page: `--navy` is the page
+ground there and `--paper` resolves to the same navy, so the pressed tab was
+navy on navy. It inverts instead, exactly the way `.btn-primary` does, and
+both halves are literals so neither can follow the theme somewhere it should
+not go.
+
+**Everything on the page is a placeholder except the games and the case
+studies**, by choice on 11 September. Ten bracketed cards across blog, videos
+and downloadables, each an inert div. Filling one in is a title and an
+`href`, or a `video` id.
+
+**Two gated skeletons exist**, `/resources/gated-video` and
+`/resources/gated-download`, generated by `resourcePage()`. They are there so
+the gate template is visible and provable rather than theoretical. Their copy
+is bracketed and their form is the dashed well: HubSpot portal `46722926` is
+already in the head of every page, and what is missing is the form id.
+Dropping the embed in replaces `.res-form-ph` and nothing else moves. Delete
+both entries from `RESOURCES` if he would rather not ship skeletons.
+
+**Verify with `node tools/resources-smoke.js`.** It is the sibling of
+`tools/smoke.js` — that one reads the homepage and nothing else — and it
+checks the shelves, the See-all links, the placeholder cards, the gated
+routing, the lightbox teardown and every internal link on the page.
+Pagination is tested against a synthetic twelve-card shelf at the foot of the
+file, because no real shelf is long enough to page yet.
+
+---
+
+## 11 September: two sessions were in this folder at once
+
+Worth knowing, because the evidence is confusing otherwise.
+
+While the resources page was being built, a second session rebuilt the About
+page, moved it from `/about-us` back to `/about`, deleted `about-us.html` and
+committed — sweeping the uncommitted resources work into its own commit,
+`7a95557`, because every page's nav links `/resources` and the two could not
+ship apart. So that commit's message describes the About work and mentions
+the resources work as a passenger.
+
+Nothing was lost and both suites pass, but two things are worth carrying
+forward:
+
+- **`/about` is the live URL again.** `about-us.html` is gone. Old inbound
+  links to `/about-us` will 404 until a redirect goes in. Earlier in the same
+  day the opposite was true, and this file said so; that note has been
+  replaced by this one.
+- **Check `git log` before assuming a change is yours.** A commit here may
+  have been written by a session that is still running.
+
+**The underlying lesson stands regardless: after editing a generated page by
+hand, fold it back into `tools/build-pages.js` in the same session.** The
+first version of this note existed because `about.html` was renamed and
+rewritten by hand on 10 September without the generator being told, so the
+next build wrote the old copy back out to the old filename and the nav kept
+pointing at the stale page. The generator will not tell the next person the
+page was hand-edited.
 
 ---
 
@@ -847,6 +1010,15 @@ coming back.
    two `[measure]` figures, two bracketed lines and the placeholder SVG.
 
 **Blocking launch, needs building**
+
+- Real resources. Ten bracketed placeholder cards on `/resources` across
+  Blog, Videos and Downloadables. Each one is a title and an `href` in
+  `RESOURCES` in `tools/build-pages.js`.
+- `blog.revhops.com` does not exist. The See-all under the Blog shelf points
+  at it and 404s until the HubSpot blog is stood up.
+- The two gated skeletons at `/resources/gated-video` and
+  `/resources/gated-download` have bracketed copy and no form. They need the
+  HubSpot form id, or deleting from `RESOURCES`.
 
 - Five service detail pages. `services.html` rows link to
   `revops-consulting.html`, `solution-design.html`, `crm-implementations.html`,
