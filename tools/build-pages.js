@@ -139,7 +139,7 @@ links + '\n' +
 '          <path d="M20.1 14.6A8.4 8.4 0 0 1 9.4 3.9a8.4 8.4 0 1 0 10.7 10.7z"/>\n' +
 '        </svg>\n' +
 '      </button>\n' +
-'      <a class="btn btn-primary" href="/call">Schedule a call</a>\n' +
+'      <a class="btn btn-primary" href="/call">Schedule a discovery call</a>\n' +
 '      <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-label="Menu"><span></span></button>\n' +
 '    </div>\n' +
 '  </div>\n' +
@@ -244,7 +244,7 @@ function footer(p) {
 '\n' +
 '      <div class="footer-brand">\n' +
 '        <img class="footer-mark" src="' + a + 'assets/img/revhops-logo-white.png" alt="revhops">\n' +
-'        <p class="footer-pitch">Revenue operations for teams that needed it fixed last quarter.</p>\n' +
+'        <p class="footer-pitch">We help revenue growth teams make the hop from chaos to clarity through people, systems &amp; tools.</p>\n' +
 '        <a class="footer-mail" href="mailto:team@revhops.com">team@revhops.com</a>\n' +
 '        <p class="footer-place">Phoenix, Arizona</p>\n' +
 '      </div>\n' +
@@ -1393,7 +1393,7 @@ AUDIT_ROW +
 '\n' +
 '    <div class="svc-cta reveal">\n' +
 '      <p>Not sure what your team needs?</p>\n' +
-'      <a class="btn btn-primary" href="/call">Schedule a call</a>\n' +
+'      <a class="btn btn-primary" href="/call">Schedule a discovery call</a>\n' +
 '    </div>\n', 'section svc-section') +
 
     /* THE WORK — the homepage's rail with five checkboxes over it.
@@ -1707,7 +1707,7 @@ var hubspot = {
      link: this is the one page where the audit and the call are two real
      starting points rather than one ask and an afterthought. */
   headButtons: '          <a class="btn btn-primary" href="/audit">Request a HubSpot audit</a>\n' +
-               '          <a class="btn btn-outline" href="/call">Schedule a call</a>',
+               '          <a class="btn btn-outline" href="/call">Schedule a discovery call</a>',
 
   body:
 
@@ -2329,7 +2329,7 @@ var puzzle = {
 '    <p class="pz-record" data-pz-record hidden>New personal best</p>\n' +
 '    <div class="btn-row">\n' +
 '      <button class="btn btn-primary" type="button" data-pz-again>Play again</button>\n' +
-'      <a class="btn btn-outline" href="/call">Schedule a call</a>\n' +
+'      <a class="btn btn-outline" href="/call">Schedule a discovery call</a>\n' +
 '    </div>\n' +
 '  </div>\n' +
 '</dialog>\n'
@@ -2407,7 +2407,7 @@ var hop = {
 '    <p class="hp-record" data-hp-record hidden>New personal best</p>\n' +
 '    <div class="btn-row">\n' +
 '      <button class="btn btn-primary" type="button" data-hp-again>Run again</button>\n' +
-'      <a class="btn btn-outline" href="/call">Schedule a call</a>\n' +
+'      <a class="btn btn-outline" href="/call">Schedule a discovery call</a>\n' +
 '    </div>\n' +
 '  </div>\n' +
 '</dialog>\n'
@@ -2981,7 +2981,7 @@ var pipedrive = {
      call; here the honest first step is thirty days inside the product. */
   headButtons: '          <a class="btn btn-primary" href="' + PD_TRIAL + '"\n' +
                '             target="_blank" rel="noopener sponsored">Start a free 30-day trial</a>\n' +
-               '          <a class="btn btn-outline" href="/call">Schedule a call</a>',
+               '          <a class="btn btn-outline" href="/call">Schedule a discovery call</a>',
 
   body:
 
@@ -3607,7 +3607,7 @@ function hubPage(h) {
 
     /* The call first and the audit second, which is the site's usual order.
        /hubspot inverts it because the audit is that page's own offer. */
-    headButtons: '          <a class="btn btn-primary" href="/call">Schedule a call</a>\n' +
+    headButtons: '          <a class="btn btn-primary" href="/call">Schedule a discovery call</a>\n' +
                  '          <a class="btn btn-outline" href="/contact">Request a portal audit</a>',
 
     body:

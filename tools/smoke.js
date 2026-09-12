@@ -236,8 +236,8 @@ console.log('\n— services —');
   // a prompt, not a heading: body face at normal weight
   /font-weight: 400/.test(rule('.svc-cta p')) ? ok('cue is unbolded') : bad('cue is still bold');
   const sh = d.querySelector('.svc-list').closest('section').querySelector('.h2').textContent.trim();
-  sh === "RevOps services that scale with you, wherever you're at"
-    ? ok('services heading updated') : bad('services heading is "' + sh + '"');
+  sh === "RevOps services that scale with you"
+    ? ok('services heading is the line James wrote') : bad('services heading is "' + sh + '"');
   d.querySelector('.svc-list').closest('section').querySelector('.sec-head .sec-sub')
     ? ok('services section has a subheading') : bad('no subheading under the services heading');
 }
@@ -522,13 +522,12 @@ console.log('\n— testimonials —');
 /* ------------------------------------------------------------- highlights */
 console.log('\n— highlights —');
 {
-  // removed 3 Sept, asked for again on the 6th. These five phrases are the
-  // ones James named; do not add more without asking.
+  // Removed 3 Sept, asked for again on the 6th, and the warm background
+  // retired on the 12th - .hl paints nothing now and only bolds inside a
+  // testimonial. James's copy rewrite on the 12th then dropped the markers
+  // from three of the four section heads, so one is left.
   const want = {
-    "RevOps services that scale with you, wherever you're at": "wherever you're at",
     "We've hopped with some of the best": 'some of the best',
-    'Small by design and staying that way': 'Small by design',
-    'Experts in all of the tools in your RevOps stack': 'all of the tools',
   };
   const heads = [...d.querySelectorAll('h2.h2')];
   for (const [full, phrase] of Object.entries(want)) {
@@ -545,9 +544,9 @@ console.log('\n— highlights —');
            && /and transparent$/.test(inQuote.textContent.replace(/\s+/g, ' ').trim()))
     ? ok('the quote body highlight runs from "James has taken" to "and transparent"')
     : bad('the quote highlight is "' + (inQuote ? inQuote.textContent.replace(/\s+/g, ' ').trim().slice(0, 40) : 'absent') + '"');
-  // four section heads plus one in each of the three testimonials
-  d.querySelectorAll('.hl').length === 7
-    ? ok('exactly seven highlights, no drift') : bad(d.querySelectorAll('.hl').length + ' highlights');
+  // one section head plus one in each of the three testimonials
+  d.querySelectorAll('.hl').length === 4
+    ? ok('exactly four highlights, no drift') : bad(d.querySelectorAll('.hl').length + ' highlights');
   [...d.querySelectorAll('.testi-col')].every(c => c.querySelector('.quote p .hl'))
     ? ok('every testimonial carries one') : bad('a testimonial is missing its highlight');
   // RETIRED 12 September. The marker paints nothing at any width now; the

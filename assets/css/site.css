@@ -78,7 +78,12 @@
   --gutter: clamp(20px, 5vw, 64px);
   --nav-h: 86px;
   --nav-float-gap: 20px;              /* floating bar's clearance from the top */
-  --nav-float-w: min(77.6vw, 1417px); /* its width once collapsed, 15% up from 67.5vw/1232 */
+  /* Its width once collapsed. The floor was added on 12 September: the bar
+     now carries seven links and a button reading "Schedule a discovery call",
+     and at 77.6vw alone that content overflowed the pill on every laptop
+     narrower than about 1366px. The floor only binds below that width; above
+     it, 77.6vw is still what wins and nothing has changed. */
+  --nav-float-w: min(1417px, max(77.6vw, 1060px));
   --nav-float-w-sm: calc(100% - 24px);
 
   --hero-bleed-tail: 62vw; /* how far hero discs carry into the section below */
@@ -575,7 +580,9 @@ main > section > .shell {
 .nav-toggle[aria-expanded="true"] span::before { transform: translateY(5px) rotate(45deg); }
 .nav-toggle[aria-expanded="true"] span::after { transform: translateY(-5px) rotate(-45deg); }
 
-@media (max-width: 940px) {
+/* 940 until 12 September. Seven links and a longer button need more room
+   than a 940px bar has, so they tuck away sooner. */
+@media (max-width: 1100px) {
   /* the panel hangs off the bar itself, so it lines up in both states */
   .nav-links {
     position: absolute;
@@ -4152,7 +4159,9 @@ a.pcard:hover .arrow { transform: translateX(5px); }
    Scoped to the breakpoint where the panel actually exists. Unscoped, the
    inset ring painted a box around the four desktop links, which are not a
    panel at all: they are four inline links in the bar. */
-@media (max-width: 940px) {
+/* 940 until 12 September. Seven links and a longer button need more room
+   than a 940px bar has, so they tuck away sooner. */
+@media (max-width: 1100px) {
   :root[data-theme="dark"] .nav-links {
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28),
                 0 20px 44px -24px rgba(6, 10, 16, .9);

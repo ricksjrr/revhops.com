@@ -137,7 +137,16 @@ for t in re.findall(r"var CARD_TITLES = \[(.*?)\]", js, re.S):
 
 ps = re.search(r"var PROBLEM_SPLIT = \{(.*?)\n  \};", js, re.S).group(1)
 hero.append(("Hero — Problems card (slider)", js_str(r"head:\s*'([^']*)'")))
-hero.append(("Hero — Problems card (slider)", re.sub(r"'\s*\+\s*'", '', re.search(r"body:\s*'(.*?)'\s*\n\s*\};", ps + '\n  };', re.S).group(1))))
+PROBLEM_LABEL = 'Hero \u2014 Problems card (slider)'
+# body became a list of paragraphs on 12 September, when James's rewrite of it
+# had a blank line in the middle. One row per paragraph now.
+body_m = re.search(r"body:\s*\[(.*?)\]", ps, re.S)
+if body_m:
+    for para in js_list(body_m.group(1)):
+        hero.append((PROBLEM_LABEL, para))
+else:
+    hero.append((PROBLEM_LABEL, re.sub(r"'\s*\+\s*'", '',
+        re.search(r"body:\s*'(.*?)'\s*\n\s*\};", ps + '\n  };', re.S).group(1))))
 
 stages = re.search(r"var STAGES = \[(.*?)\n  \];", js, re.S).group(1)
 for blk in re.findall(r"\{\s*\n\s*name: '(.*?)',(.*?)caseStudy: \{(.*?)\}\s*\n\s*\}", stages, re.S):
@@ -153,13 +162,23 @@ for blk in re.findall(r"\{\s*\n\s*name: '(.*?)',(.*?)caseStudy: \{(.*?)\}\s*\n\s
         mm = re.search(f2 + r":\s*'([^']*)'", cs)
         if mm: hero.append((f"Hero — {name}: case study (slider)", mm.group(1)))
 
-for label, txt in [("Hero — capture card (slider)", js_str(r"stage-form-title\">([^<]*)<")),
-                   ("Hero — capture card (slider)", 'Work email'),
-                   ("Hero — capture card (slider)", 'Send it'),
-                   ("Hero — card links (slider)", 'Request a free tech stack audit'),
-                   ("Hero — card links (slider)", 'Book a discovery call'),
-                   ("Hero — card links (slider)", 'Read the story')]:
-    hero.append((label, txt))
+# Read these out of the render rather than repeating them here. They were
+# literals to begin with, which meant the extractor kept reporting the old
+# label after the JS had been changed - it was verifying itself, not the file.
+def between(after, before):
+    m = re.search(re.escape(after) + r"(.*?)" + re.escape(before), js, re.S)
+    return m.group(1).strip() if m else None
+
+CARD_LINK = "Hero \u2014 card links (slider)"
+CAPTURE   = "Hero \u2014 capture card (slider)"
+hero.append((CAPTURE, between('stage-form-title">', '</h2>')))
+hero.append((CAPTURE, between('placeholder="', '"')))
+m = re.search(r"'([^']+) <span class=\"arrow\">&rarr;</span></button>'", js)
+hero.append((CAPTURE, m.group(1) if m else None))
+for m in re.finditer(r"'([A-Z][^'<]{4,60}?) <span class=\"arrow\">&rarr;</span></a>'", js):
+    hero.append((CARD_LINK, m.group(1)))
+
+
 
 # hero first, then the rest of the page
 out = []

@@ -30,65 +30,65 @@
         'Founders wearing every hat, maybe one early hire in sales or ops',
         'Pre-revenue to around $1M ARR'
       ],
-      have: ['Website builder', 'Email tool', 'Shared inbox'],
-      missing: ['CRM discipline', 'Attribution', 'Ticketing'],
+      have: ['Working website', 'Everything’s in spreadsheets', 'Contact form'],
+      missing: ['CRM', 'Defined sales process', 'Marketing attribution'],
       problems: [
-        'No data hygiene habits, so the first CRM launches dirty',
-        'Deal knowledge lives only in the founder’s head',
-        'Informal customer promises go undocumented'
+        'Nowhere to look for numbers that you can trust',
+        'Deal knowledge lives only in someone’s head',
+        'Not sure what lever to pull to grow'
       ],
       caseStudy: {
-        who: 'Makarios Design Build',
-        line: 'Case study description goes here and should describe what the case study is about.',
+        who: 'Ike Commercial Real Estate',
+        line: 'Ike Commercial Real Estate needed a way to systematize the way they do business.',
         href: '#'
       }
     },
     {
       name: 'Scaleup',
       situation: [
-        '10 to 50 employees',
-        'First dedicated marketer, one to three AEs or SDRs, first support hire',
-        'Around $1M to $10M ARR'
+        '10 to 30 employees',
+        'First dedicated marketer; small but growing sales team.',
+        'Around $1M to $5M'
       ],
-      have: ['Entry-tier CRM', 'Forms and landing pages', 'Helpdesk'],
-      missing: ['Lead scoring', 'MQL and SQL criteria', 'Sales engagement'],
+      have: ['Out of the box CRM setup', 'Paid advertising', 'Customer support channel'],
+      missing: ['Customer journey mapped out', 'Defined deal pipelines & stages', 'Lead scoring'],
       problems: [
-        'Marketing and sales quietly disagree on what "qualified" means',
+        'Marketing and sales quietly disagree on what “qualified” means',
         'No clean handoff, so leads fall through the cracks unnoticed',
-        'The founder is still the real approval path, whatever the process says'
+        'Getting what you need to make decisions is painful'
       ],
       caseStudy: {
-        who: 'Makarios Design Build',
-        line: 'Case study description goes here and should describe what the case study is about.',
+        who: 'The Davani Group',
+        line: 'Davani Group had PMF, but needed systems & processes documented in order to grow.',
         href: '#'
       }
     },
     {
       name: 'Growth',
       situation: [
-        '50 to 200 employees',
-        'SDR and AE split, a small marketing team, dedicated CS, first RevOps hire',
-        'Around $10M to $50M ARR'
+        '30 to 100 employees',
+        'Multi-function sales team (SDR, AE, etc) and a small marketing team; CRO added to executive team',
+        'Up to around $25M'
       ],
-      have: ['Marketing automation', 'Sales engagement', 'CS platform'],
-      missing: ['Data governance', 'Single source of truth', 'RevOps headcount'],
+      have: ['Marketing automation', 'Sales enablement', 'CS platform'],
+      missing: ['AI-assisted workflows', 'Single source of truth', 'Lifecycle stage automation'],
       problems: [
         'Integrations outpace anyone’s ability to govern them',
         'Everyone has their own dashboard and nobody trusts the numbers',
         'One RevOps hire is admin, analyst and process owner at the same time'
       ],
       caseStudy: {
-        who: 'Makarios Design Build',
-        line: 'Case study description goes here and should describe what the case study is about.',
+        who: 'Core Income',
+        line: 'Core Income implemeted a customized sales process that adapted to the uniuqe way they do business.',
         href: '#'
       }
     },
     {
       name: 'Maturity',
       situation: [
-        '200 to 1,000 employees',
-        'Segmented sales org, dedicated enablement, a full CS org, a multi-person RevOps team',
-        'Around $50M to $250M ARR'
+        '100 to 250 employees',
+        'Segmented sales org, fully-staffed internal marketing team; first Head of Revops hire',
+        'Up to $100M'
       ],
       have: ['ABM platform', 'Deal desk', 'Advanced forecasting'],
       missing: ['Clean data model', 'Unified customer data'],
@@ -98,19 +98,19 @@
         'Attribution and comp models sophisticated enough to be gamed'
       ],
       caseStudy: {
-        who: 'Makarios Design Build',
-        line: 'Case study description goes here and should describe what the case study is about.',
+        who: 'Woodside Homes',
+        line: 'To support operations across most of the US, Woodside implemented business unit level reporting & process standardization.',
         href: '#'
       }
     },
     {
       name: 'Enterprise',
       situation: [
-        '1,000+ employees',
-        'Regional and global GTM teams, specialized roles, RevOps as its own department',
-        '$250M+ ARR'
+        '250+ employees',
+        'Regional and global GTM teams, specialized roles; global scale of operations',
+        '$100M+'
       ],
-      have: ['Enterprise suite', 'CDP', 'PRM', 'BI and warehouse'],
+      have: ['Enterprise suite', 'CDP', 'PRM', 'BI and data warehouse'],
       missing: ['Consolidated CRM', 'Consistent standards', 'One customer view'],
       problems: [
         'Multiple CRMs never consolidated after M&A',
@@ -118,8 +118,8 @@
         'Legacy systems are too big to fail, and also the bottleneck'
       ],
       caseStudy: {
-        who: 'Makarios Design Build',
-        line: 'Case study description goes here and should describe what the case study is about.',
+        who: 'Ignite Group',
+        line: 'Ignite Group migrated their 3-country sales organization from Salesforce to HubSpot’s Enterprise suite.',
         href: '#'
       }
     }
@@ -150,13 +150,13 @@
      These live at module scope because build() writes them and init()'s
      syncHeadline() reads them — declared inside build(), the second one
      throws a ReferenceError and takes the whole card render down with it. */
-  var HEAD_LEAD  = 'Where is your team';
-  var HEAD_TAIL  = 'at today?';
+  var HEAD_LEAD  = 'Where are you at on your';
+  var HEAD_TAIL  = 'RevOps journey today?';
 
   var CARD_TITLES = [
-    'Your situation may look like this',
-    'Problems you’re likely facing',
-    'A case study that’s relevant to you'
+    'Your situation looks like',
+    'Challenges you’re facing',
+    'Case study for a similar team'
   ];
   var CARD_COUNT = CARD_TITLES.length;
 
@@ -164,9 +164,11 @@
      in the first card. Placeholder for now. If this should read differently
      per stage, move it into the STAGES entries above. */
   var PROBLEM_SPLIT = {
-    head: 'What it usually costs you',
-    body: 'Time, mostly. Reports rebuilt by hand, leadership arguing about which ' +
-          'number is right, and deals that stall because nobody owns the next step.'
+    head: 'What it’s costing you',
+    body: [
+      'You don’t know what to do to grow, but you know you need to do something. No estabalished processes yield inconsistent results and creates a lot of frustration.',
+      'More than once, you’ve wondered “Should growing be this hard?”'
+    ]
   };
 
   function esc(s) {
@@ -229,7 +231,7 @@
            which stage they picked.
            ========================================================== */
         '<form class="stage-form" data-stage-form>' +
-          '<h2 class="stage-form-title">Send me the info for my team’s stage.</h2>' +
+          '<h2 class="stage-form-title">Send me the info for my team’s stage</h2>' +
           '<div class="stage-form-fields">' +
             '<label class="sr-only" for="sf-email">Work email</label>' +
             '<input id="sf-email" name="email" type="email" ' +
@@ -246,8 +248,7 @@
         '<div class="mat-head">' +
           '<h1 class="h1" data-nav-clear data-headline>' + esc(HEAD_LEAD) + ' ' +
             '<span class="h1-tail">' + esc(HEAD_TAIL) + '</span></h1>' +
-          '<p class="lede">RevOps is the people, systems and tools that impact revenue growth through ' +
-            'marketing, sales and customer service. But every team is somewhere different along that journey.</p>' +
+          '<p class="lede">Move the slider to identify where you’re at and what challenges you might be facing. We’ll share an example of how we helped a similar team get to the next stage of growth!</p>' +
         '</div>' +
 
         '<div class="mat-track-wrap">' +
@@ -383,10 +384,12 @@
         list(s.problems) +
         '<div class="mcard-split">' +
           '<h3 class="mcard-subhead">' + esc(PROBLEM_SPLIT.head) + '</h3>' +
-          '<p class="mcard-note">' + esc(PROBLEM_SPLIT.body) + '</p>' +
+          PROBLEM_SPLIT.body.map(function (t) {
+            return '<p class="mcard-note">' + esc(t) + '</p>';
+          }).join('') +
         '</div>' +
         '<a class="mcard-link" href="' + esc(CTA) + '">' +
-          'Book a discovery call <span class="arrow">&rarr;</span></a>',
+          'Schedule a discovery call <span class="arrow">&rarr;</span></a>',
 
         /* copy left, square thumbnail right, then the link on its own line
            so it lands in the bottom-left corner like the other two cards */
