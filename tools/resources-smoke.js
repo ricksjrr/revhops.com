@@ -47,7 +47,7 @@ d.querySelectorAll('[data-res-section="case-studies"] .res-card').length===4
   ? ok('and each links at its own case study page') : bad('a case card links somewhere else');
 
 const seeAll=[...d.querySelectorAll('.res-all a')].map(a=>a.getAttribute('href'));
-seeAll.length===2 && seeAll.includes('https://blog.revhops.com') && seeAll.some(h=>/case-studies$/.test(h))
+seeAll.length===2 && seeAll.some(h=>/\/resources\/blog$/.test(h)) && seeAll.some(h=>/case-studies$/.test(h))
   ? ok('two See-all links: the HubSpot blog and /case-studies') : bad('see-all links are '+seeAll);
 [...d.querySelectorAll('.res-all a')].every(a=>a.classList.contains('text-link'))
   ? ok('and both are text links, not boxed buttons') : bad('a See-all is a .btn, which on this site means booking');
@@ -90,7 +90,11 @@ const probe=d.createElement('button');probe.setAttribute('data-video','abc123');
 // links resolve
 const built=h=>{const rel=h.replace(/[#?].*$/,'').replace(/^[./]+/,'');return fs.existsSync(path.join(ROOT,rel+'.html'))||fs.existsSync(path.join(ROOT,rel,'index.html'));};
 const internal=[...d.querySelectorAll('a[href]')].map(a=>a.getAttribute('href')).filter(h=>!/^(https?:|mailto:|tel:|#|\/\/)/.test(h));
-const dead=[...new Set(internal.filter(h=>h!=='./'&&h!=='../'&&!/\.(txt|html)$/.test(h)&&!built(h)))];
+/* The blog is served by HubSpot at /resources/blog on this domain and is not
+   built from this repo, so those hrefs resolve in production but never on
+   disk. Excluded here for the same reason the root checker excludes them. */
+const hubspotBlog=h=>/(^|\/)resources\/blog(\/|$)/.test(h);
+const dead=[...new Set(internal.filter(h=>h!=='./'&&h!=='../'&&!/\.(txt|html)$/.test(h)&&!hubspotBlog(h)&&!built(h)))];
 dead.length?bad('dead links: '+dead.join(', ')):ok('every internal link on /resources resolves');
 const abs=[...d.querySelectorAll('a[href^="/"]:not([href^="//"])')].map(a=>a.getAttribute('href'));
 abs.length?bad('root-absolute links survived relativise(): '+abs):ok('no root-absolute links');

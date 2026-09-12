@@ -272,14 +272,14 @@ function footer(p) {
 '          </ul>\n' +
 '        </div>\n' +
 '        <!-- RESOURCES, added 11 September. Four destinations that already\n' +
-'             exist: the blog lives in HubSpot at blog.revhops.com, and the\n' +
+'             exist: the blog lives in HubSpot at /resources/blog, and the\n' +
 '             other three are the shelves on /resources. Case studies, the\n' +
 '             puzzle and the run moved out of Company on the same day rather\n' +
 '             than being listed in both places. -->\n' +
 '        <div>\n' +
 '          <h4><a href="/resources">Resources</a></h4>\n' +
 '          <ul class="stack gap-8">\n' +
-'            <li><a href="https://blog.revhops.com" target="_blank" rel="noopener">Blog</a></li>\n' +
+'            <li><a href="/resources/blog">Blog</a></li>\n' +
 '            <li><a href="/case-studies">Case studies</a></li>\n' +
 '            <li><a href="/newsletter">Newsletter</a></li>\n' +
 '            <li><a href="/resources#games">Games</a></li>\n' +
@@ -2459,7 +2459,7 @@ var hop = {
 var RESOURCE_TYPES = [
   { slug: 'blog', name: 'Blog',
     sub: 'What breaks in a revenue system, and what we do about it.',
-    all: 'https://blog.revhops.com', allLabel: 'View all blog posts', external: true },
+    all: '/resources/blog', allLabel: 'View all blog posts' },
 
   { slug: 'case-studies', name: 'Case studies',
     sub: 'What we were handed, what changed, and what it was worth.',
@@ -2478,17 +2478,22 @@ var RESOURCE_TYPES = [
 var RESOURCES = [
 
   /* ---- blog ----
-     The real posts will live in HubSpot at blog.revhops.com and are not
-     mirrored here. These four are the shelf waiting for them: replace a
-     title and add an href and the card goes live. */
-  { type: 'blog', title: '[Blog post title]', meta: '[0] min read',
-    copy: '[One line on what the post argues.]' },
-  { type: 'blog', title: '[Blog post title]', meta: '[0] min read',
-    copy: '[One line on what the post argues.]' },
-  { type: 'blog', title: '[Blog post title]', meta: '[0] min read',
-    copy: '[One line on what the post argues.]' },
-  { type: 'blog', title: '[Blog post title]', meta: '[0] min read',
-    copy: '[One line on what the post argues.]' },
+     The posts live in HubSpot at /resources/blog on this domain, not in this
+     repo, so a card here is a title, a line of copy and an href. `date` is
+     the posted date and takes the footer slot the placeholders used for
+     "Coming soon"; `thumb` is the post's featured image, cropped to the
+     shelf's 16:9 and saved next to the other artwork. Add an entry per post,
+     newest first: the shelf teases four and the See-all carries the rest. */
+  { type: 'blog', title: 'HubSpot Data Hub, WTF is it?',
+    href: '/resources/blog/hubspot-data-hub-wtf-is-it',
+    thumb: 'assets/img/blog-data-hub.webp',
+    date: 'Sep 12, 2026', meta: '6 min read',
+    copy: 'What exactly is HubSpot Data Hub, and if you\'re in B2B SaaS or Services... why should you care? Why Data Hub is the silent hero for scaling companies.' },
+  { type: 'blog', title: 'HubSpot Service Hub for B2B SaaS Customer Success',
+    href: '/resources/blog/hubspot-service-hub-for-b2b-saas-customer-success',
+    thumb: 'assets/img/blog-service-hub.webp',
+    date: 'Sep 12, 2026', meta: '7 min read',
+    copy: 'If you\'re looking to reduce churn and expand your database as a B2B SaaS, you need to look at HubSpot Service Hub.' },
 
   /* ---- videos ----
      `video` is a YouTube id and opens the lightbox. `gated: true` sends the
@@ -2615,8 +2620,13 @@ function resCard(r, depth) {
 
   /* `live`, not `ph`: a gated item is still a placeholder in its copy but
      its page exists, so the card is a link and saying "Coming soon" on a
-     link that goes somewhere is a lie. */
+     link that goes somewhere is a lie.
+
+     A `date` replaces the verb rather than sitting beside it. On a shelf of
+     posts the useful thing to know at a glance is how old one is, and the
+     whole card is already the link. */
   var go = !live   ? 'Coming soon'
+         : r.date  ? r.date
          : r.video ? 'Watch <span class="arrow" aria-hidden="true">&rarr;</span>'
          : r.gated ? 'Get it <span class="arrow" aria-hidden="true">&rarr;</span>'
          : r.file  ? 'Download <span class="arrow" aria-hidden="true">&rarr;</span>'

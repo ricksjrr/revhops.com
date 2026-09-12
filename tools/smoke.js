@@ -631,8 +631,8 @@ console.log('\n— footer —');
       /\/?resources$/.test(res.querySelector('h4 a').getAttribute('href'))
         ? ok('and its heading links to the resources page')
         : bad('the Resources heading is not a link to /resources');
-      hrefs.some(h => /blog\.revhops\.com/.test(h)) ? ok('Blog points at the HubSpot blog')
-                                                     : bad('Blog does not point at blog.revhops.com');
+      hrefs.some(h => /(^|\/)resources\/blog$/.test(h)) ? ok('Blog points at the HubSpot blog')
+                                                    : bad('Blog does not point at /resources/blog');
       hrefs.some(h => /newsletter/.test(h)) ? ok('Newsletter points at /newsletter')
                                             : bad('no Newsletter link');
       hrefs.some(h => /#games$/.test(h)) ? ok('Games points at the shelf on /resources')
@@ -819,7 +819,13 @@ console.log('\n— known —');
   };
   const internal = [...d.querySelectorAll('a[href]')].map(a => a.getAttribute('href'))
     .filter(h => !/^(https?:|mailto:|tel:|#|\/\/)/.test(h));
-  const dead = [...new Set(internal.filter(h => h !== './' && !/\.(txt|html)$/.test(h) && !built(h)))];
+  // The blog is served by HubSpot at /resources/blog on this domain, not built
+  // from this repo, so its pages will never be on disk here. Excluded rather
+  // than special-cased inside built(): they resolve in production, and a
+  // checker that reports them as dead trains people to ignore it.
+  const hubspotBlog = h => /(^|\/)resources\/blog(\/|$)/.test(h);
+  const dead = [...new Set(internal.filter(h => h !== './' && !/\.(txt|html)$/.test(h) &&
+                                                !hubspotBlog(h) && !built(h)))];
   dead.length ? bad(dead.length + ' link(s) point nowhere: ' + dead.join(', '))
               : ok('every internal link on the homepage resolves to a page');
   const absolute = [...d.querySelectorAll('a[href^="/"]:not([href^="//"])')].map(a => a.getAttribute('href'));

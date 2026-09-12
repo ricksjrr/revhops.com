@@ -169,9 +169,8 @@ the hand-maintained copy in `index.html`. Change one, change the other, or the
 homepage is the one page that drifts.
 
 **A third link column, Resources.** Blog, Case studies, Newsletter, Games.
-Blog goes to `https://blog.revhops.com` in a new tab, which is where the posts
-actually live; Games goes to `/resources#games`, the shelf that was already
-anchored. **Case studies, Resources, RevOps puzzle and RevOps run came out of
+Blog goes to `/resources/blog`, the HubSpot blog on this domain, in the same
+tab; Games goes to `/resources#games`, the shelf that was already anchored. **Case studies, Resources, RevOps puzzle and RevOps run came out of
 Company** on the same pass rather than being listed in two columns at once, so
 Company is now HubSpot, Pipedrive, About us, Pricing, Contact.
 
@@ -489,9 +488,10 @@ shows eight in a 4x2 grid and pages through the remainder. That is the whole
 difference between them, and it is a data difference rather than two blocks
 of markup.
 
-- Blog's See-all is `https://blog.revhops.com`, where the HubSpot blog will
-  live. **Nothing is there yet**, so that link 404s until James stands the
-  page up. It opens in a new tab, since it leaves the site.
+- Blog's See-all is `/resources/blog`, the HubSpot blog. Same domain, same
+  tab. HubSpot serves that path rather than this repo, so both smoke
+  checkers skip it in their dead-link pass: it resolves in production and
+  never on disk.
 - Case studies' See-all is `/case-studies`.
 - Videos, Downloadables and Games have no See-all and paginate instead.
 
@@ -1428,8 +1428,12 @@ coming back.
 - Real resources. Ten bracketed placeholder cards on `/resources` across
   Blog, Videos and Downloadables. Each one is a title and an `href` in
   `RESOURCES` in `tools/build-pages.js`.
-- `blog.revhops.com` does not exist. The See-all under the Blog shelf points
-  at it and 404s until the HubSpot blog is stood up.
+- The blog moved to `/resources/blog` on this domain; `blog.revhops.com` is
+  gone. The Blog shelf is real now: two posts, each with a `thumb` cropped
+  to the shelf's 16:9 in `assets/img/` and a `date` that takes the footer
+  slot the placeholders use for "Coming soon". Add a post by adding an entry
+  to the blog block of `RESOURCES` in `tools/build-pages.js`, newest first;
+  the shelf teases four and the See-all carries the rest.
 - The two gated skeletons at `/resources/gated-video` and
   `/resources/gated-download` have bracketed copy and no form. They need the
   HubSpot form id, or deleting from `RESOURCES`.
