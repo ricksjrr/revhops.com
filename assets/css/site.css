@@ -3793,12 +3793,26 @@ a.pcard:hover .arrow { transform: translateX(5px); }
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
+    /* No gap. A gap puts dead space between the slide boxes, so the offset
+       the dots scroll to and the position the snap picks are a gutter apart
+       — press a dot and the quote lands flush against the edge again. The
+       boxes are contiguous instead and each one carries its own right-hand
+       padding, so the separation is inside the slide where the snap cannot
+       see it. */
     gap: 0;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    /* room for the shadowless quote to breathe at the screen edges */
-    margin-inline: calc(var(--gutter) * -1);
-    padding-inline: var(--gutter);
+    /* NO bleed, and no padding of its own. The rail used to run to both
+       screen edges on a negative margin and pad itself back, which looked
+       right until it snapped: scroll-snap-align resolves against the
+       SNAPPORT — the scrollport reduced by scroll-padding, which defaults to
+       zero — so the slide aligned to the container's padding box and scrolled
+       that 20px of padding out of view. The quote ended up flush against the
+       edge of the screen.
+
+       Sitting inside .shell instead, the left inset is the same
+       clamp(20px, 5vw, 60px) every other section on the site uses, and there
+       is no padding for the snap to eat. */
   }
   .testi::-webkit-scrollbar { display: none; }
   .testi-col {
@@ -3808,8 +3822,7 @@ a.pcard:hover .arrow { transform: translateX(5px); }
        centre snap point pulls against that and the rail creeps by half a
        gutter every time a dot is pressed. */
     scroll-snap-align: start;
-    /* the gutter is padding on the scroller, so each slide needs its own
-       right-hand gap or two quotes touch mid-swipe */
+    /* the breathing room between two quotes, held inside the box */
     padding-right: var(--gutter);
     box-sizing: border-box;
   }
