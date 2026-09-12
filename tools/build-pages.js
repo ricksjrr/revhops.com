@@ -2559,11 +2559,17 @@ var RESOURCES = [
   /* ---- videos ----
      `video` is a YouTube id and opens the lightbox. `gated: true` sends the
      card to its own page instead. Both kinds sit on the same shelf. */
-  { type: 'videos', title: '[Video title]', meta: '[00:00]',
+  { type: 'videos', title: '[Video title 1]', meta: '[00:00]',
     copy: '[One line on what it shows.]' },
-  { type: 'videos', title: '[Video title]', meta: '[00:00]',
+  { type: 'videos', title: '[Video title 2]', meta: '[00:00]',
     copy: '[One line on what it shows.]' },
-  { type: 'videos', title: '[Video title]', meta: '[00:00]',
+  { type: 'videos', title: '[Video title 3]', meta: '[00:00]',
+    copy: '[One line on what it shows.]' },
+  { type: 'videos', title: '[Video title 4]', meta: '[00:00]',
+    copy: '[One line on what it shows.]' },
+  { type: 'videos', title: '[Video title 5]', meta: '[00:00]',
+    copy: '[One line on what it shows.]' },
+  { type: 'videos', title: '[Video title 6]', meta: '[00:00]',
     copy: '[One line on what it shows.]' },
   { type: 'videos', title: '[Gated video title]', meta: '[00:00]', gated: true,
     slug: 'gated-video', copy: '[One line on what it shows.] Ask for an email first.' },
@@ -2571,13 +2577,23 @@ var RESOURCES = [
   /* ---- downloadables ----
      Gated per item rather than per type: some of these are worth a form and
      some are worth more as something people can pass around. */
-  { type: 'downloadables', title: '[Download title]', meta: '[PDF]',
+  { type: 'downloadables', title: '[Download title 1]', meta: '[PDF]',
     copy: '[One line on what it is for.]' },
-  { type: 'downloadables', title: '[Download title]', meta: '[XLSX]',
+  { type: 'downloadables', title: '[Download title 2]', meta: '[XLSX]',
     copy: '[One line on what it is for.]' },
   { type: 'downloadables', title: '[Gated download title]', meta: '[PDF]', gated: true,
     slug: 'gated-download', copy: '[One line on what it is for.] Ask for an email first.' },
-  { type: 'downloadables', title: '[Download title]', meta: '[PDF]',
+  { type: 'downloadables', title: '[Download title 3]', meta: '[PDF]',
+    copy: '[One line on what it is for.]' },
+  { type: 'downloadables', title: '[Download title 4]', meta: '[DOCX]',
+    copy: '[One line on what it is for.]' },
+  { type: 'downloadables', title: '[Download title 5]', meta: '[XLSX]',
+    copy: '[One line on what it is for.]' },
+  { type: 'downloadables', title: '[Download title 6]', meta: '[PDF]',
+    copy: '[One line on what it is for.]' },
+  { type: 'downloadables', title: '[Download title 7]', meta: '[CSV]',
+    copy: '[One line on what it is for.]' },
+  { type: 'downloadables', title: '[Download title 8]', meta: '[PDF]',
     copy: '[One line on what it is for.]' },
 
   /* ---- games ----
@@ -2707,18 +2723,19 @@ function resCard(r, depth) {
 /* A case study rendered as a resource card, so that shelf sits in the same
    grid as the other four. The poster card off the homepage is a 3:4
    portrait, and a row of those beside rows of 16:9 cards reads as two
-   designs on one page. The link, the figures and the placeholder client
-   name all still come from CASES — this is a second view of that data, not
-   a copy of it. */
+   designs on one page. The link, the name and the figures all still come
+   from CASES — this is a second view of that data, not a copy of it, which
+   is why it took the real client names the moment CASES did. */
 function caseResCard(c, depth) {
   var a = up(depth);
   return '        <a class="res-card reveal" href="/case-studies/' + c.slug + '" data-res-type="case-studies">\n' +
     '          <span class="res-thumb">\n' +
     '            <img src="' + a + 'assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">\n' +
     '          </span>\n' +
-    '          <h3 class="res-title">[Client name]</h3>\n' +
-    '          <p class="res-copy"><b>' + c.figs[0][0] + c.figs[0][1] + '</b> [measure] &nbsp;&middot;&nbsp; ' +
-                 '<b>' + c.figs[1][0] + c.figs[1][1] + '</b> [measure]</p>\n' +
+    '          <h3 class="res-title">' + c.name + '</h3>\n' +
+    '          <p class="res-copy">' + c.figs.map(function (f) {
+                 return '<b>' + f[0] + '</b> ' + f[1];
+               }).join(' &nbsp;&middot;&nbsp; ') + '</p>\n' +
     '          <span class="res-foot">\n' +
     '            <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>\n' +
     '            <span class="res-fact">' + serviceName(c.svc[0]) + '</span>\n' +
