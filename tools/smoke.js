@@ -543,8 +543,16 @@ console.log('\n— highlights —');
     ? ok('exactly seven highlights, no drift') : bad(d.querySelectorAll('.hl').length + ' highlights');
   [...d.querySelectorAll('.testi-col')].every(c => c.querySelector('.quote p .hl'))
     ? ok('every testimonial carries one') : bad('a testimonial is missing its highlight');
-  // fixed warm means fixed type on it, so the colour is literal
-  /color: #304157/.test(rule('.hl')) ? ok('type on the warm is a literal navy') : bad('type on the warm uses a token');
+  // RETIRED 12 September. The marker paints nothing at any width now; the
+  // spans stay so the phrases above are still checkable by name, and inside
+  // a testimonial they take weight instead. The old assertion here was that
+  // type on the warm was a literal navy, which is meaningless with no warm.
+  /background-image: none/.test(rule('.hl'))
+    ? ok('the warm marker paints nothing, at every width')
+    : bad('the warm marker is back on .hl');
+  /font-weight: 700/.test(rule('.testi .hl'))
+    ? ok('and the testimonial phrases take weight instead')
+    : bad('.testi .hl is not bolding its phrase');
   /box-decoration-break: clone/.test(rule('.hl'))
     ? ok('a wrapped phrase gets a fill on every line') : bad('a wrapped highlight will leave its second line bare');
   // the italic was half of what made the old version read as a template

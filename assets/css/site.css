@@ -1284,7 +1284,8 @@ main { overflow-x: clip; }
 @media (max-width: 760px) {
   .logo-rail { animation-duration: 30s; }
   .logo-run { gap: 30px; padding-right: 30px; padding-block: 8px; }
-  .logo-run img { height: 53px; opacity: .7; }
+  /* 53px read as a row of postage stamps on a phone */
+  .logo-run img { height: 74px; opacity: .7; }
   .logo-band {
     -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
             mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
@@ -1861,14 +1862,18 @@ main { overflow-x: clip; }
    Not italic this time. The 3 September version was, and the italic was
    half of what made it read as a template.
    ========================================================================== */
+/* RETIRED 12 September, at every width and on every page. The markup stays
+   — .hl still wraps the phrases it always did, so the copy and the smoke
+   test's checks by name are undisturbed — but it paints nothing now.
+   Inside a testimonial it bolds instead; see .testi .hl below. */
 .hl {
-  background-image: linear-gradient(var(--warm), var(--warm));
+  background-image: none;
   background-repeat: no-repeat;
   background-size: 100% 80%;
   background-position: 0 78%;
-  color: #304157;
-  padding-inline: .16em;
-  margin-inline: -.08em;
+  color: inherit;
+  padding-inline: 0;
+  margin-inline: 0;
   -webkit-box-decoration-break: clone;
           box-decoration-break: clone;
 }
@@ -2552,9 +2557,12 @@ main { overflow-x: clip; }
    .hl, only the two colours change — and the type on it goes white, because
    navy on slate is a smudge. Fixed literals for the same reason .hl uses
    them: the pair must never invert apart. */
+/* The slate marker is gone too. The phrases James picked out are still the
+   ones worth picking out, so they take weight rather than a background. */
 .testi .hl {
-  background-image: linear-gradient(#6B7A93, #6B7A93);
-  color: #FFFFFF;
+  background-image: none;
+  color: var(--ink);
+  font-weight: 700;
 }
 /* the quote marks around the title carry the warm, which is why the big
    floating quote glyph that used to sit under it came out: two of them was
@@ -3726,6 +3734,147 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 
 /* .btn sets display:inline-flex, which beats the browser's own [hidden] */
 .hp [hidden], .hp-over [hidden] { display: none !important; }
+
+
+/* ==========================================================================
+   PHONE LAYOUT — asked for on 12 September
+
+   Everything in this block is a phone-width override of something that is
+   right on a wide screen and wrong on a narrow one. It sits at the end of
+   the stylesheet on purpose: these have to win over the component blocks
+   above, and several of them override rules that are themselves in media
+   queries.
+   ========================================================================== */
+@media (max-width: 760px) {
+
+  /* Section heads align left. Centred headings over left-aligned content
+     is the thing that made the phone layout read as a stack of unrelated
+     blocks. The hero is untouched — it uses .mat-head, not .sec-head. */
+  .sec-head,
+  .sec-head .h2,
+  .sec-sub { text-align: left; margin-inline: 0; }
+
+  /* The timing column comes out of the services list. On a phone the row is
+     already one column, so the estimate was a stray line of grey between the
+     service name and what it is. */
+  .svc-time { display: none; }
+}
+
+/* The portrait and the badge sit in the middle of the screen once the split
+   collapses, rather than hard against the left edge. */
+@media (max-width: 1000px) {
+  .about-stack { justify-self: center; margin-inline: auto; }
+}
+
+/* ==========================================================================
+   TESTIMONIALS ON A PHONE — one at a time, with dots
+
+   Three quotes stacked vertically was most of the length of the bottom of
+   the page. They become a snap-scrolling row instead: one quote per screen,
+   swipeable, with three dots under them and a ten-second auto-advance. See
+   the testimonial carousel block in site.js.
+
+   The dots are built by script and hidden without it, so with JS off this
+   degrades to a row you can still swipe.
+   ========================================================================== */
+.testi-dots { display: none; }
+
+@media (max-width: 760px) {
+  .testi {
+    display: flex;
+    grid-template-columns: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    gap: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* room for the shadowless quote to breathe at the screen edges */
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+  }
+  .testi::-webkit-scrollbar { display: none; }
+  .testi-col {
+    flex: 0 0 100%;
+    /* start, not center. The dots scroll the rail with
+       `scrollLeft = slide.offsetLeft`, which is a start-aligned position; a
+       centre snap point pulls against that and the rail creeps by half a
+       gutter every time a dot is pressed. */
+    scroll-snap-align: start;
+    /* the gutter is padding on the scroller, so each slide needs its own
+       right-hand gap or two quotes touch mid-swipe */
+    padding-right: var(--gutter);
+    box-sizing: border-box;
+  }
+
+  .testi-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: clamp(20px, 5vw, 30px);
+  }
+  .testi-dot {
+    appearance: none;
+    width: 8px; height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--mist);
+    cursor: pointer;
+    transition: background .3s var(--ease), transform .3s var(--ease);
+  }
+  .testi-dot[aria-current="true"] { background: var(--ink-strong); transform: scale(1.25); }
+  .testi-dot:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 3px; }
+}
+
+/* ==========================================================================
+   FOOTER ON A PHONE
+
+   Reordered on 12 September. The lockup centres, the link columns centre,
+   Company moves below Resources, and the address pair drops to the very
+   bottom under the partner badges — where someone scrolling to the end of a
+   page expects to find it.
+
+   `display: contents` on .footer-brand is what makes that possible: its four
+   children become items of .footer-top directly, so each one can take its
+   own order without touching the markup. That matters because this footer is
+   hand-written in index.html and generated by footer() in
+   tools/build-pages.js, and a CSS-only change cannot drift between them.
+   ========================================================================== */
+@media (max-width: 820px) {
+  .footer-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: clamp(26px, 6vw, 40px);
+  }
+
+  .footer-brand { display: contents; }
+  .footer-mark  { order: 1; margin-inline: auto; }
+  .footer-pitch { order: 2; max-width: 40ch; }
+  .footer-links { order: 3; }
+  .footer-badges { order: 4; }
+  .footer-mail  { order: 5; }
+  .footer-place { order: 6; margin-top: -8px; }
+
+  /* Services and Resources side by side, Company across the row under them.
+     The span used to be on Resources, which was the third child; the order
+     swap below moves Resources up, so the span moves with Company. */
+  .footer-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(22px, 6vw, 34px);
+    justify-self: center;
+    max-width: 26rem;
+    text-align: center;
+  }
+  .footer-links > div:nth-child(2) { order: 2; grid-column: 1 / -1; }  /* Company  */
+  .footer-links > div:nth-child(3) { order: 1; grid-column: auto; }    /* Resources */
+  .footer-links ul { align-items: center; }
+
+  .footer-badges { justify-self: center; }
+}
 
 /* ==========================================================================
    DARK THEME

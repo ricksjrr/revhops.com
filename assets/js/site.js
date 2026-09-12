@@ -825,3 +825,114 @@ Array.prototype.forEach.call(document.querySelectorAll('[data-res-pager]'), func
      the iframe is torn down once rather than in three places. */
   dlg.addEventListener('close', function () { frame.textContent = ''; });
 })();
+
+/* ==========================================================================
+   RevHops — testimonial carousel (phone only)
+
+   Three quotes stacked vertically was most of the length of the foot of the
+   page on a phone. Below 760px the stylesheet turns .testi into a snap
+   scroller; this adds the three dots under it and advances it every ten
+   seconds.
+
+   Progressive: with no script the row is still swipeable and the dots are
+   simply absent, which is why the markup for them is not in the HTML. It
+   also means the homepage and the generated pages both get this without the
+   two footers or the two testimonial blocks having to be edited in step.
+
+   The timer stops for good the moment somebody touches the thing — dragging,
+   clicking a dot, or focusing a quote. An auto-advance that fights the
+   reader is worse than no auto-advance, and it never restarts because there
+   is no way to tell "finished reading" from "paused on this one".
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var rail = document.querySelector('.testi');
+  if (!rail) return;
+
+  var slides = [].slice.call(rail.querySelectorAll('.testi-col'));
+  if (slides.length < 2) return;
+
+  var phone = window.matchMedia('(max-width: 760px)');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* the dots, built once and shown by CSS only at phone width */
+  var dots = document.createElement('div');
+  dots.className = 'testi-dots';
+  dots.setAttribute('role', 'tablist');
+  dots.setAttribute('aria-label', 'Choose a testimonial');
+
+  var buttons = slides.map(function (slide, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'testi-dot';
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-current', i === 0 ? 'true' : 'false');
+    var who = slide.querySelector('cite');
+    b.setAttribute('aria-label', who ? 'Show the quote from ' + who.textContent.split('|')[0].trim()
+                                     : 'Show quote ' + (i + 1));
+    b.addEventListener('click', function () { stop(); go(i); });
+    dots.appendChild(b);
+    return b;
+  });
+  rail.parentNode.insertBefore(dots, rail.nextSibling);
+
+  var current = 0;
+
+  function go(i) {
+    current = (i + slides.length) % slides.length;
+    /* scrollLeft rather than scrollIntoView: the latter also scrolls the
+       PAGE to bring the rail into view, which yanks the reader down to the
+       testimonials from wherever they actually were. */
+    rail.scrollLeft = slides[current].offsetLeft - slides[0].offsetLeft;
+    mark();
+  }
+
+  function mark() {
+    buttons.forEach(function (b, i) {
+      b.setAttribute('aria-current', i === current ? 'true' : 'false');
+    });
+  }
+
+  /* keep the dots honest when the reader swipes instead of tapping */
+  var settling;
+  rail.addEventListener('scroll', function () {
+    clearTimeout(settling);
+    settling = setTimeout(function () {
+      var x = rail.scrollLeft + rail.clientWidth / 2;
+      var nearest = 0, best = Infinity;
+      slides.forEach(function (s, i) {
+        var mid = s.offsetLeft - slides[0].offsetLeft + s.clientWidth / 2;
+        var d = Math.abs(mid - x);
+        if (d < best) { best = d; nearest = i; }
+      });
+      if (nearest !== current) { current = nearest; mark(); }
+    }, 90);
+  }, { passive: true });
+
+  var timer = null;
+  function start() {
+    if (timer || reduce.matches || !phone.matches) return;
+    timer = setInterval(function () { go(current + 1); }, 10000);
+  }
+  function stop() {
+    if (!timer) return;
+    clearInterval(timer);
+    timer = null;
+  }
+
+  ['pointerdown', 'touchstart', 'keydown', 'focusin'].forEach(function (ev) {
+    rail.addEventListener(ev, stop, { passive: true });
+  });
+
+  /* only running while the page is actually on screen */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stop(); else start();
+  });
+
+  if (phone.addEventListener) {
+    phone.addEventListener('change', function () { stop(); if (phone.matches) start(); });
+  }
+
+  start();
+})();
