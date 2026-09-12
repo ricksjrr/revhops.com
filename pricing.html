@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=6873404154">
+<link rel="stylesheet" href="assets/css/site.css?v=60f2478eb6">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -73,13 +73,13 @@
 <main class="pricing-index">
 
 <!-- ===================== HERO =====================
-     Type left, artwork bleeding off the right edge. .page-head-end is the
-     zero-height sentinel the nav watches to decide when to collapse. -->
+     Type left, artwork bleeding off the right edge. The H1 carries
+     data-nav-clear: the bar collapses as it reaches the title. -->
 <section class="page-hero page-hero-nomedia">
   <div class="shell">
     <div class="page-hero-inner">
       <div class="page-hero-text">
-        <h1 class="h1">Pricing</h1>
+        <h1 class="h1" data-nav-clear>Pricing</h1>
         <p class="lede">Published, so you can work out whether we are in your range before you book anything.</p>
         <div class="btn-row">
           <a class="text-link" href="call">Schedule a call <span class="arrow">&rarr;</span></a>
@@ -87,7 +87,6 @@
       </div>
     </div>
   </div>
-  <div class="page-head-end" data-nav-clear></div>
 </section>
 
 <!-- ===================== THE FORK =====================
@@ -120,19 +119,19 @@
       <a class="price-teaser-cell" href="services/solution-design">
         <span class="price-teaser-label">Solution design</span>
         <span class="price-teaser-fig">$3,000<small>Fixed price</small></span>
-        <p class="price-teaser-note">The plan before the build. Data model, lifecycle, process map and how you will measure it, signed off by the people who have to live with it.</p>
+        <p class="price-teaser-note">We’ll help you identify where you’re at, where you want to get to and the gap between the two. Required for all implementation projects.</p>
         <span class="text-link pr-cell-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
       <a class="price-teaser-cell" href="services/lead-to-cash-process-mapping">
         <span class="price-teaser-label">Lead to cash process mapping</span>
         <span class="price-teaser-fig">$4,200<small>Fixed price</small></span>
-        <p class="price-teaser-note">Every step from first touch to paid invoice, on one page. Usually the first time anyone has seen the whole thing at once.</p>
+        <p class="price-teaser-note">We’ll map out every step from new lead to paid invoice. For most teams, this will be the first time you’ve seen the whole thing at once.</p>
         <span class="text-link pr-cell-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
       <a class="price-teaser-cell" href="services/crm-implementations">
         <span class="price-teaser-label">CRM implementations</span>
         <span class="price-teaser-fig">From $5,000<small>Scoped and quoted after design</small></span>
-        <p class="price-teaser-note">Portal builds and platform migrations. Built once, documented, and handed over so your team can run it without us.</p>
+        <p class="price-teaser-note">Whether you’re adding a CRM for the first time or migrating from old legacy tools, we’ll build it from start to finish.</p>
         <span class="text-link pr-cell-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
     </div>
@@ -288,6 +287,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=6873404154"></script>
+<script src="assets/js/site.js?v=60f2478eb6"></script>
 </body>
 </html>

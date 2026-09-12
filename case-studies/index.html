@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="../assets/css/site.css?v=6873404154">
+<link rel="stylesheet" href="../assets/css/site.css?v=60f2478eb6">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -70,20 +70,21 @@
   </div>
 </header>
 
-<main class="cs-index">
+<main class="cs-index svc-index">
 
-<!-- ===================== HEADER PLATE =====================
-     The start panel artwork on a 12px plate, 100px below the bar. Nothing
-     in it but the title: the filter under it is the page. .page-head-end
-     is the zero-height sentinel the nav watches to decide when to
-     collapse, and it lives here because there is no .page-hero. -->
-<section class="cs-head">
+<!-- ===================== HERO =====================
+     The same header /services opens with. The H1 carries data-nav-clear:
+     the bar collapses as it reaches the title. -->
+<section class="page-hero page-hero-nomedia">
   <div class="shell">
-    <div class="cs-head-panel">
-      <h1 class="h1">Case Studies</h1>
+    <div class="page-hero-inner">
+      <div class="page-hero-text">
+        <h1 class="h1" data-nav-clear>Case studies</h1>
+        <p class="lede">Filter our case studies to find examples of projects we’ve done with
+          teams similar to yours.</p>
+      </div>
     </div>
   </div>
-  <div class="page-head-end" data-nav-clear></div>
 </section>
 
 <!-- ===================== THE SHELF =====================
@@ -219,10 +220,10 @@
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
-              <h3 class="case-title">[Client name]</h3>
+              <h3 class="case-title">Ike Commercial Real Estate</h3>
               <div class="case-figs">
-                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
-                <span class="case-fig"><b>00x</b><span>[measure]</span></span>
+                <span class="case-fig"><b>100%</b><span>New CRM build</span></span>
+                <span class="case-fig"><b>4</b><span>Sales team users</span></span>
               </div>
             </div>
             <span class="case-go" aria-hidden="true">&rarr;</span>
@@ -236,7 +237,7 @@
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
-              <h3 class="case-title">[Client name]</h3>
+              <h3 class="case-title">The Davani Group</h3>
               <div class="case-figs">
                 <span class="case-fig"><b>00%</b><span>[measure]</span></span>
                 <span class="case-fig"><b>00h</b><span>[measure]</span></span>
@@ -253,10 +254,10 @@
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
-              <h3 class="case-title">[Client name]</h3>
+              <h3 class="case-title">Core Income</h3>
               <div class="case-figs">
                 <span class="case-fig"><b>00%</b><span>[measure]</span></span>
-                <span class="case-fig"><b>00k</b><span>[measure]</span></span>
+                <span class="case-fig"><b>$00k</b><span>[measure]</span></span>
               </div>
             </div>
             <span class="case-go" aria-hidden="true">&rarr;</span>
@@ -270,9 +271,9 @@
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
-              <h3 class="case-title">[Client name]</h3>
+              <h3 class="case-title">Woodside Homes</h3>
               <div class="case-figs">
-                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>3</b><span>business units</span></span>
                 <span class="case-fig"><b>00d</b><span>[measure]</span></span>
               </div>
             </div>
@@ -287,9 +288,9 @@
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
-              <h3 class="case-title">[Client name]</h3>
+              <h3 class="case-title">Ignite Group</h3>
               <div class="case-figs">
-                <span class="case-fig"><b>00k</b><span>[measure]</span></span>
+                <span class="case-fig"><b>3</b><span>countries unified</span></span>
                 <span class="case-fig"><b>00x</b><span>[measure]</span></span>
               </div>
             </div>
@@ -413,6 +414,6 @@
   </svg>
 </button>
 
-<script src="../assets/js/site.js?v=6873404154"></script>
+<script src="../assets/js/site.js?v=60f2478eb6"></script>
 </body>
 </html>

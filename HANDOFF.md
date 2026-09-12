@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `0be756743c` — derived from a hash of the assets by
+**Current build stamp:** `60f2478eb6` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -24,6 +24,98 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   disk for exactly this reason.
 - **there is no remote yet**, so the Pushing section at the end still does
   not work as written. See "Deploying to GitHub Pages" in the README.
+
+---
+
+## 12 September: the pass across the whole site
+
+James sent a list of small changes page by page. They are small individually
+and they add up to one idea: the site had grown three or four different
+rhythms and two or three different ways of getting from one section to the
+next, and the seams were the thing you noticed.
+
+**One section rhythm, `--sec-pad`.** `clamp(56px, 6.4vw, 96px)`, in `:root`.
+Every section carries it on both sides, so every band between two sections is
+twice it, everywhere, on every page. `.section-tight` is now the same number;
+so is `.case-section`, `.testi-section`, and the three overrides
+`.svc-index` used to carry. **Every opening band gives a bottom padding of
+zero** — `.page-hero`, `.page-hero-nomedia`, `.page-hero-svc`,
+`.page-hero-legal`, `.cs-head` — so header-to-content is one `--sec-pad` and
+section-to-section is two. If a section needs more or less air, change the
+token, not the section.
+
+**The drifts are gone.** `.fade-top`, `.fade-bottom`, `.to-white`,
+`.to-white-1`, `.to-white-2` all still exist and all paint nothing. They
+were ramps of white painted over the top or bottom of a section; on the dark
+theme that is a ramp of white over navy, which is what James was seeing as
+"weird gradients". The classes stay in the markup because they are written by
+`build-pages.js` in a dozen places and removing them is churn, not a fix.
+
+**The close lost its photograph**, and four other things went with it: the
+430px bleed up over the section above, the white testimonial band the bleed
+existed to land on, and the two dark-theme overrides that pinned the shout
+and its button to light-theme colours because they sat on a light image. The
+section is now type, one button, `padding-block: calc(var(--sec-pad) * .66)`
+and no ground of its own. `start-panel-bg.webp` is still used, on the case
+study header plates, which is where it earns its keep.
+
+**The nav sentinel moved onto the page title.** `data-nav-clear` was on a
+zero-height `.page-head-end` at the foot of the opening band on every page
+but the homepage, so the bar stayed transparent for the whole header and the
+copy scrolled up through the navigation links. It is on the `<h1>` now,
+everywhere, and `NAV_CLEAR_PAD` in `site.js` adds the 12px that is the
+difference between the resting bar's bottom edge and the floating bar's.
+The `.page-head-end` divs are gone from `pageHero()`, `casePage()`,
+`meetingPage()` and `/call`.
+
+**The hero headline is two lines at every width.** Both halves are their own
+block and both are `nowrap`, so it breaks after "your" and never takes a
+third line; the size gives way instead, at `min(5.4rem, 8.6vw)`. The 8.6 is
+measured: Ubuntu Bold at -.042em sets "Where are you at on your" at 9.93em,
+so changing the words, the tracking or the face means re-measuring it.
+
+**The stage cards.** Each stage now carries its own `cost` copy — the "What
+it's costing you" block was one shared placeholder. The case study card
+carries the client's own mark instead of the placeholder illustration: no
+plate, no border, no radius, `object-fit: contain`, set back to `.72` and up
+to full on hover. Ignite is the exception, as it is in the marquee — it is a
+light disc with the wordmark knocked out of it, so it takes `data-solid` and
+is neither multiplied onto the card nor flattened to white for the dark
+theme. `assets/img/logos/ike.webp` is new: the artwork James sent, cropped to
+its bounds, flattened to the same flat grey (#7B7B7B) the other marks use,
+on a 300px transparent canvas.
+
+**The tool marks in the dark theme go full colour with nothing behind them.**
+This replaces the white-silhouette treatment and the white plate that
+appeared on hover. It measures worse — HubSpot's orange is 1.16:1 on this
+navy and the darker wordmarks (Marketo, NetSuite, Chargebee, Claude) are
+close to invisible — and it is what James asked for; the plate was the
+"paperplating" he wanted rid of. Salesforce has its own size tier,
+`data-big`, 30% over `data-mid`.
+
+**The five case studies are the five clients.** `CASES` in `build-pages.js`
+carries real names and the homepage's figures, and the maturity slider links
+to the same five slugs. The two lists are maintained by hand in two files —
+`CASES` and `STAGES` in `assets/js/maturity-slider.js` — so a name changed in
+one has to change in the other. `/case-studies` opens with the shared header
+rather than the gradient plate, and a case study's own page carries an
+"All case studies" eyebrow above the plate.
+
+**Copy James wrote is now in one place.** The service rows on `/services`
+are the homepage's descriptions rather than a second set. Five spellings were
+corrected while moving them: *consulitng*, *Complimnetary*, *estabalished*,
+*implemeted*, *uniuqe*.
+
+**The smoke test is the spec, so it moved too.** Eleven checks described
+things that were deliberately removed. They assert the absence now rather
+than being deleted — "the photograph must not come back" is worth more than
+no check at all.
+
+**Still open:** `.cs-side` sticky offset. James asked for the fixed position
+to start 80px sooner; it locks at `--nav-float-gap + 74px` = 94px, which is
+2px below the floating bar, so there is no room below it without the bar
+covering the column. Left where it is; the run-up is shorter now because the
+header band above it is.
 
 ---
 

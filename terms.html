@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=6873404154">
+<link rel="stylesheet" href="assets/css/site.css?v=60f2478eb6">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -73,18 +73,17 @@
 <main>
 
 <!-- ===================== HERO =====================
-     Type left, artwork bleeding off the right edge. .page-head-end is the
-     zero-height sentinel the nav watches to decide when to collapse. -->
+     Type left, artwork bleeding off the right edge. The H1 carries
+     data-nav-clear: the bar collapses as it reaches the title. -->
 <section class="page-hero page-hero-plain page-hero-legal">
   <div class="shell">
     <div class="page-hero-inner">
       <div class="page-hero-text">
-        <h1 class="h1">Terms of Service</h1>
+        <h1 class="h1" data-nav-clear>Terms of Service</h1>
         <p class="lede">The terms you accept by using this site. The work we do for clients is governed by its own agreement.</p>
       </div>
     </div>
   </div>
-  <div class="page-head-end" data-nav-clear></div>
 </section>
 
 <section class="section legal-section to-white">
@@ -247,6 +246,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=6873404154"></script>
+<script src="assets/js/site.js?v=60f2478eb6"></script>
 </body>
 </html>

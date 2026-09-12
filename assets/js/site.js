@@ -102,6 +102,12 @@
 
   var NAV_HYSTERESIS = 90;   /* px of slack around the collapse threshold */
 
+  /* The floating bar sits --nav-float-gap (20px) off the top and is 72px
+     tall, so its bottom edge is 12px LOWER than the resting bar's. Without
+     that 12px the collapse fires exactly as the title reaches the resting
+     bar's baseline and the new bar lands on top of it. */
+  var NAV_CLEAR_PAD = 12;
+
   /* The nav's height in its resting state, from the --nav-h token. This is
      the fixed line the headline has to reach; reading the element's own
      height instead would give a different answer once it has collapsed. */
@@ -134,13 +140,19 @@
     if (nav) {
       /* Collapses the moment the nav band would start covering the marked
          headline — that is, when the headline's top edge reaches the bottom
-         of the nav at rest. Measured against the resting height rather than
+         edge the bar will have once it has collapsed.
+
+         data-nav-clear is on the PAGE TITLE on every page, since 12
+         September. It used to sit on a zero-height sentinel at the foot of
+         the opening band on everything but the homepage, which meant the bar
+         stayed transparent for the whole header and the copy in it scrolled
+         up through the navigation links. Measured against the resting height rather than
          the live one so the threshold does not move when the bar collapses
          and shrinks, which would make it oscillate at the boundary. */
       var cz = getClearZone();
       var floating;
       if (cz) {
-        var line = navRestHeight();
+        var line = navRestHeight() + NAV_CLEAR_PAD;
         var top = cz.getBoundingClientRect().top;
         /* Hysteresis. Once collapsed, the headline has to travel back down
            past the line by a clear margin before the bar expands again.

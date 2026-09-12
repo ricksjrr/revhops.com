@@ -200,15 +200,15 @@ function pageHero(p) {
     : '';
 
   return '\n<!-- ===================== HERO =====================\n' +
-'     Type left, artwork bleeding off the right edge. .page-head-end is the\n' +
-'     zero-height sentinel the nav watches to decide when to collapse. -->\n' +
+'     Type left, artwork bleeding off the right edge. The H1 carries\n' +
+'     data-nav-clear: the bar collapses as it reaches the title. -->\n' +
 '<section class="page-hero' + (p.heroClass ? ' ' + p.heroClass : (p.media ? '' : ' page-hero-plain')) + '">\n' +
 '  <div class="shell">\n' +
 '    <div class="page-hero-inner">\n' +
 '      <div class="page-hero-text">\n' +
 pill +
 eyebrow +
-'        <h1 class="h1">' + p.h1 + '</h1>\n' +
+'        <h1 class="h1" data-nav-clear>' + p.h1 + '</h1>\n' +
 '        <p class="lede">' + p.lede + '</p>\n' +
 buttons +
 meta +
@@ -216,7 +216,6 @@ meta +
 '    </div>\n' +
 media +
 '  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
 '</section>\n';
 }
 
@@ -470,7 +469,7 @@ var SERVICES = [
     slug: 'solution-design',
     name: 'Solution design',
     time: '2–3 weeks',
-    row: 'The plan before the build. Data model, lifecycle, process map and how you will measure it, signed off by the people who have to live with it.',
+    row: 'We\u2019ll help you identify where you\u2019re at, where you want to get to and the gap between the two. Required for all implementation projects.',
     h1: 'The plan before the build',
     lede: 'Two or three weeks spent deciding what the system should be, written down and argued over, so the build is execution rather than discovery.',
     title: 'Solution design — RevHops',
@@ -516,7 +515,7 @@ var SERVICES = [
     slug: 'crm-implementations',
     name: 'CRM implementations',
     time: '6–12 weeks',
-    row: 'Portal builds and platform migrations. Built once, documented, and handed over so your team can run it without us.',
+    row: 'Whether you\u2019re adding a CRM for the first time or migrating from old legacy tools, we\u2019ll build it from start to finish.',
     h1: 'Built once and handed over',
     lede: 'Portal builds and platform migrations, done by the people who scoped them, and documented well enough that your team can run the thing without calling us.',
     title: 'CRM implementations — RevHops',
@@ -563,7 +562,7 @@ var SERVICES = [
     slug: 'hubspot-support-retainers',
     name: 'HubSpot support retainers',
     time: 'Monthly',
-    row: 'A HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon.',
+    row: 'HubSpot-specific admin support on call, without hiring full-time headcount. No limit on monthly hours; includes bi-weekly standups and project management access.',
     h1: 'A HubSpot admin on call',
     lede: 'Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon. Monthly, thirty days notice, no annual lock-in.',
     title: 'HubSpot support retainers — RevHops',
@@ -609,7 +608,7 @@ var SERVICES = [
     slug: 'revops-consulting',
     name: 'RevOps consulting',
     time: 'Monthly',
-    row: 'Someone to think it through with. What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money.',
+    row: 'RevOps consulting for new or growing RevOps leaders &amp; teams. Works closely with executive teams to ensure alignment. Includes on-site visits.',
     h1: 'Someone to think it through with',
     lede: 'What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money. Advice, with no build attached.',
     title: 'RevOps consulting — RevHops',
@@ -655,7 +654,7 @@ var SERVICES = [
     slug: 'lead-to-cash-process-mapping',
     name: 'Lead to cash process mapping',
     time: '2–3 weeks',
-    row: 'Every step from first touch to paid invoice, on one page. Usually the first time anyone has seen the whole thing at once.',
+    row: 'We\u2019ll map out every step from new lead to paid invoice. For most teams, this will be the first time you\u2019ve seen the whole thing at once.',
     h1: 'Every step on one page',
     lede: 'First touch to paid invoice, mapped end to end across every team and every system. Usually the first time anyone has seen the whole thing at once.',
     title: 'Lead to cash process mapping — RevHops',
@@ -707,8 +706,8 @@ var AUDIT_ROW =
 '      <a class="svc-row reveal" href="/audit">\n' +
 '        <h3 class="svc-title">Free HubSpot audit</h3>\n' +
 '        <span class="svc-time">2\u20133 days</span>\n' +
-'        <p class="svc-copy">An hour inside your portal and a written page back. What is set up\n' +
-'          well, what is quietly costing you, and the three things worth fixing first.</p>\n' +
+'        <p class="svc-copy">Complimentary audit. We\u2019ll look at your data hygiene, pipelines &amp; stages,\n' +
+'          automations, integrations and adoption.</p>\n' +
 '        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>\n' +
 '      </a>\n';
 
@@ -774,28 +773,39 @@ var STAGES = [
   ['enterprise', 'Enterprise', '1,000+']
 ];
 
-/* `name` is what the page is called and what its slug is built from, so the
-   URL and the H1 cannot drift apart: /case-studies/case-study-1 is titled
-   "Case Study 1". When these become real clients, change the name and the
-   slug follows. */
+/* THE FIVE CLIENTS, in the order the homepage's maturity slider recommends
+   them — startup, scaleup, growth, maturity, enterprise. Slug, name and
+   figures are read by three places at once: the poster cards on /services
+   and /case-studies, and the case study's own page. The slider in
+   assets/js/maturity-slider.js carries the same five by hand and links to
+   these slugs, so a name changed here has to change there too.
+
+   `figs` is [figure, what it measures] and the pairs are the homepage's.
+   The ones still reading 00 are waiting on James' numbers; the placeholder
+   is deliberate and visible rather than invented. */
 var CASES = [
-  { slug: 'case-study-1', name: 'Case Study 1', figs: [['00', '%'], ['00', 'x']],
+  { slug: 'case-study-1', name: 'Ike Commercial Real Estate',
+    figs: [['100%', 'New CRM build'], ['4', 'Sales team users']],
     svc: ['solution-design', 'crm-implementations'],
     crm: 'salesforce', industry: 'b2b-saas', stage: 'growth' },
 
-  { slug: 'case-study-2', name: 'Case Study 2', figs: [['00', '%'], ['00', 'h']],
+  { slug: 'case-study-2', name: 'The Davani Group',
+    figs: [['00%', '[measure]'], ['00h', '[measure]']],
     svc: ['crm-implementations', 'lead-to-cash-process-mapping'],
     crm: 'hubspot', industry: 'professional-services', stage: 'scaleup' },
 
-  { slug: 'case-study-3', name: 'Case Study 3', figs: [['00', '%'], ['00', 'k']],
+  { slug: 'case-study-3', name: 'Core Income',
+    figs: [['00%', '[measure]'], ['$00k', '[measure]']],
     svc: ['hubspot-support-retainers', 'revops-consulting'],
     crm: 'hubspot', industry: 'financial-services', stage: 'maturity' },
 
-  { slug: 'case-study-4', name: 'Case Study 4', figs: [['00', '%'], ['00', 'd']],
+  { slug: 'case-study-4', name: 'Woodside Homes',
+    figs: [['3', 'business units'], ['00d', '[measure]']],
     svc: ['solution-design', 'lead-to-cash-process-mapping'],
     crm: 'hubspot', industry: 'ecommerce', stage: 'startup' },
 
-  { slug: 'case-study-5', name: 'Case Study 5', figs: [['00', 'k'], ['00', 'x']],
+  { slug: 'case-study-5', name: 'Ignite Group',
+    figs: [['3', 'countries unified'], ['00x', '[measure]']],
     svc: ['revops-consulting', 'crm-implementations'],
     crm: 'pipedrive', industry: 'b2b-saas', stage: 'enterprise' }
 ];
@@ -817,6 +827,42 @@ function serviceName(slug) {
     if (SERVICES[i].slug === slug) return SERVICES[i].name;
   }
   return slug;
+}
+
+/* ---------- the tool clump, straight off the homepage ----------
+
+   Two rows that spread sideways rather than stacking, full-bleed, each mark
+   nudged off the line by nth-child in the stylesheet. The order is the
+   homepage's and has to stay that way: the offsets are positional, and
+   HubSpot sits fourth of seven in the top row because that is the one spot
+   the edge mask can never reach.
+
+   data-hero / data-big / data-mid / data-stack are size tiers, not
+   decoration — see .tool-mark img in site.css. */
+var TOOLS = [
+  [['marketo', 'Marketo', ''], ['microsoft365', 'Microsoft 365', ''],
+   ['salesforce', 'Salesforce', 'data-big'], ['hubspot', 'HubSpot', 'data-hero'],
+   ['pipedrive', 'Pipedrive', 'data-mid'], ['google-workspace', 'Google Workspace', 'data-stack'],
+   ['netsuite', 'Oracle NetSuite', '']],
+  [['quickbooks', 'Intuit QuickBooks', ''], ['zoominfo', 'ZoomInfo', ''],
+   ['slack', 'Slack', ''], ['claude', 'Claude', ''], ['meta.svg', 'Meta', ''],
+   ['chargebee', 'Chargebee', ''], ['salesmsg', 'Salesmsg', ''],
+   ['advizorpro', 'AdvizorPro', 'data-stack']]
+];
+
+function toolClump(depth) {
+  var a = up(depth);
+  return '    <div class="tool-clump reveal">\n' +
+    TOOLS.map(function (row) {
+      return '      <div class="tool-row">\n' +
+        row.map(function (t) {
+          var file = /\./.test(t[0]) ? t[0] : t[0] + '.webp';
+          return '        <span class="tool-mark"><img src="' + a + 'assets/img/tools/' +
+                 file + '" alt="' + t[1] + '"' + (t[2] ? ' ' + t[2] : '') + ' loading="lazy"></span>';
+        }).join('\n') + '\n' +
+      '      </div>';
+    }).join('\n') + '\n' +
+    '    </div>\n';
 }
 
 /* the client marquee, straight off the homepage. Both runs must stay
@@ -856,10 +902,11 @@ function caseCard(c, depth, cls) {
     '          <img src="' + up(depth) + 'assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">\n' +
     '          <div class="case-body">\n' +
     '            <div class="case-text">\n' +
-    '              <h3 class="case-title">[Client name]</h3>\n' +
+    '              <h3 class="case-title">' + c.name + '</h3>\n' +
     '              <div class="case-figs">\n' +
-    '                <span class="case-fig"><b>' + c.figs[0][0] + c.figs[0][1] + '</b><span>[measure]</span></span>\n' +
-    '                <span class="case-fig"><b>' + c.figs[1][0] + c.figs[1][1] + '</b><span>[measure]</span></span>\n' +
+    c.figs.map(function (f) {
+      return '                <span class="case-fig"><b>' + f[0] + '</b><span>' + f[1] + '</span></span>';
+    }).join('\n') + '\n' +
     '              </div>\n' +
     '            </div>\n' +
     '            <span class="case-go" aria-hidden="true">&rarr;</span>\n' +
@@ -1076,20 +1123,21 @@ function casePage(c, i) {
 
   body += '\n<!-- ===================== HEADER PLATE =====================\n' +
 '     The plate off /case-studies, left-aligned and carrying a description.\n' +
-'     .page-head-end is the sentinel the nav watches to decide when to\n' +
-'     collapse, and it lives here because this page has no .page-hero. -->\n' +
+'     The H1 carries data-nav-clear, as it does on every page: the bar\n' +
+'     collapses as it reaches the title. -->\n' +
 '<section class="cs-head">\n' +
 '  <div class="shell">\n' +
+'    <a class="hero-back cs-back" href="/case-studies">' +
+       '<span class="arrow" aria-hidden="true">&larr;</span> All case studies</a>\n' +
 '    <div class="cs-head-panel is-detail">\n' +
 '      <div class="cs-head-copy">\n' +
-'        <h1 class="h1">' + c.name + '</h1>\n' +
+'        <h1 class="h1" data-nav-clear>' + c.name + '</h1>\n' +
 '        <p class="cs-head-lede">[One or two sentences on who they are, what was\n' +
 '          broken, and what it is now. The whole story in a paragraph, so the rest of\n' +
 '          the page is detail rather than suspense.]</p>\n' +
 '      </div>\n' +
 '    </div>\n' +
 '  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
 '</section>\n';
 
   body += '\n<!-- ===================== THE STORY =====================\n' +
@@ -1138,9 +1186,9 @@ function casePage(c, i) {
       /* one plain, one up, one down — the three shapes a figure can take, so
          the template shows all of them rather than leaving the arrow to be
          discovered in the CSS */
-      [[c.figs[0][1], ''], [c.figs[1][1], 'up'], ['%', 'down']].map(function (f) {
+      [['', ''], ['', 'up'], ['', 'down']].map(function (f) {
         return '          <div class="cs-stat">\n' +
-               '            <b>' + (f[1] ? csArrow(f[1]) : '') + 'XX' + f[0] + '</b>\n' +
+               '            <b>' + (f[1] ? csArrow(f[1]) : '') + 'XX%</b>\n' +
                '            <span>[What this figure measures]</span>\n' +
                '          </div>';
       }).join('\n') + '\n' +
@@ -1168,7 +1216,7 @@ function casePage(c, i) {
     mainClass: 'cs-detail',
     bare: true,
     title: c.name + ' — case study — RevHops',
-    description: 'How RevHops rebuilt the revenue system at [client name], and what changed as a result.',
+    description: 'How RevHops rebuilt the revenue system at ' + c.name + ', and what changed as a result.',
     body: body
   };
 }
@@ -1360,8 +1408,8 @@ var servicesIndex = {
   navCurrent: '/services',
   title: 'RevOps services — RevHops',
   description: 'Solution design, CRM implementations, HubSpot support retainers, RevOps consulting and lead to cash process mapping.',
-  h1: 'Services',
-  lede: 'RevOps services that scale with you, no matter what stage you\'re at.',
+  h1: 'RevOps Services',
+  lede: 'Designed to scale with you, no matter what stage you\'re at.',
 
   /* No artwork column, but not .page-hero-plain either: that steps the
      headline down, and with the image gone the type is the only thing
@@ -1427,7 +1475,13 @@ AUDIT_ROW +
 '      <div class="case-rail" data-case-rail tabindex="0" aria-label="Case studies">\n' +
 '        ' + CASES.map(function (c) { return caseCard(c, 1, 'reveal'); }).join('\n        ') + '\n' +
 '      </div>\n' +
-'    </div>\n', 'section case-section to-white')
+'    </div>\n', 'section case-section') +
+
+    /* THE STACK — the homepage's clump, under the rail and before the close.
+       No subheading: the title says it, and the fifteen marks say the rest. */
+    section(
+      secHead('Experts in all of the tools in your stack', null, 'centred') +
+      toolClump(1), 'section')
 };
 
 /* ---------- /case-studies ----------
@@ -1444,23 +1498,32 @@ var caseIndex = {
   file: 'case-studies/index.html',
   depth: 1,
   navCurrent: '/case-studies',
-  mainClass: 'cs-index',
+  /* svc-index is the class that carries nothing but the page rhythm now, and
+     /case-studies wants the same one /services has. cs-index is what the
+     filter column and the grid are scoped to. */
+  mainClass: 'cs-index svc-index',
   bare: true,
   title: 'Case studies — RevHops',
   description: 'Revenue operations work we have done, filterable by service, tools, industry, team size and growth stage.',
   body:
-'\n<!-- ===================== HEADER PLATE =====================\n' +
-'     The start panel artwork on a 12px plate, 100px below the bar. Nothing\n' +
-'     in it but the title: the filter under it is the page. .page-head-end\n' +
-'     is the zero-height sentinel the nav watches to decide when to\n' +
-'     collapse, and it lives here because there is no .page-hero. -->\n' +
-'<section class="cs-head">\n' +
+/* THE HEADER IS THE SHARED ONE, since 12 September. It was the gradient
+   plate off the case study pages, which made /case-studies the one index on
+   the site that opened differently from /services, /about and the rest. The
+   plate stays where it earns its keep — on a case study's own page, where
+   it carries the client's story. */
+'\n<!-- ===================== HERO =====================\n' +
+'     The same header /services opens with. The H1 carries data-nav-clear:\n' +
+'     the bar collapses as it reaches the title. -->\n' +
+'<section class="page-hero page-hero-nomedia">\n' +
 '  <div class="shell">\n' +
-'    <div class="cs-head-panel">\n' +
-'      <h1 class="h1">Case Studies</h1>\n' +
+'    <div class="page-hero-inner">\n' +
+'      <div class="page-hero-text">\n' +
+'        <h1 class="h1" data-nav-clear>Case studies</h1>\n' +
+'        <p class="lede">Filter our case studies to find examples of projects we\u2019ve done with\n' +
+'          teams similar to yours.</p>\n' +
+'      </div>\n' +
 '    </div>\n' +
 '  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
 '</section>\n' +
 '\n<!-- ===================== THE SHELF =====================\n' +
 '     20 / 80. Filters down the left, the grid on the right, three cards\n' +
@@ -1963,14 +2026,13 @@ function meetingPage(o) {
 /* The gradient plate off /case-studies, carrying the title. Same classes,
    so it is the same object at the same size — .cs-head-panel is already
    centred flex, which is what puts the title on the plate's middle line.
-   The sentinel rides with it, as it does on /case-studies. */
+   The title carries the nav sentinel, as it does on every page. */
 '\n<section class="cs-head">\n' +
 '  <div class="shell">\n' +
 '    <div class="cs-head-panel">\n' +
-'      <h1 class="h1">' + o.heading + '</h1>\n' +
+'      <h1 class="h1" data-nav-clear>' + o.heading + '</h1>\n' +
 '    </div>\n' +
 '  </div>\n' +
-'  <div class="page-head-end" data-nav-clear></div>\n' +
 '</section>\n' +
 '\n<section class="section">\n' +
 '  <div class="shell">\n' +
@@ -2024,7 +2086,6 @@ var callPage = {
   bare: true,
   noClose: true,
   body:
-'\n<div class="page-head-end" data-nav-clear></div>\n' +
 '\n<section class="section call-split">\n' +
 '  <div class="shell">\n' +
 '    <div class="call-layout">\n' +
@@ -2032,7 +2093,7 @@ var callPage = {
 '      <!-- LEFT, 30% — the gradient plate off /case-studies, portrait.\n' +
 '           Its scrim is legibility, not decoration; see .call-panel. -->\n' +
 '      <div class="call-panel reveal">\n' +
-'        <h1 class="h1">Schedule a Call</h1>\n' +
+'        <h1 class="h1" data-nav-clear>Schedule a Call</h1>\n' +
         CALL_SUB.map(function (p) {
           return '        <p class="call-sub">' + p + '</p>';
         }).join('\n') + '\n' +

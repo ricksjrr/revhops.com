@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="../assets/css/site.css?v=6873404154">
+<link rel="stylesheet" href="../assets/css/site.css?v=60f2478eb6">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -73,18 +73,17 @@
 <main class="svc-index">
 
 <!-- ===================== HERO =====================
-     Type left, artwork bleeding off the right edge. .page-head-end is the
-     zero-height sentinel the nav watches to decide when to collapse. -->
+     Type left, artwork bleeding off the right edge. The H1 carries
+     data-nav-clear: the bar collapses as it reaches the title. -->
 <section class="page-hero page-hero-nomedia">
   <div class="shell">
     <div class="page-hero-inner">
       <div class="page-hero-text">
-        <h1 class="h1">Services</h1>
-        <p class="lede">RevOps services that scale with you, no matter what stage you're at.</p>
+        <h1 class="h1" data-nav-clear>RevOps Services</h1>
+        <p class="lede">Designed to scale with you, no matter what stage you're at.</p>
       </div>
     </div>
   </div>
-  <div class="page-head-end" data-nav-clear></div>
 </section>
 
 <section class="section svc-section">
@@ -93,38 +92,38 @@
       <a class="svc-row reveal" href="../services/solution-design">
         <h3 class="svc-title">Solution design</h3>
         <span class="svc-time">2–3 weeks</span>
-        <p class="svc-copy">The plan before the build. Data model, lifecycle, process map and how you will measure it, signed off by the people who have to live with it.</p>
+        <p class="svc-copy">We’ll help you identify where you’re at, where you want to get to and the gap between the two. Required for all implementation projects.</p>
         <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
       <a class="svc-row reveal" href="../services/crm-implementations">
         <h3 class="svc-title">CRM implementations</h3>
         <span class="svc-time">6–12 weeks</span>
-        <p class="svc-copy">Portal builds and platform migrations. Built once, documented, and handed over so your team can run it without us.</p>
+        <p class="svc-copy">Whether you’re adding a CRM for the first time or migrating from old legacy tools, we’ll build it from start to finish.</p>
         <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
       <a class="svc-row reveal" href="../services/hubspot-support-retainers">
         <h3 class="svc-title">HubSpot support retainers</h3>
         <span class="svc-time">Monthly</span>
-        <p class="svc-copy">A HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon.</p>
+        <p class="svc-copy">HubSpot-specific admin support on call, without hiring full-time headcount. No limit on monthly hours; includes bi-weekly standups and project management access.</p>
         <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
       <a class="svc-row reveal" href="../services/revops-consulting">
         <h3 class="svc-title">RevOps consulting</h3>
         <span class="svc-time">Monthly</span>
-        <p class="svc-copy">Someone to think it through with. What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money.</p>
+        <p class="svc-copy">RevOps consulting for new or growing RevOps leaders &amp; teams. Works closely with executive teams to ensure alignment. Includes on-site visits.</p>
         <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
       <a class="svc-row reveal" href="../services/lead-to-cash-process-mapping">
         <h3 class="svc-title">Lead to cash process mapping</h3>
         <span class="svc-time">2–3 weeks</span>
-        <p class="svc-copy">Every step from first touch to paid invoice, on one page. Usually the first time anyone has seen the whole thing at once.</p>
+        <p class="svc-copy">We’ll map out every step from new lead to paid invoice. For most teams, this will be the first time you’ve seen the whole thing at once.</p>
         <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
       <a class="svc-row reveal" href="../audit">
         <h3 class="svc-title">Free HubSpot audit</h3>
         <span class="svc-time">2–3 days</span>
-        <p class="svc-copy">An hour inside your portal and a written page back. What is set up
-          well, what is quietly costing you, and the three things worth fixing first.</p>
+        <p class="svc-copy">Complimentary audit. We’ll look at your data hygiene, pipelines &amp; stages,
+          automations, integrations and adoption.</p>
         <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>
       </a>
     </div>
@@ -136,7 +135,7 @@
   </div>
 </section>
 
-<section class="section case-section to-white">
+<section class="section case-section">
   <div class="shell">
     <div class="case-head">
     <div class="sec-head sec-head-left reveal">
@@ -181,10 +180,10 @@
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
-              <h3 class="case-title">[Client name]</h3>
+              <h3 class="case-title">Ike Commercial Real Estate</h3>
               <div class="case-figs">
-                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
-                <span class="case-fig"><b>00x</b><span>[measure]</span></span>
+                <span class="case-fig"><b>100%</b><span>New CRM build</span></span>
+                <span class="case-fig"><b>4</b><span>Sales team users</span></span>
               </div>
             </div>
             <span class="case-go" aria-hidden="true">&rarr;</span>
@@ -198,7 +197,7 @@
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
-              <h3 class="case-title">[Client name]</h3>
+              <h3 class="case-title">The Davani Group</h3>
               <div class="case-figs">
                 <span class="case-fig"><b>00%</b><span>[measure]</span></span>
                 <span class="case-fig"><b>00h</b><span>[measure]</span></span>
@@ -215,10 +214,10 @@
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
-              <h3 class="case-title">[Client name]</h3>
+              <h3 class="case-title">Core Income</h3>
               <div class="case-figs">
                 <span class="case-fig"><b>00%</b><span>[measure]</span></span>
-                <span class="case-fig"><b>00k</b><span>[measure]</span></span>
+                <span class="case-fig"><b>$00k</b><span>[measure]</span></span>
               </div>
             </div>
             <span class="case-go" aria-hidden="true">&rarr;</span>
@@ -232,9 +231,9 @@
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
-              <h3 class="case-title">[Client name]</h3>
+              <h3 class="case-title">Woodside Homes</h3>
               <div class="case-figs">
-                <span class="case-fig"><b>00%</b><span>[measure]</span></span>
+                <span class="case-fig"><b>3</b><span>business units</span></span>
                 <span class="case-fig"><b>00d</b><span>[measure]</span></span>
               </div>
             </div>
@@ -249,15 +248,44 @@
           <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           <div class="case-body">
             <div class="case-text">
-              <h3 class="case-title">[Client name]</h3>
+              <h3 class="case-title">Ignite Group</h3>
               <div class="case-figs">
-                <span class="case-fig"><b>00k</b><span>[measure]</span></span>
+                <span class="case-fig"><b>3</b><span>countries unified</span></span>
                 <span class="case-fig"><b>00x</b><span>[measure]</span></span>
               </div>
             </div>
             <span class="case-go" aria-hidden="true">&rarr;</span>
           </div>
         </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="sec-head reveal">
+      <h2 class="h2">Experts in all of the tools in your stack</h2>
+    </div>
+    <div class="tool-clump reveal">
+      <div class="tool-row">
+        <span class="tool-mark"><img src="../assets/img/tools/marketo.webp" alt="Marketo" loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/microsoft365.webp" alt="Microsoft 365" loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/salesforce.webp" alt="Salesforce" data-big loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/hubspot.webp" alt="HubSpot" data-hero loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/pipedrive.webp" alt="Pipedrive" data-mid loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/google-workspace.webp" alt="Google Workspace" data-stack loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/netsuite.webp" alt="Oracle NetSuite" loading="lazy"></span>
+      </div>
+      <div class="tool-row">
+        <span class="tool-mark"><img src="../assets/img/tools/quickbooks.webp" alt="Intuit QuickBooks" loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/zoominfo.webp" alt="ZoomInfo" loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/slack.webp" alt="Slack" loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/claude.webp" alt="Claude" loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/meta.svg" alt="Meta" loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/chargebee.webp" alt="Chargebee" loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/salesmsg.webp" alt="Salesmsg" loading="lazy"></span>
+        <span class="tool-mark"><img src="../assets/img/tools/advizorpro.webp" alt="AdvizorPro" data-stack loading="lazy"></span>
       </div>
     </div>
   </div>
@@ -374,6 +402,6 @@
   </svg>
 </button>
 
-<script src="../assets/js/site.js?v=6873404154"></script>
+<script src="../assets/js/site.js?v=60f2478eb6"></script>
 </body>
 </html>

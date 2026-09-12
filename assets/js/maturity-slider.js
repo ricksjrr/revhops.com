@@ -37,10 +37,15 @@
         'Deal knowledge lives only in someone’s head',
         'Not sure what lever to pull to grow'
       ],
+      cost: [
+        'You don’t know what to do to grow, but you know you need to do something. No established processes yield inconsistent results and creates a lot of frustration.',
+        'More than once, you’ve wondered “Should growing be this hard?”'
+      ],
       caseStudy: {
         who: 'Ike Commercial Real Estate',
         line: 'Ike Commercial Real Estate needed a way to systematize the way they do business.',
-        href: '#'
+        logo: 'assets/img/logos/ike.webp',
+        href: 'case-studies/case-study-1'
       }
     },
     {
@@ -57,10 +62,15 @@
         'No clean handoff, so leads fall through the cracks unnoticed',
         'Getting what you need to make decisions is painful'
       ],
+      cost: [
+        'Leads you paid for go cold in the gap between marketing and sales, and nobody can tell you how many. Every number that reaches a meeting took someone a morning in a spreadsheet first.',
+        'You are growing, but you cannot yet say which part of it you could repeat on purpose.'
+      ],
       caseStudy: {
         who: 'The Davani Group',
         line: 'Davani Group had PMF, but needed systems & processes documented in order to grow.',
-        href: '#'
+        logo: 'assets/img/logos/dg.webp',
+        href: 'case-studies/case-study-2'
       }
     },
     {
@@ -77,10 +87,15 @@
         'Everyone has their own dashboard and nobody trusts the numbers',
         'One RevOps hire is admin, analyst and process owner at the same time'
       ],
+      cost: [
+        'Every team has built its own workaround, and keeping all of them running now costs more than one system built properly would have. Forecasts get argued over instead of acted on.',
+        'Your one RevOps hire spends the week on tickets, so nothing structural ever gets fixed.'
+      ],
       caseStudy: {
         who: 'Core Income',
-        line: 'Core Income implemeted a customized sales process that adapted to the uniuqe way they do business.',
-        href: '#'
+        line: 'Core Income implemented a customized sales process that adapted to the unique way they do business.',
+        logo: 'assets/img/logos/core-income.webp',
+        href: 'case-studies/case-study-3'
       }
     },
     {
@@ -97,10 +112,15 @@
         'Each department has its own version of the truth',
         'Attribution and comp models sophisticated enough to be gamed'
       ],
+      cost: [
+        'Board reporting takes a week and still goes out with caveats on it. Decisions get made on whichever version of the number arrived in the room first.',
+        'The system is sophisticated enough now that people have learned to work around it rather than in it.'
+      ],
       caseStudy: {
         who: 'Woodside Homes',
         line: 'To support operations across most of the US, Woodside implemented business unit level reporting & process standardization.',
-        href: '#'
+        logo: 'assets/img/logos/woodside-homes.webp',
+        href: 'case-studies/case-study-4'
       }
     },
     {
@@ -117,10 +137,20 @@
         'Nobody understands the full customer journey end to end',
         'Legacy systems are too big to fail, and also the bottleneck'
       ],
+      cost: [
+        'Every acquisition brought another system with it and none of them were ever retired, so nobody owns the whole customer. A simple question needs three teams and a month to answer.',
+        'The cost is not a line item. It is every initiative that moves at the speed of your slowest integration.'
+      ],
       caseStudy: {
         who: 'Ignite Group',
         line: 'Ignite Group migrated their 3-country sales organization from Salesforce to HubSpot’s Enterprise suite.',
-        href: '#'
+        /* not line art on a transparent ground: a near-white disc with the
+           wordmark knocked out of it, so it cannot be multiplied onto the
+           card or flattened to white for the dark theme. Same exception the
+           marquee makes for it. */
+        logo: 'assets/img/logos/ignite-group.webp',
+        solid: true,
+        href: 'case-studies/case-study-5'
       }
     }
   ];
@@ -142,8 +172,9 @@
      be a second, navy variant for the dark theme; the theme went on
      3 September and the pair went with it. */
   var ICON_SRC = 'assets/img/revhops-icon-white.png';
-  /* swap this for the real case study photo */
-  var SHOT_SRC = 'assets/img/case-study-placeholder.svg';
+  /* Each stage's case study carries its own client mark — see `logo` on the
+     STAGES entries. Paths are relative to the page this module is mounted
+     on, which is the homepage and nothing else. */
 
   /* The headline. Split in two because the tail sits on its own line, via a
      block-level span rather than a hard break, so it holds at any width.
@@ -161,15 +192,9 @@
   var CARD_COUNT = CARD_TITLES.length;
 
   /* Second section inside the Problems card, mirroring the tech stack block
-     in the first card. Placeholder for now. If this should read differently
-     per stage, move it into the STAGES entries above. */
-  var PROBLEM_SPLIT = {
-    head: 'What it’s costing you',
-    body: [
-      'You don’t know what to do to grow, but you know you need to do something. No estabalished processes yield inconsistent results and creates a lot of frustration.',
-      'More than once, you’ve wondered “Should growing be this hard?”'
-    ]
-  };
+     in the first card. The heading is shared; the copy under it is per
+     stage and lives on the STAGES entries above as `cost`. */
+  var PROBLEM_HEAD = 'What it’s costing you';
 
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -246,9 +271,10 @@
     root.innerHTML =
       '<div class="mat">' +
         '<div class="mat-head">' +
-          '<h1 class="h1" data-nav-clear data-headline>' + esc(HEAD_LEAD) + ' ' +
+          '<h1 class="h1" data-nav-clear data-headline>' +
+            '<span class="h1-lead">' + esc(HEAD_LEAD) + '</span> ' +
             '<span class="h1-tail">' + esc(HEAD_TAIL) + '</span></h1>' +
-          '<p class="lede">Move the slider to identify where you’re at and what challenges you might be facing. We’ll share an example of how we helped a similar team get to the next stage of growth!</p>' +
+          '<p class="lede">Move the slider to identify where you’re at and what challenges you might be facing. We’ll share an example of how we helped a similar team get to the next stage of growth.</p>' +
         '</div>' +
 
         '<div class="mat-track-wrap">' +
@@ -375,7 +401,7 @@
         /* situation and stack share one card, split by a hairline */
         list(s.situation) +
         '<div class="mcard-split">' +
-          '<h3 class="mcard-subhead">Your tech stack probably includes</h3>' +
+          '<h3 class="mcard-subhead">Your tech stack includes</h3>' +
           stackChips(s.have, s.missing) +
         '</div>' +
         '<a class="mcard-link" href="' + esc(AUDIT_CTA) + '">' +
@@ -383,8 +409,8 @@
 
         list(s.problems) +
         '<div class="mcard-split">' +
-          '<h3 class="mcard-subhead">' + esc(PROBLEM_SPLIT.head) + '</h3>' +
-          PROBLEM_SPLIT.body.map(function (t) {
+          '<h3 class="mcard-subhead">' + esc(PROBLEM_HEAD) + '</h3>' +
+          s.cost.map(function (t) {
             return '<p class="mcard-note">' + esc(t) + '</p>';
           }).join('') +
         '</div>' +
@@ -398,7 +424,9 @@
             '<h3 class="mcard-case-who">' + esc(s.caseStudy.who) + '</h3>' +
             '<p class="mcard-case-line">' + esc(s.caseStudy.line) + '</p>' +
           '</div>' +
-          '<img class="mcard-shot" src="' + SHOT_SRC + '" alt="" aria-hidden="true">' +
+          '<img class="mcard-shot" src="' + esc(s.caseStudy.logo) + '" alt="' +
+            esc(s.caseStudy.who) + '"' + (s.caseStudy.solid ? ' data-solid' : '') +
+            ' loading="lazy">' +
         '</div>' +
         '<a class="mcard-link" href="' + esc(s.caseStudy.href) + '">' +
           'Read the story <span class="arrow">&rarr;</span></a>'

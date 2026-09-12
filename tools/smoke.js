@@ -238,8 +238,11 @@ console.log('\n— services —');
   const sh = d.querySelector('.svc-list').closest('section').querySelector('.h2').textContent.trim();
   sh === "RevOps services that scale with you"
     ? ok('services heading is the line James wrote') : bad('services heading is "' + sh + '"');
+  // the subheading came out on 12 September, along with the tool section's
   d.querySelector('.svc-list').closest('section').querySelector('.sec-head .sec-sub')
-    ? ok('services section has a subheading') : bad('no subheading under the services heading');
+    ? bad('the services subheading came back') : ok('no subheading under the services heading');
+  d.querySelector('.svc-list').closest('section').querySelector('.sec-head-left')
+    ? ok('and the heading sits hard left') : bad('the services heading is not left-aligned');
 }
 
 /* ------------------------------------------------------------- case studies */
@@ -292,12 +295,16 @@ console.log('\n— tool clump —');
                         return i === 0 || i === r.length - 1; };
     for (const n of ['salesforce', 'pipedrive', 'hubspot'])
       mid(n) ? ok(n + ' sits near the middle') : bad(n + ' drifted away from the middle');
-    // the two nearest the middle are also the two sized up
-    for (const n of ['salesforce', 'pipedrive'])
-      d.querySelector('.tool-mark img[src*="' + n + '"][data-mid]')
-        ? ok(n + ' is sized up with data-mid') : bad(n + ' is not sized up');
+    // the two nearest the middle are also the two sized up. Salesforce went
+    // up a further 30% on 12 September and has its own tier, data-big.
+    d.querySelector('.tool-mark img[src*="pipedrive"][data-mid]')
+      ? ok('pipedrive is sized up with data-mid') : bad('pipedrive is not sized up');
+    d.querySelector('.tool-mark img[src*="salesforce"][data-big]')
+      ? ok('salesforce is sized up with data-big') : bad('salesforce is not sized up');
     /\[data-mid\] \{ height: clamp\(27px/.test(css)
       ? ok('data-mid sits between the default and HubSpot') : bad('no data-mid size tier');
+    /\[data-big\] \{ height: clamp\(35px/.test(css)
+      ? ok('data-big is data-mid plus 30%') : bad('no data-big size tier');
     for (const n of ['advizorpro', 'marketo', 'netsuite', 'quickbooks'])
       edge(n) ? ok(n + ' sits at an edge') : bad(n + ' is not at an edge');
   }
@@ -405,21 +412,20 @@ console.log('\n— start section —');
   (cta && cta.getAttribute('href') === 'call') ? ok('one boxed CTA, pointing at call') : bad('no call CTA');
   sp.querySelectorAll('.btn').length === 1 ? ok('exactly one button')
                                            : bad(sp.querySelectorAll('.btn').length + ' buttons');
-  // the artwork is back, spanning the close and half the testimonial above it
-  /start-panel-bg/.test(rule('.start-section')) ? ok('artwork behind the close') : bad('no artwork behind the close');
-  /--start-bleed: clamp/.test(rule('.start-section')) ? ok('it bleeds up into the testimonial')
-                                                     : bad('the artwork does not reach the section above');
-  /linear-gradient\(to bottom, var\(--surface\) 0, rgba\(255, 255, 255, 0\) var\(--start-bleed\)\)/.test(rule('.start-section'))
-    ? ok('fades out over the bleed, so it appears mid-section rather than at a line')
-    : bad('the artwork arrives at a hard edge');
-  // a taller frame pulls more of the dark corner in, so the zoom went up
-  /background-size: auto, 200% auto/.test(rule('.start-section'))
-    ? ok('zoomed 200%, which is what clears the floor at this height') : bad('artwork zoom is not 200%');
-  /rgba\(255, 255, 255, \.[0-9]/.test(rule('.start-section'))
-    ? bad('a lightening veil is back on the artwork') : ok('no lightening veil');
-  const pb = /padding-bottom: clamp\((\d+)px/.exec(rule('.start-section'));
-  (pb && +pb[1] >= 60) ? ok('a clear beat between the close and the footer, ' + pb[1] + 'px floor')
-                       : bad('not enough room before the footer');
+  /* NO ARTWORK, since 12 September. The photograph went, and with it the
+     bleed up over the section above, the white drift that delivered the page
+     into it, and the light-theme type this section had to keep in the dark
+     theme. Each of those is asserted absent rather than dropped: they came
+     back once already. */
+  /start-panel-bg/.test(rule('.start-section'))
+    ? bad('the photograph is back behind the close') : ok('no artwork behind the close');
+  /--start-bleed: 0px/.test(rule('.start-section'))
+    ? ok('no bleed up into the section above') : bad('the close bleeds over the section above again');
+  /background: none/.test(rule('.start-section'))
+    ? ok('the close sits on the page ground') : bad('the close paints a ground of its own');
+  /padding-block: calc\(var\(--sec-pad\)/.test(rule('.start-section'))
+    ? ok('and sits tighter than a section, off the shared rhythm')
+    : bad('the close is not on the shared rhythm');
   d.querySelector('.meetings-iframe-container, .start-booking')
     ? bad('the booking embed came back') : ok('no booking embed');
   d.querySelector('.start-steps') ? bad('the numbered steps came back') : ok('no numbered steps');
@@ -513,8 +519,10 @@ console.log('\n— testimonials —');
   // chip and would have left five navy stars on a navy page.
   /fill: var\(--ink-strong\)/.test(rule('.stars svg')) ? ok('stars follow the page ink')
                                                         : bad('stars are painted with a ground colour');
-  /background: var\(--surface\)/.test(rule('.testi-section'))
-    ? ok('white ground, so the drift lands and the artwork fades into it') : bad('the section is not white');
+  // no ground of its own since 12 September: paper in light, navy in dark,
+  // the same as every other section on the page
+  /background: transparent/.test(rule('.testi-section'))
+    ? ok('no ground of its own, so it follows the theme') : bad('the section paints a ground');
   // the about pair was capped on 6 Sept: at full width it outweighed the copy
   /max-width: 400px/.test(rule('.about-stack')) ? ok('about pair capped at 400px') : bad('the about pair is uncapped again');
 }
@@ -738,10 +746,16 @@ console.log('\n— light / dark —');
     v >= 3 ? ok('tool marks read at ' + v.toFixed(2) + ':1 at their quietest')
            : bad('tool marks only reach ' + v.toFixed(2) + ':1');
   }
-  // and on hover they get a white plate, because brand colour on navy does not work
+  /* FULL COLOUR AND NOTHING BEHIND THEM, at James' ask on 12 September. The
+     white silhouettes and the white plate that appeared behind a mark on
+     hover are both gone. This costs contrast on the darker marks and is a
+     deliberate trade — assert the plate stays gone rather than measuring it. */
   /background: #FFFFFF/.test(rule(':root[data-theme="dark"] .tool-mark::before'))
-    ? ok('hover puts the tool marks on a white plate, so brand colour survives')
-    : bad('the tool marks go full colour straight onto the navy');
+    ? bad('the white hover plate is back behind the tool marks')
+    : ok('nothing is drawn behind a tool mark in either theme');
+  /filter: none/.test(rule(':root[data-theme="dark"] .tool-mark img'))
+    ? ok('and the marks keep their own colours on the navy')
+    : bad('the tool marks are still filtered in the dark theme');
 
   /* The two things James asked to leave alone. --navy is the dark-chip
      token; if the dark palette ever redefines it, the footer and the
@@ -764,15 +778,15 @@ console.log('\n— light / dark —');
     ? ok('the bar button is a literal, so it stays paper on the navy')
     : bad('the floating bar button will go navy on navy');
 
-  // The close is set over a photograph with no dark variant. Measured, the
-  // artwork is mostly light, so the dark theme's near-white ink would land
-  // at about 1.1:1 on it. This section keeps light-theme type in both.
+  // With the photograph gone there is nothing left for the close to pin its
+  // type against, so both overrides came out and the section follows the
+  // tokens like everything else.
   /color: #304157/.test(rule(':root[data-theme="dark"] .start-shout'))
-    ? ok('the close keeps navy type, because it sits on a light photograph')
-    : bad('the close headline will be near-white on a light photograph');
+    ? bad('the close headline is pinned to navy again, on a navy page')
+    : ok('the close headline follows the theme');
   /background: #304157/.test(rule(':root[data-theme="dark"] .start-section .btn-primary'))
-    ? ok('and its button stays navy on that artwork')
-    : bad('the close button will be a pale button on pale artwork');
+    ? bad('the close button is pinned to navy again, on a navy page')
+    : ok('and its button follows the theme');
 
   /* ---- the toggle ---- */
   const tt = d.querySelector('[data-theme-toggle]');
