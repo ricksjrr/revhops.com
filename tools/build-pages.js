@@ -2104,9 +2104,16 @@ var clientCallPage = meetingPage({
 });
 
 /* ---------- legal ----------
-   Placeholder wording. No design work here on purpose: these two pages are
-   read once, by someone checking a specific clause, and the only thing that
-   helps them is a narrow measure and clear headings. */
+   Real wording as of 12 September 2026, replacing the placeholders. No design
+   work here on purpose: these two pages are read once, by someone checking a
+   specific clause, and the only thing that helps them is a narrow measure and
+   clear headings.
+
+   NOT LAWYER-REVIEWED. Written against how the site actually behaves, which
+   is the part that matters most and the part a template gets wrong. Two
+   things to keep true: there is no cookie banner (the Privacy page says so
+   outright rather than pretending), and Google Analytics is named because it
+   is going in. If either changes, change the copy in the same commit. */
 
 function legalPage(o) {
   return {
@@ -2118,8 +2125,7 @@ function legalPage(o) {
     lede: o.lede,
     body: section(
 '    <div class="prose reveal">\n' +
-'      <p class="prose-meta">Last updated [date]. This is placeholder wording and has not been\n' +
-'        reviewed by a lawyer. Replace it before launch.</p>\n' +
+'      <p class="prose-meta">Last updated ' + o.updated + '.</p>\n' +
       o.sections.map(function (s) {
         return '      <h2>' + s[0] + '</h2>\n' +
                s.slice(1).map(function (p) {
@@ -2135,60 +2141,109 @@ function legalPage(o) {
 var terms = legalPage({
   file: 'terms.html',
   title: 'Terms of Service — RevHops',
-  description: 'The terms under which RevHops provides its website and services.',
+  description: 'The terms you accept by using revhops.com. Client work is governed by its own signed agreement.',
   h1: 'Terms of Service',
-  lede: 'The terms you agree to by using this site. Placeholder wording for now.',
+  lede: 'The terms you accept by using this site. The work we do for clients is governed by its own agreement.',
+  updated: '12 September 2026',
   sections: [
     ['Who we are',
-     'RevHops is a revenue operations consultancy based in Phoenix, Arizona. In these terms, "we", "us" and "RevHops" mean RevHops; "you" means the person or company using this website or engaging our services.',
+     'RevHops is a trade name of James Ricks Consulting, LLC, an Arizona limited liability company based in Phoenix, Arizona. In these terms, "we", "us" and "RevHops" mean that company, and "you" means whoever is using this website.',
      'Questions about anything on this page go to <a href="mailto:team@revhops.com">team@revhops.com</a>.'],
+    ['What these terms cover',
+     'This page covers your use of revhops.com and everything attached to it: the blog, the resource library, the assessments and calculators, and the games.',
+     'It does not cover the work we do for clients. Consulting, implementation and support engagements are governed entirely by the statement of work or service agreement signed for that engagement. Nothing on this page changes those documents, and if the two ever disagree, the signed agreement wins.',
+     'Using this site means you accept these terms. If you do not accept them, stop using the site.'],
     ['Using this website',
-     'You may use this site for lawful purposes. You may not attempt to gain unauthorized access to it, interfere with its operation, or scrape it in a way that degrades service for anyone else.',
-     '[Placeholder. Expand with the specific restrictions counsel recommends.]'],
-    ['Our services',
-     'Consulting, implementation and support work is governed by the individual statement of work or service agreement signed for that engagement. Where those documents conflict with this page, those documents win.',
-     ['Scope, fees and timelines are set out in the relevant statement of work.',
-      'Either party may end a monthly engagement on thirty days written notice.',
-      '[Placeholder. Payment terms, late payment and expenses.]']],
+     'You may read this site, use the tools on it, and download what we publish, for your own purposes, commercial or otherwise.',
+     'You may not do any of the following:',
+     ['Try to reach any part of the site, or any system behind it, that is not meant to be public.',
+      'Interfere with how the site runs, or test its security without asking us first.',
+      'Scrape or crawl it at a rate that degrades it for anyone else.',
+      'Strip our attribution from something we published and present it as your own.',
+      'Use what is here to build a competing library, directory or product.']],
+    ['What is here is information, not advice',
+     'The articles, guides, benchmarks, scorecards and calculators on this site are general information about revenue operations. They are not consulting advice, and they are not legal, tax or accounting advice.',
+     'A score or a number produced by a tool on this site is a starting point for a conversation, not a recommendation. What you do with it is your decision and your risk. If you want advice about your situation specifically, that is what an engagement is for.'],
+    ['What you send us',
+     'What happens to anything you type into a form here, including the newsletter and gated downloads, is set out in our <a href="privacy">Privacy Policy</a>.',
+     'Please do not send confidential or sensitive information through a web form. Wait until we have a signed agreement and a proper place to put it.',
+     'If you send us a suggestion or an idea without us asking for it, we are free to use it without owing you anything for it.'],
     ['Intellectual property',
-     'Everything on this site — text, design, code and marks — belongs to RevHops unless credited otherwise. Deliverables produced during a client engagement transfer as set out in that engagement\'s agreement.',
-     '[Placeholder. Confirm the assignment and licence wording with counsel.]'],
+     'The text, design, code, illustrations and marks on this site belong to us, except where something is credited otherwise. You may quote from what we publish, or link to it, with attribution. You may not republish it wholesale, and you may not use our name or logo in a way that suggests we endorse you or your product.',
+     'HubSpot, Pipedrive and other product names that appear here belong to their respective owners. Our partner badges mean we are a certified partner of those platforms. They do not mean those companies wrote, reviewed or endorsed anything on this site.'],
+    ['Links to other sites',
+     'We link out to things worth reading. We do not control what is on the other end of those links, we do not vouch for it, and we are not responsible for it.'],
+    ['Availability and warranties',
+     'This site is provided as is and as available. We do not promise that it will be uninterrupted, that everything on it is accurate or current, or that it is free of anything harmful. To the fullest extent the law allows, we disclaim the implied warranties of merchantability, fitness for a particular purpose and non-infringement.'],
     ['Liability',
-     '[Placeholder. Limitation of liability, exclusions and cap, to be drafted.]'],
+     'To the fullest extent the law allows, we are not liable for indirect, incidental, special or consequential damages, or for lost profits, lost revenue or lost data, arising out of your use of this site. Where liability cannot be excluded, our total liability for everything connected to this site is capped at one hundred US dollars.',
+     'This section is about the website. It does not limit anything we owe a client under a signed agreement, which carries its own liability terms.'],
     ['Changes to these terms',
      'We may update this page. The date at the top says when it last changed. Continuing to use the site after a change means you accept the updated terms.'],
     ['Governing law',
-     '[Placeholder. Arizona law, and the venue for disputes.]']
+     'Arizona law governs these terms, without regard to its conflict of laws rules. Any dispute about this site belongs in the state or federal courts sitting in Maricopa County, Arizona, and we both agree to that venue.',
+     'If a court finds any part of these terms unenforceable, the rest stays in force.'],
+    ['Contact',
+     'James Ricks Consulting, LLC, doing business as RevHops. Phoenix, Arizona. <a href="mailto:team@revhops.com">team@revhops.com</a>.']
   ]
 });
 
 var privacy = legalPage({
   file: 'privacy.html',
   title: 'Privacy Policy — RevHops',
-  description: 'What data RevHops collects through this website, why, and what you can ask us to do with it.',
+  description: 'What data RevHops collects through this website, why, who else sees it, and how to get rid of it.',
   h1: 'Privacy Policy',
-  lede: 'What we collect, why we collect it, and how to get rid of it. Placeholder wording for now.',
+  lede: 'What we collect, why we collect it, who else sees it, and how to get rid of it.',
+  updated: '12 September 2026',
   sections: [
     ['The short version',
-     'We collect the information you give us and some information about how you use this site. We use it to answer you and to work out which pages are worth keeping. We do not sell it.'],
+     'We collect what you type into our forms and some information about how you move around this site. We use it to reply to you, to run the work once it starts, and to work out which pages earn their place.',
+     'We do not sell it. We do not share it with anyone except the companies that run the tools we work in. You can ask us to delete it at any time and we will.'],
     ['What we collect',
-     ['Anything you type into a form on this site: name, work email, company and your message.',
-      'Anything you give us when booking a call through our scheduler.',
-      'Usage data collected by HubSpot\'s tracking script: pages viewed, referring source, approximate location and a cookie identifier.',
-      '[Placeholder. Confirm the full list once analytics is settled.]']],
+     ['What you send through a form: your name, work email, company, phone if you give it, and whatever you write in the message box. Our forms are HubSpot forms, so submissions land in HubSpot.',
+      'What you give us for a gated download or a gated video: your name and work email, at minimum.',
+      'What you give us when you book a call: whatever the scheduler asks for, plus the time you picked.',
+      'Your email address, if you subscribe to the newsletter, along with whether you opened or clicked what we sent.',
+      'How you use the site: pages viewed, how you arrived, roughly where you are based on your IP address, your browser and device, and a cookie identifier that ties those visits together. HubSpot\'s tracking script and Google Analytics collect this.',
+      'Whatever you tell us by email or on a call, once we are actually talking.']],
+    ['What we do not collect',
+     'We do not ask for, and have no use for, sensitive categories of personal information: health, biometrics, precise geolocation, government identifiers, or anything about your race, religion, politics or sexual orientation. The games on this site keep nothing. Nothing you play is recorded or sent anywhere.'],
     ['Why we collect it',
-     'To reply to you, to run an engagement once one starts, and to understand which parts of this site are useful. Marketing email only ever goes to people who asked for it.'],
+     'To reply to you. To send you the thing you asked for. To run an engagement once one starts. To understand which parts of this site are useful, so we stop writing the parts that are not.',
+     'Marketing email goes only to people who asked for it. Every one has an unsubscribe link, and it works.',
+     'If you are in the EU or the UK, our legal bases are: your consent, for marketing email and non-essential cookies; performance of a contract, for anything we need in order to do work you have hired us for; and our legitimate interests, for replying to an inquiry, keeping the site secure, and measuring how it performs.'],
     ['Cookies and tracking',
-     'This site loads HubSpot\'s tracking script, which sets cookies to recognize a returning visitor and attribute a form submission to the pages that led to it. You can refuse cookies in your browser; the site works either way.',
-     '[Placeholder. Add the consent banner detail if one is added.]'],
+     'HubSpot sets cookies so it can recognize a returning visitor and connect a form submission to the pages that led to it. Google Analytics sets cookies to count visits and show which pages get read.',
+     'There is no cookie banner on this site today, so those cookies are set when you arrive. You can block or delete them in your browser settings, and the site works fine without them. If your browser sends a Global Privacy Control signal, we treat it as an opt out.',
+     'We do not run advertising pixels, we do not build ad audiences, and we do not sell anything we learn about you.'],
     ['Who else sees it',
-     'Our processors: HubSpot as our CRM and analytics, and our email and calendar providers. They hold it on our behalf and under contract. Nobody buys it from us, because we do not sell it.'],
+     'Only the companies whose tools we work in, and only under contract with us:',
+     ['HubSpot, which is our CRM and runs our forms, marketing email, meeting scheduler, blog and site analytics.',
+      'Google, whose Workspace runs our email, calendar and video meetings, and whose Analytics measures site traffic.',
+      'GitHub, which hosts this site and therefore sees the IP addresses of requests as an ordinary part of serving pages.'],
+     'We will also disclose information if the law genuinely requires it, or to protect our rights or someone\'s safety. If the business is ever sold or merged, information moves with the rest of the business, and this policy travels with it.',
+     'We have not sold personal information in the last twelve months, and we do not share it for cross-context behavioral advertising.'],
+    ['Where it is held',
+     'In the United States, where we and our providers are based. If you are in the EU or the UK, that means your information is transferred out of your region. Our providers make those transfers under the standard contractual clauses, and so do we.'],
     ['How long we keep it',
-     '[Placeholder. Retention periods per data type.]'],
+     ['An inquiry that never became work: two years after your last contact with us.',
+      'Client records: seven years after the engagement ends, because tax and contract records need that long.',
+      'Newsletter subscribers: until you unsubscribe, and then a suppression record so we do not email you again by mistake.',
+      'Analytics and cookie data: for each provider\'s own expiry period, which we keep at the shortest setting that provider offers.'],
+     'Ask us to delete something sooner and we will, unless we are legally required to keep it.'],
     ['Your rights',
-     'You can ask what we hold about you, ask for it to be corrected, or ask us to delete it. Email <a href="mailto:team@revhops.com">team@revhops.com</a> and we will action it. If you are in the EU or UK, the GDPR rights apply in full.'],
+     'Wherever you are: you can ask what we hold about you, ask us to correct it, ask us to delete it, or ask us to stop emailing you. Email <a href="mailto:team@revhops.com">team@revhops.com</a> and we will action it within thirty days. There is no charge, and we will not treat you any differently for asking.',
+     'If you are in the EU or the UK, you also have the right to object to processing we base on legitimate interests, to receive your information in a portable format, to withdraw consent at any time without affecting what came before, and to complain to your data protection authority. In the UK, that is the Information Commissioner\'s Office.',
+     'If you are in California, you also have the right to know the categories of information we collect, where it came from, why we collect it and who we disclose it to, all of which is on this page. You have the right to limit the use of sensitive personal information, which we do not collect in the first place. You may use an authorized agent, and we verify a request by replying to the email address we already hold for you.'],
+    ['Security',
+     'We use the tools any business our size would use, with two-factor authentication turned on across all of them, and we keep access to client data limited to the people doing the work. No system is perfect and we will not pretend this one is. If something goes wrong in a way that affects you, we will tell you.'],
+    ['Children',
+     'This is a site for businesses. It is not intended for anyone under sixteen, and we do not knowingly collect anything from them. If you believe a child has sent us something, email us and we will delete it.'],
+    ['Changes to this policy',
+     'We will update this page when what we do changes. The date at the top says when it last changed. If a change is significant, we will say so on the page rather than making you diff it.'],
     ['Contact',
-     'RevHops, Phoenix, Arizona. <a href="mailto:team@revhops.com">team@revhops.com</a>.']
+     'RevHops is a trade name of James Ricks Consulting, LLC, an Arizona limited liability company based in Phoenix, Arizona. We are the controller of the information described here.',
+     'Privacy questions and requests: <a href="mailto:team@revhops.com">team@revhops.com</a>.']
   ]
 });
 
