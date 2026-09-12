@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HubSpot Data Hub &mdash; RevHops</title>
+<meta name="description" content="HubSpot Data Hub done properly: data sync, data quality, programmable automation and the reporting layer that depends on both.">
+<link rel="icon" href="../assets/img/revhops-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
+<link rel="stylesheet" href="../assets/css/site.css?v=406e7af045">
+
+<!-- Theme before the first paint, and no scroll restoration on reload.
+     Both have to be inline and in the head: read the saved theme any later
+     and anyone on dark gets a white flash, and a restored scroll position a
+     few pixels down the page lands with the nav already collapsed. -->
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('revhops-theme');
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  } catch (e) { /* private mode: light theme, no toggle memory, nothing breaks */ }
+
+  if ('scrollRestoration' in history && !location.hash) {
+    history.scrollRestoration = 'manual';
+  }
+})();
+</script>
+
+<!-- HubSpot tracking, portal 46722926. Async and deferred, so it never
+     blocks the first paint. Goes in the head of every public page. -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/46722926.js"></script>
+</head>
+<body>
+
+<!-- ============================= NAV =============================
+     Identical on every page. Two states: transparent at rest so the header
+     circle runs through it, a floating navy bar once [data-nav-clear] has
+     scrolled past. Generated — edit NAV_ITEMS in tools/build-pages.js. -->
+<header class="nav" data-nav>
+  <div class="shell nav-inner">
+    <a class="brand" href="../" aria-label="RevHops home">
+      <img class="brand-base" src="../assets/img/revhops-logo.png" alt="revhops">
+      <img class="brand-alt" src="../assets/img/revhops-logo-white.png" alt="" aria-hidden="true">
+    </a>
+    <nav class="nav-links" data-nav-links aria-label="Primary">
+      <a href="../services">Services</a>
+      <a href="../case-studies">Case studies</a>
+      <a href="../resources">Resources</a>
+      <a href="../hubspot" aria-current="page">HubSpot</a>
+      <a href="../pricing">Pricing</a>
+      <a href="../about">About</a>
+      <a href="../contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <button class="theme-toggle" data-theme-toggle type="button"
+              aria-pressed="false" aria-label="Switch to the dark theme">
+        <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2.2v2.4M12 19.4v2.4M4.1 4.1l1.7 1.7M18.2 18.2l1.7 1.7M2.2 12h2.4M19.4 12h2.4M4.1 19.9l1.7-1.7M18.2 5.8l1.7-1.7"/>
+        </svg>
+        <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.1 14.6A8.4 8.4 0 0 1 9.4 3.9a8.4 8.4 0 1 0 10.7 10.7z"/>
+        </svg>
+      </button>
+      <a class="btn btn-primary" href="../call">Schedule a call</a>
+      <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-label="Menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ===================== HERO =====================
+     Type left, artwork bleeding off the right edge. .page-head-end is the
+     zero-height sentinel the nav watches to decide when to collapse. -->
+<section class="page-hero page-hero-nomedia">
+  <div class="shell">
+    <div class="page-hero-inner">
+      <div class="page-hero-text">
+        <a class="hero-back" href="../hubspot"><span class="arrow" aria-hidden="true">&larr;</span> All six hubs</a>
+        <h1 class="h1">Data Hub</h1>
+        <p class="lede">Syncs, data quality, custom code and the reporting layer resting on them. The unglamorous half of HubSpot, and where most portals quietly break.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="../call">Schedule a call</a>
+          <a class="btn btn-outline" href="../contact">Request a portal audit</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-head-end" data-nav-clear></div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="sec-head sec-head-left reveal">
+      <h2 class="h2">What Data Hub <span class="hl">quietly holds up</span></h2>
+      <p class="sec-sub">HubSpot calls it turning scattered data into intelligence. Read it as the plumbing: what syncs where, which system wins a disagreement, and whether the properties your reports are built on mean the same thing to three different teams.</p>
+    </div>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards pcards-3">
+        <div class="pcard reveal">
+          <h3 class="pcard-title">Data sync</h3>
+          <p class="pcard-copy">Two-way sync to the rest of the stack out of the box, with the field mapping visible rather than buried in somebody’s script.</p>
+          <div class="pcard-chips">
+            <span class="chip">Data Sync</span>
+            <span class="chip">100+ integrations</span>
+            <span class="chip">Two-way sync</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">Data quality</h3>
+          <p class="pcard-copy">Formatting, duplicates, and the alert that tells you a property stopped being filled in three weeks ago.</p>
+          <div class="pcard-chips">
+            <span class="chip">Data Quality Overview</span>
+            <span class="chip">Format automation</span>
+            <span class="chip">Duplicate management</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">Programmable automation</h3>
+          <p class="pcard-copy">Custom code inside a workflow and webhooks out of it, for the logic no native action covers. Used sparingly, on purpose.</p>
+          <div class="pcard-chips">
+            <span class="chip">Custom code actions</span>
+            <span class="chip">Webhooks</span>
+            <span class="chip">Programmable Automation</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">Datasets and Data Studio</h3>
+          <p class="pcard-copy">A curated layer between the raw records and the dashboard, so a report is built once rather than rebuilt by each analyst.</p>
+          <div class="pcard-chips">
+            <span class="chip">Data Studio</span>
+            <span class="chip">Datasets</span>
+            <span class="chip">Calculated properties</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">Warehouse and cloud storage</h3>
+          <p class="pcard-copy">Bidirectional sync with the cloud data platform finance and product already use, which ends the export-and-email habit.</p>
+          <div class="pcard-chips">
+            <span class="chip">Cloud Data Storage Integrations</span>
+            <span class="chip">Bidirectional sync</span>
+            <span class="chip">Snapshots</span>
+          </div>
+        </div>
+        <div class="pcard reveal">
+          <h3 class="pcard-title">The reporting foundation</h3>
+          <p class="pcard-copy">Dashboards people trust because they read from one definition. That trust is a data project rather than a charting one.</p>
+          <div class="pcard-chips">
+            <span class="chip">Dashboards and Reporting</span>
+            <span class="chip">Custom properties</span>
+            <span class="chip">Field mappings</span>
+          </div>
+        </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="sec-head sec-head-left reveal">
+      <h2 class="h2">Which tier you actually need</h2>
+      <p class="sec-sub">Nobody is upsold harder than a HubSpot buyer in month one. Here is the short version without the numbers, because HubSpot moves those and a stale price is worse than none.</p>
+    </div>
+    <div class="reveal" style="margin-top:clamp(18px,2.2vw,28px);max-width:64ch">
+      <ul class="ticks">
+          <li><b>Free</b> includes data sync, which is more than most people realise and often enough to retire a manual export.</li>
+          <li><b>Starter</b> adds field mappings and the simpler quality automation. A reasonable floor for a two-system stack.</li>
+          <li><b>Professional</b> is programmable automation, the data quality tooling and webhooks. The tier a real integration needs.</li>
+          <li><b>Enterprise</b> adds datasets, snapshots and the cloud data storage sync. Ask for it when a warehouse is already in the picture.</li>
+          <li>Data Hub is the hub bought latest, usually after a year of custom code that a Professional licence would have replaced. Worth pricing before the next integration rather than after it.</li>
+        </ul>
+      <div class="btn-row" style="margin-top:clamp(22px,2.6vw,32px)">
+        <a class="btn btn-primary" href="../contact">Ask us which tier</a>
+      </div>
+      <p class="partner-note">Current pricing is on
+        <a href="https://www.hubspot.com/pricing" target="_blank" rel="noopener">HubSpot’s pricing page</a>.
+        As a Platinum partner we can quote it too, and we will tell you when a lower tier does the job.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="sec-head sec-head-left reveal">
+      <h2 class="h2">Where we usually find it broken</h2>
+      <p class="sec-sub">Four things we see in portal after portal. Not one of them is a licensing problem.</p>
+    </div>
+    <div class="reveal" style="margin-top:clamp(18px,2.2vw,28px)">
+      <ul class="ticks ticks-2">
+          <li>A sync turned on in both directions before anyone decided which system wins a disagreement.</li>
+          <li>Deduplication done once, by hand, in a spreadsheet, and never again after that person left.</li>
+          <li>Custom code doing the work a field mapping would have done, maintained by whoever happened to write it.</li>
+          <li>Reports built on properties that three teams fill in three different ways.</li>
+        </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="sec-head sec-head-left reveal">
+      <h2 class="h2">What we do in Data Hub</h2>
+    </div>
+    <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">
+      <a class="svc-row" href="../services/solution-design">
+        <h3 class="svc-title">Decide the system of record</h3>
+        <p class="svc-copy">Which system owns which object, what syncs which way, and what happens when the two disagree. An hour of this saves a quarter later.</p>
+        <span class="svc-go">See the work <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row" href="../services/crm-implementations">
+        <h3 class="svc-title">Clean the data before you migrate it</h3>
+        <p class="svc-copy">Dedupe, normalise and map, then move. Migrating first and cleaning afterwards is the most expensive order to do it in.</p>
+        <span class="svc-go">See the work <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row" href="../services/lead-to-cash-process-mapping">
+        <h3 class="svc-title">Wire the stack together</h3>
+        <p class="svc-copy">Native sync where it exists, code where it does not, and a written map of both so the next person is not guessing.</p>
+        <span class="svc-go">See the work <span class="arrow">&rarr;</span></span>
+      </a>
+      <a class="svc-row" href="../services/hubspot-support-retainers">
+        <h3 class="svc-title">Keep the data clean</h3>
+        <p class="svc-copy">Quality rules, monitoring, and somebody whose job it is to notice when a property stops being filled in.</p>
+        <span class="svc-go">See the work <span class="arrow">&rarr;</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section to-white">
+  <div class="shell">
+    <div class="sec-head sec-head-left reveal">
+      <h2 class="h2">The other five hubs</h2>
+      <p class="sec-sub">They are sold separately and they are worth having separately. Most portals we inherit are running two or three of them.</p>
+    </div>
+    <div style="margin-top:clamp(22px,2.6vw,34px)">
+    <div class="pcards pcards-3">
+        <a class="pcard reveal" href="../hubspot/sales-hub">
+          <h3 class="pcard-title">Sales Hub</h3>
+          <p class="pcard-copy">Pipelines, sequences, routing and a forecast built on something other than optimism.</p>
+          <span class="text-link" style="margin-top:auto">Learn more <span class="arrow">&rarr;</span></span>
+        </a>
+        <a class="pcard reveal" href="../hubspot/marketing-hub">
+          <h3 class="pcard-title">Marketing Hub</h3>
+          <p class="pcard-copy">Lifecycle stages, scoring, campaigns and the attribution that makes any of it defensible.</p>
+          <span class="text-link" style="margin-top:auto">Learn more <span class="arrow">&rarr;</span></span>
+        </a>
+        <a class="pcard reveal" href="../hubspot/revenue-hub">
+          <h3 class="pcard-title">Revenue Hub</h3>
+          <p class="pcard-copy">Quotes, payments and subscriptions, so the number in the CRM is the number finance sees.</p>
+          <span class="text-link" style="margin-top:auto">Learn more <span class="arrow">&rarr;</span></span>
+        </a>
+        <a class="pcard reveal" href="../hubspot/service-hub">
+          <h3 class="pcard-title">Service Hub</h3>
+          <p class="pcard-copy">Tickets, SLAs, and the handoff from sales that usually turns out to be the actual problem.</p>
+          <span class="text-link" style="margin-top:auto">Learn more <span class="arrow">&rarr;</span></span>
+        </a>
+        <a class="pcard reveal" href="../hubspot/content-hub">
+          <h3 class="pcard-title">Content Hub</h3>
+          <p class="pcard-copy">Pages, blog and forms on the same record as everything else. Also where a separate stack is sometimes the cheaper answer.</p>
+          <span class="text-link" style="margin-top:auto">Learn more <span class="arrow">&rarr;</span></span>
+        </a>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NEXT STEPS =====================
+     The page's closing full stop. Pulled up over the section above by
+     --start-bleed, which is why that section drifts to white. -->
+<section class="section start-section">
+  <div class="start-wide reveal">
+    <h2 class="start-shout">Ready to hop <br>with RevHops?</h2>
+    <a class="btn btn-primary btn-lg" href="../call">Schedule a discovery call</a>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <div class="shell">
+
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <img class="footer-mark" src="../assets/img/revhops-logo-white.png" alt="revhops">
+        <p class="footer-pitch">Revenue operations for teams that needed it fixed last quarter.</p>
+        <a class="footer-mail" href="mailto:team@revhops.com">team@revhops.com</a>
+        <p class="footer-place">Phoenix, Arizona</p>
+      </div>
+
+      <nav class="footer-links" aria-label="Footer">
+        <div>
+          <h4>Services</h4>
+          <ul class="stack gap-8">
+            <li><a href="../services/solution-design">Solution design</a></li>
+            <li><a href="../services/crm-implementations">CRM implementations</a></li>
+            <li><a href="../services/hubspot-support-retainers">HubSpot support retainers</a></li>
+            <li><a href="../services/revops-consulting">RevOps consulting</a></li>
+            <li><a href="../services/lead-to-cash-process-mapping">Lead to cash mapping</a></li>
+            <li><a href="../audit">Free HubSpot audit</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul class="stack gap-8">
+            <li><a href="../hubspot">HubSpot</a></li>
+            <li><a href="../pipedrive">Pipedrive</a></li>
+            <li><a href="../about">About us</a></li>
+            <li><a href="../pricing">Pricing</a></li>
+            <li><a href="../contact">Contact</a></li>
+          </ul>
+        </div>
+        <!-- RESOURCES, added 11 September. Four destinations that already
+             exist: the blog lives in HubSpot at blog.revhops.com, and the
+             other three are the shelves on /resources. Case studies, the
+             puzzle and the run moved out of Company on the same day rather
+             than being listed in both places. -->
+        <div>
+          <h4>Resources</h4>
+          <ul class="stack gap-8">
+            <li><a href="https://blog.revhops.com" target="_blank" rel="noopener">Blog</a></li>
+            <li><a href="../case-studies">Case studies</a></li>
+            <li><a href="../newsletter">Newsletter</a></li>
+            <li><a href="../resources#games">Games</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Two reversed partner marks, stacked and set to one width so they
+           read as a single lockup rather than the logo wall that got the
+           first Pipedrive badge pulled. Both are white artwork on the navy:
+           no chip, no filter, and 0% of either mark's ink falls under 3:1.
+           The Pipedrive mark is the green Authorized Partner badge with its
+           box dropped, so it is the same artwork, reversed. -->
+      <div class="footer-badges">
+        <a class="footer-badge footer-badge-hubspot"
+           href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"
+           target="_blank" rel="noopener"
+           aria-label="RevHops on the HubSpot partner directory">
+          <img src="../assets/img/hubspot-platinum-badge-white.webp"
+               alt="HubSpot Platinum Solutions Partner" loading="lazy">
+        </a>
+        <a class="footer-badge footer-badge-pipedrive"
+           href="https://app.pipedrive.com/affiliate/pdp-revhops?utm_source=RevHops&amp;utm_medium=partners_program&amp;utm_content=copy_text&amp;utm_term=pdp-revhops"
+           target="_blank" rel="noopener"
+           aria-label="RevHops is a Pipedrive Authorized Partner">
+          <img src="../assets/img/pipedrive-partner-badge-white.webp"
+               alt="Pipedrive Authorized Partner" loading="lazy">
+        </a>
+      </div>
+
+    </div>
+
+    <!-- The legal line sits on its own row above the copyright, slashes
+         between the three, both rows centred. It used to sit beside the
+         copyright, which read as one long sentence that happened to have
+         links in it. -->
+    <div class="footer-bottom">
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="../terms">Terms of Service</a>
+        <span class="footer-legal-sep" aria-hidden="true">/</span>
+        <a href="../privacy">Privacy Policy</a>
+        <span class="footer-legal-sep" aria-hidden="true">/</span>
+        <a href="../llms.txt">LLMs.txt</a>
+      </nav>
+      <span class="footer-copy">&copy; <span data-year>2026</span> RevHops. All rights reserved.</span>
+    </div>
+
+  </div>
+</footer>
+
+<button class="to-top" data-to-top type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<script src="../assets/js/site.js?v=406e7af045"></script>
+</body>
+</html>

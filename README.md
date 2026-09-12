@@ -189,6 +189,44 @@ A type with an `all` destination in `RESOURCE_TYPES` shows four cards and a
 See-all link; one without shows eight and paginates. That single field is the
 whole difference between the two kinds of shelf.
 
+## Adding or editing a hub page
+
+The six pages under `/hubspot/` are one template, `hubPage()`, run over
+`HUB_PAGES` in `tools/build-pages.js`. Edit the entry and rebuild; there is
+no per-page markup to keep in step.
+
+```js
+{ slug: 'sales-hub',
+  title: 'HubSpot Sales Hub &mdash; RevHops',
+  desc:  'One sentence for the meta description.',
+  lede:  'The paragraph under the h1.',
+  head:  'What Sales Hub <span class="hl">actually does</span>',
+  sub:   'What the hub is, in our words, after HubSpot’s.',
+  features: [ { title: '', copy: '', chips: ['', '', ''] } ],  // exactly six
+  tiers:    [ '<b>Free</b> is…' ],                        // every tier, plus a caveat
+  wrong:    [ '' ],                                            // exactly four
+  ways:     [ { title: '', href: '', go: '', copy: '' } ]       // four
+}
+```
+
+- The `h1` is derived from `slug`, so `sales-hub` renders as Sales Hub. It is
+  the hub's name and never a slogan: you arrive from a grid of six names.
+- `head` is the one place a hub page spends its `.hl`. One per page.
+- `features` cards are deliberately **not** links. Each is a capability, not
+  a page in waiting, and an arrow that goes nowhere is worse than no arrow.
+- **No prices anywhere.** HubSpot moves them; `tiers` describes what each
+  tier is *for* and the `.partner-note` links out to HubSpot's own pricing
+  page. The smoke test fails on a dollar figure.
+- The chips are HubSpot's own feature names, off their product pages. A
+  rename makes a chip wrong rather than merely dated, so re-read them
+  whenever HubSpot reshuffles the lineup.
+- A **seventh hub** is one object here plus one in `HUBS`, which is what
+  `/hubspot` and the other-hubs grid at the foot of each page both read.
+
+Section order is fixed: what it does, which tier, where it goes wrong, what
+we do, the other five hubs. The last one carries `.to-white` because the
+closing panel bleeds up into it.
+
 ## Verifying a change
 
 `node --check` only catches syntax. The real check is
@@ -213,6 +251,20 @@ cards are inert, that gated items route to their own generated page, that the
 lightbox tears its iframe down on close, and every internal link on the page.
 Pagination is tested against a synthetic twelve-card shelf, because no real
 shelf is long enough to page yet.
+
+And a third for the six hub pages:
+
+```
+node tools/hubs-smoke.js
+```
+
+It checks that all six exist and that `/hubspot` links at exactly those six,
+that the six have not drifted apart (same section count, same cache stamp),
+one highlight each, six unlinked feature cards with three chips apiece, two
+ticks lists, four service rows, no dollar figures, no em dashes, no `hr`,
+every boxed button going to `/call` or `/contact`, the last section carrying
+`.to-white`, and every internal link resolving to a file that exists. That
+last check is the one that would have caught the six pages being missing.
 
 `smoke.js` loads the homepage, runs both scripts, and checks the structure,
 the cache stamp, every local file reference, stylesheet brace balance, that the document

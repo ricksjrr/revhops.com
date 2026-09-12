@@ -38,6 +38,18 @@ between roughly 10 and 500 employees in the US and Europe.
   downloadable templates and a couple of games, in one filterable list
 - [HubSpot](https://revhops.com/hubspot) — Platinum partner, the six hubs, client
   reviews and the four ways in
+- [HubSpot Sales Hub](https://revhops.com/hubspot/sales-hub) — pipelines,
+  sequences, quoting, forecasting, and which tier is actually needed
+- [HubSpot Marketing Hub](https://revhops.com/hubspot/marketing-hub) — lifecycle
+  stages, scoring, campaigns and attribution
+- [HubSpot Revenue Hub](https://revhops.com/hubspot/revenue-hub) — quotes, CPQ,
+  invoicing, subscriptions and payments
+- [HubSpot Service Hub](https://revhops.com/hubspot/service-hub) — help desk,
+  SLAs, routing, knowledge base and the sales handoff
+- [HubSpot Data Hub](https://revhops.com/hubspot/data-hub) — data sync, data
+  quality, programmable automation and the reporting layer
+- [HubSpot Content Hub](https://revhops.com/hubspot/content-hub) — CMS, blog,
+  remix and AEO, and when a separate stack is cheaper
 - [Pipedrive](https://revhops.com/pipedrive) — Authorized Pipedrive partner:
   what the product does, which plan to buy, and the five ways in
 - [Pricing](https://revhops.com/pricing) — published starting prices

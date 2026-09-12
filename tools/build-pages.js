@@ -3130,6 +3130,464 @@ var audit = {
 '    </div>\n', 'section to-white')
 };
 
+/* ---------- the six hub pages ----------
+
+   Added 11 September. /hubspot has carried six cards pointing at
+   /hubspot/<slug> since it was rebuilt, and not one of the six existed, so
+   all six 404ed. These are those pages.
+
+   ONE TEMPLATE, SIX TIMES, and that is deliberate: James asked for a shared
+   design. Somebody comparing Sales Hub against Service Hub is then comparing
+   the product rather than learning a second layout, which is the same
+   argument the case study pages make.
+
+   The shape, top to bottom:
+     hero                  back link to /hubspot, the hub name, two buttons
+     what it does          six cards, chipped with HubSpot's own feature names
+     which tier            a ticks list, no dollar figures
+     where it goes wrong   four short lines in two columns
+     what we do            the svc-row list /hubspot and /pipedrive both use
+     the other five hubs   cards, so the six pages interlink
+
+   NO PRICES, same call as /pipedrive. HubSpot's numbers move, seat and
+   marketing-contact pricing moves with them, and a stale figure on a page
+   about being the expert is worse than no figure. Tiers are described by
+   what they are FOR. The tier names are HubSpot's own and are current as of
+   11 September 2026: Revenue Hub has no Starter, which is why its list runs
+   to three items rather than four.
+
+   THE CHIPS ARE HUBSPOT'S FEATURE NAMES, read off each product page
+   (hubspot.com/products/sales, /marketing, /revenue, /service, /data,
+   /content). If HubSpot renames one, the chip is wrong rather than merely
+   dated, so they are worth a pass whenever the lineup is reshuffled. It has
+   happened twice already: Operations Hub became Data Hub and Commerce Hub
+   became Revenue Hub. Card titles and every line of prose are ours.
+
+   "WHERE WE USUALLY FIND IT BROKEN" IS EXPERIENCE, NOT VENDOR COPY. It is
+   the one section on these pages HubSpot would never write, which is the
+   whole point of it being there. No client is named and no figure is
+   invented. */
+
+var HUB_PAGES = [
+  {
+    slug: 'sales-hub',
+    title: 'HubSpot Sales Hub &mdash; RevHops',
+    desc: 'We design, implement and fix HubSpot Sales Hub: pipelines, sequences, quoting, routing and a forecast that holds up in a board meeting.',
+    lede: 'Pipelines, sequences, quoting and routing, plus a forecast built on something other than optimism. We design it, build it, or fix the one you inherited.',
+    head: 'What Sales Hub <span class="hl">actually does</span>',
+    sub: 'HubSpot sells it as tools to build pipeline and close deals. In practice it is one record per deal, ' +
+         'a set of stages you define, and automation that either removes admin or quietly creates it. Which of ' +
+         'those two you get is a build decision rather than a licence decision.',
+    features: [
+      { title: 'Prospecting and lead management',
+        copy: 'Who to call, why, and what happened last time, on one record rather than in three tabs and somebody’s notebook.',
+        chips: ['Lead Management', 'Prospecting Agent', 'Email Templates'] },
+      { title: 'Sequences and automation',
+        copy: 'Follow-up that runs itself, task queues that set the order of the day, and rules that route a lead before it goes cold.',
+        chips: ['Sales Automation', 'Sequences', 'Task queues'] },
+      { title: 'Deal pipelines',
+        copy: 'Stages, required fields and scoring. The part that decides whether your pipeline number means anything.',
+        chips: ['Deal Pipelines', 'Deal scoring', 'Smart Deal Progression'] },
+      { title: 'Meetings and calling',
+        copy: 'Booking links on your real calendar, calls logged against the record, and transcripts you can coach from.',
+        chips: ['Meeting Scheduler', 'Call Tracking', 'Conversation Intelligence'] },
+      { title: 'Quotes and CPQ',
+        copy: 'Priced from your product library rather than from last quarter’s spreadsheet, sent for signature, tracked when opened.',
+        chips: ['CPQ Software', 'Quotes', 'Document Tracking'] },
+      { title: 'Forecasting and reporting',
+        copy: 'A forecast off deal data, a funnel that shows where deals die, and dashboards a manager will open on a Monday.',
+        chips: ['Forecasting', 'Sales Analytics', 'AI Guided Selling'] }
+    ],
+    tiers: [
+      '<b>Free</b> is contacts, deals and email tracking. Enough to find out whether your team will keep a CRM current at all.',
+      '<b>Starter</b> lifts the free limits and adds simple automation, payment links and goals. A small team can genuinely sell out of it.',
+      '<b>Professional</b> is where sequences, playbooks, custom reporting and forecasting arrive. Most teams belong here, and it is the first tier we would build a real process on.',
+      '<b>Enterprise</b> adds custom objects, predictive scoring, permission depth and sandboxes. Worth it when your data model or your org chart is complicated, not because of headcount.',
+      'Seats are priced per user and the automation ceilings differ by tier. We will tell you which two features you are actually buying and which one you are paying for twice.'
+    ],
+    wrong: [
+      'Stages named after your internal steps rather than the buyer’s, so every deal sits in Negotiation for a month.',
+      'Sequences used as a mailing list, then a sender reputation nobody wants to explain to the board.',
+      'Required fields added after the data was already wrong, so nothing historical can be trusted.',
+      'A forecast built on close dates that get dragged forward every Friday afternoon.'
+    ],
+    ways: [
+      { title: 'Design the pipeline before anyone builds it', href: '/services/solution-design', go: 'See the work',
+        copy: 'Stages, exit criteria, fields and the reports they have to feed, agreed on paper while changing them is still free.' },
+      { title: 'Implement Sales Hub properly', href: '/services/crm-implementations', go: 'See the work',
+        copy: 'Objects, data, automation and training. The build ends when your team is using it, not when the licence starts.' },
+      { title: 'Fix the pipeline you already have', href: '/services/hubspot-support-retainers', go: 'See the work',
+        copy: 'Half-built, inherited or five admins deep. We start with the stages and the data, because everything downstream is reading them.' },
+      { title: 'Make the forecast defensible', href: '/services/revops-consulting', go: 'See the work',
+        copy: 'One definition per stage, one source for the number, and a review where nobody is arguing about whose report is right.' }
+    ]
+  },
+
+  {
+    slug: 'marketing-hub',
+    title: 'HubSpot Marketing Hub &mdash; RevHops',
+    desc: 'We build HubSpot Marketing Hub the way it has to work: lifecycle stages, scoring, campaigns and attribution sales will not argue with.',
+    lede: 'Lifecycle stages, scoring, campaigns and the attribution that makes any of it defensible. Built so marketing and sales are counting the same people.',
+    head: 'What Marketing Hub <span class="hl">is really for</span>',
+    sub: 'HubSpot positions it as attracting and converting high-intent visitors. What decides whether it works sits underneath the ' +
+         'campaigns: how a contact moves from stage to stage, who says they are ready, and whether the report at the end of the ' +
+         'quarter can be traced back to a real record.',
+    features: [
+      { title: 'Campaigns and email',
+        copy: 'Sends, landing pages and assets grouped under one campaign, so the result is measured as a campaign rather than as eleven separate emails.',
+        chips: ['AI-Powered Emails', 'Marketing Studio', 'Campaigns'] },
+      { title: 'Forms and capture',
+        copy: 'Forms on the record from the first submission, with fields filled in progressively rather than asked for twice.',
+        chips: ['Forms', 'Personalization', 'Audience Segments'] },
+      { title: 'Lifecycle and scoring',
+        copy: 'The machinery that says when a contact becomes a lead and a lead becomes sales’ problem. Usually the actual project.',
+        chips: ['Lifecycle stages', 'Lead scoring', 'Workflows'] },
+      { title: 'Social and ads',
+        copy: 'Scheduling, audiences synced out to the ad platforms, and spend reported against contacts instead of against impressions.',
+        chips: ['Social Media Management', 'Ads', 'Lookalike Lists'] },
+      { title: 'Search and AI answers',
+        copy: 'Being found by people typing and by people asking a model. HubSpot reports on the second now as well as the first.',
+        chips: ['HubSpot AEO', 'AEO Grader', 'SEO recommendations'] },
+      { title: 'Attribution and reporting',
+        copy: 'Multi-touch attribution and journey reporting, which only tell the truth if the tracking was right before the campaign ran.',
+        chips: ['Marketing Analytics', 'Multi-touch attribution', 'Dashboards'] }
+    ],
+    tiers: [
+      '<b>Free</b> is forms, email and lists. It is a real tool, and plenty of companies stay on it longer than they admit.',
+      '<b>Starter</b> removes HubSpot branding and lifts the send limits. Fine while marketing is one person and a newsletter.',
+      '<b>Professional</b> is the tier with workflows, campaigns, A/B testing and attribution in it. Where marketing operations becomes possible rather than manual.',
+      '<b>Enterprise</b> adds multi-touch revenue attribution, custom objects, teams and permissioning. Ask for it when the reporting has to satisfy a board, not before.',
+      'Marketing Hub is priced on marketing contacts, so one careless import raises the bill every month until somebody notices. Deciding who counts as marketable is part of the build.'
+    ],
+    wrong: [
+      'Lifecycle stages set by whichever form was filled in, so the funnel counts the same person at three stages.',
+      'Every contact imported as marketable, then a bill that grows whether or not you ever email them.',
+      'A score assembled from whatever was easy to measure, which sales learns within a month to ignore.',
+      'Attribution switched on after six months of untracked spend, so its first report argues with the last one.'
+    ],
+    ways: [
+      { title: 'Map the funnel before you automate it', href: '/services/solution-design', go: 'See the work',
+        copy: 'Stages, definitions, the handoff to sales and the reports that have to come out of it. One page, agreed, before a workflow exists.' },
+      { title: 'Implement Marketing Hub', href: '/services/crm-implementations', go: 'See the work',
+        copy: 'Tracking, forms, lists, workflows and the lifecycle model, built once so the reporting is trustworthy from the first campaign.' },
+      { title: 'Get the marketing contact bill under control', href: '/services/hubspot-support-retainers', go: 'See the work',
+        copy: 'Who is marketable, who should never have been, and rules that keep it that way without anyone remembering to check.' },
+      { title: 'Make attribution defensible', href: '/services/revops-consulting', go: 'See the work',
+        copy: 'One model, written down, that marketing and finance both signed off on. Boring, and the reason the number stops being argued about.' }
+    ]
+  },
+
+  {
+    slug: 'revenue-hub',
+    title: 'HubSpot Revenue Hub &mdash; RevHops',
+    desc: 'Quotes, CPQ, invoicing, subscriptions and payments in HubSpot, built so the number in the CRM is the number finance bills.',
+    lede: 'Quotes, CPQ, invoicing, subscriptions and payments, built so the number in the CRM is the number finance sees. Quote to cash without the spreadsheet in the middle.',
+    head: 'What Revenue Hub <span class="hl">puts in one place</span>',
+    sub: 'HubSpot’s line is that your CRM already knows your customers and can now handle your revenue too. That is the right idea, ' +
+         'and the work is all in the seams: approvals, proration, tax, and what happens to the record when a subscription changes mid-term.',
+    features: [
+      { title: 'Quotes and CPQ',
+        copy: 'Priced off a product library with the discount rules written down, approved by the person meant to approve it, signed in the same place.',
+        chips: ['Quotes', 'CPQ', 'Contracts'] },
+      { title: 'Invoicing',
+        copy: 'Invoices raised from the deal rather than retyped into another system, with the reminders going out without anyone chasing them.',
+        chips: ['Invoicing', 'Invoice reminders', 'Accounting integrations'] },
+      { title: 'Subscriptions and billing',
+        copy: 'Recurring billing, upgrades, downgrades and the mid-term change that is where most billing set-ups start to drift.',
+        chips: ['Subscription billing', 'Recurring payments', 'Upgrades and downgrades'] },
+      { title: 'Payments',
+        copy: 'Payment links and checkout against the record. HubSpot Payments is US only and Stripe covers the rest, which is a decision worth making early.',
+        chips: ['Payments', 'Payment links', 'Stripe processing'] },
+      { title: 'Revenue reporting',
+        copy: 'Recurring revenue, collections and a forecast reading from billing data rather than from a stage somebody forgot to move.',
+        chips: ['Revenue reporting', 'External revenue integrations', 'Dashboards'] },
+      { title: 'The AI layer',
+        copy: 'Breeze drafting the quote and chasing the invoice. Useful once the rules underneath are right, and a faster way to be wrong before that.',
+        chips: ['Breeze assistant', 'Revenue agent', 'Customer agent'] }
+    ],
+    tiers: [
+      '<b>Free</b> covers quotes, invoices and payment links. For a business selling one thing at one price it is genuinely enough.',
+      '<b>Professional</b> is CPQ, subscription billing and revenue reporting. The tier for anyone whose pricing has options in it.',
+      '<b>Enterprise</b> adds the approval depth, permissioning and integration ceilings a finance team with a controller will ask for.',
+      'Revenue Hub has no Starter tier, so the step up from free is a real one. Payment processing fees sit outside the licence and are worth pricing before you commit.'
+    ],
+    wrong: [
+      'Quotes built as PDFs outside the CRM, so what finance bills is not what sales sold.',
+      'Subscription changes handled by hand, then a recurring revenue figure nobody can reconcile.',
+      'Payments live before the tax and accounting side was decided, which makes it a cleanup rather than a fix.',
+      'Two systems holding revenue and a monthly meeting to work out which one is lying.'
+    ],
+    ways: [
+      { title: 'Map quote to cash end to end', href: '/services/lead-to-cash-process-mapping', go: 'See the work',
+        copy: 'Every step from a price on a quote to money in the bank, with the owner and the system named at each one. Most of the savings are found here.' },
+      { title: 'Implement Revenue Hub', href: '/services/crm-implementations', go: 'See the work',
+        copy: 'Products, quotes, approvals, billing and payments, wired to the accounting system you already run rather than replacing it.' },
+      { title: 'Design the quote and approval flow', href: '/services/solution-design', go: 'See the work',
+        copy: 'What a rep can discount without asking, what needs a signature, and what the system should refuse outright.' },
+      { title: 'Reconcile CRM revenue with finance', href: '/services/revops-consulting', go: 'See the work',
+        copy: 'One definition of booked, billed and collected, so the CRM number and the ledger stop being two different conversations.' }
+    ]
+  },
+
+  {
+    slug: 'service-hub',
+    title: 'HubSpot Service Hub &mdash; RevHops',
+    desc: 'HubSpot Service Hub built properly: help desk, SLAs, routing, knowledge base and the sales handoff behind most service problems.',
+    lede: 'Tickets, SLAs, routing and self-service, on the same record as the deal that created them. Including the handoff from sales, which is usually the real problem.',
+    head: 'What Service Hub <span class="hl">is good at</span>',
+    sub: 'HubSpot pitches it as support that scales with AI and drives retention. The reason to run it here rather than anywhere else is ' +
+         'narrower than that: the ticket sits on the same record as the deal, the emails and the invoice, so nobody has to ask a customer ' +
+         'to explain their own history.',
+    features: [
+      { title: 'Help desk',
+        copy: 'One workspace with every channel in it, and a ticket that exists from the first message rather than from when somebody noticed.',
+        chips: ['Help Desk Workspace', 'Omnichannel Communication', 'Ticket pipelines'] },
+      { title: 'SLAs and routing',
+        copy: 'Response and resolution targets the system enforces, and assignment rules that do not depend on who is watching the inbox.',
+        chips: ['SLA Management', 'Routing', 'Automated Customer Service'] },
+      { title: 'Self-service',
+        copy: 'A knowledge base and a portal, so the answerable questions get answered without a person and the rest reach one faster.',
+        chips: ['Knowledge Base', 'Customer Portal', 'Knowledge Base Agent'] },
+      { title: 'AI on the front line',
+        copy: 'Breeze answering from your own content across email and chat. As good as the knowledge base behind it and no better.',
+        chips: ['Customer Agent', 'Breeze assistant', 'Live chat'] },
+      { title: 'Retention and feedback',
+        copy: 'Surveys, the customer success workspace, and account health where the person who owns the renewal will actually see it.',
+        chips: ['Customer Success Workspace', 'Feedback Management', 'Surveys'] },
+      { title: 'Service analytics',
+        copy: 'Volume, time to first response, reopens and the recurring cause behind them, which is the report that changes anything.',
+        chips: ['Service Analytics', 'Conversation Intelligence', 'Dashboards'] }
+    ],
+    tiers: [
+      '<b>Free</b> is tickets, live chat and a shared inbox. It will hold a small team for longer than you expect.',
+      '<b>Starter</b> adds simple automation, routing and the ticket pipelines you need once more than two people are answering.',
+      '<b>Professional</b> brings SLAs, the knowledge base, surveys and service analytics. The first tier where support is a process instead of an inbox.',
+      '<b>Enterprise</b> adds the customer success workspace, permissioning, playbooks and the reporting depth a director of support asks for.',
+      'The AI seats and the Customer Agent are priced separately from the hub, so the licence conversation and the automation conversation are two different budgets.'
+    ],
+    wrong: [
+      'Tickets in a shared inbox nobody owns, so the SLA clock starts whenever somebody happens to look.',
+      'A knowledge base written by the people who already know the answer, for anyone except the customer asking.',
+      'The handoff from sales left informal, which is where a good share of service problems were created.',
+      'A satisfaction score collected only from the customers who were happy enough to reply to a survey.'
+    ],
+    ways: [
+      { title: 'Fix the sales to service handoff', href: '/services/lead-to-cash-process-mapping', go: 'See the work',
+        copy: 'What has to be true before a deal can close, who owns the account afterwards, and what gets written down instead of said on a call.' },
+      { title: 'Implement Service Hub', href: '/services/crm-implementations', go: 'See the work',
+        copy: 'Channels, pipelines, SLAs, routing and the knowledge base, set up so the first week of tickets is already measured properly.' },
+      { title: 'Design the ticket model and the SLAs', href: '/services/solution-design', go: 'See the work',
+        copy: 'Categories that match how you actually fix things, priorities that mean something, and targets your team can hit.' },
+      { title: 'Keep it running', href: '/services/hubspot-support-retainers', go: 'See the work',
+        copy: 'A standing few hours a month for the routing change, the new survey and the report somebody asked for on a Tuesday.' }
+    ]
+  },
+
+  {
+    slug: 'data-hub',
+    title: 'HubSpot Data Hub &mdash; RevHops',
+    desc: 'HubSpot Data Hub done properly: data sync, data quality, programmable automation and the reporting layer that depends on both.',
+    lede: 'Syncs, data quality, custom code and the reporting layer resting on them. The unglamorous half of HubSpot, and where most portals quietly break.',
+    head: 'What Data Hub <span class="hl">quietly holds up</span>',
+    sub: 'HubSpot calls it turning scattered data into intelligence. Read it as the plumbing: what syncs where, which system wins a ' +
+         'disagreement, and whether the properties your reports are built on mean the same thing to three different teams.',
+    features: [
+      { title: 'Data sync',
+        copy: 'Two-way sync to the rest of the stack out of the box, with the field mapping visible rather than buried in somebody’s script.',
+        chips: ['Data Sync', '100+ integrations', 'Two-way sync'] },
+      { title: 'Data quality',
+        copy: 'Formatting, duplicates, and the alert that tells you a property stopped being filled in three weeks ago.',
+        chips: ['Data Quality Overview', 'Format automation', 'Duplicate management'] },
+      { title: 'Programmable automation',
+        copy: 'Custom code inside a workflow and webhooks out of it, for the logic no native action covers. Used sparingly, on purpose.',
+        chips: ['Custom code actions', 'Webhooks', 'Programmable Automation'] },
+      { title: 'Datasets and Data Studio',
+        copy: 'A curated layer between the raw records and the dashboard, so a report is built once rather than rebuilt by each analyst.',
+        chips: ['Data Studio', 'Datasets', 'Calculated properties'] },
+      { title: 'Warehouse and cloud storage',
+        copy: 'Bidirectional sync with the cloud data platform finance and product already use, which ends the export-and-email habit.',
+        chips: ['Cloud Data Storage Integrations', 'Bidirectional sync', 'Snapshots'] },
+      { title: 'The reporting foundation',
+        copy: 'Dashboards people trust because they read from one definition. That trust is a data project rather than a charting one.',
+        chips: ['Dashboards and Reporting', 'Custom properties', 'Field mappings'] }
+    ],
+    tiers: [
+      '<b>Free</b> includes data sync, which is more than most people realise and often enough to retire a manual export.',
+      '<b>Starter</b> adds field mappings and the simpler quality automation. A reasonable floor for a two-system stack.',
+      '<b>Professional</b> is programmable automation, the data quality tooling and webhooks. The tier a real integration needs.',
+      '<b>Enterprise</b> adds datasets, snapshots and the cloud data storage sync. Ask for it when a warehouse is already in the picture.',
+      'Data Hub is the hub bought latest, usually after a year of custom code that a Professional licence would have replaced. Worth pricing before the next integration rather than after it.'
+    ],
+    wrong: [
+      'A sync turned on in both directions before anyone decided which system wins a disagreement.',
+      'Deduplication done once, by hand, in a spreadsheet, and never again after that person left.',
+      'Custom code doing the work a field mapping would have done, maintained by whoever happened to write it.',
+      'Reports built on properties that three teams fill in three different ways.'
+    ],
+    ways: [
+      { title: 'Decide the system of record', href: '/services/solution-design', go: 'See the work',
+        copy: 'Which system owns which object, what syncs which way, and what happens when the two disagree. An hour of this saves a quarter later.' },
+      { title: 'Clean the data before you migrate it', href: '/services/crm-implementations', go: 'See the work',
+        copy: 'Dedupe, normalise and map, then move. Migrating first and cleaning afterwards is the most expensive order to do it in.' },
+      { title: 'Wire the stack together', href: '/services/lead-to-cash-process-mapping', go: 'See the work',
+        copy: 'Native sync where it exists, code where it does not, and a written map of both so the next person is not guessing.' },
+      { title: 'Keep the data clean', href: '/services/hubspot-support-retainers', go: 'See the work',
+        copy: 'Quality rules, monitoring, and somebody whose job it is to notice when a property stops being filled in.' }
+    ]
+  },
+
+  {
+    slug: 'content-hub',
+    title: 'HubSpot Content Hub &mdash; RevHops',
+    desc: 'HubSpot Content Hub weighed up honestly: CMS, blog, remix and AEO, plus when a separate stack is the cheaper answer.',
+    lede: 'Pages, blog and forms on the same record as everything else. Also the one hub where a separate stack is sometimes the cheaper answer, and we will say so.',
+    head: 'What Content Hub <span class="hl">gives you</span>',
+    sub: 'HubSpot sells it as AI content creation plus a CMS. The argument for it is not the editor, it is the record: a page view, a form fill ' +
+         'and a deal on one timeline. The argument against is that a modern front end elsewhere can be cheaper and faster, and both can be true at once.',
+    features: [
+      { title: 'CMS and pages',
+        copy: 'Landing pages and site pages a marketer can edit without raising a ticket, on templates a developer still controls.',
+        chips: ['Scalable CMS', 'Landing pages', 'Website pages'] },
+      { title: 'Blog',
+        copy: 'Publishing, tags and authors, with the SEO suggestions in the editor rather than in a separate tool nobody opens.',
+        chips: ['Blog', 'AI Blog Writer', 'SEO recommendations'] },
+      { title: 'Remix and video',
+        copy: 'One piece of work turned into the social, email and clip versions of itself, which is where the time actually goes.',
+        chips: ['Content Remix', 'Video Marketing', 'Podcasts'] },
+      { title: 'Brand voice and approvals',
+        copy: 'A defined voice the AI tools write to, and an approval step so what ships has been read by a person first.',
+        chips: ['Brand Voice', 'Content approvals', 'Breeze assistant'] },
+      { title: 'Search and AI answers',
+        copy: 'Optimising for the search result and for the answer a model gives when nobody clicks through at all.',
+        chips: ['HubSpot AEO', 'AEO Grader', 'SEO'] },
+      { title: 'Personalisation and memberships',
+        copy: 'Content that changes by list or lifecycle stage, and gated areas behind a login on the same contact record.',
+        chips: ['Personalization', 'Memberships', 'Multiple sites'] }
+    ],
+    tiers: [
+      '<b>Free</b> is landing pages and a blog on a HubSpot subdomain with their branding on it. Fine for a first campaign, not for a site.',
+      '<b>Starter</b> removes the branding and adds site pages on your own domain. Enough for a small brochure site that never grows.',
+      '<b>Professional</b> is the real CMS tier: personalisation, remix, brand voice, A/B testing and the reporting to go with it.',
+      '<b>Enterprise</b> adds multiple sites, memberships, approvals and the permissioning a content team of more than five needs.',
+      'This is the hub we talk people out of most often. If your site is a marketing site with forms on it, Content Hub earns its keep. If it is a product, keep the front end where your engineers are and let HubSpot own the forms and the tracking.'
+    ],
+    wrong: [
+      'A theme forked so far from its parent that no HubSpot update can ever be taken again.',
+      'Pages marketing was promised they could edit, inside modules only a developer can touch.',
+      'A blog migrated without its redirects, and six months of rankings gone in an afternoon.',
+      'Content written for a keyword nobody searches, which is now also invisible to the AI answers.'
+    ],
+    ways: [
+      { title: 'Work out whether Content Hub is the right home', href: '/call', go: 'Talk it through',
+        copy: 'Before the migration is scoped. Sometimes the answer is a separate front end with HubSpot forms on it, and that is a shorter conversation than it sounds.' },
+      { title: 'Migrate the site onto Content Hub', href: '/services/crm-implementations', go: 'See the work',
+        copy: 'Templates, content, forms, tracking and every redirect. The redirects are the part that gets skipped and the part that costs money.' },
+      { title: 'Design the templates and modules', href: '/services/solution-design', go: 'See the work',
+        copy: 'What a marketer can change, what they cannot, and a module library that keeps the site looking like itself a year in.' },
+      { title: 'Keep the site and the blog moving', href: '/services/hubspot-support-retainers', go: 'See the work',
+        copy: 'The new template, the landing page for Thursday, and the technical SEO nobody has time to look at.' }
+    ]
+  }
+];
+
+/* One hub page. Everything about it comes out of the object above, so a
+   seventh hub is one entry in HUB_PAGES and nothing else.
+
+   The hub NAME is the h1, not a slogan: you arrive here from a grid of six
+   names and from a nav item called HubSpot, and anything else at the top
+   makes a visitor check they landed on the right page. Same reasoning as the
+   service pages, which is also where the back-link eyebrow comes from.
+
+   No media column. There is no per-hub artwork, the Platinum badge belongs
+   to /hubspot, and a placeholder in that slot on six pages would read as six
+   missing images. */
+function hubPage(h) {
+  var name = h.slug.split('-').map(function (w) {
+    return w === 'hub' ? 'Hub' : w.charAt(0).toUpperCase() + w.slice(1);
+  }).join(' ');
+
+  var others = HUBS.filter(function (x) { return x.slug !== h.slug; });
+
+  return {
+    file: 'hubspot/' + h.slug + '.html',
+    depth: 1,
+    navCurrent: '/hubspot',
+    title: h.title,
+    description: h.desc,
+    h1: name,
+    lede: h.lede,
+    heroClass: 'page-hero-nomedia',
+    eyebrow: ['All six hubs', '/hubspot'],
+
+    /* The call first and the audit second, which is the site's usual order.
+       /hubspot inverts it because the audit is that page's own offer. */
+    headButtons: '          <a class="btn btn-primary" href="/call">Schedule a call</a>\n' +
+                 '          <a class="btn btn-outline" href="/contact">Request a portal audit</a>',
+
+    body:
+
+      /* WHAT IT DOES. Six cards, unlinked: each one is a capability rather
+         than a page in waiting, and an arrow that goes nowhere is worse than
+         no arrow at all. */
+      section(
+        secHead(h.head, h.sub) +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+        pcards(h.features, 'pcards-3') +
+'    </div>\n') +
+
+      /* THE TIERS. A list in a 64ch column, same as /pipedrive and for the
+         same reason: the pricing table is HubSpot's to maintain. */
+      section(
+        secHead('Which tier you actually need',
+                'Nobody is upsold harder than a HubSpot buyer in month one. Here is the short version without the numbers, because ' +
+                'HubSpot moves those and a stale price is worse than none.') +
+'    <div class="reveal" style="margin-top:clamp(18px,2.2vw,28px);max-width:64ch">\n' +
+'      ' + ticks(h.tiers) + '\n' +
+'      <div class="btn-row" style="margin-top:clamp(22px,2.6vw,32px)">\n' +
+'        <a class="btn btn-primary" href="/contact">Ask us which tier</a>\n' +
+'      </div>\n' +
+'      <p class="partner-note">Current pricing is on\n' +
+'        <a href="https://www.hubspot.com/pricing" target="_blank" rel="noopener">HubSpot’s pricing page</a>.\n' +
+'        As a Platinum partner we can quote it too, and we will tell you when a lower tier does the job.</p>\n' +
+'    </div>\n') +
+
+      /* WHERE IT GOES WRONG. Two columns of four short lines, and the one
+         section on the page HubSpot would never write. */
+      section(
+        secHead('Where we usually find it broken',
+                'Four things we see in portal after portal. Not one of them is a licensing problem.') +
+'    <div class="reveal" style="margin-top:clamp(18px,2.2vw,28px)">\n' +
+'      ' + ticks(h.wrong, 'ticks-2') + '\n' +
+'    </div>\n') +
+
+      /* THE ASK. The same svc-row list /hubspot and /pipedrive carry, so all
+         three pages hand off to the same five service pages. */
+      section(
+        secHead('What we do in ' + name) +
+'    <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">\n' +
+        h.ways.map(function (w) {
+          return '      <a class="svc-row" href="' + w.href + '">\n' +
+                 '        <h3 class="svc-title">' + w.title + '</h3>\n' +
+                 '        <p class="svc-copy">' + w.copy + '</p>\n' +
+                 '        <span class="svc-go">' + w.go + ' <span class="arrow">&rarr;</span></span>\n' +
+                 '      </a>';
+        }).join('\n') + '\n' +
+'    </div>\n') +
+
+      /* THE OTHER FIVE. Card copy comes straight out of HUBS, the same array
+         /hubspot builds its grid from, so the two can never disagree.
+         .to-white because the closing panel bleeds up into whatever is last. */
+      section(
+        secHead('The other five hubs',
+                'They are sold separately and they are worth having separately. Most portals we inherit are running two or three of them.') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+        pcards(others.map(function (o) {
+          return { title: o.name, copy: o.copy, href: '/hubspot/' + o.slug, link: 'Learn more' };
+        }), 'pcards-3') +
+'    </div>\n', 'section to-white')
+  };
+}
+
 /* ---------- write everything ---------- */
 
 var PAGES = [servicesIndex]
@@ -3138,7 +3596,8 @@ var PAGES = [servicesIndex]
   .concat(CASES.map(casePage))
   .concat([resourcesIndex])
   .concat(GATED.map(resourcePage))
-  .concat([pricing, hubspot, pipedrive, about, contact, audit, newsletter, terms, privacy, callPage, clientCallPage, puzzle, hop]);
+  .concat([pricing, hubspot, pipedrive, about, contact, audit, newsletter, terms, privacy, callPage, clientCallPage, puzzle, hop])
+  .concat(HUB_PAGES.map(hubPage));
 
 var written = 0;
 if (require.main === module) {

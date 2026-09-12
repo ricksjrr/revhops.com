@@ -27,6 +27,91 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 12 September: the six hub pages
+
+**`/hubspot/sales-hub`, `/marketing-hub`, `/revenue-hub`, `/service-hub`,
+`/data-hub`, `/content-hub`.** The six cards on `/hubspot` have pointed at
+these URLs since that page was rebuilt and every one of them 404ed. They
+exist now.
+
+**One template, six times, and James asked for that.** Somebody comparing
+Sales Hub against Service Hub is then comparing the product rather than
+learning a second layout. The template is `hubPage()` in
+`tools/build-pages.js`; the content is `HUB_PAGES` above it.
+
+**HOW TO CHANGE ONE.** Edit its entry in `HUB_PAGES` and run
+`node tools/build-pages.js`. A seventh hub, the day HubSpot invents one, is
+one object in `HUB_PAGES` plus one in `HUBS` so it appears in the grid on
+`/hubspot` and in the other-hubs grid at the foot of each page. The fields:
+
+| field | what it does |
+| --- | --- |
+| `slug` | the URL and the filename. The `h1` is derived from it, so `sales-hub` becomes Sales Hub |
+| `title` / `desc` | the `<title>` and the meta description |
+| `lede` | the paragraph under the h1 |
+| `head` | the first section head, and the one place the page spends its `.hl` |
+| `sub` | the paragraph under that head: what the hub is, in our words, after HubSpot's |
+| `features` | exactly six cards, each `{ title, copy, chips }` with three chips |
+| `tiers` | the ticks list. Every tier plus a closing caveat line |
+| `wrong` | exactly four failure modes, rendered as `.ticks-2` |
+| `ways` | four `.svc-row` links out to the service pages |
+
+The page order is fixed: what it does, which tier, where it goes wrong, what
+we do, the other five hubs. The last section carries `.to-white` because the
+closing panel bleeds up into it.
+
+**NO PRICES, and this is deliberate.** Same call as `/pipedrive`. HubSpot
+moves its numbers, seat and marketing-contact pricing moves with them, and a
+stale figure on a page about being the expert is worse than no figure. Tiers
+are described by what they are *for*, and a `.partner-note` sends people to
+HubSpot's own pricing page. `tools/hubs-smoke.js` fails if a dollar figure
+appears on any of the six.
+
+**The tier names are HubSpot's and were current on 12 September 2026.**
+Revenue Hub has no Starter tier, which is why its list runs to three items
+rather than four. If that changes, the list is the only thing to edit.
+
+**The chips are HubSpot's own feature names**, read off
+`hubspot.com/products/sales`, `/marketing`, `/revenue`, `/service`, `/data`
+and `/content`. That is the one part of these pages that can go *wrong*
+rather than merely stale: a renamed feature makes the chip incorrect. Worth a
+pass whenever HubSpot reshuffles the lineup, which it has done twice already
+— Operations Hub became Data Hub, Commerce Hub became Revenue Hub. Card
+titles and every line of prose are ours.
+
+**"Where we usually find it broken" is the point of these pages.** Four
+lines per hub, experience rather than vendor copy, and the one section
+HubSpot would never write. No client is named and no figure is invented. If
+anything on these pages is worth James' editing pass, it is these
+twenty-four lines, because they are the only opinion on the page.
+
+**The other-five-hubs grid reads `HUBS`**, the same array `/hubspot` builds
+its six cards from, so the card copy cannot drift between the two places it
+appears. Five cards in a three-column grid leaves a short second row, which
+is what a filtered grid is supposed to look like.
+
+**Verify with `node tools/hubs-smoke.js`.** Third suite in the folder, after
+`tools/smoke.js` (homepage) and `tools/resources-smoke.js`. It checks that
+all six exist and that `/hubspot` links at exactly those six, that the six
+have not drifted apart (same section count, same cache stamp), one highlight
+each, six unlinked feature cards with three chips apiece, two ticks lists,
+four service rows, no dollar figures, no em dashes, no `hr`, every boxed
+button going to `/call` or `/contact`, the last section carrying
+`.to-white`, and every internal link resolving to a file that exists. That
+last one is the check that would have caught these six pages being missing
+in the first place.
+
+**Verified in a browser this time**, headless Chromium at 1440 and 420
+px, light and dark: no horizontal overflow at either width, the cards stack
+to one column on a phone, `.ticks-2` collapses to one, and the dark theme
+needed no exception of its own.
+
+**`llms.txt` lists all six.** The nav and the footer are unchanged: six more
+links in either would bury the ones that matter, and `/hubspot` is the way
+in.
+
+---
+
 ## 11 September: /audit
 
 **`/audit` is new**, and it is where every "request an audit" click on the
