@@ -251,14 +251,14 @@ function footer(p) {
 '\n' +
 '      <nav class="footer-links" aria-label="Footer">\n' +
 '        <div>\n' +
-'          <h4>Services</h4>\n' +
+'          <h4><a href="/services">Services</a></h4>\n' +
 '          <ul class="stack gap-8">\n' +
 '            <li><a href="/services/solution-design">Solution design</a></li>\n' +
 '            <li><a href="/services/crm-implementations">CRM implementations</a></li>\n' +
 '            <li><a href="/services/hubspot-support-retainers">HubSpot support retainers</a></li>\n' +
 '            <li><a href="/services/revops-consulting">RevOps consulting</a></li>\n' +
 '            <li><a href="/services/lead-to-cash-process-mapping">Lead to cash mapping</a></li>\n' +
-'            <li><a href="/audit">Free HubSpot audit</a></li>\n' +
+
 '          </ul>\n' +
 '        </div>\n' +
 '        <div>\n' +
@@ -277,7 +277,7 @@ function footer(p) {
 '             puzzle and the run moved out of Company on the same day rather\n' +
 '             than being listed in both places. -->\n' +
 '        <div>\n' +
-'          <h4>Resources</h4>\n' +
+'          <h4><a href="/resources">Resources</a></h4>\n' +
 '          <ul class="stack gap-8">\n' +
 '            <li><a href="https://blog.revhops.com" target="_blank" rel="noopener">Blog</a></li>\n' +
 '            <li><a href="/case-studies">Case studies</a></li>\n' +
@@ -698,6 +698,19 @@ var SERVICES = [
     caseIdx: 4
   }
 ];
+
+/* The free audit, shown at the foot of the services list on this page and on
+   the homepage. Deliberately not a member of SERVICES: that array generates a
+   detail page per entry, the pricing rows, the "often paired with" lists and
+   the footer column, and the audit wants none of those. It has /audit. */
+var AUDIT_ROW =
+'      <a class="svc-row reveal" href="/audit">\n' +
+'        <h3 class="svc-title">Free HubSpot audit</h3>\n' +
+'        <span class="svc-time">2\u20133 days</span>\n' +
+'        <p class="svc-copy">An hour inside your portal and a written page back. What is set up\n' +
+'          well, what is quietly costing you, and the three things worth fixing first.</p>\n' +
+'        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>\n' +
+'      </a>\n';
 
 /* ---------- the five case studies, all placeholder ---------- */
 
@@ -1375,6 +1388,7 @@ var servicesIndex = {
                '        <span class="svc-go">Read more <span class="arrow">&rarr;</span></span>\n' +
                '      </a>';
       }).join('\n') + '\n' +
+AUDIT_ROW +
 '    </div>\n' +
 '\n' +
 '    <div class="svc-cta reveal">\n' +

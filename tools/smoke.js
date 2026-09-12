@@ -218,10 +218,17 @@ console.log('\n— things that were removed and must stay removed —');
 console.log('\n— services —');
 {
   const titles = [...d.querySelectorAll('.svc-title')].map(t => t.textContent.trim());
+  // The free audit joined the end of the list on 12 September. It is not a
+  // member of SERVICES — that array generates a detail page, a pricing row
+  // and a footer entry per service, and the audit wants none of those — so
+  // it is appended to the markup and has to be named here on its own.
   const want = ['Solution design', 'CRM implementations', 'HubSpot support retainers',
-                'RevOps consulting', 'Lead to cash process mapping'];
+                'RevOps consulting', 'Lead to cash process mapping', 'Free HubSpot audit'];
   JSON.stringify(titles) === JSON.stringify(want)
-    ? ok('services in the order James set') : bad('order is ' + titles.join(' / '));
+    ? ok('services in the order James set, audit last') : bad('order is ' + titles.join(' / '));
+  const auditRow = [...d.querySelectorAll('.svc-row')].pop();
+  (auditRow && /\/?audit$/.test(auditRow.getAttribute('href')))
+    ? ok('and it points at the audit page') : bad('the audit row does not link to /audit');
   /justify-content: center/.test(rule('.svc-cta'))
     ? ok('CTA centred under the list') : bad('CTA is not centred under the list');
   const cue = d.querySelector('.svc-cta p').textContent.trim();
@@ -615,9 +622,15 @@ console.log('\n— footer —');
       .find(c => c.querySelector('h4') && /Resources/i.test(c.querySelector('h4').textContent));
     if (!res) { bad('no Resources column in the footer'); }
     else {
-      const hrefs = [...res.querySelectorAll('a')].map(a => a.getAttribute('href'));
+      // list items only. The heading is a link itself since 12 September —
+      // Services and Resources point at their own pages — so counting every
+      // anchor in the column now counts the heading too.
+      const hrefs = [...res.querySelectorAll('li a')].map(a => a.getAttribute('href'));
       hrefs.length === 4 ? ok('Resources column has its four links')
                          : bad('Resources column has ' + hrefs.length + ' links, expected 4');
+      /\/?resources$/.test(res.querySelector('h4 a').getAttribute('href'))
+        ? ok('and its heading links to the resources page')
+        : bad('the Resources heading is not a link to /resources');
       hrefs.some(h => /blog\.revhops\.com/.test(h)) ? ok('Blog points at the HubSpot blog')
                                                      : bad('Blog does not point at blog.revhops.com');
       hrefs.some(h => /newsletter/.test(h)) ? ok('Newsletter points at /newsletter')
