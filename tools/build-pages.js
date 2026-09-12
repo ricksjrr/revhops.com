@@ -2123,6 +2123,11 @@ function legalPage(o) {
     description: o.description,
     h1: o.h1,
     lede: o.lede,
+    /* .page-hero-legal and .legal-section are the two hooks that pull the
+       header down onto the copy and let the copy run the full shell. Only
+       these two pages get them: /puzzle and /hop are also .page-hero-plain
+       and still want the ordinary header gap. */
+    heroClass: 'page-hero-plain page-hero-legal',
     body: section(
 '    <div class="prose reveal">\n' +
 '      <p class="prose-meta">Last updated ' + o.updated + '.</p>\n' +
@@ -2134,7 +2139,7 @@ function legalPage(o) {
                    : '      <p>' + p + '</p>';
                }).join('\n');
       }).join('\n') + '\n' +
-'    </div>\n', 'section to-white')
+'    </div>\n', 'section legal-section to-white')
   };
 }
 
@@ -2203,6 +2208,7 @@ var privacy = legalPage({
      ['What you send through a form: your name, work email, company, phone if you give it, and whatever you write in the message box. Our forms are HubSpot forms, so submissions land in HubSpot.',
       'What you give us for a gated download or a gated video: your name and work email, at minimum.',
       'What you give us when you book a call: whatever the scheduler asks for, plus the time you picked.',
+      'If you become a client, the details we need in order to invoice you: billing contact, billing address, and a purchase order or tax reference if your side requires one. We never see or store your card or bank numbers. Stripe handles the payment itself and holds those.',
       'Your email address, if you subscribe to the newsletter, along with whether you opened or clicked what we sent.',
       'How you use the site: pages viewed, how you arrived, roughly where you are based on your IP address, your browser and device, and a cookie identifier that ties those visits together. HubSpot\'s tracking script and Google Analytics collect this.',
       'Whatever you tell us by email or on a call, once we are actually talking.']],
@@ -2218,7 +2224,8 @@ var privacy = legalPage({
      'We do not run advertising pixels, we do not build ad audiences, and we do not sell anything we learn about you.'],
     ['Who else sees it',
      'Only the companies whose tools we work in, and only under contract with us:',
-     ['HubSpot, which is our CRM and runs our forms, marketing email, meeting scheduler, blog and site analytics.',
+     ['HubSpot, which is our CRM and runs our forms, marketing email, meeting scheduler, blog, site analytics and client invoicing.',
+      'Stripe, which processes the payment when you pay an invoice, and holds the payment method and transaction record that goes with it. Stripe is who sees your card or bank details. We only ever see that an invoice was paid.',
       'Google, whose Workspace runs our email, calendar and video meetings, and whose Analytics measures site traffic.',
       'GitHub, which hosts this site and therefore sees the IP addresses of requests as an ordinary part of serving pages.'],
      'We will also disclose information if the law genuinely requires it, or to protect our rights or someone\'s safety. If the business is ever sold or merged, information moves with the rest of the business, and this policy travels with it.',
@@ -2227,7 +2234,7 @@ var privacy = legalPage({
      'In the United States, where we and our providers are based. If you are in the EU or the UK, that means your information is transferred out of your region. Our providers make those transfers under the standard contractual clauses, and so do we.'],
     ['How long we keep it',
      ['An inquiry that never became work: two years after your last contact with us.',
-      'Client records: seven years after the engagement ends, because tax and contract records need that long.',
+      'Client records, invoices and payment history: seven years after the engagement ends, because tax and contract records need that long. HubSpot and Stripe keep their own copies of that billing record on their own schedules, for the same reason.',
       'Newsletter subscribers: until you unsubscribe, and then a suppression record so we do not email you again by mistake.',
       'Analytics and cookie data: for each provider\'s own expiry period, which we keep at the shortest setting that provider offers.'],
      'Ask us to delete something sooner and we will, unless we are legally required to keep it.'],

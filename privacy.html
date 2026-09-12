@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=7334dc1f58">
+<link rel="stylesheet" href="assets/css/site.css?v=40c77baf59">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -75,7 +75,7 @@
 <!-- ===================== HERO =====================
      Type left, artwork bleeding off the right edge. .page-head-end is the
      zero-height sentinel the nav watches to decide when to collapse. -->
-<section class="page-hero page-hero-plain">
+<section class="page-hero page-hero-plain page-hero-legal">
   <div class="shell">
     <div class="page-hero-inner">
       <div class="page-hero-text">
@@ -87,7 +87,7 @@
   <div class="page-head-end" data-nav-clear></div>
 </section>
 
-<section class="section to-white">
+<section class="section legal-section to-white">
   <div class="shell">
     <div class="prose reveal">
       <p class="prose-meta">Last updated 12 September 2026.</p>
@@ -99,6 +99,7 @@
         <li>What you send through a form: your name, work email, company, phone if you give it, and whatever you write in the message box. Our forms are HubSpot forms, so submissions land in HubSpot.</li>
         <li>What you give us for a gated download or a gated video: your name and work email, at minimum.</li>
         <li>What you give us when you book a call: whatever the scheduler asks for, plus the time you picked.</li>
+        <li>If you become a client, the details we need in order to invoice you: billing contact, billing address, and a purchase order or tax reference if your side requires one. We never see or store your card or bank numbers. Stripe handles the payment itself and holds those.</li>
         <li>Your email address, if you subscribe to the newsletter, along with whether you opened or clicked what we sent.</li>
         <li>How you use the site: pages viewed, how you arrived, roughly where you are based on your IP address, your browser and device, and a cookie identifier that ties those visits together. HubSpot's tracking script and Google Analytics collect this.</li>
         <li>Whatever you tell us by email or on a call, once we are actually talking.</li>
@@ -116,7 +117,8 @@
       <h2>Who else sees it</h2>
       <p>Only the companies whose tools we work in, and only under contract with us:</p>
       <ul>
-        <li>HubSpot, which is our CRM and runs our forms, marketing email, meeting scheduler, blog and site analytics.</li>
+        <li>HubSpot, which is our CRM and runs our forms, marketing email, meeting scheduler, blog, site analytics and client invoicing.</li>
+        <li>Stripe, which processes the payment when you pay an invoice, and holds the payment method and transaction record that goes with it. Stripe is who sees your card or bank details. We only ever see that an invoice was paid.</li>
         <li>Google, whose Workspace runs our email, calendar and video meetings, and whose Analytics measures site traffic.</li>
         <li>GitHub, which hosts this site and therefore sees the IP addresses of requests as an ordinary part of serving pages.</li>
       </ul>
@@ -127,7 +129,7 @@
       <h2>How long we keep it</h2>
       <ul>
         <li>An inquiry that never became work: two years after your last contact with us.</li>
-        <li>Client records: seven years after the engagement ends, because tax and contract records need that long.</li>
+        <li>Client records, invoices and payment history: seven years after the engagement ends, because tax and contract records need that long. HubSpot and Stripe keep their own copies of that billing record on their own schedules, for the same reason.</li>
         <li>Newsletter subscribers: until you unsubscribe, and then a suppression record so we do not email you again by mistake.</li>
         <li>Analytics and cookie data: for each provider's own expiry period, which we keep at the shortest setting that provider offers.</li>
       </ul>
@@ -260,6 +262,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=7334dc1f58"></script>
+<script src="assets/js/site.js?v=40c77baf59"></script>
 </body>
 </html>
