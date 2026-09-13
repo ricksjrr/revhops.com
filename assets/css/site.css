@@ -1317,13 +1317,41 @@ main { overflow-x: clip; }
     to   { opacity: 1; }
   }
 }
+/* THE HEADLINE WRAPS ON A PHONE.
+
+   Both halves are nowrap blocks so the break lands after "your" at every
+   width, and the size is a vw so the longer of the two just clears the
+   gutters. That holds on a wide screen. On a phone it does not: the line
+   runs past the shell, and because it is nowrap the BLOCK grows with it
+   rather than wrapping — so .mat-head ends up wider than the page, the
+   centred lede centres inside that wider box, and the whole header sits
+   off to the right with the title clipped.
+
+   Here the two halves go inline and the headline wraps like ordinary type.
+   Three lines on a phone is fine; a header hanging off the screen is not.
+   The markup has a space between the two spans, so they join cleanly. */
+@media (max-width: 760px) {
+  .mat-head { max-width: 100%; }
+  .mat-head .h1-lead,
+  .mat-head .h1-tail { display: inline; white-space: normal; }
+  .mat-head .h1 {
+    font-size: clamp(1.95rem, 8.4vw, 2.7rem);
+    line-height: 1.04;
+    letter-spacing: -.03em;
+  }
+}
+
 /* the band runs faster and tighter on phones, where less of it is on
    screen at once and the default pace reads as almost stationary */
 @media (max-width: 760px) {
   .logo-rail { animation-duration: 30s; }
   .logo-run { gap: 30px; padding-right: 30px; padding-block: 8px; }
-  /* 53px read as a row of postage stamps on a phone */
-  .logo-run img { height: 74px; opacity: .7; }
+  /* THE HEIGHT IS NOT SET HERE. This block sits ABOVE `.logo-run img`'s own
+     rule in the file and ties with it on specificity, so a height written
+     here loses on order and never applied — which is why the marks stayed at
+     the desktop clamp's 61px floor on a phone whatever this said. It is in
+     the phone block at the end of the file instead. */
+  .logo-run img { opacity: .7; }
   .logo-band {
     -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
             mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
@@ -3903,10 +3931,19 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 
   /* Section heads align left. Centred headings over left-aligned content
      is the thing that made the phone layout read as a stack of unrelated
-     blocks. The hero is untouched — it uses .mat-head, not .sec-head. */
-  .sec-head,
-  .sec-head .h2,
-  .sec-sub { text-align: left; margin-inline: 0; }
+     blocks. The hero is untouched — it uses .mat-head, not .sec-head.
+
+     SCOPED TO .sec-head-left, NOT EVERY HEAD. The rule used to catch all of
+     them, including the nine on the site that are deliberately centred
+     because the thing under them is centred too — the tool clump, the
+     booking widget, the audit form. Those came out left over centred
+     content, which is the same mismatch this rule exists to prevent, just
+     the other way round. `secHead(..., 'centred')` is what omits the class,
+     so the two stay in step by construction. */
+  .sec-head-left,
+  .sec-head-left .h2,
+  .sec-head-left .sec-sub,
+  .sec-sub-left { text-align: left; margin-inline: 0; }
 
   /* The timing column comes out of the services list. On a phone the row is
      already one column, so the estimate was a stray line of grey between the
@@ -4561,13 +4598,21 @@ a.pcard:hover .arrow { transform: translateX(5px); }
    cell about 20 characters, and the vertical rule stops meaning anything */
 @media (max-width: 720px) {
   .quad { grid-template-columns: minmax(0, 1fr); }
-  .quad-cell {
+
+  /* `.quad >` AND NOT `.quad-cell`. A media query adds no specificity, so a
+     bare `.quad-cell` here (0,1,0) lost to `.quad-cell:nth-child(3)` (0,2,0)
+     above it — which left cells 1 and 3 holding the vertical rule they were
+     given for the 2x2, as an orphan hairline down the right of two of the
+     four stacked cells. The zeroed paddings meant for the grid's outer faces
+     survived the same way, so cell 2 had no space above it and cell 3 none
+     below. This selector ties on specificity and wins on order. */
+  .quad > .quad-cell {
     padding: clamp(24px, 6vw, 34px) 0;
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
-  .quad-cell:first-child { padding-top: 0; }
-  .quad-cell:last-child { padding-bottom: 0; border-bottom: 0; }
+  .quad > .quad-cell:first-child { padding-top: 0; }
+  .quad > .quad-cell:last-child { padding-bottom: 0; border-bottom: 0; }
 }
 
 /* ---------- the scheduler, and /audit's form ----------
@@ -6450,7 +6495,45 @@ div.res-card .res-go { color: var(--muted); }
    and the figure centres inside its column, so the section stays as tall as
    the rows beside it on anything but a phone.
    ========================================================================== */
+/* 65/35 rather than .split's near-even columns. The left side is two rows
+   of name-plus-description and the right side is one picture, so an even
+   split starved the rows: 'Something else entirely' broke to three lines
+   and the descriptions beside it wrapped every few words. */
+.audit-aside { grid-template-columns: minmax(0, 65fr) minmax(0, 35fr); }
 .audit-aside .sec-head { margin-bottom: 0; }
+
+/* THE TWO ROWS SHARE THEIR COLUMNS.
+
+   .svc-row is its own grid, so on a plain list each row sizes its tracks
+   independently and the `auto` link column takes the width of that row's
+   own label. 'See more' and 'Tell us what you've got' are different
+   lengths, so the two descriptions started and ended at different x — which
+   is what read as the rows not lining up.
+
+   Subgrid fixes it properly: the list owns the tracks and both rows inherit
+   them, so the link column is one width (the longer label's) on both and
+   the descriptions share an edge. The plain template above it is the
+   fallback — a browser without subgrid drops the invalid declaration and
+   keeps the per-row grid, which is what the page did before.
+
+   The title floor is what holds 'Something else entirely' to two lines. It
+   has to clear the width of 'Something else' at the largest the title gets,
+   and .8fr alone does not until about 1500px. */
+.audit-aside .svc-list-plain {
+  display: grid;
+  grid-template-columns: minmax(12.5em, .8fr) minmax(0, 1.45fr) max-content;
+}
+.audit-aside .svc-list-plain .svc-row {
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+}
+
+/* Justified, as asked. Both descriptions run two lines at every width the
+   two-column layout survives, so this sets the first line of each flush to
+   both edges and leaves the second ragged — if the word spacing ever opens
+   up oddly, this one declaration is the thing to drop. */
+.audit-aside .svc-copy { text-align: justify; text-wrap: pretty; }
+
 .audit-shot-frame {
   margin: 0;
   display: flex;
@@ -6458,19 +6541,144 @@ div.res-card .res-go { color: var(--muted); }
 }
 .audit-shot-frame img {
   display: block;
-  width: auto;
+  /* fills its column, never taller than the cap. object-fit keeps the
+     proportions when the cap is what binds — without it a wide screenshot
+     would squash rather than letterbox. */
+  width: 100%;
   height: auto;
-  max-width: 100%;
-  /* the cap. See the note above. */
   max-height: clamp(260px, 30vw, 420px);
+  object-fit: contain;
   border-radius: var(--radius-card);
   border: 1px solid var(--line);
   background: var(--surface);
   box-shadow: 0 18px 40px rgba(48, 65, 87, .10);
 }
 
-/* stacked on a phone, and shorter, because by then it is below the rows
-   rather than beside them and nothing is waiting on its height */
+/* .split collapses at 1000px, but this one needs the room sooner: below
+   about 1120 the 65% column cannot hold a two-line title, a description and
+   a link side by side without the description wrapping every few words. */
+@media (max-width: 1120px) {
+  .audit-aside { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* stacked by now, and shorter, because the picture is below the rows rather
+   than beside them and nothing is waiting on its height */
 @media (max-width: 860px) {
   .audit-shot-frame img { max-height: clamp(220px, 52vw, 320px); }
+}
+
+/* .svc-row goes to one column at 820 and the subgrid template has to go
+   with it, or the stacked row keeps three tracks and the copy sits in a
+   sliver. */
+@media (max-width: 820px) {
+  .audit-aside .svc-list-plain { display: block; }
+  .audit-aside .svc-copy { text-align: left; }
+}
+
+/* ==========================================================================
+   PHONE LAYOUT, 13 September — James' pass on a real handset
+
+   Same rule as the block above: everything here is a phone-width override of
+   something that is right on a wide screen and wrong on a narrow one, and it
+   sits at the end of the file so it wins.
+   ========================================================================== */
+
+/* ---------- the mark's caption ----------
+   Hidden by default. On a wide screen the partner profile link sits beside
+   the review further down /hubspot; at phone width that whole block comes
+   out (see below) and the link moves up here, under the badge, which is the
+   only other place on the page that is making the same claim. */
+.page-hero-mark-note { display: none; }
+
+@media (max-width: 900px) {
+  /* BLOCK, NOT inline-flex. As a flex container the text became one
+     anonymous item taking whatever width was left after the arrow, so it
+     wrapped to two lines with the arrow parked out on the right of them.
+     As a block with the arrow inline it wraps like a sentence and stays
+     centred under the badge. */
+  .page-hero-mark-note {
+    display: block;
+    max-width: 26ch;
+    margin: clamp(14px, 3.4vw, 20px) auto 0;
+    text-align: center;
+    font-weight: 700;
+    font-size: .88rem;
+    line-height: 1.4;
+    text-decoration: none;
+    color: var(--ink-strong);
+  }
+  .page-hero-mark-note .arrow {
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform .3s var(--ease-out);
+  }
+  .page-hero-mark-note:hover .arrow { transform: translateX(5px); }
+
+  /* THE BADGE SITS BETWEEN THE TWO SECTIONS, not against the one below it.
+     In the flow at this width it is its own block, so "centred between them"
+     is a real measurement: the space above it is --sec-pad, and the space
+     below it is the header's own bottom padding plus the next section's top
+     padding, which are each half of --sec-pad. */
+  .page-hero-markhead .page-hero-media { margin-top: var(--sec-pad); }
+  .page-hero-markhead { padding-bottom: calc(var(--sec-pad) / 2); }
+  .page-hero-markhead + .section { padding-top: calc(var(--sec-pad) / 2); }
+}
+
+@media (max-width: 760px) {
+
+  /* ---------- the proof heading breaks after "with" ----------
+     The highlighted half goes to its own line, and both halves are nowrap so
+     it can never take a third. Measured at 320px, where the head is at its
+     1.7rem floor: the longer line runs about 240px inside a 280px column. */
+  .case-head .sec-head .h2 { white-space: nowrap; }
+  .case-head .sec-head .h2 .hl { display: block; }
+
+  /* ---------- no line art on the featured card ----------
+     A third of the card is a third of a phone screen, and the drawing was
+     taking a block of height under the copy to say what the copy already
+     said. The overhang was the reason it earned its space, and there is no
+     overhang once it is stacked under the text. */
+  .res-feature-art { display: none; }
+  .res-feature { padding-bottom: clamp(26px, 3.4vw, 54px); }
+
+  /* ---------- /hubspot: the quote only ----------
+     The screenshot is a two-column web page photographed; at phone width it
+     is a grey smudge with a logo on it, and the link under it duplicates the
+     one now sitting under the badge at the top of the page. */
+  .hs-testi-proof { display: none; }
+
+  /* ---------- a case study's meta ----------
+     The logo well is a dashed placeholder waiting for artwork, and on a
+     phone it is the first thing under the title — a hole where the client's
+     mark will be, at the top of the page, before anything has been said.
+     It comes back the moment there is a logo in it.
+
+     The rule under the meta row is .cs-side's bottom border, and the first
+     eyebrow was sitting straight on it. */
+  .cs-logo { display: none; }
+  .cs-side { margin-bottom: clamp(22px, 5vw, 32px); }
+
+  /* ---------- the header's meta row ----------
+     It lays out as a wrapping row at this width, and a fourth item leaves
+     one orphan on a second line under three. The service pages' fourth is
+     Type, which repeats what the page you came from already said; /audit's
+     is Commitment: None, which is the least load-bearing of its four. Both
+     are the last child, so one rule covers them.
+
+     `.meta-long` is the other half of the same idea, inside a value: the
+     spans it wraps are the words a value can afford to lose when the row is
+     tight. Today that is "business" in /audit's 2-3 business days. */
+  .page-hero-svc .hero-meta > div:nth-child(4) { display: none; }
+  .meta-long { display: none; }
+
+  /* ---------- the client marquee ----------
+     Fewer marks fit on a phone screen at once, so each one can afford to be
+     larger than the desktop row's. One rule, so every band on the site —
+     the homepage, /services, /call — matches.
+
+     IT HAS TO BE HERE rather than in the phone block further up: that one
+     sits above `.logo-run img`'s own rule and ties with it on specificity,
+     so a height written there lost on order and the marks stayed at the
+     desktop clamp's 61px floor. */
+  .logo-run img { height: 96px; }
 }

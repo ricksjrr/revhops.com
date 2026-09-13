@@ -198,6 +198,15 @@ function pageHero(p) {
           (/^https?:/.test(m.href) ? ' target="_blank" rel="noopener"' : '') + '>' +
           img + '</a>\n'
         : '        ' + img + '\n') +
+      /* A caption under the mark, and ONLY ON A PHONE — see
+         .page-hero-mark-note. On a wide screen the same link sits beside
+         the review further down the page, where it belongs; at phone width
+         that whole block comes out and this is where it goes instead. */
+      (m.note && m.href
+        ? '        <a class="page-hero-mark-note" href="' + m.href + '"' +
+          (/^https?:/.test(m.href) ? ' target="_blank" rel="noopener"' : '') + '>' +
+          m.note + ' <span class="arrow" aria-hidden="true">&rarr;</span></a>\n'
+        : '') +
       '      </div>\n'
     : '';
 
@@ -1807,7 +1816,8 @@ var hubspot = {
      the partner directory: it is the one claim on this page somebody might
      reasonably want to check. */
   media: { src: 'assets/img/hubspot-platinum-badge.webp', alt: 'HubSpot Platinum Solutions Partner',
-           mark: true, big: true, href: PARTNER_PROFILE },
+           mark: true, big: true, href: PARTNER_PROFILE,
+           note: 'View our HubSpot partner profile' },
 
   /* ONE BUTTON, and it is on the right. The call is the ask and the only
      navy box on the page; the audit is a text link to the left of it. Two
@@ -3532,9 +3542,14 @@ var audit = {
      say the same thing. */
   lede: 'Complimentary audit. We&rsquo;ll look at your data hygiene, pipelines &amp; stages, automations, integrations and adoption.',
 
+  /* FOUR ROWS ON A WIDE SCREEN, THREE ON A PHONE. The meta row lays out as
+     a wrapping grid at phone width and a fourth item leaves one orphan on a
+     second line; Commitment is the one that says least, so it is the one
+     that goes — see .hero-meta in the phone block. "business" comes out of
+     the turnaround the same way, which is what keeps it on one line. */
   meta: [
     ['Cost', 'Free'],
-    ['Turnaround', '2–3 business days'],
+    ['Turnaround', '2–3 <span class="meta-long">business </span>days'],
     ['What we need', 'Read-only access'],
     ['Commitment', 'None']
   ],
