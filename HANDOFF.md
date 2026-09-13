@@ -62,12 +62,12 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   changes.** The badge does not move down so much as hold still while the
   copy rises — the same picture, one fewer number to keep in step.
 
-### Open
-
-- **The RevOps Runner card still has the line drawing on it.** James has a
-  picture for it; it did not come through with the message. Drop the file in
-  `assets/img/` and set `thumb` on the `games` entry in `RESOURCES` — `art`
-  and `thumb` are alternatives, so removing `art` is the other half of it.
+- **The RevOps Runner card carries a frame of the game**,
+  `assets/img/game-runner.webp`, cropped to the shelf's 16:9 off the bottom
+  of the shot so the hare and the ground survive. `thumb` and `art` are
+  alternatives and thumb wins, so `art` came off that entry. The hare
+  drawing is still in `ART` and is unused today, kept because it is the pair
+  to the Unscrambler's tiles and the featured slider may want it back.
 
 ---
 

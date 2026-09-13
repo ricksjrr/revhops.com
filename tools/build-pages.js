@@ -2762,8 +2762,12 @@ var RESOURCES = [
   { type: 'games', title: 'RevOps Unscrambler',
     href: '/puzzle', art: 'scramble',
     copy: 'Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.' },
+  /* A FRAME OF THE GAME, not a drawing of it. `thumb` and `art` are
+     alternatives and thumb wins; the hare drawing is still in ART and is
+     unused today, kept because it is the pair to the Unscrambler's tiles and
+     the featured slider may want it back. */
   { type: 'games', title: 'RevOps Runner',
-    href: '/hop', art: 'hopper',
+    href: '/hop', thumb: 'assets/img/game-runner.webp',
     copy: 'Jump the fires and duck the requests. The pace picks up the longer you last.' }
 ];
 
