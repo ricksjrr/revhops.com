@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `ddea0be33a` — derived from a hash of the assets by
+**Current build stamp:** `5365fb2815` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -24,6 +24,77 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   disk for exactly this reason.
 - **there is no remote yet**, so the Pushing section at the end still does
   not work as written. See "Deploying to GitHub Pages" in the README.
+
+---
+
+## 13 September: the phone pass, from a real handset
+
+James went through the site on a phone. Most of what came back was one bug
+wearing several hats — **a media query adds no specificity**, so a phone
+override written as a bare class loses to a desktop rule that happens to
+carry a pseudo-class or to sit lower in the file. Three separate symptoms
+turned out to be that.
+
+### The header that hung off the screen
+
+THE ONE HE OPENED WITH, and the one worth remembering. The maturity
+headline is two `nowrap` blocks, sized off `vw` so the longer of them just
+clears the gutters — that is what guarantees the break after "your" at every
+width. On a phone the line does not fit, and because it is `nowrap` the
+BLOCK grows past the shell rather than wrapping. `.mat-head` ends up wider
+than the page, the centred lede centres inside that wider box, and the whole
+header sits off to the right with the title clipped. It reads exactly like
+"squished and right-justified", which is what it was.
+
+Under 760px the two halves go inline and the headline wraps like ordinary
+type. Three lines on a phone is fine; a header hanging off the screen is
+not. The markup already has a space between the spans, so they join cleanly.
+
+**This is why the earlier hunt for it found nothing.** `scrollWidth` is
+still the viewport — something up the tree clips — so an overflow check
+passes. Measure the ELEMENT against the shell, not the document.
+
+### The specificity three
+
+- **The quadrant's orphan rules.** `.quad-cell` in the phone block lost to
+  `.quad-cell:nth-child(3)` above it, so cells 1 and 3 kept the vertical
+  hairline meant for the 2x2 and two cells kept a zeroed padding. Now
+  `.quad > .quad-cell`, which ties on specificity and wins on order.
+- **The marquee's phone height never applied.** That block sits ABOVE
+  `.logo-run img`'s own rule and ties with it, so the height lost on order
+  and the marks stayed at the desktop clamp's 61px floor — the 74px in that
+  block had never once rendered. Moved to the phone block at the end of the
+  file and raised to 96px. One rule, so the homepage, /services and /call
+  all match.
+- **The centred heads went left.** The phone rule caught every `.sec-head`,
+  including the nine that are deliberately centred because the thing under
+  them is — the tool clump, the booking widget, the audit form. Scoped to
+  `.sec-head-left`, which is exactly the class `secHead(..., 'centred')`
+  omits, so the two stay in step by construction.
+
+### The rest
+
+- The proof heading breaks after "with", both halves `nowrap` so it can
+  never take a third line. Measured at 320px, where the head is at its
+  1.7rem floor: the longer line runs about 240px inside a 280px column.
+- No line art on the featured card. The overhang is what earned it its
+  space, and there is no overhang once it is stacked under the copy.
+- /hubspot: the partner profile link moves up under the badge, and the
+  screenshot and its link come out of the review block. `media` takes a
+  `note` for that, shown only under 900px. **It is a block, not an
+  inline-flex** — as a flex container the text became one anonymous item
+  taking whatever width was left after the arrow, so it wrapped to two lines
+  with the arrow parked out to the right of them.
+- The badge sits between the two sections rather than against the one below
+  it: the space above is `--sec-pad` and the space below is the header's own
+  bottom padding plus the next section's, each half of it.
+- A case study loses the dashed logo well — a hole where the client's mark
+  will be, at the top of the page, before anything has been said — and the
+  rule under the meta row gets a beat under it.
+- The header meta row sheds its fourth item: Type on a service page, which
+  repeats the page you came from, and Commitment: None on /audit. Both are
+  the last child, so one rule covers them. `.meta-long` does the same job
+  inside a value and today wraps "business" in /audit's turnaround.
 
 ---
 
