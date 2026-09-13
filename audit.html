@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=713907387d">
+<link rel="stylesheet" href="assets/css/site.css?v=5e710bc024">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -75,7 +75,7 @@
 <!-- ===================== HERO =====================
      Type left, artwork bleeding off the right edge. The H1 carries
      data-nav-clear: the bar collapses as it reaches the title. -->
-<section class="page-hero page-hero-nomedia page-hero-svc page-hero-split">
+<section class="page-hero page-hero-nomedia page-hero-svc">
   <div class="shell">
     <div class="page-hero-inner">
       <div class="page-hero-text">
@@ -88,10 +88,6 @@
           <div><dt>What we need</dt><dd>Read-only access</dd></div>
           <div><dt>Commitment</dt><dd>None</dd></div>
         </dl>
-      </div>
-      <div class="page-hero-art is-doc" aria-hidden="true">
-        <img class="audit-shot" src="assets/img/audit-example.svg"
-             alt="" aria-hidden="true" loading="lazy">
       </div>
     </div>
   </div>
@@ -136,31 +132,38 @@
 
 <section class="section">
   <div class="shell">
+    <div class="split audit-aside" style="align-items:center">
+      <div>
     <div class="sec-head sec-head-left reveal">
       <h2 class="h2">Not on HubSpot?</h2>
     </div>
-    <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">
-      <a class="svc-row" href="pipedrive">
-        <h3 class="svc-title">Pipedrive</h3>
-        <p class="svc-copy">Same hour, same written page. We are an Authorized Partner there too, and the pipeline and the data are where we start.</p>
-        <span class="svc-go">See the page <span class="arrow">&rarr;</span></span>
-      </a>
-      <a class="svc-row" href="contact">
-        <h3 class="svc-title">Something else entirely</h3>
-        <p class="svc-copy">Salesforce, Zoho, Dynamics, or a spreadsheet that became a CRM somewhere along the way &mdash; send us access and we&rsquo;ll take a look.</p>
-        <span class="svc-go">Tell us what you run <span class="arrow">&rarr;</span></span>
-      </a>
+      <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">
+        <a class="svc-row" href="pipedrive">
+          <h3 class="svc-title">Pipedrive</h3>
+          <p class="svc-copy">Same hour, same written page. We are an Authorized Partner there too, and the pipeline and the data are where we start.</p>
+          <span class="svc-go">See more <span class="arrow">&rarr;</span></span>
+        </a>
+        <a class="svc-row" href="contact">
+          <h3 class="svc-title">Something else entirely</h3>
+          <p class="svc-copy">Salesforce, Zoho, Dynamics, or a spreadsheet that became a CRM somewhere along the way &mdash; send us access and we&rsquo;ll take a look.</p>
+          <span class="svc-go">Tell us what you&rsquo;ve got <span class="arrow">&rarr;</span></span>
+        </a>
+      </div>
+      </div>
+      <figure class="audit-shot-frame reveal reveal-right">
+        <img src="assets/img/audit-example.svg" alt=""
+             aria-hidden="true" loading="lazy">
+      </figure>
     </div>
   </div>
 </section>
 
-<section class="section to-white">
+<section class="section to-white svc-book">
   <div class="shell">
+    <div class="sec-head reveal">
+      <h2 class="h2">Request an audit</h2>
+    </div>
     <div class="optin-wrap">
-      <div class="contact-col-head reveal" style="text-align:center;align-items:center">
-        <h2>Request an audit</h2>
-        <p>Tell us which portal and what is bothering you. If something is actually on fire, say so and we will look at that first.</p>
-      </div>
       <!-- HubSpot form, portal 46722926. THIS ID IS THE AUDIT FORM and is
            not the one /contact uses. See the note above this page in
            tools/build-pages.js. -->
@@ -287,6 +290,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=713907387d"></script>
+<script src="assets/js/site.js?v=5e710bc024"></script>
 </body>
 </html>

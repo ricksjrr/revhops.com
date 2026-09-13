@@ -183,19 +183,6 @@ function pageHero(p) {
       '<span class="arrow" aria-hidden="true">&larr;</span> ' + p.eyebrow[0] + '</a>\n'
     : '';
 
-  /* An in-flow artwork column beside the type, 40% to the type's 60%.
-
-     NOT .page-hero-media, which is absolutely positioned against the screen
-     edge and bleeds off it. This one is a second grid child, so it cannot
-     change the band's padding and cannot push the sections below it around
-     — which was the constraint on the service headers. See .page-hero-art.
-
-     aria-hidden: every drawing restates the H1 beside it. */
-  var artCol = p.art
-    ? '      <div class="page-hero-art' + (p.artClass ? ' ' + p.artClass : '') +
-      '" aria-hidden="true">\n' + p.art + '\n      </div>\n'
-    : '';
-
   /* `big` lets a contained mark run a third past the band's height — see
      .page-hero-media.is-big. `href` wraps it, for the one mark on the site
      that is a claim somebody might want to check. */
@@ -227,7 +214,6 @@ eyebrow +
 buttons +
 meta +
 '      </div>\n' +
-artCol +
 '    </div>\n' +
 media +
 '  </div>\n' +
@@ -440,6 +426,14 @@ function pcard(o) {
   var tag = o.href ? 'a' : 'div';
   var attrs = o.href ? ' class="pcard reveal" href="' + o.href + '"' : ' class="pcard reveal"';
   return '        <' + tag + attrs + '>\n' +
+    /* `media: true` puts the site's empty-artwork well at the top of the
+       card — literally .res-thumb and .res-thumb-ph off the resource cards,
+       not a second object that looks like them. A dashed frame rather than
+       a grey rectangle, because an empty frame reads as "no artwork yet"
+       and a filled grey box reads as a broken image. Swap it for an <img>
+       when the pictures land. */
+    (o.media ? '          <span class="res-thumb pcard-thumb">' +
+               '<span class="res-thumb-ph" aria-hidden="true"></span></span>\n' : '') +
     (o.n ? '          <span class="pcard-n">' + o.n + '</span>\n' : '') +
     '          <h3 class="pcard-title">' + o.title + '</h3>\n' +
     (o.copy ? '          <p class="pcard-copy">' + o.copy + '</p>\n' : '') +
@@ -562,14 +556,14 @@ var SERVICES = [
     kind: 'Project',
     results: '6–8 weeks',
     quad: [
-      ['[Placeholder] A HubSpot portal built or migrated end to end, by the same people who scoped it, and documented well enough that your team can run it without calling us.',
-       '[Placeholder] Second short paragraph.'],
-      ['[Placeholder] The build that only one person understands, and that person has left. Two pipelines called Renewals and nobody sure which is live.',
-       '[Placeholder] Second short paragraph.'],
-      ['[Placeholder] Foundations first, then build and migrate in weekly working sessions with your admin in the room, then parallel running until the numbers agree.',
-       '[Placeholder] Handover is recorded training, written documentation and two weeks of hypercare.'],
-      ['[Placeholder] Teams standing up a new portal, or moving onto HubSpot with a decade of history that has to come with them.',
-       '[Placeholder] Second short paragraph.']
+      ['A HubSpot portal built or migrated end to end by the same people who scoped it. Objects, properties, pipelines, automation, integrations, permissions and the reports that sit on top of all of it.',
+       'It is built in the open, with your admin in the working sessions, and it ends with documentation and recorded training rather than a login and good luck.'],
+      ['The portal only one person understands, and that person has left. Two pipelines called Renewals and nobody sure which one the forecast reads.',
+       'Migrations that lose the history, or that go live on a promise and leave two systems disagreeing about the same number for a quarter.'],
+      ['Foundations first: objects, properties, permissions and naming conventions, agreed and written down before a single workflow exists.',
+       'Then build and migrate in weekly working sessions, run both systems in parallel until the numbers agree, and hand over with two weeks of hypercare while your team takes the controls.'],
+      ['Teams standing up a CRM for the first time, and teams moving onto HubSpot with a decade of history that has to come with them.',
+       'It works best where somebody internal is going to own the portal afterwards. If nobody is, a retainer is the more honest answer.']
     ],
     caseIdx: 1
   },
@@ -608,14 +602,14 @@ var SERVICES = [
     kind: 'Retainer',
     results: 'First month',
     quad: [
-      ['[Placeholder] A named HubSpot admin on call. Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon.',
-       '[Placeholder] Second short paragraph.'],
-      ['[Placeholder] A portal that rots quietly because the person who half-knows it has a day job, and a full-time admin costs forty hours to get eight of real work.',
-       '[Placeholder] Second short paragraph.'],
-      ['[Placeholder] One standing call a month, a roadmap review each quarter, and a shared channel rather than a ticket form for anything that breaks.',
-       '[Placeholder] Hours roll over within the quarter.'],
-      ['[Placeholder] Teams live on HubSpot who need an admin but not a full-time one.',
-       '[Placeholder] Second short paragraph.']
+      ['A named HubSpot admin on call. Build work, break-fix, reporting, data hygiene, integrations, training and a standing roadmap, without hiring the headcount.',
+       'No cap on monthly hours. The rate is set by how long you commit, not by a clock, so nobody is deciding whether a question is worth the minutes.'],
+      ['A portal that rots quietly because the person who half-knows it has a day job, and a full-time admin costs forty hours to get eight of real work.',
+       'Improvements that only happen in a panic, and a workflow that breaks on a Friday afternoon with no one to send it to.'],
+      ['One standing call a month on what shipped, what it cost and what is next. A roadmap review each quarter, agreed with you rather than presented to you.',
+       'Requests go to a shared channel rather than a ticket form. Anything blocking revenue gets looked at the same day.'],
+      ['Teams already live on HubSpot who need an admin but not a full-time one, and teams who have just finished an implementation and want the momentum to continue.',
+       'Rolling monthly, thirty days notice both ways. Nobody has ever done better work because the client was stuck with them.']
     ],
     caseIdx: 2
   },
@@ -654,14 +648,14 @@ var SERVICES = [
     kind: 'Retainer',
     results: '4–6 weeks',
     quad: [
-      ['[Placeholder] Fractional revenue operations leadership. What the system should be doing, what it is doing instead, and which of those gaps is costing you money.',
-       '[Placeholder] Advice, with no build attached.'],
-      ['[Placeholder] Forecast accuracy nobody trusts, stages that mean different things to different reps, and a sales team measured on something it cannot control.',
-       '[Placeholder] Second short paragraph.'],
-      ['[Placeholder] A first month spent finding where revenue actually stalls, then a fortnightly standing session with whoever owns revenue, written up rather than left in a recording.',
-       '[Placeholder] Each quarter closes with an order of operations rather than a wish list.'],
-      ['[Placeholder] Founders and revenue leaders who need someone to think it through with before they commit to a build.',
-       '[Placeholder] Second short paragraph.']
+      ['Fractional revenue operations leadership. What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money.',
+       'Advice with no build attached, so the recommendation is not quietly a quote. Delivery is scoped and priced on its own if you want it.'],
+      ['A forecast nobody presenting it believes, stages that mean different things to different reps, and a sales team measured on something it cannot control.',
+       'Tooling decisions made to settle an argument, and a quarterly plan that is a wish list rather than an order of operations.'],
+      ['The first month is spent finding where revenue actually stalls, measured against the system rather than against what anyone remembers.',
+       'Then a fortnightly session with whoever owns revenue, written up rather than left in a call recording, and a ranked order of operations each quarter. On-site when it matters.'],
+      ['New or growing RevOps leaders who want someone to think it through with, and executive teams who need the go-to-market function to agree on what it is counting.',
+       'It is the wrong call if what you need is hands on keyboard. That is a build, and it is priced as one.']
     ],
     caseIdx: 3
   },
@@ -700,14 +694,14 @@ var SERVICES = [
     kind: 'Project',
     results: 'Immediate',
     quad: [
-      ['[Placeholder] Every step from first touch to paid invoice, mapped end to end across every team and every system, on one page.',
-       '[Placeholder] Usually the first time anyone has seen the whole thing at once.'],
-      ['[Placeholder] Deals that stall at the seams between teams, shadow spreadsheets holding the process together, and manual steps nobody has counted.',
-       '[Placeholder] Second short paragraph.'],
-      ['[Placeholder] We interview each team separately, then follow real records through the real systems, because the process people describe and the process that runs are rarely the same thing.',
-       '[Placeholder] Then we draw the whole thing, handoffs and owners marked.'],
-      ['[Placeholder] Teams who know something is slow but cannot say where, and teams about to buy software to fix a process they have never drawn.',
-       '[Placeholder] Second short paragraph.']
+      ['Every step from first touch to paid invoice, mapped end to end across every team and every system, on one page.',
+       'Handoffs, owners and system of record marked, including the spreadsheets quietly holding the whole thing together. For most teams it is the first time anyone has seen it all at once.'],
+      ['Deals that stall at the seams between teams, where everyone owns a piece and nobody owns the join.',
+       'Manual steps nobody has counted, work done twice in two systems, and an invoice that goes out late for a reason no one department can explain on its own.'],
+      ['We interview marketing, sales, CS and finance separately. The gaps between the four accounts are usually the first finding.',
+       'Then we follow real records through the real systems and time them, because the process people describe and the process that runs are rarely the same thing. It closes with the map and a ranked fix list.'],
+      ['Teams who know something is slow but cannot say where, and teams about to buy software to fix a process they have never actually drawn.',
+       'Often the first step before a design engagement, but it stands on its own and obliges you to nothing.']
     ],
     caseIdx: 4
   }
@@ -1050,7 +1044,9 @@ function servicePage(s) {
   body += section(
     secHead('What you get') +
 '    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-    pcards(s.leave, 'pcards-3') +
+    pcards(s.leave.map(function (d) {
+      return { title: d.title, copy: d.copy, media: true };
+    }), 'pcards-3') +
 '    </div>\n', 'section-tight');
 
   /* the service's own scheduler */
@@ -1082,10 +1078,8 @@ function servicePage(s) {
        index.html is hand-maintained, so nothing enforces it. */
     lede: s.lede,
 
-    /* same header spacing as /services, plus the drawing in a 40% column
-       beside the type. See .page-hero-art. */
-    heroClass: 'page-hero-nomedia page-hero-svc page-hero-split',
-    art: art('svc-' + s.slug),
+    /* same header spacing as /services: no artwork, full-width type */
+    heroClass: 'page-hero-nomedia page-hero-svc',
     eyebrow: ['All services', '/services'],
     meta: [
       ['Timeline', s.time],
@@ -2641,69 +2635,6 @@ var ART_ATTR = 'viewBox="0 0 240 260" fill="none" stroke="currentColor" ' +
 
 var ART = {
 
-  /* ---- the five service headers ----
-     One per service page, sitting in the 40% column beside the type. Same
-     box and same stroke as everything else in here on purpose: the site has
-     one drawing vocabulary, and a second one at the top of five pages would
-     be the loudest thing about them.
-
-     Heavier stroke than a diagram wants, so each is six to ten shapes and
-     no small detail. Anything finer closes up at the size these render. */
-
-  /* the spec: a sheet with three boxes wired together on it */
-  'svc-solution-design':
-    '<rect x="20" y="24" width="200" height="212" rx="14"/>' +
-    '<path d="M20 66h200"/>' +
-    '<rect x="44" y="96" width="64" height="40" rx="8"/>' +
-    '<rect x="132" y="96" width="64" height="40" rx="8"/>' +
-    '<rect x="88" y="180" width="64" height="40" rx="8"/>' +
-    '<path d="M108 116h24"/>' +
-    '<path d="M76 136v64h12"/>' +
-    '<path d="M164 136v64h-12"/>' +
-    '<circle cx="120" cy="116" r="5" fill="currentColor" stroke="none"/>',
-
-  /* the old data being poured into the new portal */
-  'svc-crm-implementations':
-    '<ellipse cx="120" cy="36" rx="54" ry="16"/>' +
-    '<path d="M66 36v44c0 8.8 24.2 16 54 16s54-7.2 54-16V36"/>' +
-    '<path d="M120 108v34"/>' +
-    '<path d="M106 128l14 14 14-14"/>' +
-    '<rect x="20" y="154" width="200" height="90" rx="12"/>' +
-    '<path d="M20 184h200"/>' +
-    '<circle cx="38" cy="169" r="4.5"/>' +
-    '<rect x="42" y="200" width="156" height="26" rx="7"/>',
-
-  /* the standing month, and the admin work inside it */
-  'svc-hubspot-support-retainers':
-    '<rect x="20" y="58" width="164" height="178" rx="14"/>' +
-    '<path d="M20 100h164"/>' +
-    '<path d="M62 40v32M142 40v32"/>' +
-    '<circle cx="58" cy="138" r="6"/>' +
-    '<circle cx="100" cy="138" r="6"/>' +
-    '<circle cx="58" cy="180" r="6"/>' +
-    '<circle cx="100" cy="180" r="6"/>' +
-    '<circle cx="178" cy="192" r="34"/>' +
-    '<circle cx="178" cy="192" r="14"/>' +
-    '<path d="M178 146v12M178 226v12M132 192h12M212 192h12"/>' +
-    '<path d="M146 160l9 9M210 160l-9 9M210 224l-9-9M146 224l9-9"/>',
-
-  /* where the revenue goes, looked at closely */
-  'svc-revops-consulting':
-    '<path d="M34 30v176h180"/>' +
-    '<path d="M56 184l36-34 36 14 36-56 36-36"/>' +
-    '<circle cx="56" cy="184" r="5" fill="currentColor" stroke="none"/>' +
-    '<circle cx="128" cy="164" r="5" fill="currentColor" stroke="none"/>' +
-    '<circle cx="200" cy="72" r="5" fill="currentColor" stroke="none"/>' +
-    '<circle cx="148" cy="124" r="48"/>' +
-    '<path d="M182 158l26 26" stroke-width="6"/>',
-
-  /* first touch at the top, paid invoice at the foot */
-  'svc-lead-to-cash-process-mapping':
-    '<path d="M30 26h120l-38 52v52l-44 22v-74z"/>' +
-    '<path d="M92 158c14 12 22 16 34 16"/>' +
-    '<rect x="120" y="120" width="104" height="116" rx="10"/>' +
-    '<path d="M142 152h60M142 176h60M142 200h38"/>',
-
   /* a page with the corner turned down, three lines of copy and the figures
      at the foot — the shape of every case study on this site */
   'case-study':
@@ -3571,9 +3502,9 @@ var AUDIT_LOOK = [
 ];
 
 var AUDIT_ELSE = [
-  { title: 'Pipedrive', href: '/pipedrive', go: 'See the page',
+  { title: 'Pipedrive', href: '/pipedrive', go: 'See more',
     copy: 'Same hour, same written page. We are an Authorized Partner there too, and the pipeline and the data are where we start.' },
-  { title: 'Something else entirely', href: '/contact', go: 'Tell us what you run',
+  { title: 'Something else entirely', href: '/contact', go: 'Tell us what you&rsquo;ve got',
     copy: 'Salesforce, Zoho, Dynamics, or a spreadsheet that became a CRM somewhere along the way &mdash; send us access and we&rsquo;ll take a look.' }
 ];
 
@@ -3588,11 +3519,11 @@ var audit = {
   description: 'A free audit of your HubSpot portal. An hour inside it and a written page back: what is set up well, what is quietly costing you, and the three things worth fixing first.',
 
   /* Built like a service page now, because it is one: same header spacing,
-     same back link, same meta row on one line, same artwork column. The
-     status pill that used to sit above the H1 is gone with it — a typed
-     turnaround promise in the header was one more thing to keep true, and
-     the meta row under it already says 2–3 business days. */
-  heroClass: 'page-hero-nomedia page-hero-svc page-hero-split',
+     same back link, same meta row on one line. The status pill that used to
+     sit above the H1 is gone — a typed turnaround promise in the header was
+     one more thing to keep true, and the meta row under it already says 2–3
+     business days. */
+  heroClass: 'page-hero-nomedia page-hero-svc',
   eyebrow: ['All services', '/services'],
   h1: 'Free HubSpot audit',
 
@@ -3600,18 +3531,6 @@ var audit = {
      servicePage: the card someone clicked and the page they land on have to
      say the same thing. */
   lede: 'Complimentary audit. We&rsquo;ll look at your data hygiene, pipelines &amp; stages, automations, integrations and adoption.',
-
-  /* A PLACEHOLDER, and it is meant to be replaced. James is supplying a
-     screenshot of a real audit page; until it lands this draws the shape of
-     one so the column is not empty and the layout is already sized for it.
-
-     It is document-shaped rather than square — see .page-hero-art.is-doc,
-     which caps the height so a portrait image cannot make the band taller
-     than the type beside it and push every section below it down. Swap the
-     src for the screenshot and the cap still holds. */
-  art: '        <img class="audit-shot" src="assets/img/audit-example.svg"\n' +
-       '             alt="" aria-hidden="true" loading="lazy">',
-  artClass: 'is-doc',
 
   meta: [
     ['Cost', 'Free'],
@@ -3631,17 +3550,34 @@ var audit = {
       pcards(AUDIT_LOOK, 'pcards-3') +
 '    </div>\n') +
 
-    /* THE ASIDE. Two rows, not a second half of the page. */
+    /* THE ASIDE, and the example page beside it. Two rows, not a second
+       half of the page, so the column next to them was the one place on
+       this page with room for the picture of what comes back — and it earns
+       its keep there, because the aside is the lightest thing here.
+
+       A PLACEHOLDER. James is supplying a screenshot of a real audit page;
+       until it lands, assets/img/audit-example.svg draws the shape of one
+       so the slot is sized for it. Document-shaped, capped by height, on
+       the site's own card plate so a white screenshot still reads as an
+       object rather than as a stain. Swap the src and nothing else moves. */
     section(
+'    <div class="split audit-aside" style="align-items:center">\n' +
+'      <div>\n' +
       secHead('Not on HubSpot?') +
-'    <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">\n' +
+'      <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">\n' +
       AUDIT_ELSE.map(function (w) {
-        return '      <a class="svc-row" href="' + w.href + '">\n' +
-               '        <h3 class="svc-title">' + w.title + '</h3>\n' +
-               '        <p class="svc-copy">' + w.copy + '</p>\n' +
-               '        <span class="svc-go">' + w.go + ' <span class="arrow">&rarr;</span></span>\n' +
-               '      </a>';
+        return '        <a class="svc-row" href="' + w.href + '">\n' +
+               '          <h3 class="svc-title">' + w.title + '</h3>\n' +
+               '          <p class="svc-copy">' + w.copy + '</p>\n' +
+               '          <span class="svc-go">' + w.go + ' <span class="arrow">&rarr;</span></span>\n' +
+               '        </a>';
       }).join('\n') + '\n' +
+'      </div>\n' +
+'      </div>\n' +
+'      <figure class="audit-shot-frame reveal reveal-right">\n' +
+'        <img src="assets/img/audit-example.svg" alt=""\n' +
+'             aria-hidden="true" loading="lazy">\n' +
+'      </figure>\n' +
 '    </div>\n') +
 
     /* THE FORM, last, because everything above it is the argument for
@@ -3658,11 +3594,8 @@ var audit = {
        renders where the script tag sits, which is why the div around it
        carries the measure. */
     section(
+    secHead('Request an audit', null, 'centred') +
 '    <div class="optin-wrap">\n' +
-'      <div class="contact-col-head reveal" style="text-align:center;align-items:center">\n' +
-'        <h2>Request an audit</h2>\n' +
-'        <p>Tell us which portal and what is bothering you. If something is actually on fire, say so and we will look at that first.</p>\n' +
-'      </div>\n' +
 '      <!-- HubSpot form, portal 46722926. THIS ID IS THE AUDIT FORM and is\n' +
 '           not the one /contact uses. See the note above this page in\n' +
 '           tools/build-pages.js. -->\n' +
@@ -3674,7 +3607,7 @@ var audit = {
 '          region: "na1"\n' +
 '        });\n' +
 '      <\/script>\n' +
-'    </div>\n', 'section to-white')
+'    </div>\n', 'section to-white svc-book')
 };
 
 /* ---------- the six hub pages ----------
