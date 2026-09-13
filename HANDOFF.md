@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `12190f8e87` — derived from a hash of the assets by
+**Current build stamp:** `d3d36c906c` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -24,6 +24,42 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   disk for exactly this reason.
 - **there is no remote yet**, so the Pushing section at the end still does
   not work as written. See "Deploying to GitHub Pages" in the README.
+
+---
+
+## 13 September: prices, hub pages, and two more phone fixes
+
+- **A monthly price is `$3,500/mo`**, not "$3,500 a month", everywhere it
+  is written — the two retainer service pages and the three cells on
+  /pricing. The meta label on a ranged price is **"Starting at"** rather
+  than "From"; the test behind it still accepts either prefix in the data,
+  so an entry written either way lands on the same row.
+
+  ONE THING TO KNOW: on /pricing the unit needed to go INLINE. "Fixed
+  price" is a caption about the number and belongs under it; "/mo" is part
+  of the number and belongs on it, and stacked it read as a stray fragment
+  where "a month" never did. Anything starting with a slash gets
+  `.is-unit` and rides the figure.
+- **"The other five hubs" is gone from all six hub pages.** Five cards at
+  the foot of every hub page pointing at the other five is thirty links
+  whose whole job is to send you somewhere else at the moment you have
+  finished reading. The back link at the top now says **"All hubs"** and
+  goes to the grid of all six, which is the one place that list belongs.
+  `.to-white` moved up to the ask, since the closing panel bleeds into
+  whatever is last. The hub check lost its other-five assertions and gained
+  two better ones: exactly one card grid on the page, and a back link that
+  says "All hubs" and does not point at the page it is on.
+- **The mark's caption is one line.** The 26ch cap wrapped it, and the media
+  column's own 300px cap is what it was wrapping inside. On a phone the
+  column goes full width and the BADGE takes the cap instead, so the caption
+  has the whole shell: about 225px of text in a 280px column at the
+  narrowest phone. The gap above it came down to about 6px, which reads as
+  ~40 because the badge artwork carries its own margin.
+- **"All case studies" sits where "All services" sits.** `.cs-head` does
+  not run up under the nav the way `.page-hero` does — the plate has a hard
+  top edge — so its padding is measured from the bar rather than from the
+  top of the screen, and the link was landing 21px lower. 53px at phone
+  width puts all three page types on 142.
 
 ---
 

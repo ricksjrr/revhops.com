@@ -83,14 +83,22 @@ SLUGS.forEach(slug => {
   ticks[1] && ticks[1].classList.contains('ticks-2') && ticks[1].children.length === 4
     ? ok(slug + ': four failure modes in two columns') : bad(slug + ': the what-goes-wrong list is wrong');
 
-  /* the ask, and the other five hubs */
+  /* the ask */
   const rows = [...d.querySelectorAll('.svc-row')];
   rows.length === 4 ? ok(slug + ': four ways we can help') : bad(slug + ': ' + rows.length + ' service rows');
+
+  /* THE OTHER-FIVE GRID CAME OUT on 13 September, and the check with it.
+     What is worth guarding is the thing that replaced it: the page still has
+     exactly one card grid — what the hub does — and the only route back to
+     the other five is the link at the top, which must not point at this page.
+     Both of those are cheap to break and expensive to notice. */
   const grids = [...d.querySelectorAll('.pcards')];
-  grids.length === 2 && grids[1].children.length === 5
-    ? ok(slug + ': the other five hubs at the foot') : bad(slug + ': the other-hubs grid is wrong');
-  grids[1] && [...grids[1].children].every(a => a.tagName === 'A' && !a.getAttribute('href').includes(slug))
-    ? ok(slug + ': and none of them links at itself') : bad(slug + ': a hub card links back at this page');
+  grids.length === 1 ? ok(slug + ': one card grid, and it is what the hub does')
+    : bad(slug + ': ' + grids.length + ' card grids, expected 1');
+  const upLink = d.querySelector('.hero-back');
+  upLink && /All hubs/.test(upLink.textContent) && /hubspot\/?$/.test(upLink.getAttribute('href').replace(/[#?].*$/, ''))
+    ? ok(slug + ': "All hubs" goes back to the grid of all six')
+    : bad(slug + ': the back link is ' + (upLink ? upLink.textContent.trim() + ' -> ' + upLink.getAttribute('href') : 'missing'));
 
   /* the closing panel bleeds up over the last section, which is why it has
      to be .to-white. This broke on a page once and the seam was a hard line. */

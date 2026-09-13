@@ -605,7 +605,7 @@ var SERVICES = [
       { title: 'Hours that roll', copy: 'Within the quarter, so a quiet month is banked rather than burned on filler.' },
       { title: 'No lock-in', copy: 'Thirty days notice, both ways. Nobody has ever done better work because the client was stuck with them.' }
     ],
-    price: ['From $3,500 a month', 'Set by how long you commit'],
+    price: ['Starting at $3,500/mo', 'Set by how long you commit'],
     dur: ['Rolling monthly', 'Thirty days notice either way'],
     next: ['No cap on hours', 'The rate is set by the commitment, not by the clock'],
     kind: 'Retainer',
@@ -651,7 +651,7 @@ var SERVICES = [
       { title: 'Written positions', copy: 'Including the ones you disagree with. We will put those in writing too.' },
       { title: 'A plan with an order', copy: 'Sequenced by what unblocks the most, not by what is easiest to sell you.' }
     ],
-    price: ['From $3,500 a month', 'Set by how long you commit'],
+    price: ['Starting at $3,500/mo', 'Set by how long you commit'],
     dur: ['Rolling monthly', 'Fortnightly sessions'],
     next: ['Advice, not delivery', 'Build work is scoped and priced on its own'],
     kind: 'Retainer',
@@ -1092,7 +1092,10 @@ function servicePage(s) {
     eyebrow: ['All services', '/services'],
     meta: [
       ['Timeline', s.time],
-      [/^(Starting at |From )/.test(s.price[0]) ? 'From' : 'Price',
+      /* "Starting at" rather than "From" as the label, per James, 13
+         September. The test still accepts both prefixes so an entry written
+         either way lands on the same row; only the label changed. */
+      [/^(Starting at |From )/.test(s.price[0]) ? 'Starting at' : 'Price',
        s.price[0].replace(/^(Starting at |From )/, '')],
       ['Time to results', s.results],
       ['Type', s.kind]
@@ -1604,11 +1607,11 @@ var caseIndex = {
 var PROJECTS = [SERVICES[0], SERVICES[4], SERVICES[1]];
 
 var RETAINERS = [
-  { term: 'Month to month', fig: '$4,250', per: 'a month',
+  { term: 'Month to month', fig: '$4,250', per: '/mo',
     note: 'No commitment. Thirty days notice, either way.' },
-  { term: '3 month commitment', fig: '$3,850', per: 'a month',
+  { term: '3 month commitment', fig: '$3,850', per: '/mo',
     note: 'Long enough to finish the work that does not fit inside one month.' },
-  { term: '6+ month commitment', fig: '$3,500', per: 'a month',
+  { term: '6+ month commitment', fig: '$3,500', per: '/mo',
     note: 'Adds one full day on site every quarter, at our expense.' }
 ];
 
@@ -1687,7 +1690,14 @@ var pricing = {
       RETAINERS.map(function (r) {
         return '      <div class="price-teaser-cell pr-static">\n' +
                '        <span class="price-teaser-label">' + r.term + '</span>\n' +
-               '        <span class="price-teaser-fig">' + r.fig + '<small>' + r.per + '</small></span>\n' +
+               /* A UNIT RIDES THE NUMBER; a caption sits under it. `/mo`
+                  stacked on its own line under $4,250 read as a stray
+                  fragment rather than as part of the price, which "a month"
+                  never did because it was a phrase. Anything starting with a
+                  slash is a unit — see .price-teaser-fig small.is-unit. */
+               '        <span class="price-teaser-fig">' + r.fig +
+               '<small' + (/^\//.test(r.per) ? ' class="is-unit"' : '') + '>' +
+               r.per + '</small></span>\n' +
                '        <p class="price-teaser-note">' + r.note + '</p>\n' +
                '      </div>';
       }).join('\n') + '\n' +
@@ -4001,8 +4011,6 @@ function hubPage(h) {
     return w === 'hub' ? 'Hub' : w.charAt(0).toUpperCase() + w.slice(1);
   }).join(' ');
 
-  var others = HUBS.filter(function (x) { return x.slug !== h.slug; });
-
   return {
     file: 'hubspot/' + h.slug + '.html',
     depth: 1,
@@ -4012,7 +4020,7 @@ function hubPage(h) {
     h1: name,
     lede: h.lede,
     heroClass: 'page-hero-nomedia',
-    eyebrow: ['All six hubs', '/hubspot'],
+    eyebrow: ['All hubs', '/hubspot'],
 
     /* The call first and the audit second, which is the site's usual order.
        /hubspot inverts it because the audit is that page's own offer. */
@@ -4067,19 +4075,17 @@ function hubPage(h) {
                  '        <span class="svc-go">' + w.go + ' <span class="arrow">&rarr;</span></span>\n' +
                  '      </a>';
         }).join('\n') + '\n' +
-'    </div>\n') +
-
-      /* THE OTHER FIVE. Card copy comes straight out of HUBS, the same array
-         /hubspot builds its grid from, so the two can never disagree.
-         .to-white because the closing panel bleeds up into whatever is last. */
-      section(
-        secHead('The other five hubs',
-                'They are sold separately and they are worth having separately. Most portals we inherit are running two or three of them.') +
-'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-        pcards(others.map(function (o) {
-          return { title: o.name, copy: o.copy, href: '/hubspot/' + o.slug, link: 'Learn more' };
-        }), 'pcards-3') +
 '    </div>\n', 'section to-white')
+
+      /* THE OTHER FIVE CAME OUT on 13 September. It was five cards at the
+         foot of every hub page pointing at the other five hub pages, which
+         on a six-page set is thirty links whose whole job is to send you
+         somewhere else at the moment you have finished reading. The back
+         link at the top says "All hubs" and goes to the grid of all six,
+         which is the one place that list belongs.
+
+         .to-white moved up to the section above it, because the closing
+         panel bleeds into whatever is last and that is now the ask. */
   };
 }
 

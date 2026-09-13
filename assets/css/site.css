@@ -1507,6 +1507,15 @@ main { overflow-x: clip; }
   color: var(--slate);
   margin-top: 4px;
 }
+/* A UNIT, NOT A CAPTION. "Fixed price" is a line about the number and
+   belongs under it; "/mo" is part of the number and belongs on it. Stacked,
+   it read as a stray fragment — which "a month" never did, because a phrase
+   under a figure is a caption and a slash is not. */
+.price-teaser-fig small.is-unit {
+  display: inline;
+  font-size: .44em;
+  margin-top: 0;
+}
 .price-teaser-note { font-size: .82rem; line-height: 1.45; color: var(--body); }
 
 @media (max-width: 940px) {
@@ -6689,6 +6698,28 @@ div.res-card .res-go { color: var(--muted); }
      eyebrow was sitting straight on it. */
   .cs-logo { display: none; }
   .cs-side { margin-bottom: clamp(22px, 5vw, 32px); }
+
+  /* ---------- the back link sits where every other page's does ----------
+     .cs-head does not run up under the nav the way .page-hero does — the
+     plate has a hard top edge — so its 74px is measured from the bar rather
+     than from the top of the screen, and "All case studies" was landing 21px
+     lower than "All services". 56px matches what .page-hero-nomedia's
+     padding leaves once the bar's own height is taken out of it. Measured
+     at 390: back link top 142 on both. */
+  .cs-head { padding-top: 53px; }
+
+  /* ---------- the mark's caption stays on one line ----------
+     26ch wrapped it, and the media column's own 300px cap is what it was
+     wrapping inside. The column goes full width here and the BADGE takes
+     the cap instead, so the caption has the whole shell to sit on — about
+     225px of text in a 280px column at the narrowest phone. */
+  .page-hero-markhead .page-hero-media.is-mark { max-width: none; }
+  .page-hero-markhead .page-hero-media.is-mark img { max-width: min(300px, 78%); }
+  .page-hero-mark-note {
+    max-width: none;
+    white-space: nowrap;
+    margin-top: clamp(6px, 1.6vw, 10px);
+  }
 
   /* ---------- the header's meta row ----------
      It lays out as a wrapping row at this width, and a fourth item leaves
