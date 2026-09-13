@@ -6539,19 +6539,27 @@ div.res-card .res-go { color: var(--muted); }
   display: flex;
   justify-content: center;
 }
+/* NO FRAME AND NO LETTERBOXING. The box is the image and nothing else.
+
+   Both of those came from forcing width: 100%. A fixed width with a height
+   cap means the element stays column-width while the picture shrinks inside
+   it to obey the cap, and the leftover band above and below it — painted by
+   the plate and outlined by the border — was the letterbox.
+
+   width and height both auto is what removes it: the two maximums scale the
+   image down in proportion and the element box shrinks to whatever comes
+   out, so there is no space left over to show. The cap still holds, so a
+   tall screenshot cannot stretch the row past the rows beside it.
+
+   The plate, the border and the shadow are gone with it. The placeholder
+   already draws its own white card and hairline, so they were a second
+   frame around the first one; a real screenshot brings its own edges too. */
 .audit-shot-frame img {
   display: block;
-  /* fills its column, never taller than the cap. object-fit keeps the
-     proportions when the cap is what binds — without it a wide screenshot
-     would squash rather than letterbox. */
-  width: 100%;
+  width: auto;
   height: auto;
+  max-width: 100%;
   max-height: clamp(260px, 30vw, 420px);
-  object-fit: contain;
-  border-radius: var(--radius-card);
-  border: 1px solid var(--line);
-  background: var(--surface);
-  box-shadow: 0 18px 40px rgba(48, 65, 87, .10);
 }
 
 /* .split collapses at 1000px, but this one needs the room sooner: below
