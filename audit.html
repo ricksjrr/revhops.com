@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=ddea0be33a">
+<link rel="stylesheet" href="assets/css/site.css?v=713907387d">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -75,13 +75,13 @@
 <!-- ===================== HERO =====================
      Type left, artwork bleeding off the right edge. The H1 carries
      data-nav-clear: the bar collapses as it reaches the title. -->
-<section class="page-hero page-hero-nomedia">
+<section class="page-hero page-hero-nomedia page-hero-svc page-hero-split">
   <div class="shell">
     <div class="page-hero-inner">
       <div class="page-hero-text">
-        <span class="pill"><span class="pill-dot" aria-hidden="true"></span>Turnaround 2–3 business days</span>
+        <a class="hero-back" href="services"><span class="arrow" aria-hidden="true">&larr;</span> All services</a>
         <h1 class="h1" data-nav-clear>Free HubSpot audit</h1>
-        <p class="lede">An hour inside your portal and a written page back. What is set up well, what is quietly costing you, and the three things worth fixing first. No purchase, and if the honest answer is that nothing needs doing, that is what the page will say.</p>
+        <p class="lede">Complimentary audit. We&rsquo;ll look at your data hygiene, pipelines &amp; stages, automations, integrations and adoption.</p>
         <dl class="hero-meta">
           <div><dt>Cost</dt><dd>Free</dd></div>
           <div><dt>Turnaround</dt><dd>2–3 business days</dd></div>
@@ -89,24 +89,10 @@
           <div><dt>Commitment</dt><dd>None</dd></div>
         </dl>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="shell">
-    <div class="optin-wrap">
-      <div class="contact-col-head reveal" style="text-align:center;align-items:center">
-        <h2>Request your audit</h2>
-        <p>Tell us which portal and what is bothering you. If something is actually on fire, say so and we will look at that first.</p>
+      <div class="page-hero-art is-doc" aria-hidden="true">
+        <img class="audit-shot" src="assets/img/audit-example.svg"
+             alt="" aria-hidden="true" loading="lazy">
       </div>
-      <!-- HubSpot form, portal 46722926. THIS ID IS THE AUDIT FORM and is
-           not the one /contact uses. See the note above this page in
-           tools/build-pages.js. -->
-      <script src="https://js.hsforms.net/forms/embed/46722926.js" defer></script>
-      <div class="hs-form-frame" data-region="na1"
-           data-form-id="579026d7-b138-4813-a166-c3d970e76dae"
-           data-portal-id="46722926"></div>
     </div>
   </div>
 </section>
@@ -114,7 +100,7 @@
 <section class="section">
   <div class="shell">
     <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">What we <span class="hl">look at</span></h2>
+      <h2 class="h2">What we&rsquo;ll <span class="hl">look at</span></h2>
       <p class="sec-sub">Six passes through the portal, in this order, because each one changes what the next one means.</p>
     </div>
     <div style="margin-top:clamp(22px,2.6vw,34px)">
@@ -151,33 +137,7 @@
 <section class="section">
   <div class="shell">
     <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">What comes back</h2>
-    </div>
-    <div class="pcards pcards-3">
-        <div class="pcard reveal">
-          <span class="pcard-n">01</span>
-          <h3 class="pcard-title">One written page</h3>
-          <p class="pcard-copy">Not a sixty-slide deck and not a call you have to sit through to hear the findings. One page, in plain words, that you can forward to the person who owns the budget.</p>
-        </div>
-        <div class="pcard reveal">
-          <span class="pcard-n">02</span>
-          <h3 class="pcard-title">Three things, ranked</h3>
-          <p class="pcard-copy">Everything we find is ordered by what it costs you to leave it, with an honest guess at the effort beside each one. The top three are the ones worth doing this quarter.</p>
-        </div>
-        <div class="pcard reveal">
-          <span class="pcard-n">03</span>
-          <h3 class="pcard-title">No obligation, and we mean it</h3>
-          <p class="pcard-copy">The audit is free and it is yours. Take the page and fix it in-house if you want to; plenty do. There is no sequence behind this form and nobody chases you either way.</p>
-        </div>
-    </div>
-  </div>
-</section>
-
-<section class="section to-white">
-  <div class="shell">
-    <div class="sec-head sec-head-left reveal">
       <h2 class="h2">Not on HubSpot?</h2>
-      <p class="sec-sub">The audit is shaped around HubSpot because most of what arrives is a HubSpot portal. It is not the only thing we know.</p>
     </div>
     <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">
       <a class="svc-row" href="pipedrive">
@@ -187,9 +147,31 @@
       </a>
       <a class="svc-row" href="contact">
         <h3 class="svc-title">Something else entirely</h3>
-        <p class="svc-copy">Salesforce, Zoho, Dynamics, or a spreadsheet that became a CRM somewhere along the way. Send it through the contact form. If it is not something we know well enough to be useful in an hour, we will say so rather than charge you to find out.</p>
+        <p class="svc-copy">Salesforce, Zoho, Dynamics, or a spreadsheet that became a CRM somewhere along the way &mdash; send us access and we&rsquo;ll take a look.</p>
         <span class="svc-go">Tell us what you run <span class="arrow">&rarr;</span></span>
       </a>
+    </div>
+  </div>
+</section>
+
+<section class="section to-white">
+  <div class="shell">
+    <div class="optin-wrap">
+      <div class="contact-col-head reveal" style="text-align:center;align-items:center">
+        <h2>Request an audit</h2>
+        <p>Tell us which portal and what is bothering you. If something is actually on fire, say so and we will look at that first.</p>
+      </div>
+      <!-- HubSpot form, portal 46722926. THIS ID IS THE AUDIT FORM and is
+           not the one /contact uses. See the note above this page in
+           tools/build-pages.js. -->
+      <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+      <script>
+        hbspt.forms.create({
+          portalId: "46722926",
+          formId: "579026d7-b138-4813-a166-c3d970e76dae",
+          region: "na1"
+        });
+      </script>
     </div>
   </div>
 </section>
@@ -305,6 +287,6 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=ddea0be33a"></script>
+<script src="assets/js/site.js?v=713907387d"></script>
 </body>
 </html>

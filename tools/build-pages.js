@@ -178,19 +178,22 @@ function pageHero(p) {
      the service pages use it so far: they are the one place on the site
      that is a leaf of a list, and the back link is how you get to the
      siblings without going through the nav. */
-  /* A status pill above the H1. Only /audit uses it, and what it carries
-     there is a turnaround promise. IT IS A TYPED STRING, not a derived one:
-     nothing on this site knows how long the queue is, so if the queue gets
-     longer the pill changes here or it comes out. A stale promise at the top
-     of a page is worse than no promise. */
-  var pill = p.pill
-    ? '        <span class="pill"><span class="pill-dot" aria-hidden="true"></span>' +
-      p.pill + '</span>\n'
-    : '';
-
   var eyebrow = p.eyebrow
     ? '        <a class="hero-back" href="' + p.eyebrow[1] + '">' +
       '<span class="arrow" aria-hidden="true">&larr;</span> ' + p.eyebrow[0] + '</a>\n'
+    : '';
+
+  /* An in-flow artwork column beside the type, 40% to the type's 60%.
+
+     NOT .page-hero-media, which is absolutely positioned against the screen
+     edge and bleeds off it. This one is a second grid child, so it cannot
+     change the band's padding and cannot push the sections below it around
+     — which was the constraint on the service headers. See .page-hero-art.
+
+     aria-hidden: every drawing restates the H1 beside it. */
+  var artCol = p.art
+    ? '      <div class="page-hero-art' + (p.artClass ? ' ' + p.artClass : '') +
+      '" aria-hidden="true">\n' + p.art + '\n      </div>\n'
     : '';
 
   /* `big` lets a contained mark run a third past the band's height — see
@@ -218,13 +221,13 @@ function pageHero(p) {
 '  <div class="shell">\n' +
 '    <div class="page-hero-inner">\n' +
 '      <div class="page-hero-text">\n' +
-pill +
 eyebrow +
 '        <h1 class="h1" data-nav-clear>' + p.h1 + '</h1>\n' +
 '        <p class="lede">' + p.lede + '</p>\n' +
 buttons +
 meta +
 '      </div>\n' +
+artCol +
 '    </div>\n' +
 media +
 '  </div>\n' +
@@ -483,7 +486,7 @@ var SERVICES = [
     time: '2–3 weeks',
     row: 'We\u2019ll help you identify where you\u2019re at, where you want to get to and the gap between the two. Required for all implementation projects.',
     h1: 'The plan before the build',
-    lede: 'Two or three weeks spent deciding what the system should be, written down and argued over, so the build is execution rather than discovery.',
+    lede: 'We&rsquo;ll help you identify where you&rsquo;re at, where you want to get to and the gap between the two. Required for all implementation projects.',
     title: 'Solution design — RevHops',
     desc: 'A written specification for your revenue system: data model, lifecycle, process map and reporting, signed off before anyone builds anything.',
     statement: 'A build without a plan is a very expensive draft.',
@@ -529,7 +532,7 @@ var SERVICES = [
     time: '6–12 weeks',
     row: 'Whether you\u2019re adding a CRM for the first time or migrating from old legacy tools, we\u2019ll build it from start to finish.',
     h1: 'Built once and handed over',
-    lede: 'Portal builds and platform migrations, done by the people who scoped them, and documented well enough that your team can run the thing without calling us.',
+    lede: 'Whether you&rsquo;re adding a CRM for the first time or migrating from old legacy tools, we&rsquo;ll build it from start to finish.',
     title: 'CRM implementations — RevHops',
     desc: 'HubSpot portal builds and CRM migrations, scoped and built by the same people, documented and handed over to your team.',
     statement: 'The build is the easy part. The handover is not.',
@@ -576,7 +579,7 @@ var SERVICES = [
     time: 'Monthly',
     row: 'HubSpot-specific admin support on call, without hiring full-time headcount. No limit on monthly hours; includes bi-weekly standups and project management access.',
     h1: 'A HubSpot admin on call',
-    lede: 'Roadmap, maintenance, training, and someone who answers when a workflow breaks on a Friday afternoon. Monthly, thirty days notice, no annual lock-in.',
+    lede: 'HubSpot-specific admin support on call, without hiring full-time headcount. No limit on monthly hours; includes bi-weekly standups and project management access.',
     title: 'HubSpot support retainers — RevHops',
     desc: 'An ongoing HubSpot admin retainer: roadmap, maintenance, training and support from a Platinum Solutions Partner.',
     statement: 'A full-time admin is more than most teams need.',
@@ -622,7 +625,7 @@ var SERVICES = [
     time: 'Monthly',
     row: 'RevOps consulting for new or growing RevOps leaders &amp; teams. Works closely with executive teams to ensure alignment. Includes on-site visits.',
     h1: 'Someone to think it through with',
-    lede: 'What the system should be doing, what it is doing instead, and which of those gaps is actually costing you money. Advice, with no build attached.',
+    lede: 'RevOps consulting for new or growing RevOps leaders &amp; teams. Works closely with executive teams to ensure alignment. Includes on-site visits.',
     title: 'RevOps consulting — RevHops',
     desc: 'Fractional revenue operations leadership: strategy, metrics, forecasting and the calls that decide what your system should do next.',
     statement: 'The tool is rarely the actual problem.',
@@ -668,7 +671,7 @@ var SERVICES = [
     time: '2–3 weeks',
     row: 'We\u2019ll map out every step from new lead to paid invoice. For most teams, this will be the first time you\u2019ve seen the whole thing at once.',
     h1: 'Every step on one page',
-    lede: 'First touch to paid invoice, mapped end to end across every team and every system. Usually the first time anyone has seen the whole thing at once.',
+    lede: 'We&rsquo;ll map out every step from new lead to paid invoice. For most teams, this will be the first time you&rsquo;ve seen the whole thing at once.',
     title: 'Lead to cash process mapping — RevHops',
     desc: 'A single map of your revenue process from first touch to paid invoice, with the handoffs, gaps and duplicated work marked on it.',
     statement: 'Everyone owns a piece. Nobody owns the seams.',
@@ -995,17 +998,14 @@ function csSide() {
 
 /* ---------- one service page ----------
 
-   Three things and nothing else: a header carrying the service name and the
-   three facts a buyer asks first, a quadrant answering the four questions
-   they ask next, and that service's own booking widget.
-
-   It replaced seven sections that were five variations on the same card
-   grid. A leaf page does not need to re-argue the pitch — it needs to say
-   what the thing is and let you book a call about it.
+   Four things: a header carrying the service name, the four facts a buyer
+   asks first and a line drawing of the thing; a quadrant answering the four
+   questions they ask next; what they actually get; and that service's own
+   booking widget.
 
    The quadrant is four cells split by two hairlines rather than four
    floating cards: it reads as one object with four parts, which is what it
-   is, and it does not repeat the .pcard grids used on the pages above.
+   is, and it does not repeat the .pcard grids used elsewhere.
 
    No closing panel. The booking widget IS the call to action, and a
    'Schedule a discovery call' button sitting underneath a scheduler is
@@ -1028,7 +1028,7 @@ function meetingEmbed(src) {
 function servicePage(s) {
   var body = '';
 
-  /* the quadrant, then one text link out to pricing */
+  /* the quadrant */
   body += '\n<section class="section svc-quad-section">\n' +
 '  <div class="shell">\n' +
 '    <div class="quad reveal">\n' +
@@ -1041,16 +1041,22 @@ function servicePage(s) {
              '      </div>';
     }).join('\n') + '\n' +
 '    </div>\n' +
-'    <div class="quad-cta reveal">\n' +
-'      <a class="text-link" href="/pricing">View pricing details <span class="arrow">&rarr;</span></a>\n' +
-'    </div>\n' +
 '  </div>\n' +
 '</section>\n';
+
+  /* what they actually get. `leave` is the list that used to run under
+     'What you have on the last day' — same three things, said as a
+     deliverable rather than as a moment in the calendar. */
+  body += section(
+    secHead('What you get') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+    pcards(s.leave, 'pcards-3') +
+'    </div>\n', 'section-tight');
 
   /* the service's own scheduler */
   body += '\n<section class="section-tight svc-book">\n' +
 '  <div class="shell">\n' +
-    secHead('Want to learn more?', null, 'centred') +
+    secHead('Schedule a discovery call to learn more', null, 'centred') +
 '    <div class="meet-wrap">\n' +
     meetingEmbed(s.booking || BOOKING_DEFAULT) +
 '    </div>\n' +
@@ -1068,11 +1074,18 @@ function servicePage(s) {
        five names and from a nav item called Services; anything else at the
        top makes the visitor check they landed on the right one. */
     h1: s.name,
+
+    /* THE HOMEPAGE'S OWN WORDS. The page used to open on a second, longer
+       description written only for it, so the card someone clicked and the
+       page they landed on said different things about the same service.
+       `lede` is now that card's copy verbatim — if one changes, change both.
+       index.html is hand-maintained, so nothing enforces it. */
     lede: s.lede,
 
-    /* same header spacing as /services — no artwork, full-width type — with
-       a bottom beat added, because this one carries a meta row underneath */
-    heroClass: 'page-hero-nomedia page-hero-svc',
+    /* same header spacing as /services, plus the drawing in a 40% column
+       beside the type. See .page-hero-art. */
+    heroClass: 'page-hero-nomedia page-hero-svc page-hero-split',
+    art: art('svc-' + s.slug),
     eyebrow: ['All services', '/services'],
     meta: [
       ['Timeline', s.time],
@@ -2628,6 +2641,69 @@ var ART_ATTR = 'viewBox="0 0 240 260" fill="none" stroke="currentColor" ' +
 
 var ART = {
 
+  /* ---- the five service headers ----
+     One per service page, sitting in the 40% column beside the type. Same
+     box and same stroke as everything else in here on purpose: the site has
+     one drawing vocabulary, and a second one at the top of five pages would
+     be the loudest thing about them.
+
+     Heavier stroke than a diagram wants, so each is six to ten shapes and
+     no small detail. Anything finer closes up at the size these render. */
+
+  /* the spec: a sheet with three boxes wired together on it */
+  'svc-solution-design':
+    '<rect x="20" y="24" width="200" height="212" rx="14"/>' +
+    '<path d="M20 66h200"/>' +
+    '<rect x="44" y="96" width="64" height="40" rx="8"/>' +
+    '<rect x="132" y="96" width="64" height="40" rx="8"/>' +
+    '<rect x="88" y="180" width="64" height="40" rx="8"/>' +
+    '<path d="M108 116h24"/>' +
+    '<path d="M76 136v64h12"/>' +
+    '<path d="M164 136v64h-12"/>' +
+    '<circle cx="120" cy="116" r="5" fill="currentColor" stroke="none"/>',
+
+  /* the old data being poured into the new portal */
+  'svc-crm-implementations':
+    '<ellipse cx="120" cy="36" rx="54" ry="16"/>' +
+    '<path d="M66 36v44c0 8.8 24.2 16 54 16s54-7.2 54-16V36"/>' +
+    '<path d="M120 108v34"/>' +
+    '<path d="M106 128l14 14 14-14"/>' +
+    '<rect x="20" y="154" width="200" height="90" rx="12"/>' +
+    '<path d="M20 184h200"/>' +
+    '<circle cx="38" cy="169" r="4.5"/>' +
+    '<rect x="42" y="200" width="156" height="26" rx="7"/>',
+
+  /* the standing month, and the admin work inside it */
+  'svc-hubspot-support-retainers':
+    '<rect x="20" y="58" width="164" height="178" rx="14"/>' +
+    '<path d="M20 100h164"/>' +
+    '<path d="M62 40v32M142 40v32"/>' +
+    '<circle cx="58" cy="138" r="6"/>' +
+    '<circle cx="100" cy="138" r="6"/>' +
+    '<circle cx="58" cy="180" r="6"/>' +
+    '<circle cx="100" cy="180" r="6"/>' +
+    '<circle cx="178" cy="192" r="34"/>' +
+    '<circle cx="178" cy="192" r="14"/>' +
+    '<path d="M178 146v12M178 226v12M132 192h12M212 192h12"/>' +
+    '<path d="M146 160l9 9M210 160l-9 9M210 224l-9-9M146 224l9-9"/>',
+
+  /* where the revenue goes, looked at closely */
+  'svc-revops-consulting':
+    '<path d="M34 30v176h180"/>' +
+    '<path d="M56 184l36-34 36 14 36-56 36-36"/>' +
+    '<circle cx="56" cy="184" r="5" fill="currentColor" stroke="none"/>' +
+    '<circle cx="128" cy="164" r="5" fill="currentColor" stroke="none"/>' +
+    '<circle cx="200" cy="72" r="5" fill="currentColor" stroke="none"/>' +
+    '<circle cx="148" cy="124" r="48"/>' +
+    '<path d="M182 158l26 26" stroke-width="6"/>',
+
+  /* first touch at the top, paid invoice at the foot */
+  'svc-lead-to-cash-process-mapping':
+    '<path d="M30 26h120l-38 52v52l-44 22v-74z"/>' +
+    '<path d="M92 158c14 12 22 16 34 16"/>' +
+    '<rect x="120" y="120" width="104" height="116" rx="10"/>' +
+    '<path d="M142 152h60M142 176h60M142 200h38"/>',
+
   /* a page with the corner turned down, three lines of copy and the figures
      at the foot — the shape of every case study on this site */
   'case-study':
@@ -3498,7 +3574,7 @@ var AUDIT_ELSE = [
   { title: 'Pipedrive', href: '/pipedrive', go: 'See the page',
     copy: 'Same hour, same written page. We are an Authorized Partner there too, and the pipeline and the data are where we start.' },
   { title: 'Something else entirely', href: '/contact', go: 'Tell us what you run',
-    copy: 'Salesforce, Zoho, Dynamics, or a spreadsheet that became a CRM somewhere along the way. Send it through the contact form. If it is not something we know well enough to be useful in an hour, we will say so rather than charge you to find out.' }
+    copy: 'Salesforce, Zoho, Dynamics, or a spreadsheet that became a CRM somewhere along the way &mdash; send us access and we&rsquo;ll take a look.' }
 ];
 
 var audit = {
@@ -3510,10 +3586,33 @@ var audit = {
   navCurrent: '',
   title: 'Free HubSpot audit — RevHops',
   description: 'A free audit of your HubSpot portal. An hour inside it and a written page back: what is set up well, what is quietly costing you, and the three things worth fixing first.',
-  heroClass: 'page-hero-nomedia',
-  pill: 'Turnaround 2–3 business days',
+
+  /* Built like a service page now, because it is one: same header spacing,
+     same back link, same meta row on one line, same artwork column. The
+     status pill that used to sit above the H1 is gone with it — a typed
+     turnaround promise in the header was one more thing to keep true, and
+     the meta row under it already says 2–3 business days. */
+  heroClass: 'page-hero-nomedia page-hero-svc page-hero-split',
+  eyebrow: ['All services', '/services'],
   h1: 'Free HubSpot audit',
-  lede: 'An hour inside your portal and a written page back. What is set up well, what is quietly costing you, and the three things worth fixing first. No purchase, and if the honest answer is that nothing needs doing, that is what the page will say.',
+
+  /* the homepage's own words for this, verbatim. See the note on lede in
+     servicePage: the card someone clicked and the page they land on have to
+     say the same thing. */
+  lede: 'Complimentary audit. We&rsquo;ll look at your data hygiene, pipelines &amp; stages, automations, integrations and adoption.',
+
+  /* A PLACEHOLDER, and it is meant to be replaced. James is supplying a
+     screenshot of a real audit page; until it lands this draws the shape of
+     one so the column is not empty and the layout is already sized for it.
+
+     It is document-shaped rather than square — see .page-hero-art.is-doc,
+     which caps the height so a portrait image cannot make the band taller
+     than the type beside it and push every section below it down. Swap the
+     src for the screenshot and the cap still holds. */
+  art: '        <img class="audit-shot" src="assets/img/audit-example.svg"\n' +
+       '             alt="" aria-hidden="true" loading="lazy">',
+  artClass: 'is-doc',
+
   meta: [
     ['Cost', 'Free'],
     ['Turnaround', '2–3 business days'],
@@ -3522,54 +3621,19 @@ var audit = {
   ],
 
   body:
-    /* THE FORM, first thing under the header. Same placement as
-       /newsletter, and for the same reason: the page has one job and the
-       sections under it are the argument for doing it, not a preamble to
-       scroll past.
-
-       The embed is not wrapped in .reveal. That class animates with
-       transform and filter, which makes the wrapper a containing block and
-       lands HubSpot's own error toasts in the wrong place. The head above
-       it carries the reveal, exactly as /contact and /newsletter do. */
+    /* THE SIX, straight under the header. The page's one highlight is spent
+       here. It used to run second, behind the form; the form is now the
+       last thing on the page, so what we look at is what you read first. */
     section(
-'    <div class="optin-wrap">\n' +
-'      <div class="contact-col-head reveal" style="text-align:center;align-items:center">\n' +
-'        <h2>Request your audit</h2>\n' +
-'        <p>Tell us which portal and what is bothering you. If something is actually on fire, say so and we will look at that first.</p>\n' +
-'      </div>\n' +
-'      <!-- HubSpot form, portal 46722926. THIS ID IS THE AUDIT FORM and is\n' +
-'           not the one /contact uses. See the note above this page in\n' +
-'           tools/build-pages.js. -->\n' +
-'      <script src="https://js.hsforms.net/forms/embed/46722926.js" defer><\/script>\n' +
-'      <div class="hs-form-frame" data-region="na1"\n' +
-'           data-form-id="579026d7-b138-4813-a166-c3d970e76dae"\n' +
-'           data-portal-id="46722926"></div>\n' +
-'    </div>\n') +
-
-    /* THE SIX. The page's one highlight is spent here. */
-    section(
-      secHead('What we <span class="hl">look at</span>',
+      secHead('What we&rsquo;ll <span class="hl">look at</span>',
               'Six passes through the portal, in this order, because each one changes what the next one means.') +
 '    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
       pcards(AUDIT_LOOK, 'pcards-3') +
 '    </div>\n') +
 
+    /* THE ASIDE. Two rows, not a second half of the page. */
     section(
-      secHead('What comes back') +
-      pcards([
-        { n: '01', title: 'One written page',
-          copy: 'Not a sixty-slide deck and not a call you have to sit through to hear the findings. One page, in plain words, that you can forward to the person who owns the budget.' },
-        { n: '02', title: 'Three things, ranked',
-          copy: 'Everything we find is ordered by what it costs you to leave it, with an honest guess at the effort beside each one. The top three are the ones worth doing this quarter.' },
-        { n: '03', title: 'No obligation, and we mean it',
-          copy: 'The audit is free and it is yours. Take the page and fix it in-house if you want to; plenty do. There is no sequence behind this form and nobody chases you either way.' }
-      ], 'pcards-3')) +
-
-    /* THE ASIDE. Two rows, not a second half of the page. .to-white because
-       the closing panel bleeds up into whatever sits above it. */
-    section(
-      secHead('Not on HubSpot?',
-              'The audit is shaped around HubSpot because most of what arrives is a HubSpot portal. It is not the only thing we know.') +
+      secHead('Not on HubSpot?') +
 '    <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">\n' +
       AUDIT_ELSE.map(function (w) {
         return '      <a class="svc-row" href="' + w.href + '">\n' +
@@ -3578,6 +3642,38 @@ var audit = {
                '        <span class="svc-go">' + w.go + ' <span class="arrow">&rarr;</span></span>\n' +
                '      </a>';
       }).join('\n') + '\n' +
+'    </div>\n') +
+
+    /* THE FORM, last, because everything above it is the argument for
+       filling it in. .to-white because the closing panel bleeds up into
+       whatever sits above it.
+
+       The embed is not wrapped in .reveal. That class animates with
+       transform and filter, which makes the wrapper a containing block and
+       lands HubSpot's own error toasts in the wrong place. The head above
+       it carries the reveal, exactly as /contact and /newsletter do.
+
+       v2 EMBED, not the newer per-portal loader the rest of the site uses.
+       This is the script James supplied for this form; hbspt.forms.create
+       renders where the script tag sits, which is why the div around it
+       carries the measure. */
+    section(
+'    <div class="optin-wrap">\n' +
+'      <div class="contact-col-head reveal" style="text-align:center;align-items:center">\n' +
+'        <h2>Request an audit</h2>\n' +
+'        <p>Tell us which portal and what is bothering you. If something is actually on fire, say so and we will look at that first.</p>\n' +
+'      </div>\n' +
+'      <!-- HubSpot form, portal 46722926. THIS ID IS THE AUDIT FORM and is\n' +
+'           not the one /contact uses. See the note above this page in\n' +
+'           tools/build-pages.js. -->\n' +
+'      <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"><\/script>\n' +
+'      <script>\n' +
+'        hbspt.forms.create({\n' +
+'          portalId: "46722926",\n' +
+'          formId: "579026d7-b138-4813-a166-c3d970e76dae",\n' +
+'          region: "na1"\n' +
+'        });\n' +
+'      <\/script>\n' +
 '    </div>\n', 'section to-white')
 };
 
