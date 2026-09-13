@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `8f33c9de97` — derived from a hash of the assets by
+**Current build stamp:** `ddea0be33a` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -24,6 +24,30 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   disk for exactly this reason.
 - **there is no remote yet**, so the Pushing section at the end still does
   not work as written. See "Deploying to GitHub Pages" in the README.
+
+---
+
+## 13 September, fifth pass
+
+**The gated page leads with a picture of the resource.** A screenshot of the
+ROI calculator replaces the one-line statement in the left column, with the
+paragraph under it. Somebody who has landed on a form wants to know what
+they are filling it in for, and a picture of the spreadsheet answers that
+faster than a sentence about the spreadsheet does. The line is still in
+`gateLede` and is still doing its other job as the page description.
+
+`gateShot` is the new field on a resource; a gated page without one falls
+back to the statement, which is what all of them looked like before. The
+shot gets the same treatment as the partner directory shot on /hubspot: it
+brings its own white ground, so a hairline and a radius rather than a bare
+rectangle. No hover — this one is not a link.
+
+ONE TRAP WORTH KNOWING: `.statement-note` is only ever styled as
+`.statement + .statement-note`, so swapping the statement out silently took
+the paragraph's type with it. The type is repeated on
+`.res-gate-shot + .statement-note` rather than loosened on the base
+selector, because `.statement-note` is used on other pages and those are not
+this change's to alter.
 
 ---
 

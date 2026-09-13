@@ -2745,6 +2745,7 @@ var RESOURCES = [
     art: 'calculator',
     redirect: 'https://docs.google.com/spreadsheets/d/1edXmchNdj7KFnjnOTsvUG1657feyzltLTfy5-xj_DaY/edit?gid=0#gid=0',
     copy: 'Put your own numbers in and see what implementing HubSpot Marketing Hub is worth before you sign anything.',
+    gateShot: 'assets/img/marketing-hub-roi-calculator.webp',
     gateLede: 'A spreadsheet that turns the Marketing Hub decision into a number.',
     gateNote: 'Built for the people who have to justify the licence rather than use it. ' +
               'Put in your list size, what you spend on the tools it replaces, what a ' +
@@ -3198,7 +3199,21 @@ function resourcePage(r) {
 '  <div class="shell">\n' +
 '    <div class="res-gate">\n' +
 '      <div class="res-gate-text reveal reveal-left">\n' +
-'        <p class="statement">' + (r.gateLede || '[What this is, in a line.]') + '</p>\n' +
+
+/* A PICTURE OF THE THING, WHERE THE HEADLINE WAS. `gateShot` replaces the
+   one-line statement rather than sitting under it: somebody who has landed
+   on a form wants to know what they are filling it in for, and a screenshot
+   of the spreadsheet answers that in less time than a sentence about it
+   does. The line is still in `gateLede` and is doing its other job as the
+   page's description in the head. A resource with no shot falls back to the
+   statement, which is what every gated page looked like before. */
+  (r.gateShot
+    ? '        <figure class="res-gate-shot">\n' +
+      '          <img src="' + up(1) + r.gateShot + '" alt="' +
+                 (r.gateLede || r.title).replace(/"/g, '&quot;') + '" loading="lazy">\n' +
+      '        </figure>\n'
+    : '        <p class="statement">' + (r.gateLede || '[What this is, in a line.]') + '</p>\n') +
+
 '        <p class="statement-note">' + (r.gateNote ||
    '[Two or three sentences on who it is for and what they will be able to do with it ' +
    'that they cannot do now.]') + '</p>\n' +
