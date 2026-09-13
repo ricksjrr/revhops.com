@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `5365fb2815` — derived from a hash of the assets by
+**Current build stamp:** `12190f8e87` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -24,6 +24,28 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   disk for exactly this reason.
 - **there is no remote yet**, so the Pushing section at the end still does
   not work as written. See "Deploying to GitHub Pages" in the README.
+
+---
+
+## 13 September: /audit's aside
+
+The two CTAs end flush with the row's right edge now, and the descriptions
+are set tighter.
+
+The link column is ONE width for both rows, because the list is a subgrid
+and that track is `max-content` — the longer of the two labels. That is what
+lines the descriptions up, and it is also what left "See more" starting at
+the same x as "Tell us what you have got" and stopping well short of the
+edge. Right-aligned inside the track, both end on it. /hubspot's rows are
+not a subgrid, so each auto track is exactly its own label's width and they
+were already flush — this is scoped to `.audit-aside` and changes nothing
+there.
+
+The leading goes to 1.45 from the list's 1.6. These two sit in a narrower
+column than /hubspot's rows and run to three lines rather than two, and at
+1.6 a justified three-line block reads as three separate lines rather than
+as a paragraph. Both revert at 820px, where the row is one column and there
+is no track to be flush with.
 
 ---
 
