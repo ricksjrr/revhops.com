@@ -850,12 +850,19 @@ var TOOLS = [
    ['advizorpro', 'AdvizorPro', 'data-stack']]
 ];
 
-function toolClump(depth) {
+/* `skip` drops marks by slug. /hubspot uses it: a wall of tools under the
+   heading "Connect HubSpot to all the tools in your stack" with HubSpot's
+   own mark sitting in the middle of it is the sentence disagreeing with the
+   picture. The offsets in the stylesheet are positional, so the row closes
+   up around the gap rather than leaving one — which is what a loose clump
+   should do anyway. */
+function toolClump(depth, skip) {
   var a = up(depth);
+  var drop = skip || [];
   return '    <div class="tool-clump reveal">\n' +
     TOOLS.map(function (row) {
       return '      <div class="tool-row">\n' +
-        row.map(function (t) {
+        row.filter(function (t) { return drop.indexOf(t[0]) === -1; }).map(function (t) {
           var file = /\./.test(t[0]) ? t[0] : t[0] + '.webp';
           return '        <span class="tool-mark"><img src="' + a + 'assets/img/tools/' +
                  file + '" alt="' + t[1] + '"' + (t[2] ? ' ' + t[2] : '') + ' loading="lazy"></span>';
@@ -1743,14 +1750,19 @@ var REVIEWS = [
    as ten cards, and these four are the ask rather than the subject. Same
    component /services and the case pages use. */
 var WAYS = [
-  { title: 'Request a HubSpot audit', href: '/audit', go: 'Request the audit',
-    copy: 'An hour inside your portal and a written page back. What is set up well, what is quietly costing you, and the three things worth fixing first.' },
-  { title: 'Work out whether HubSpot is right for you', href: '/call', go: 'Talk it through',
-    copy: 'Before anyone signs anything. If you already own a CRM and it is working, we will say so and you will have saved yourself a migration.' },
-  { title: 'Buy and implement HubSpot', href: '/services/crm-implementations', go: 'See the work',
-    copy: 'The tier decision, the build and the handover: objects, data, workflows and training your team still uses after we have gone.' },
-  { title: 'Optimize the portal you already have', href: '/services/hubspot-support-retainers', go: 'See the work',
-    copy: 'Inherited, half-built or eight years deep. We fix what is there rather than starting again, unless starting again is honestly cheaper.' }
+  /* The audit line is the homepage's own words for it, not a second
+     description of the same service written on a different day. */
+  { title: 'Request a HubSpot audit', href: '/audit', go: 'Request an audit',
+    copy: 'Complimentary audit. We&rsquo;ll look at your data hygiene, pipelines &amp; stages, automations, integrations and adoption.' },
+
+  { title: 'Work out whether HubSpot is right for you', href: '/call', go: 'Schedule a discovery call',
+    copy: 'Evaluating HubSpot? We&rsquo;ll help you walk through important things to consider to make sure hopping to HubSpot is the correct move for your team.' },
+
+  { title: 'Buy and implement HubSpot', href: '/services/crm-implementations', go: 'See how we do it',
+    copy: 'We&rsquo;ll help you know which features and tiers you&rsquo;ll need and can help you negotiate for the best pricing available, saving you thousands on setup fees. Then we&rsquo;ll help you set it up and onboard your team.' },
+
+  { title: 'Optimize the portal you already have', href: '/services/hubspot-support-retainers', go: 'Retainer options',
+    copy: 'Whether it was recently set up or eight years old, we can jump into your account and get to work. We&rsquo;re your HubSpot on-call support &amp; an extra pair of RevOps hands.' }
 ];
 
 var hubspot = {
@@ -1766,65 +1778,114 @@ var hubspot = {
      It is the only mark on the site that sits in this column. */
   media: { src: 'assets/img/hubspot-platinum-badge.webp', alt: 'HubSpot Platinum Solutions Partner', mark: true },
 
-  /* Two buttons, and only here. Everywhere else the second action is a text
-     link: this is the one page where the audit and the call are two real
-     starting points rather than one ask and an afterthought. */
-  headButtons: '          <a class="btn btn-primary" href="/audit">Request a HubSpot audit</a>\n' +
-               '          <a class="btn btn-outline" href="/call">Schedule a discovery call</a>',
+  /* ONE BUTTON. The call is the ask and it is the only navy box on the
+     page; the audit is a text link beside it, which is the pattern every
+     other page uses. Two boxed buttons side by side made the reader pick
+     between them before they had read anything. */
+  headButtons: '          <a class="btn btn-primary" href="/call">Schedule a discovery call</a>\n' +
+               '          <a class="text-link" href="/audit">Request a HubSpot audit ' +
+               '<span class="arrow" aria-hidden="true">&rarr;</span></a>',
 
   body:
+
+    /* WHAT IT IS. The split off the homepage's About block, mark on the
+       left and the answer on the right. The page went straight from "we are
+       a Platinum partner" to six hub cards, which assumes the reader
+       already knows what a hub is.
+
+       NO PARTNER BADGE HERE. It is in the header column four inches above
+       this and twice on one screen is a logo wall.
+
+       Two marks and one is hidden: the full-colour logo on the light theme,
+       the reversed one on dark. Same brand-base / brand-alt swap the nav
+       uses, and the reversed file is the same artwork with every opaque
+       pixel taken to white, so the two are in register. */
+    section(
+'    <div class="split hs-what" style="align-items:center">\n' +
+'      <div class="hs-what-mark reveal reveal-left">\n' +
+'        <img class="hs-logo hs-logo-base" src="../assets/img/tools/hubspot.webp"\n' +
+'             alt="HubSpot" loading="lazy">\n' +
+'        <img class="hs-logo hs-logo-alt" src="../assets/img/hubspot-logo-white.webp"\n' +
+'             alt="" aria-hidden="true" loading="lazy">\n' +
+'      </div>\n' +
+'      <div class="stack gap-20 reveal reveal-right">\n' +
+'        <h2 class="h2">What is HubSpot?</h2>\n' +
+'        <p class="small">HubSpot is a customer platform: one place where marketing, sales,\n' +
+'          service and finance work off the same records instead of four systems that\n' +
+'          disagree with each other. It started as marketing software and is now six hubs\n' +
+'          sitting on a shared CRM, and the shared CRM is the part that matters. The\n' +
+'          contact your campaign touched is the contact your rep calls, and the contact the\n' +
+'          invoice belongs to.</p>\n' +
+'        <p class="small">It suits teams who would rather spend their time selling than\n' +
+'          stitching tools together, and it is not the cheapest way to own a CRM. Which of\n' +
+'          those two facts weighs more is the conversation we are happy to have before you\n' +
+'          buy anything.</p>\n' +
+'      </div>\n' +
+'    </div>\n') +
 
     /* THE SIX HUBS. Cards rather than rows, because each one is a page in
        waiting and a card carries its own link without the row's hairlines
        implying an order. None of the six exist yet. */
     section(
-      secHead('We work across <span class="hl">all six hubs</span>') +
+      secHead('Certified experts in <span class="hl">all 6 Hubs</span>') +
 '    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
       pcards(HUBS.map(function (h) {
         return { title: h.name, copy: h.copy, href: '/hubspot/' + h.slug, link: 'Learn more' };
       }), 'pcards-3') +
 '    </div>\n') +
 
-    /* THE PARTNER PROFILE. Title, stars and the link hold still on the left
-       while the reviews travel past them. It is CSS sticky, not a script:
-       see PARTNER REVIEWS in site.css for why the sticky element is a child
-       of the grid item rather than the grid item itself. */
+    /* THE STACK, off the homepage, minus HubSpot's own mark. The heading is
+       this page's rather than the homepage's: there the clump answers "what
+       do you know", here it answers "what will this connect to". */
     section(
-'    <div class="prof">\n' +
-'      <div class="prof-side">\n' +
-'        <div class="prof-side-inner">\n' +
-'          <div class="prof-side-body reveal reveal-left">\n' +
-'            <h2 class="h2">Every review is five stars</h2>\n' +
-'            <p class="sec-sub">Clients rate us on the HubSpot partner directory. Every one of\n' +
-'              them has left five stars.</p>\n' +
-'          </div>\n' +
-      fiveStars('prof-stars') +
-'          <a class="text-link" href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"\n' +
-'             target="_blank" rel="noopener">View our partner profile <span class="arrow">&rarr;</span></a>\n' +
-'        </div>\n' +
-'      </div>\n' +
+      secHead('Connect HubSpot to all the tools in your stack', null, 'centred') +
+      toolClump(1, ['hubspot']), 'section') +
+
+    /* THE PARTNER PROFILE. ONE REVIEW, CENTRED.
+
+       It was a sticky title beside a column of three reviews that scrolled
+       past it. That column was the tallest thing on the page and it asked
+       the reader to get through twelve hundred words of praise on the way
+       to the four things we actually want them to click.
+
+       So: one review, the one that is about a HubSpot implementation
+       specifically, on the plate this site already uses for a pinned-ink
+       panel. The other two are still on the homepage and the whole set is
+       one link away, which is where a reader who wants more should go
+       anyway — the partner directory is the version they can verify.
+
+       The quote gets its one highlighted phrase back. On the old three-up
+       it came out because three highlights in a column retire the device;
+       with a single quote it is doing what it is for. */
+    section(
+'    <div class="hs-testi reveal">\n' +
+      fiveStars('hs-testi-stars').replace(/^ {10}/gm, '      ') +
+'      <h2 class="hs-testi-title"><span class="q">&ldquo;</span>&thinsp;Responsive &amp; Thorough&thinsp;<span class="q">&rdquo;</span></h2>\n' +
+'      <blockquote class="hs-testi-quote">\n' +
+'        <p>We partnered with RevHops on a complex HubSpot Marketing Hub Enterprise\n' +
+'          implementation, and the experience was excellent from start to finish.\n' +
+'          <span class="hl">James was highly responsive, extremely well-organized, and\n' +
+'          thorough.</span> RevHops put together a clear, structured plan, communicated\n' +
+'          recommendations in a way that was easy to align on, and followed up proactively\n' +
+'          to ensure everyone fully understood the strategy and next steps.</p>\n' +
+'        <footer class="hs-testi-by">\n' +
+'          <cite>Amy</cite>\n' +
+'          <span class="sep" aria-hidden="true">|</span>\n' +
+'          <span>VP of Client Services</span>\n' +
+'        </footer>\n' +
+'      </blockquote>\n' +
+'    </div>\n' +
 '\n' +
-'      <div class="prof-reviews">\n' +
-      REVIEWS.map(function (r) {
-        return '        <article class="prof-review reveal">\n' +
-               '          <h3 class="testi-title"><span class="q">&ldquo;</span>&thinsp;' + r.title +
-               '&thinsp;<span class="q">&rdquo;</span></h3>\n' +
-               '          <blockquote class="quote">\n' +
-               '            <p>' + r.body + '</p>\n' +
-               '            <footer class="quote-by">\n' +
-               fiveStars().replace(/^ {10}/gm, '              ') +
-               '              <cite>' + r.by + ' <span class="sep">|</span> ' + r.role + '</cite>\n' +
-               '            </footer>\n' +
-               '          </blockquote>\n' +
-               '        </article>';
-      }).join('\n') + '\n' +
-'      </div>\n' +
-'    </div>\n', 'section prof-section') +
+'    <p class="hs-testi-more reveal">Every client who has rated us on the HubSpot partner\n' +
+'      directory has left five stars.\n' +
+'      <a class="text-link" href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"\n' +
+'         target="_blank" rel="noopener">Read them all <span class="arrow" aria-hidden="true">&rarr;</span></a></p>\n',
+      'section hs-testi-section') +
 
     /* THE ASK. James' four, in his order. .to-white because the closing
        panel bleeds up over whatever section is last. */
     section(
-      secHead('Ways we can help') +
+      secHead('How we help teams with HubSpot') +
 '    <div class="svc-list svc-list-plain reveal" style="margin-top:clamp(18px,2.2vw,28px)">\n' +
       WAYS.map(function (w) {
         return '      <a class="svc-row" href="' + w.href + '">\n' +
@@ -2517,24 +2578,114 @@ var hop = {
    button; a type without one shows eight in a 4x2 grid and paginates. That
    is the whole difference between the two kinds of shelf, and it is a data
    difference rather than two blocks of markup. */
+/* NO SUBHEADS. Each shelf is a one-word heading and the cards under it say
+   the rest; a line of explanation between the two was one more thing to read
+   on the way to the thing being described. `sub` is still honoured if one
+   ever comes back. */
 var RESOURCE_TYPES = [
   { slug: 'blog', name: 'Blog',
-    sub: 'What breaks in a revenue system, and what we do about it.',
     all: '/resources/blog', allLabel: 'View all blog posts' },
 
   { slug: 'case-studies', name: 'Case studies',
-    sub: 'What we were handed, what changed, and what it was worth.',
     all: '/case-studies', allLabel: 'View all case studies' },
 
-  { slug: 'videos', name: 'Videos',
-    sub: 'Walkthroughs and teardowns. Most play right here.' },
+  { slug: 'videos', name: 'Videos' },
 
-  { slug: 'downloadables', name: 'Downloadables',
-    sub: 'Templates, checklists and maps you can use without us.' },
+  { slug: 'downloadables', name: 'Downloadables' },
 
-  { slug: 'games', name: 'Games',
-    sub: 'RevOps, but the version you can play at your desk.' }
+  { slug: 'games', name: 'Games' }
 ];
+
+
+/* ==========================================================================
+   THE LINE ART
+
+   Four navy line drawings, INLINE rather than four SVG files. They are used
+   at two sizes on two grounds — a third of the featured card, where the
+   drawing breaks out over the card's top edge, and inside a 16:9 card thumb
+   on the games shelf — and inline means one copy of each path and
+   `currentColor` doing the theme swap, instead of a file plus a filter to
+   invert it when the page goes dark.
+
+   All four share one 240x260 box, one 3.6 stroke and round joins, so a
+   slide that changes its drawing does not change the composition's weight.
+   Keep anything new to the same box: the featured card sizes the art off
+   its own height and lets the width fall out of the aspect ratio.
+   ========================================================================== */
+var ART_ATTR = 'viewBox="0 0 240 260" fill="none" stroke="currentColor" ' +
+               'stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"';
+
+var ART = {
+
+  /* a page with the corner turned down, three lines of copy and the figures
+     at the foot — the shape of every case study on this site */
+  'case-study':
+    '<path d="M34 22h138l48 48v150a14 14 0 0 1-14 14H34a14 14 0 0 1-14-14V36a14 14 0 0 1 14-14z"/>' +
+    '<path d="M172 22v34a14 14 0 0 0 14 14h34"/>' +
+    '<path d="M44 96h84M44 120h122M44 144h64"/>' +
+    '<path d="M44 208h152"/>' +
+    '<rect x="52" y="178" width="26" height="30" rx="5"/>' +
+    '<rect x="94" y="158" width="26" height="50" rx="5"/>' +
+    '<rect x="136" y="134" width="26" height="74" rx="5"/>',
+
+  /* a calculator: display, twelve keys */
+  'calculator':
+    '<rect x="32" y="20" width="176" height="220" rx="20"/>' +
+    '<rect x="52" y="40" width="136" height="46" rx="8"/>' +
+    '<path d="M140 63h36"/>' +
+    '<rect x="52" y="102" width="32" height="24" rx="7"/>' +
+    '<rect x="104" y="102" width="32" height="24" rx="7"/>' +
+    '<rect x="156" y="102" width="32" height="24" rx="7"/>' +
+    '<rect x="52" y="134" width="32" height="24" rx="7"/>' +
+    '<rect x="104" y="134" width="32" height="24" rx="7"/>' +
+    '<rect x="156" y="134" width="32" height="24" rx="7"/>' +
+    '<rect x="52" y="166" width="32" height="24" rx="7"/>' +
+    '<rect x="104" y="166" width="32" height="24" rx="7"/>' +
+    '<rect x="156" y="166" width="32" height="24" rx="7"/>' +
+    '<rect x="52" y="198" width="32" height="24" rx="7"/>' +
+    '<rect x="104" y="198" width="32" height="24" rx="7"/>' +
+    '<rect x="156" y="198" width="32" height="24" rx="7"/>',
+
+  /* the puzzle: a 3x3 of tiles, 12 radius, as asked */
+  'scramble':
+    '<rect x="10" y="20" width="66" height="66" rx="12"/>' +
+    '<rect x="87" y="20" width="66" height="66" rx="12"/>' +
+    '<rect x="164" y="20" width="66" height="66" rx="12"/>' +
+    '<rect x="10" y="97" width="66" height="66" rx="12"/>' +
+    '<rect x="87" y="97" width="66" height="66" rx="12"/>' +
+    '<rect x="164" y="97" width="66" height="66" rx="12"/>' +
+    '<rect x="10" y="174" width="66" height="66" rx="12"/>' +
+    '<rect x="87" y="174" width="66" height="66" rx="12"/>' +
+    '<rect x="164" y="174" width="66" height="66" rx="12"/>',
+
+  /* the run: the hare off /hop, mid-leap, one obstacle cleared and the next
+     one ahead. The dashed trail is the only dashed stroke in the set and it
+     is doing the one thing dashes are good for. It stops short of the tail
+     on purpose — run it into the body and the three curves meeting there
+     read as a knot rather than as motion. */
+  'hopper':
+    '<path d="M12 240h216"/>' +
+    '<rect x="22" y="208" width="34" height="32" rx="7"/>' +
+    '<rect x="192" y="204" width="36" height="36" rx="7"/>' +
+    '<path d="M44 202c5-16 9-28 14-40" stroke-dasharray="6 10"/>' +
+    '<path d="M88 132c-8-24 7-43 32-41 23 2 36 18 31 37-5 17-25 23-42 18-12-3-18-7-21-14z"/>' +
+    '<circle cx="166" cy="112" r="18"/>' +
+    '<path d="M159 96c-9-22-12-41-4-50 9 9 11 32 12 48"/>' +
+    '<path d="M170 94c0-21 5-38 14-42 5 11-1 30-5 40"/>' +
+    '<circle cx="173" cy="107" r="2.8" fill="currentColor" stroke="none"/>' +
+    '<path d="M146 139c10 4 16 10 17 18 5 1 10 0 14-2"/>' +
+    '<path d="M135 145c8 6 13 13 14 21 5 1 10 0 14-2"/>' +
+    '<path d="M106 140c-4 12-13 19-24 21-6 0-11-1-15-4"/>' +
+    '<path d="M92 105c-9-1-14 5-13 11 1 6 8 9 14 6"/>'
+};
+
+/* Decorative in both places it is used: the title beside it already names
+   the thing, so a second reading of it is noise in a screen reader. */
+function art(key, cls) {
+  if (!ART[key]) return '';
+  return '<svg class="rh-art' + (cls ? ' ' + cls : '') + '" ' + ART_ATTR +
+         ' aria-hidden="true" focusable="false">' + ART[key] + '</svg>';
+}
 
 var RESOURCES = [
 
@@ -2558,52 +2709,47 @@ var RESOURCES = [
 
   /* ---- videos ----
      `video` is a YouTube id and opens the lightbox. `gated: true` sends the
-     card to its own page instead. Both kinds sit on the same shelf. */
-  { type: 'videos', title: '[Video title 1]', meta: '[00:00]',
-    copy: '[One line on what it shows.]' },
-  { type: 'videos', title: '[Video title 2]', meta: '[00:00]',
-    copy: '[One line on what it shows.]' },
-  { type: 'videos', title: '[Video title 3]', meta: '[00:00]',
-    copy: '[One line on what it shows.]' },
-  { type: 'videos', title: '[Video title 4]', meta: '[00:00]',
-    copy: '[One line on what it shows.]' },
-  { type: 'videos', title: '[Video title 5]', meta: '[00:00]',
-    copy: '[One line on what it shows.]' },
-  { type: 'videos', title: '[Video title 6]', meta: '[00:00]',
-    copy: '[One line on what it shows.]' },
-  { type: 'videos', title: '[Gated video title]', meta: '[00:00]', gated: true,
-    slug: 'gated-video', copy: '[One line on what it shows.] Ask for an email first.' },
+     card to its own page instead. Both kinds sit on the same shelf.
+
+     THE THUMBNAIL IS YOUTUBE'S OWN, by URL, rather than a copy saved next
+     to the other artwork. It is the one external image on the site and it
+     is deliberate: the still has to stay the video's still, and the
+     alternative is a file that silently goes stale the day the video is
+     re-uploaded. Save a crop into assets/img and set `thumb` instead if
+     that ever matters more than staying in step. */
+  { type: 'videos', title: 'You to the power of AI', video: 'pPQngmSEIe0',
+    thumb: 'https://i.ytimg.com/vi/pPQngmSEIe0/maxresdefault.jpg',
+    copy: 'INBOUND 2025 keynote from HubSpot CTO, Dharmesh Shah.' },
 
   /* ---- downloadables ----
      Gated per item rather than per type: some of these are worth a form and
-     some are worth more as something people can pass around. */
-  { type: 'downloadables', title: '[Download title 1]', meta: '[PDF]',
-    copy: '[One line on what it is for.]' },
-  { type: 'downloadables', title: '[Download title 2]', meta: '[XLSX]',
-    copy: '[One line on what it is for.]' },
-  { type: 'downloadables', title: '[Gated download title]', meta: '[PDF]', gated: true,
-    slug: 'gated-download', copy: '[One line on what it is for.] Ask for an email first.' },
-  { type: 'downloadables', title: '[Download title 3]', meta: '[PDF]',
-    copy: '[One line on what it is for.]' },
-  { type: 'downloadables', title: '[Download title 4]', meta: '[DOCX]',
-    copy: '[One line on what it is for.]' },
-  { type: 'downloadables', title: '[Download title 5]', meta: '[XLSX]',
-    copy: '[One line on what it is for.]' },
-  { type: 'downloadables', title: '[Download title 6]', meta: '[PDF]',
-    copy: '[One line on what it is for.]' },
-  { type: 'downloadables', title: '[Download title 7]', meta: '[CSV]',
-    copy: '[One line on what it is for.]' },
-  { type: 'downloadables', title: '[Download title 8]', meta: '[PDF]',
-    copy: '[One line on what it is for.]' },
+     some are worth more as something people can pass around.
+
+     `redirect` is where the gate lets you out. The form on the landing page
+     is ours for now and simply sends the browser there on submit; when the
+     HubSpot form id goes in, THE SAME URL goes in HubSpot's own redirect
+     setting and this field stays as the record of where it points. */
+  { type: 'downloadables', title: 'Marketing Hub ROI calculator', meta: 'Google Sheet',
+    gated: true, slug: 'marketing-hub-roi-calculator',
+    art: 'calculator',
+    redirect: 'https://docs.google.com/spreadsheets/d/1edXmchNdj7KFnjnOTsvUG1657feyzltLTfy5-xj_DaY/edit?gid=0#gid=0',
+    copy: 'Put your own numbers in and see what implementing HubSpot Marketing Hub is worth before you sign anything.',
+    gateLede: 'A spreadsheet that turns the Marketing Hub decision into a number.',
+    gateNote: 'Built for the people who have to justify the licence rather than use it. ' +
+              'Put in your list size, what you spend on the tools it replaces, what a ' +
+              'lead is worth and how much of the work is manual today. It gives you a ' +
+              'first-year return, a payback month and the assumptions written down ' +
+              'beside the answer, so the finance conversation is about the inputs ' +
+              'rather than about whether the number is made up.' },
 
   /* ---- games ----
      The two real ones. Both are finished and both link out, which is why
      the featured card is one of them rather than a bracketed placeholder. */
   { type: 'games', title: 'The RevOps puzzle', meta: 'Plays in the browser',
-    href: '/puzzle', featured: true,
+    href: '/puzzle', art: 'scramble',
     copy: 'Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.' },
   { type: 'games', title: 'The RevOps run', meta: 'Plays in the browser',
-    href: '/hop',
+    href: '/hop', art: 'hopper',
     copy: 'Jump the fires and duck the requests. The pace picks up the longer you last.' }
 ];
 
@@ -2679,8 +2825,14 @@ function resCard(r, depth) {
      slot: an empty frame reads as "no artwork yet" where a filled grey
      rectangle reads as a broken image. Give the entry a `thumb` and it goes
      solid. */
-  var media = r.thumb
-    ? '<img src="' + a + r.thumb + '" alt="" aria-hidden="true" loading="lazy">'
+  /* `art` is one of the inline line drawings, on its own pale plate so the
+     navy reads in both themes; `thumb` is a picture, and an absolute one is
+     left alone rather than having the page's ../ glued to the front of it. */
+  var media = r.art
+    ? art(r.art)
+    : r.thumb
+    ? '<img src="' + (/^https?:/.test(r.thumb) ? '' : a) + r.thumb +
+      '" alt="" aria-hidden="true" loading="lazy">'
     : '<span class="res-thumb-ph" aria-hidden="true"></span>';
 
   /* The play badge means "this one plays here", so a gated video does not
@@ -2710,7 +2862,8 @@ function resCard(r, depth) {
          :           'Open <span class="arrow" aria-hidden="true">&rarr;</span>';
 
   return '        <' + tag + attrs + ' data-res-type="' + r.type + '">\n' +
-    '          <span class="res-thumb">' + media + badge + lock + '\n          </span>\n' +
+    '          <span class="res-thumb' + (r.art ? ' is-art' : '') + '">' +
+      media + badge + lock + '\n          </span>\n' +
     '          <h3 class="res-title">' + r.title + '</h3>\n' +
     (r.copy ? '          <p class="res-copy">' + r.copy + '</p>\n' : '') +
     '          <span class="res-foot">\n' +
@@ -2728,17 +2881,35 @@ function resCard(r, depth) {
    is why it took the real client names the moment CASES did. */
 function caseResCard(c, depth) {
   var a = up(depth);
+
+  /* THE SAME FOUR ROWS THE CASE STUDY'S OWN META COLUMN CARRIES, in the
+     same order, read out of the same arrays. The figures used to sit here
+     instead, and while they are still placeholders on four of the five that
+     meant a shelf of cards saying 00% and [measure]. The tags say something
+     true today and they are what somebody scanning the shelf is actually
+     sorting on.
+
+     The service label in the bottom corner went with them: services are the
+     first tags in this row now, and naming one of them twice on one card
+     made the corner read as a category the card belonged to. */
+  var tags = c.svc.map(serviceName).concat([
+    labelFor(CRMS, c.crm, 1),
+    labelFor(INDUSTRIES, c.industry, 1),
+    labelFor(STAGES, c.stage, 2) + ' people'
+  ]);
+
   return '        <a class="res-card reveal" href="/case-studies/' + c.slug + '" data-res-type="case-studies">\n' +
     '          <span class="res-thumb">\n' +
     '            <img src="' + a + 'assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">\n' +
     '          </span>\n' +
     '          <h3 class="res-title">' + c.name + '</h3>\n' +
-    '          <p class="res-copy">' + c.figs.map(function (f) {
-                 return '<b>' + f[0] + '</b> ' + f[1];
-               }).join(' &nbsp;&middot;&nbsp; ') + '</p>\n' +
+    '          <span class="res-tags">\n' +
+      tags.map(function (t) {
+        return '            <span class="res-tag">' + t + '</span>';
+      }).join('\n') + '\n' +
+    '          </span>\n' +
     '          <span class="res-foot">\n' +
     '            <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>\n' +
-    '            <span class="res-fact">' + serviceName(c.svc[0]) + '</span>\n' +
     '          </span>\n' +
     '        </a>';
 }
@@ -2795,7 +2966,7 @@ function resShelf(type, cards, depth, cls) {
     '  <div class="shell">\n' +
     '    <div class="res-shelf-head">\n' +
     '      <h2 class="h2">' + type.name + '</h2>\n' +
-    '      <p class="sec-sub sec-sub-left">' + type.sub + '</p>\n' +
+    (type.sub ? '      <p class="sec-sub sec-sub-left">' + type.sub + '</p>\n' : '') +
     '    </div>\n' +
     '\n' +
     '    <div class="res-grid" data-res-grid data-res-per="' + per + '">\n' +
@@ -2806,48 +2977,85 @@ function resShelf(type, cards, depth, cls) {
     '</section>\n';
 }
 
-/* ---------- the featured card ----------
+/* ---------- the featured slider ----------
 
-   The one resource carrying `featured: true`, in a full-width card on the
-   brand gradient. It is the homepage disc's own ramp — warm at the top left
-   running out to mist — laid flat across a card rather than drawn as a
-   circle, so the page opens with the site's one decorative device without
-   putting another disc on another page.
+   THREE resources rather than one, on a fifteen second rotation with three
+   dots underneath. The card itself is the plate off the case study pages —
+   mist, the soft white scrim and the same artwork behind it — rather than
+   the warm ramp it used to carry, so /resources and a case study open on
+   the same object.
 
    THE INK IS PINNED, the same as .cs-head-panel and .call-panel. The card
    brings its own light ground with it, so navy that followed the page would
-   turn pale-on-pale the moment someone switched to dark. Navy measures
-   6.4:1 on the mist end of the ramp and 6.9:1 on the warm end, so the type
-   holds wherever on it the words land.
+   turn pale-on-pale the moment someone switched to dark.
 
-   No label above the title. A full-width gradient card at the top of the
-   page is already saying it is the featured one. */
+   NOTHING ON THE CARD BUT THE FOUR THINGS: title, a line of description,
+   the link, and the drawing. The kind-and-format line that used to sit in
+   the corner ("Game · Plays in the browser") is gone — a full-width card at
+   the top of the page is already saying this is the featured one, and the
+   shelf below says what type each thing is.
+
+   The drawing is anchored to the BOTTOM of the card and is taller than it,
+   so it climbs out over the top edge into the header above. That is the
+   whole effect and it is one rule in the stylesheet — see .res-feature-art.
+
+   The slides are stacked in one grid cell rather than laid out in a row:
+   the card is then as tall as the tallest of the three and does not resize
+   under the reader as it rotates. site.js does the rest and the markup
+   works without it, showing the first slide and three inert dots.
+
+   Order is deliberate: the case study is the strongest of the three and it
+   is what a first-time visitor should land on. */
+var FEATURED = [
+  { art: 'case-study', title: 'Ignite Group',
+    href: '/case-studies/case-study-5', go: 'Read the case study',
+    copy: 'Three countries running three versions of the same pipeline, and a board asking for one number. What we were handed, what changed, and what it was worth.' },
+
+  { art: 'calculator', title: 'Marketing Hub ROI calculator',
+    href: '/resources/marketing-hub-roi-calculator', go: 'Get the calculator',
+    copy: 'Put your own numbers in and see what implementing HubSpot Marketing Hub is worth before you sign anything.' },
+
+  { art: 'scramble', title: 'The RevOps puzzle',
+    href: '/puzzle', go: 'Play it',
+    copy: 'Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.' }
+];
+
 function resFeatured(depth) {
-  var r = null;
-  for (var i = 0; i < RESOURCES.length; i++) { if (RESOURCES[i].featured) r = RESOURCES[i]; }
-  if (!r) return '';
+  if (!FEATURED.length) return '';
 
-  var type = typeByslug(r.type);
-  var href = resHref(r);
-  var go = r.video ? 'Watch it' : r.type === 'games' ? 'Play it' : r.gated ? 'Get it' : 'Open it';
-  var link = r.video
-    ? '<button class="res-feature-go" type="button" data-video="' + r.video + '">'
-    : '<a class="res-feature-go" href="' + href + '">';
+  var slides = FEATURED.map(function (f, i) {
+    return '        <article class="res-feature' + (i === 0 ? ' is-on' : '') + '"\n' +
+           '                 data-res-slide aria-hidden="' + (i === 0 ? 'false' : 'true') + '">\n' +
+           '          <div class="res-feature-text">\n' +
+           '            <h2 class="res-feature-title">' + f.title + '</h2>\n' +
+           '            <p class="res-feature-copy">' + f.copy + '</p>\n' +
+           '            <a class="res-feature-go" href="' + f.href + '"' +
+                        (i === 0 ? '' : ' tabindex="-1"') + '>' + f.go +
+                        ' <span class="arrow" aria-hidden="true">&rarr;</span></a>\n' +
+           '          </div>\n' +
+           '          <div class="res-feature-art">' + art(f.art) + '</div>\n' +
+           '        </article>';
+  }).join('\n');
+
+  var dots = FEATURED.map(function (f, i) {
+    return '        <button class="res-feature-dot" type="button" data-res-dot\n' +
+           '                aria-current="' + (i === 0 ? 'true' : 'false') + '"\n' +
+           '                aria-label="Show ' + f.title.replace(/"/g, '&quot;') + '"></button>';
+  }).join('\n');
 
   return '\n<!-- ===================== FEATURED =====================\n' +
-'     One resource on the gradient. Move `featured: true` in RESOURCES to\n' +
-'     feature something else; nothing here is written by hand. -->\n' +
+'     Three resources on the case study plate, rotating every fifteen\n' +
+'     seconds. Edit FEATURED in tools/build-pages.js; nothing here is\n' +
+'     written by hand, and the drawings are in ART beside it. -->\n' +
 '<section class="res-feature-section">\n' +
 '  <div class="shell">\n' +
-'    <div class="res-feature reveal">\n' +
-'      <div class="res-feature-text">\n' +
-'        <h2 class="res-feature-title">' + r.title + '</h2>\n' +
-'        <p class="res-feature-copy">' + r.copy + '</p>\n' +
-'        ' + link + go + ' <span class="arrow" aria-hidden="true">&rarr;</span>' +
-        (r.video ? '</button>' : '</a>') + '\n' +
+'    <div class="res-feature-wrap reveal" data-res-slider>\n' +
+'      <div class="res-feature-stack">\n' +
+slides + '\n' +
 '      </div>\n' +
-'      <p class="res-feature-fact">' + type.name.replace(/s$/, '') +
-        (r.meta ? ' &middot; ' + r.meta : '') + '</p>\n' +
+'      <div class="res-feature-dots" role="group" aria-label="Choose a featured resource">\n' +
+dots + '\n' +
+'      </div>\n' +
 '    </div>\n' +
 '  </div>\n' +
 '</section>\n';
@@ -2931,9 +3139,18 @@ var resourcesIndex = {
    the reassurance has to be beside the thing you are asking someone to fill
    in, not above it where it scrolls away on a phone.
 
-   THE FORM IS A PLACEHOLDER AND SAYS SO. HubSpot portal 46722926 is already
-   in the head of every page; what is missing is the form id. Dropping the
-   embed in replaces .res-form-ph and nothing else moves. */
+   THE FORM IS OURS FOR NOW, and it works: four fields, the browser's own
+   validation, and on submit the browser goes to the resource's `redirect`.
+   That is the whole gate, and it is here so the flow can be walked end to
+   end before the real form exists.
+
+   IT IS NOT A REAL GATE. Nothing is stored and nothing stops anybody typing
+   the destination straight into the address bar, which is the honest state
+   of a static site asking for an email. HubSpot portal 46722926 is already
+   in the head of every page; when the form id goes in, this <form> is
+   replaced by the embed and the SAME `redirect` goes into HubSpot's own
+   redirect setting, so the field here stays as the record of where the gate
+   lets you out. */
 function resourcePage(r) {
   var type = typeByslug(r.type);
   return {
@@ -2953,16 +3170,43 @@ function resourcePage(r) {
 '  <div class="shell">\n' +
 '    <div class="res-gate">\n' +
 '      <div class="res-gate-text reveal reveal-left">\n' +
-'        <p class="statement">[What this is, in a line.]</p>\n' +
-'        <p class="statement-note">[Two or three sentences on who it is for and what they will\n' +
-'          be able to do with it that they cannot do now.]</p>\n' +
+'        <p class="statement">' + (r.gateLede || '[What this is, in a line.]') + '</p>\n' +
+'        <p class="statement-note">' + (r.gateNote ||
+   '[Two or three sentences on who it is for and what they will be able to do with it ' +
+   'that they cannot do now.]') + '</p>\n' +
 '      </div>\n' +
 '      <div class="res-gate-form reveal reveal-right">\n' +
 '        <h2 class="res-gate-title">Where should we send it?</h2>\n' +
-'        <div class="res-form-ph">\n' +
-'          <span class="res-form-note">HubSpot form</span>\n' +
-'          <p>Portal 46722926 is already loaded. Drop the form id in and this block goes.</p>\n' +
-'        </div>\n' +
+'\n' +
+'        <!-- Swap this whole <form> for the HubSpot embed when the form id\n' +
+'             exists, and put the same URL in HubSpot\'s redirect setting. -->\n' +
+'        <form class="form res-gate-fields" method="get"\n' +
+'              action="' + (r.redirect || '/resources') + '"\n' +
+'              data-res-gate="' + (r.redirect || '') + '">\n' +
+'          <div class="form-row">\n' +
+'            <div class="field">\n' +
+'              <label for="gate-first">First name</label>\n' +
+'              <input id="gate-first" name="firstname" type="text" autocomplete="given-name" required>\n' +
+'            </div>\n' +
+'            <div class="field">\n' +
+'              <label for="gate-last">Last name</label>\n' +
+'              <input id="gate-last" name="lastname" type="text" autocomplete="family-name" required>\n' +
+'            </div>\n' +
+'          </div>\n' +
+'          <div class="field">\n' +
+'            <label for="gate-email">Work email</label>\n' +
+'            <input id="gate-email" name="email" type="email" autocomplete="email" required>\n' +
+'          </div>\n' +
+'          <div class="field">\n' +
+'            <label for="gate-company">Company</label>\n' +
+'            <input id="gate-company" name="company" type="text" autocomplete="organization">\n' +
+'          </div>\n' +
+'          <div class="form-foot">\n' +
+'            <button class="btn btn-primary" type="submit">' +
+              (r.type === 'videos' ? 'Watch it' : 'Get it') + '</button>\n' +
+'            <p class="form-note">Straight through to it on submit. No sequence, no drip.</p>\n' +
+'          </div>\n' +
+'        </form>\n' +
 '      </div>\n' +
 '    </div>\n' +
 '  </div>\n' +

@@ -5387,37 +5387,78 @@ a.pcard:hover .arrow { transform: translateX(5px); }
    testimonial block and swallows a row of cards here. */
 .res-index .start-section { --start-bleed: 100px; }
 
-/* ---------- the featured card ----------
+/* ---------- the featured slider ----------
 
-   Full width on the brand gradient, which is the homepage disc's own ramp
-   laid flat across a card rather than drawn as a circle. The disc is the
-   homepage's device and putting one on every page made it wallpaper; this
-   is the same colour doing a different job.
+   THREE resources on a fifteen second rotation, on THE PLATE OFF THE CASE
+   STUDY PAGES rather than the warm ramp this card used to carry. /resources
+   and a case study now open on the same object, which is the point: the
+   card most often points at one. Same three layers .cs-head-panel uses —
+   mist under the artwork under a soft white scrim — and the same
+   measurement holds, because it is the same artwork at the same crop:
+   #304157 is 5.9:1 on the worst pixel under the title and 8.5:1 on the
+   best. Re-measure if the crop or the scrim changes.
 
    THE INK IS PINNED, like .cs-head-panel and .call-panel. The card brings
    its own light ground with it, so navy that followed the page would turn
-   pale-on-pale the moment someone switched to dark. Measured across the
-   ramp: navy is 6.5:1 on the warm end and 7.7:1 on the palest, and the
-   fact line's #44536A holds 4.8:1 on the worst of it. Re-measure if the
-   ramp changes. */
+   pale-on-pale the moment someone switched to dark.
+
+   NOTHING IN HERE MAY TAKE overflow: hidden. The drawing is anchored to the
+   bottom edge of the card and is taller than the card, so it climbs out
+   over the top of it and into the header above. That overhang is the whole
+   effect and a clip anywhere up the chain removes it silently.
+   ========================================================================== */
 .res-feature-section {
-  padding-top: clamp(24px, 3vw, 44px);
+  /* room above the card for the part of the drawing that sits outside it */
+  padding-top: clamp(46px, 5.4vw, 84px);
   padding-bottom: clamp(18px, 2.2vw, 30px);
 }
+.res-feature-wrap { position: relative; }
+
+/* THE THREE SLIDES SHARE ONE GRID CELL. Stacked rather than laid out in a
+   row, so the card is as tall as the tallest of the three and does not
+   resize under the reader when it rotates. The hidden two keep their space
+   — that is what holds the height still — and site.js takes their links out
+   of the tab order. */
+.res-feature-stack { display: grid; }
 .res-feature {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: clamp(16px, 2vw, 30px);
-  min-height: clamp(196px, 21vw, 290px);
+  grid-area: 1 / 1;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(210px, 22vw, 300px);
   padding: clamp(26px, 3.4vw, 54px);
   border-radius: var(--radius-card);
-  overflow: hidden;
   background-color: var(--mist);
-  background-image: radial-gradient(ellipse 130% 190% at 10% 4%,
-    #F7D9BE 0%, #F2C39B 32%, #C6D3E0 100%);
+  background-image:
+    radial-gradient(ellipse 72% 102% at 50% 50%,
+      rgba(250, 250, 248, .74) 0%,
+      rgba(250, 250, 248, .34) 55%,
+      rgba(250, 250, 248, 0) 100%),
+    url("../img/start-panel-bg.webp");
+  background-size: auto, cover;
+  background-position: center, center 20%;
+  background-repeat: no-repeat, no-repeat;
+
+  /* the crossfade. visibility rather than display so the box keeps its
+     space, and delayed on the way out so it is not pulled before the fade
+     has finished. */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .6s var(--ease-out), visibility 0s linear .6s;
 }
-.res-feature-text { max-width: 62ch; }
+.res-feature.is-on {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+  transition: opacity .6s var(--ease-out), visibility 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .res-feature { transition: none; }
+}
+
+/* 60% and not a column: the drawing is absolutely placed against the card,
+   so nothing in the flow is holding the copy off it. */
+.res-feature-text { position: relative; z-index: 1; max-width: min(62ch, 60%); }
 .res-feature-title {
   margin: 0;
   font-family: var(--font-head);
@@ -5454,19 +5495,75 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 .res-feature-go .arrow { display: inline-block; transition: transform .3s var(--ease-out); }
 .res-feature-go:hover .arrow { transform: translateX(5px); }
 .res-feature-go:focus-visible { outline: 2px solid #304157; outline-offset: 4px; border-radius: 4px; }
-.res-feature-fact {
-  margin: 0;
-  font-size: .78rem;
-  font-weight: 700;
-  line-height: 1.4;
-  color: #44536A;
-  white-space: nowrap;
+
+/* THE OVERHANG. Pinned to the card's bottom edge and taller than the card
+   by a fixed beat, so it rises out of the top. HEIGHT drives it and the
+   width falls out of the drawing's own 240x260 box, which is how it stays
+   near a third of the card at every width with only one number to keep. */
+.res-feature-art {
+  position: absolute;
+  right: clamp(22px, 4vw, 64px);
+  bottom: 0;
+  height: calc(100% + clamp(38px, 4.4vw, 76px));
+  z-index: 1;
+  color: #304157;
+  pointer-events: none;
 }
+.res-feature-art .rh-art { position: relative; display: block; height: 100%; width: auto; }
+
+/* THE OUTLINE, AND IT ONLY EXISTS ON THE DARK THEME.
+
+   The drawing's ink is pinned navy, because most of it is sitting on the
+   card's own light plate. The part that climbs out over the top edge is
+   not: on the dark theme it leaves the plate and lands on a navy page,
+   where navy on navy is nothing at all and the overhang simply vanished —
+   the drawing read as cropped to the card rather than rising out of it.
+
+   Two tight drop shadows in paper give every stroke a light edge. They hug
+   the line rather than pooling behind the drawing, which is the difference
+   between an outline and a smudge, and over the light half they fall on
+   paper-coloured ground and cannot be seen at all. One filter, no second
+   copy of the artwork, and nothing to keep in step.
+
+   drop-shadow and not a wash behind it, because a wash has to end
+   somewhere and wherever it ends is a line across the card. */
+:root[data-theme="dark"] .res-feature-art .rh-art {
+  filter: drop-shadow(0 0 1.6px #F2F6FA)
+          drop-shadow(0 0 3.4px rgba(242, 246, 250, .85));
+}
+
+/* ---------- the dots ---------- */
+.res-feature-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: clamp(16px, 1.8vw, 22px);
+}
+.res-feature-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--track-ring);
+  cursor: pointer;
+  transition: background .3s var(--ease), transform .3s var(--ease-out);
+}
+.res-feature-dot:hover { background: var(--slate); }
+.res-feature-dot[aria-current="true"] { background: var(--ink-strong); transform: scale(1.28); }
+.res-feature-dot:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 3px; }
+
 @media (max-width: 760px) {
-  /* the fact drops under the copy rather than squeezing the title into a
-     column of two-word lines */
-  .res-feature { grid-template-columns: minmax(0, 1fr); align-items: start; }
-  .res-feature-fact { white-space: normal; }
+  /* the drawing drops under the copy and centres: at phone width a third of
+     the card beside the type is a drawing an inch wide beside a column of
+     two-word lines */
+  .res-feature { display: block; padding-bottom: clamp(168px, 42vw, 220px); }
+  .res-feature-text { max-width: none; }
+  .res-feature-art {
+    right: 50%;
+    transform: translateX(50%);
+    height: clamp(176px, 44vw, 232px);
+  }
 }
 
 /* ---------- the type filter ----------
@@ -5559,10 +5656,15 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 }
 .res-card[hidden] { display: none; }
 a.res-card, button.res-card { cursor: pointer; }
+/* THE SAME HOVER AS /pricing, and for the same reason the card hovers were
+   unified in the first place: a navy border at full strength read as an
+   outline snapping on rather than a card lifting. Mist edge, the 4px lift
+   and the deep soft shadow — .price-teaser-cell, .card and .pcard all do
+   exactly this. */
 a.res-card:hover, button.res-card:hover {
-  border-color: var(--ink-strong);
-  transform: translateY(-3px);
-  box-shadow: 0 18px 34px -26px rgba(48, 65, 87, .55);
+  border-color: var(--mist);
+  transform: translateY(-4px);
+  box-shadow: 0 26px 52px -28px rgba(28, 38, 53, .38);
 }
 a.res-card:focus-visible, button.res-card:focus-visible {
   outline: 2px solid var(--ink-strong); outline-offset: 3px;
@@ -5581,6 +5683,18 @@ div.res-card { opacity: .72; }
   background: var(--surface-alt);
 }
 .res-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* A DRAWING, NOT A PICTURE. The ink is navy and the card's own surface goes
+   dark with the page, so the art brings its own light plate — the mist end
+   of the featured card's ramp, flattened — and the drawing is contained
+   rather than cropped, which is what a 240x260 box in a 16:9 frame wants. */
+.res-thumb.is-art { background: linear-gradient(158deg, #EDF1F6 0%, #FAFAF8 60%, #E4EBF3 100%); }
+.res-thumb.is-art .rh-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 9px 0;
+  color: #304157;
+}
 /* the dashed well, same idea as the case study logo slot: an empty frame
    reads as "no artwork yet", a grey rectangle reads as a broken image */
 .res-thumb-ph {
@@ -5632,6 +5746,25 @@ div.res-card { opacity: .72; }
   text-wrap: balance;
 }
 .res-copy { margin: 0; font-size: .86rem; line-height: 1.55; color: var(--body); }
+
+/* ---------- tags on a card ----------
+   The case study's own meta rows, in the order its page lists them. Quiet
+   on purpose: five of them wrapping to three rows under a title is the
+   normal case, and a tag with any weight to it competes with the title. */
+.res-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.res-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--plate-line);
+  background: var(--plate);
+  color: var(--plate-ink);
+  font-size: .7rem;
+  font-weight: 700;
+  line-height: 1.55;
+  letter-spacing: .01em;
+}
 .res-copy b { color: var(--ink); font-weight: 700; }
 
 /* pushed to the bottom so the link sits on one line across a row of cards
@@ -5805,82 +5938,108 @@ div.res-card .res-go { color: var(--muted); }
 :root[data-theme="dark"] .res-lock { background: rgba(28, 38, 53, .92); }
 
 /* ==========================================================================
-   PARTNER REVIEWS — /hubspot
+   /hubspot — WHAT IT IS, and THE ONE REVIEW
 
-   A column that holds still on the left while the reviews travel past it on
-   the right. Sticky, not fixed and not a script: fixed takes the title out
-   of flow, which collapses the section to the height of the reviews and
-   leaves the title floating over whatever comes next.
-
-   THE STICKY ELEMENT IS A CHILD OF THE GRID ITEM, NOT THE ITEM ITSELF.
-   A grid item stretches to the row height by default and the sticky child
-   then has that whole height to travel inside. Put `position: sticky` on the
-   item and add `align-items: start` to the grid — the obvious way to write
-   this — and the item shrinks to its own content, which leaves sticky with
-   nowhere to go and nothing appears to happen at all.
-
-   The reveal sits on a wrapper INSIDE the sticky element rather than on it.
-   .reveal animates `transform`, and a transform on the sticky element is a
-   second thing moving the same box while it is stuck.
-
-   Each review carries a min-height, because three quotes are shorter than a
-   tall screen and a sticky column that never gets to stick is just a
-   two-column layout. Add a fourth review and the min-height can come down.
+   Replaced the sticky-title / scrolling-reviews block on 13 September. That
+   column was the tallest thing on the page and it put twelve hundred words
+   of praise between the reader and the four things the page wants them to
+   click. One review, centred, and the rest one link away on the partner
+   directory — which is the version a sceptical reader can verify anyway.
    ========================================================================== */
-.prof {
-  display: grid;
-  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
-  gap: clamp(30px, 5vw, 80px);
+
+/* ---------- what HubSpot is ----------
+   The homepage's About split with a mark in the left column instead of a
+   photograph, and NO PARTNER BADGE: that is in the header four inches above
+   this, and twice on one screen is a logo wall.
+
+   Two files, one shown. The full-colour logo on the light theme, the
+   reversed one on dark — the same brand-base / brand-alt swap the nav uses.
+   The reversed file is the same artwork with every opaque pixel taken to
+   white, so the two are in register and the mark does not shift when the
+   theme does. */
+.hs-what-mark { display: flex; align-items: center; justify-content: center; }
+.hs-logo { display: block; width: min(360px, 86%); height: auto; }
+.hs-logo-alt { display: none; }
+:root[data-theme="dark"] .hs-logo-base { display: none; }
+:root[data-theme="dark"] .hs-logo-alt { display: block; }
+@media (max-width: 860px) {
+  /* the mark goes above the copy and comes down a size: a 360px logo over a
+     phone-width paragraph reads as a banner rather than an illustration */
+  .hs-logo { width: min(260px, 70%); }
 }
-.prof-side-inner {
-  position: sticky;
-  /* the floating bar's height plus a beat, so the title clears it rather
-     than sliding under it on the way down */
-  top: calc(var(--nav-h) + clamp(26px, 4vh, 52px));
+
+/* ---------- the one review ----------
+   Centred on paper, no plate. The quote is the largest type in the middle
+   of the page; giving it a card as well would make it a pull-quote inside
+   an article that does not exist. The measure is capped at 54rem, which is
+   about 90 characters — wide for body copy and right for one quote that is
+   meant to be read as a block rather than scanned. */
+.hs-testi {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: clamp(16px, 1.8vw, 24px);
+  align-items: center;
+  gap: clamp(14px, 1.8vw, 20px);
+  max-width: 54rem;
+  margin-inline: auto;
+  text-align: center;
 }
-.prof-side-body { display: flex; flex-direction: column; gap: clamp(10px, 1.2vw, 14px); }
-.prof-side-body .h2 { margin: 0; }
-.prof-side-body .sec-sub {
+/* larger than the five on the end of a homepage quote: here they open the
+   block rather than sign it off */
+.hs-testi-stars { justify-content: center; }
+.hs-testi-stars svg { width: 22px; height: 22px; }
+
+/* the quote marks carry the warm and stay upright while the words lean,
+   exactly as .testi-title does — an italic quote mark beside an italic word
+   reads as a smudge */
+.hs-testi-title {
   margin: 0;
-  max-width: 38ch;
-  font-size: .95rem;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(1.35rem, 1.1rem + 1.2vw, 2rem);
+  line-height: 1.16;
+  letter-spacing: -.03em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.hs-testi-title .q { color: var(--warm); font-style: normal; }
+
+.hs-testi-quote { margin: 0; }
+.hs-testi-quote p {
+  margin: 0;
+  font-size: clamp(1rem, .95rem + .45vw, 1.2rem);
+  line-height: 1.62;
+  color: var(--body);
+}
+/* weight rather than a marker, the same call the homepage quotes make: a
+   highlighter sweep across a centred quote lands as a stripe */
+.hs-testi-quote .hl { background-image: none; color: var(--ink); font-weight: 700; }
+
+.hs-testi-by {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px 12px;
+  margin-top: clamp(16px, 2vw, 24px);
+  font-size: .9rem;
+  color: var(--slate);
+}
+.hs-testi-by cite { font-style: normal; font-weight: 700; color: var(--ink); }
+.hs-testi-by .sep { color: var(--mist); }
+
+/* the five-stars claim, demoted to a line under the quote. It used to be an
+   h2 over a scrolling column; as a sentence beside the link it is the same
+   fact without a section built on top of it. */
+.hs-testi-more {
+  max-width: 54rem;
+  margin: clamp(24px, 2.8vw, 34px) auto 0;
+  text-align: center;
+  font-size: .92rem;
   line-height: 1.65;
   color: var(--body);
 }
-/* Larger than the five on the end of a quote. Here they are the point of
-   the column rather than an attribution, and at 17px under a 2.3rem heading
-   they read as a decoration on the paragraph above them. */
-.prof-stars svg { width: 23px; height: 23px; }
-
-.prof-reviews {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(40px, 6vw, 84px);
-}
-.prof-review {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(12px, 1.6vw, 18px);
-  min-height: min(52vh, 380px);
-}
-/* a step up on the homepage's quote: this column is wider than a third of
-   the page and the quotes are the content here, not proof beside it */
-.prof-review .quote p { font-size: clamp(1rem, .95rem + .4vw, 1.16rem); }
-
-@media (max-width: 900px) {
-  /* One column, and the title stops travelling. Stuck at the top of a phone
-     screen it would sit on the review it is introducing for the whole
-     length of the section. */
-  .prof { grid-template-columns: minmax(0, 1fr); gap: clamp(26px, 6vw, 40px); }
-  .prof-side-inner { position: static; }
-  .prof-review { min-height: 0; }
-  .prof-reviews { gap: clamp(34px, 8vw, 54px); }
-}
+.hs-testi-more .text-link { white-space: nowrap; }
 
 /* ==========================================================================
    PRICING — /pricing

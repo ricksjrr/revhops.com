@@ -67,17 +67,69 @@ tabs.find(t=>t.dataset.resPick==='videos').getAttribute('aria-pressed')==='true'
 tabs[0].dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
 [...d.querySelectorAll('[data-res-section]')].every(s=>!s.hidden) ? ok('All brings every shelf back') : bad('All left a shelf hidden');
 
-// placeholders are inert
+/* Placeholders are inert. Zero of them is a PASS: the bracketed video and
+   download cards came out on 13 September when the keynote and the ROI
+   calculator went in, and a shelf with nothing left to fill in is the state
+   this check is hoping for rather than a broken build. What it is guarding
+   against is a placeholder that is also a link. */
 const phs=[...d.querySelectorAll('.res-card:not([data-res-type="case-studies"]):not(:has(.res-lock))')].filter(c=>/^\[/.test(c.querySelector('.res-title').textContent));
-phs.length ? (phs.every(c=>c.tagName==='DIV') ? ok(phs.length+' placeholder cards, all inert divs rather than dead links') : bad('a placeholder card is clickable and goes nowhere'))
-  : bad('no placeholders found, which cannot be right yet');
+phs.every(c=>c.tagName==='DIV')
+  ? ok(phs.length ? phs.length+' placeholder cards, all inert divs rather than dead links'
+                  : 'no placeholder cards left on the shelves')
+  : bad('a placeholder card is clickable and goes nowhere');
 
-// gated
+/* Gated: however many there are, each carries the chip, points at its own
+   generated page, and that page exists. Counting them was the old version
+   of this and it failed the day the count changed rather than the day
+   something broke. */
 const gated=[...d.querySelectorAll('a.res-card')].filter(a=>a.querySelector('.res-lock'));
-gated.length===2 && gated.every(a=>/resources\/gated-/.test(a.getAttribute('href')))
-  ? ok('both gated items carry the chip and go to their own page') : bad('gated routing is wrong');
-fs.existsSync(path.join(ROOT,'resources/gated-video.html')) && fs.existsSync(path.join(ROOT,'resources/gated-download.html'))
-  ? ok('and both of those pages were generated') : bad('a gated page is missing');
+const gatedHrefs=gated.map(a=>a.getAttribute('href'));
+gated.length && gatedHrefs.every(h=>/(^|\/)resources\/[a-z0-9-]+$/.test(h))
+  ? ok(gated.length+' gated item(s), each carrying the chip and going to its own page') : bad('gated routing is wrong');
+gatedHrefs.every(h=>fs.existsSync(path.join(ROOT,h.replace(/^[./]+/,'')+'.html')))
+  ? ok('and every one of those pages was generated') : bad('a gated page is missing');
+
+/* THE GATE LETS YOU OUT SOMEWHERE. The form on a gated page carries the
+   destination on data-res-gate and repeats it as the no-script action; a
+   gate that asks for an email and then goes nowhere is the failure worth
+   catching here. */
+gatedHrefs.forEach(h=>{
+  const gp=new JSDOM(fs.readFileSync(path.join(ROOT,h.replace(/^[./]+/,'')+'.html'),'utf8')).window.document;
+  const form=gp.querySelector('[data-res-gate]');
+  const to=form&&form.getAttribute('data-res-gate');
+  to&&/^https?:/.test(to)&&form.getAttribute('action')===to
+    ? ok(h.replace(/^[./]+/,'')+': the gate redirects, and the no-script action agrees')
+    : bad(h+': the gate has no destination');
+});
+
+/* THE FEATURED SLIDER. Three slides, three dots, exactly one slide showing
+   before any script runs, and the two behind it out of the tab order. */
+const slides=[...d.querySelectorAll('[data-res-slide]')];
+const fdots=[...d.querySelectorAll('[data-res-dot]')];
+slides.length>1&&slides.length===fdots.length
+  ? ok(slides.length+' featured slides and a dot for each') : bad('slides and dots disagree');
+slides.filter(s=>s.classList.contains('is-on')).length===1
+  ? ok('exactly one slide is showing, so the card is never blank without script')
+  : bad('the slider does not have one slide on at rest');
+slides.filter(s=>!s.classList.contains('is-on'))
+  .every(s=>[...s.querySelectorAll('a,button')].every(el=>el.getAttribute('tabindex')==='-1'))
+  ? ok('and the hidden slides keep their links out of the tab order') : bad('a hidden slide is tabbable');
+[...d.querySelectorAll('[data-res-slide] .rh-art')].length===slides.length
+  ? ok('every slide carries its drawing') : bad('a slide is missing its art');
+d.querySelector('.res-feature-fact')
+  ? bad('the kind-and-format line came back onto the featured card')
+  : ok('nothing on the featured card but the title, the line, the link and the art');
+
+/* THE SHELVES HAVE NO SUBHEADS. One-word heading, then the cards. */
+d.querySelector('.res-shelf-head .sec-sub')
+  ? bad('a shelf subhead came back') : ok('no subheads under the shelf headings');
+
+/* CASE STUDY CARDS CARRY THEIR META AS TAGS, and no service in the corner. */
+const csCards=[...d.querySelectorAll('.res-card[data-res-type="case-studies"]')];
+csCards.length&&csCards.every(c=>c.querySelectorAll('.res-tag').length>=3)
+  ? ok('every case study card carries its meta as tags') : bad('a case study card has no tags');
+csCards.every(c=>!c.querySelector('.res-fact'))
+  ? ok('and the service label in the corner is gone') : bad('a case study card still names a service in the corner');
 
 // lightbox
 const dlg=d.querySelector('[data-res-lightbox]');

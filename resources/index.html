@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="../assets/css/site.css?v=60f2478eb6">
+<link rel="stylesheet" href="../assets/css/site.css?v=79ca08be3d">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -87,17 +87,52 @@
 </section>
 
 <!-- ===================== FEATURED =====================
-     One resource on the gradient. Move `featured: true` in RESOURCES to
-     feature something else; nothing here is written by hand. -->
+     Three resources on the case study plate, rotating every fifteen
+     seconds. Edit FEATURED in tools/build-pages.js; nothing here is
+     written by hand, and the drawings are in ART beside it. -->
 <section class="res-feature-section">
   <div class="shell">
-    <div class="res-feature reveal">
-      <div class="res-feature-text">
-        <h2 class="res-feature-title">The RevOps puzzle</h2>
-        <p class="res-feature-copy">Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.</p>
-        <a class="res-feature-go" href="../puzzle">Play it <span class="arrow" aria-hidden="true">&rarr;</span></a>
+    <div class="res-feature-wrap reveal" data-res-slider>
+      <div class="res-feature-stack">
+        <article class="res-feature is-on"
+                 data-res-slide aria-hidden="false">
+          <div class="res-feature-text">
+            <h2 class="res-feature-title">Ignite Group</h2>
+            <p class="res-feature-copy">Three countries running three versions of the same pipeline, and a board asking for one number. What we were handed, what changed, and what it was worth.</p>
+            <a class="res-feature-go" href="../case-studies/case-study-5">Read the case study <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </div>
+          <div class="res-feature-art"><svg class="rh-art" viewBox="0 0 240 260" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M34 22h138l48 48v150a14 14 0 0 1-14 14H34a14 14 0 0 1-14-14V36a14 14 0 0 1 14-14z"/><path d="M172 22v34a14 14 0 0 0 14 14h34"/><path d="M44 96h84M44 120h122M44 144h64"/><path d="M44 208h152"/><rect x="52" y="178" width="26" height="30" rx="5"/><rect x="94" y="158" width="26" height="50" rx="5"/><rect x="136" y="134" width="26" height="74" rx="5"/></svg></div>
+        </article>
+        <article class="res-feature"
+                 data-res-slide aria-hidden="true">
+          <div class="res-feature-text">
+            <h2 class="res-feature-title">Marketing Hub ROI calculator</h2>
+            <p class="res-feature-copy">Put your own numbers in and see what implementing HubSpot Marketing Hub is worth before you sign anything.</p>
+            <a class="res-feature-go" href="../resources/marketing-hub-roi-calculator" tabindex="-1">Get the calculator <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </div>
+          <div class="res-feature-art"><svg class="rh-art" viewBox="0 0 240 260" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="32" y="20" width="176" height="220" rx="20"/><rect x="52" y="40" width="136" height="46" rx="8"/><path d="M140 63h36"/><rect x="52" y="102" width="32" height="24" rx="7"/><rect x="104" y="102" width="32" height="24" rx="7"/><rect x="156" y="102" width="32" height="24" rx="7"/><rect x="52" y="134" width="32" height="24" rx="7"/><rect x="104" y="134" width="32" height="24" rx="7"/><rect x="156" y="134" width="32" height="24" rx="7"/><rect x="52" y="166" width="32" height="24" rx="7"/><rect x="104" y="166" width="32" height="24" rx="7"/><rect x="156" y="166" width="32" height="24" rx="7"/><rect x="52" y="198" width="32" height="24" rx="7"/><rect x="104" y="198" width="32" height="24" rx="7"/><rect x="156" y="198" width="32" height="24" rx="7"/></svg></div>
+        </article>
+        <article class="res-feature"
+                 data-res-slide aria-hidden="true">
+          <div class="res-feature-text">
+            <h2 class="res-feature-title">The RevOps puzzle</h2>
+            <p class="res-feature-copy">Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.</p>
+            <a class="res-feature-go" href="../puzzle" tabindex="-1">Play it <span class="arrow" aria-hidden="true">&rarr;</span></a>
+          </div>
+          <div class="res-feature-art"><svg class="rh-art" viewBox="0 0 240 260" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="10" y="20" width="66" height="66" rx="12"/><rect x="87" y="20" width="66" height="66" rx="12"/><rect x="164" y="20" width="66" height="66" rx="12"/><rect x="10" y="97" width="66" height="66" rx="12"/><rect x="87" y="97" width="66" height="66" rx="12"/><rect x="164" y="97" width="66" height="66" rx="12"/><rect x="10" y="174" width="66" height="66" rx="12"/><rect x="87" y="174" width="66" height="66" rx="12"/><rect x="164" y="174" width="66" height="66" rx="12"/></svg></div>
+        </article>
       </div>
-      <p class="res-feature-fact">Game &middot; Plays in the browser</p>
+      <div class="res-feature-dots" role="group" aria-label="Choose a featured resource">
+        <button class="res-feature-dot" type="button" data-res-dot
+                aria-current="true"
+                aria-label="Show Ignite Group"></button>
+        <button class="res-feature-dot" type="button" data-res-dot
+                aria-current="false"
+                aria-label="Show Marketing Hub ROI calculator"></button>
+        <button class="res-feature-dot" type="button" data-res-dot
+                aria-current="false"
+                aria-label="Show The RevOps puzzle"></button>
+      </div>
     </div>
   </div>
 </section>
@@ -121,7 +156,6 @@
   <div class="shell">
     <div class="res-shelf-head">
       <h2 class="h2">Blog</h2>
-      <p class="sec-sub sec-sub-left">What breaks in a revenue system, and what we do about it.</p>
     </div>
 
     <div class="res-grid" data-res-grid data-res-per="4">
@@ -157,7 +191,6 @@
   <div class="shell">
     <div class="res-shelf-head">
       <h2 class="h2">Case studies</h2>
-      <p class="sec-sub sec-sub-left">What we were handed, what changed, and what it was worth.</p>
     </div>
 
     <div class="res-grid" data-res-grid data-res-per="4">
@@ -166,10 +199,15 @@
             <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           </span>
           <h3 class="res-title">Ike Commercial Real Estate</h3>
-          <p class="res-copy"><b>100%</b> New CRM build &nbsp;&middot;&nbsp; <b>4</b> Sales team users</p>
+          <span class="res-tags">
+            <span class="res-tag">Solution design</span>
+            <span class="res-tag">CRM implementations</span>
+            <span class="res-tag">Salesforce</span>
+            <span class="res-tag">B2B SaaS</span>
+            <span class="res-tag">50&ndash;200 people</span>
+          </span>
           <span class="res-foot">
             <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>
-            <span class="res-fact">Solution design</span>
           </span>
         </a>
         <a class="res-card reveal" href="../case-studies/case-study-2" data-res-type="case-studies">
@@ -177,10 +215,15 @@
             <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           </span>
           <h3 class="res-title">The Davani Group</h3>
-          <p class="res-copy"><b>00%</b> [measure] &nbsp;&middot;&nbsp; <b>00h</b> [measure]</p>
+          <span class="res-tags">
+            <span class="res-tag">CRM implementations</span>
+            <span class="res-tag">Lead to cash process mapping</span>
+            <span class="res-tag">HubSpot</span>
+            <span class="res-tag">Professional Services</span>
+            <span class="res-tag">10&ndash;50 people</span>
+          </span>
           <span class="res-foot">
             <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>
-            <span class="res-fact">CRM implementations</span>
           </span>
         </a>
         <a class="res-card reveal" href="../case-studies/case-study-3" data-res-type="case-studies">
@@ -188,10 +231,15 @@
             <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           </span>
           <h3 class="res-title">Core Income</h3>
-          <p class="res-copy"><b>00%</b> [measure] &nbsp;&middot;&nbsp; <b>$00k</b> [measure]</p>
+          <span class="res-tags">
+            <span class="res-tag">HubSpot support retainers</span>
+            <span class="res-tag">RevOps consulting</span>
+            <span class="res-tag">HubSpot</span>
+            <span class="res-tag">Financial Services</span>
+            <span class="res-tag">200&ndash;1,000 people</span>
+          </span>
           <span class="res-foot">
             <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>
-            <span class="res-fact">HubSpot support retainers</span>
           </span>
         </a>
         <a class="res-card reveal" href="../case-studies/case-study-4" data-res-type="case-studies">
@@ -199,10 +247,15 @@
             <img src="../assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">
           </span>
           <h3 class="res-title">Woodside Homes</h3>
-          <p class="res-copy"><b>3</b> business units &nbsp;&middot;&nbsp; <b>00d</b> [measure]</p>
+          <span class="res-tags">
+            <span class="res-tag">Solution design</span>
+            <span class="res-tag">Lead to cash process mapping</span>
+            <span class="res-tag">HubSpot</span>
+            <span class="res-tag">eCommerce</span>
+            <span class="res-tag">1&ndash;10 people</span>
+          </span>
           <span class="res-foot">
             <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>
-            <span class="res-fact">Solution design</span>
           </span>
         </a>
     </div>
@@ -217,87 +270,19 @@
   <div class="shell">
     <div class="res-shelf-head">
       <h2 class="h2">Videos</h2>
-      <p class="sec-sub sec-sub-left">Walkthroughs and teardowns. Most play right here.</p>
     </div>
 
     <div class="res-grid" data-res-grid data-res-per="8">
-        <div class="res-card reveal" data-res-type="videos">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
+        <button class="res-card reveal" type="button" data-video="pPQngmSEIe0" data-res-type="videos">
+          <span class="res-thumb"><img src="https://i.ytimg.com/vi/pPQngmSEIe0/maxresdefault.jpg" alt="" aria-hidden="true" loading="lazy">
             <span class="res-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.1v13.8L19 12z"/></svg></span>
           </span>
-          <h3 class="res-title">[Video title 1]</h3>
-          <p class="res-copy">[One line on what it shows.]</p>
+          <h3 class="res-title">You to the power of AI</h3>
+          <p class="res-copy">INBOUND 2025 keynote from HubSpot CTO, Dharmesh Shah.</p>
           <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[00:00]</span>
+            <span class="res-go">Watch <span class="arrow" aria-hidden="true">&rarr;</span></span>
           </span>
-        </div>
-        <div class="res-card reveal" data-res-type="videos">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-            <span class="res-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.1v13.8L19 12z"/></svg></span>
-          </span>
-          <h3 class="res-title">[Video title 2]</h3>
-          <p class="res-copy">[One line on what it shows.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[00:00]</span>
-          </span>
-        </div>
-        <div class="res-card reveal" data-res-type="videos">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-            <span class="res-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.1v13.8L19 12z"/></svg></span>
-          </span>
-          <h3 class="res-title">[Video title 3]</h3>
-          <p class="res-copy">[One line on what it shows.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[00:00]</span>
-          </span>
-        </div>
-        <div class="res-card reveal" data-res-type="videos">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-            <span class="res-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.1v13.8L19 12z"/></svg></span>
-          </span>
-          <h3 class="res-title">[Video title 4]</h3>
-          <p class="res-copy">[One line on what it shows.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[00:00]</span>
-          </span>
-        </div>
-        <div class="res-card reveal" data-res-type="videos">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-            <span class="res-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.1v13.8L19 12z"/></svg></span>
-          </span>
-          <h3 class="res-title">[Video title 5]</h3>
-          <p class="res-copy">[One line on what it shows.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[00:00]</span>
-          </span>
-        </div>
-        <div class="res-card reveal" data-res-type="videos">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-            <span class="res-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.1v13.8L19 12z"/></svg></span>
-          </span>
-          <h3 class="res-title">[Video title 6]</h3>
-          <p class="res-copy">[One line on what it shows.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[00:00]</span>
-          </span>
-        </div>
-        <a class="res-card reveal" href="../resources/gated-video" data-res-type="videos">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-            <span class="res-lock">Gated</span>
-          </span>
-          <h3 class="res-title">[Gated video title]</h3>
-          <p class="res-copy">[One line on what it shows.] Ask for an email first.</p>
-          <span class="res-foot">
-            <span class="res-go">Get it <span class="arrow" aria-hidden="true">&rarr;</span></span>
-            <span class="res-fact">[00:00]</span>
-          </span>
-        </a>
+        </button>
     </div>
   </div>
 </section>
@@ -306,108 +291,21 @@
   <div class="shell">
     <div class="res-shelf-head">
       <h2 class="h2">Downloadables</h2>
-      <p class="sec-sub sec-sub-left">Templates, checklists and maps you can use without us.</p>
     </div>
 
     <div class="res-grid" data-res-grid data-res-per="8">
-        <div class="res-card reveal" data-res-type="downloadables">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-          </span>
-          <h3 class="res-title">[Download title 1]</h3>
-          <p class="res-copy">[One line on what it is for.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[PDF]</span>
-          </span>
-        </div>
-        <div class="res-card reveal" data-res-type="downloadables">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-          </span>
-          <h3 class="res-title">[Download title 2]</h3>
-          <p class="res-copy">[One line on what it is for.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[XLSX]</span>
-          </span>
-        </div>
-        <a class="res-card reveal" href="../resources/gated-download" data-res-type="downloadables">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
+        <a class="res-card reveal" href="../resources/marketing-hub-roi-calculator" data-res-type="downloadables">
+          <span class="res-thumb is-art"><svg class="rh-art" viewBox="0 0 240 260" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="32" y="20" width="176" height="220" rx="20"/><rect x="52" y="40" width="136" height="46" rx="8"/><path d="M140 63h36"/><rect x="52" y="102" width="32" height="24" rx="7"/><rect x="104" y="102" width="32" height="24" rx="7"/><rect x="156" y="102" width="32" height="24" rx="7"/><rect x="52" y="134" width="32" height="24" rx="7"/><rect x="104" y="134" width="32" height="24" rx="7"/><rect x="156" y="134" width="32" height="24" rx="7"/><rect x="52" y="166" width="32" height="24" rx="7"/><rect x="104" y="166" width="32" height="24" rx="7"/><rect x="156" y="166" width="32" height="24" rx="7"/><rect x="52" y="198" width="32" height="24" rx="7"/><rect x="104" y="198" width="32" height="24" rx="7"/><rect x="156" y="198" width="32" height="24" rx="7"/></svg>
             <span class="res-lock">Gated</span>
           </span>
-          <h3 class="res-title">[Gated download title]</h3>
-          <p class="res-copy">[One line on what it is for.] Ask for an email first.</p>
+          <h3 class="res-title">Marketing Hub ROI calculator</h3>
+          <p class="res-copy">Put your own numbers in and see what implementing HubSpot Marketing Hub is worth before you sign anything.</p>
           <span class="res-foot">
             <span class="res-go">Get it <span class="arrow" aria-hidden="true">&rarr;</span></span>
-            <span class="res-fact">[PDF]</span>
+            <span class="res-fact">Google Sheet</span>
           </span>
         </a>
-        <div class="res-card reveal" data-res-type="downloadables">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-          </span>
-          <h3 class="res-title">[Download title 3]</h3>
-          <p class="res-copy">[One line on what it is for.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[PDF]</span>
-          </span>
-        </div>
-        <div class="res-card reveal" data-res-type="downloadables">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-          </span>
-          <h3 class="res-title">[Download title 4]</h3>
-          <p class="res-copy">[One line on what it is for.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[DOCX]</span>
-          </span>
-        </div>
-        <div class="res-card reveal" data-res-type="downloadables">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-          </span>
-          <h3 class="res-title">[Download title 5]</h3>
-          <p class="res-copy">[One line on what it is for.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[XLSX]</span>
-          </span>
-        </div>
-        <div class="res-card reveal" data-res-type="downloadables">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-          </span>
-          <h3 class="res-title">[Download title 6]</h3>
-          <p class="res-copy">[One line on what it is for.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[PDF]</span>
-          </span>
-        </div>
-        <div class="res-card reveal" data-res-type="downloadables">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-          </span>
-          <h3 class="res-title">[Download title 7]</h3>
-          <p class="res-copy">[One line on what it is for.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[CSV]</span>
-          </span>
-        </div>
-        <div class="res-card reveal" data-res-type="downloadables">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
-          </span>
-          <h3 class="res-title">[Download title 8]</h3>
-          <p class="res-copy">[One line on what it is for.]</p>
-          <span class="res-foot">
-            <span class="res-go">Coming soon</span>
-            <span class="res-fact">[PDF]</span>
-          </span>
-        </div>
     </div>
-
-      <div class="res-pager" data-res-pager>
-        <button class="res-page-btn" type="button" data-res-prev aria-label="Previous downloadables">&larr;</button>
-        <span class="res-page-count" data-res-page-count role="status">Page 1 of 2</span>
-        <button class="res-page-btn" type="button" data-res-next aria-label="More downloadables">&rarr;</button>
-      </div>
   </div>
 </section>
 
@@ -415,12 +313,11 @@
   <div class="shell">
     <div class="res-shelf-head">
       <h2 class="h2">Games</h2>
-      <p class="sec-sub sec-sub-left">RevOps, but the version you can play at your desk.</p>
     </div>
 
     <div class="res-grid" data-res-grid data-res-per="8">
         <a class="res-card reveal" href="../puzzle" data-res-type="games">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
+          <span class="res-thumb is-art"><svg class="rh-art" viewBox="0 0 240 260" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="10" y="20" width="66" height="66" rx="12"/><rect x="87" y="20" width="66" height="66" rx="12"/><rect x="164" y="20" width="66" height="66" rx="12"/><rect x="10" y="97" width="66" height="66" rx="12"/><rect x="87" y="97" width="66" height="66" rx="12"/><rect x="164" y="97" width="66" height="66" rx="12"/><rect x="10" y="174" width="66" height="66" rx="12"/><rect x="87" y="174" width="66" height="66" rx="12"/><rect x="164" y="174" width="66" height="66" rx="12"/></svg>
           </span>
           <h3 class="res-title">The RevOps puzzle</h3>
           <p class="res-copy">Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.</p>
@@ -430,7 +327,7 @@
           </span>
         </a>
         <a class="res-card reveal" href="../hop" data-res-type="games">
-          <span class="res-thumb"><span class="res-thumb-ph" aria-hidden="true"></span>
+          <span class="res-thumb is-art"><svg class="rh-art" viewBox="0 0 240 260" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 240h216"/><rect x="22" y="208" width="34" height="32" rx="7"/><rect x="192" y="204" width="36" height="36" rx="7"/><path d="M44 202c5-16 9-28 14-40" stroke-dasharray="6 10"/><path d="M88 132c-8-24 7-43 32-41 23 2 36 18 31 37-5 17-25 23-42 18-12-3-18-7-21-14z"/><circle cx="166" cy="112" r="18"/><path d="M159 96c-9-22-12-41-4-50 9 9 11 32 12 48"/><path d="M170 94c0-21 5-38 14-42 5 11-1 30-5 40"/><circle cx="173" cy="107" r="2.8" fill="currentColor" stroke="none"/><path d="M146 139c10 4 16 10 17 18 5 1 10 0 14-2"/><path d="M135 145c8 6 13 13 14 21 5 1 10 0 14-2"/><path d="M106 140c-4 12-13 19-24 21-6 0-11-1-15-4"/><path d="M92 105c-9-1-14 5-13 11 1 6 8 9 14 6"/></svg>
           </span>
           <h3 class="res-title">The RevOps run</h3>
           <p class="res-copy">Jump the fires and duck the requests. The pace picks up the longer you last.</p>
@@ -565,6 +462,6 @@
   </svg>
 </button>
 
-<script src="../assets/js/site.js?v=60f2478eb6"></script>
+<script src="../assets/js/site.js?v=79ca08be3d"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `60f2478eb6` — derived from a hash of the assets by
+**Current build stamp:** `79ca08be3d` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -24,6 +24,158 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   disk for exactly this reason.
 - **there is no remote yet**, so the Pushing section at the end still does
   not work as written. See "Deploying to GitHub Pages" in the README.
+
+---
+
+## 13 September: /resources and /hubspot
+
+Two pages, one session. Both are generated, so everything below is an edit
+to `tools/build-pages.js`, `assets/css/site.css` or `assets/js/site.js` and
+none of it is in the HTML.
+
+### /resources
+
+**The featured card is a slider now.** Three resources instead of one, on a
+fifteen second rotation with three dots underneath: the Ignite Group case
+study, the Marketing Hub ROI calculator and the RevOps puzzle. Edit
+`FEATURED` in `build-pages.js`; the `featured: true` flag that used to sit on
+one entry in `RESOURCES` is gone, because the slider is its own short list
+rather than a flag on a longer one.
+
+The three slides are stacked in ONE GRID CELL, not laid out in a row. That is
+what keeps the card as tall as the tallest of the three so it does not resize
+under the reader mid-rotation. The two that are not showing keep their space,
+which is why `site.js` has to take their links out of the tab order by hand.
+Without the script the first slide is already `.is-on` in the markup and the
+dots are inert, so nothing is ever blank.
+
+The timer pauses on hover and on focus inside the card, and stops for good
+once a dot is clicked.
+
+**The card wears the case study plate.** Mist, the soft white scrim and
+`start-panel-bg.webp`, exactly as `.cs-head-panel` does, replacing the warm
+peach ramp. /resources and a case study now open on the same object, which is
+the point — the featured card most often points at one. The contrast
+measurement is unchanged because it is the same artwork at the same crop.
+
+**Nothing on the card but four things**: title, one line, the link and the
+drawing. The kind-and-format line in the corner (`Game · Plays in the
+browser`) is gone.
+
+**THE LINE ART.** Four inline SVGs in `ART` in `build-pages.js`, all in one
+240x260 box with a 3.6 stroke: a case study page, a calculator, the puzzle's
+3x3 of 12-radius tiles, and the hare mid-leap for the run. Inline rather than
+four files because each is used at two sizes on two grounds and `currentColor`
+does the theme swap.
+
+On the featured card the drawing is pinned to the card's BOTTOM edge and is
+taller than the card, so it climbs out over the top into the header above.
+Height drives it and the width falls out of the box's aspect ratio, which is
+how it stays near a third of the card at every width. **Nothing in that chain
+may take `overflow: hidden`** or the overhang vanishes silently.
+
+On the dark theme the overhang leaves the light plate and lands on a navy
+page, where pinned navy ink is invisible. Two tight `drop-shadow` filters in
+paper give every stroke a light edge; they hug the line rather than pooling
+behind it, and over the light half they fall on paper-coloured ground and
+cannot be seen. A wash behind the drawing was tried first and read as a
+smudge — it has to end somewhere, and wherever it ends is a line across the
+card.
+
+Below 760px the drawing drops under the copy and centres inside the card.
+
+**No subheads on the shelves.** The five `sub` lines came out of
+`RESOURCE_TYPES`. `resShelf` still renders one if a type has it.
+
+**Case study cards carry their meta as tags.** The same four rows the case
+study's own meta column lists — services, tools, industry, team size — read
+out of the same arrays, in the same order. They replaced the figures, which
+were `00%` and `[measure]` on four of the five. The service label in the
+bottom corner went with them: services are the first tags in the row now.
+
+**Card hover is /pricing's hover.** Mist edge, 4px lift, the deep soft
+shadow. It was a full-strength navy border, which read as an outline snapping
+on rather than a card lifting.
+
+**One real video, one real download.** The six bracketed video cards and the
+gated video are gone; the shelf is the INBOUND 2025 Dharmesh Shah keynote,
+`pPQngmSEIe0`, opening in the existing lightbox. Its thumbnail is YouTube's
+own by URL — **the one external image on the site**, deliberately, so the
+still stays the video's still. Set `thumb` to a local crop if that ever
+matters more.
+
+The eight bracketed downloads and the gated download skeleton are gone too.
+The shelf is the Marketing Hub ROI calculator, gated, at
+`/resources/marketing-hub-roi-calculator`.
+
+`resources/gated-video.html` and `resources/gated-download.html` were
+**deleted**, not left behind: nothing generates or links to them now.
+
+**The gate works.** The landing page carries a real four-field form with the
+browser's own validation, and on submit it goes to the resource's `redirect`
+— for this one, the Google Sheet. The form's `action` is the same URL so the
+no-script path still lands. **Nothing is stored and nothing is stopped**;
+this is a gate in the sense that it asks. When the HubSpot form id exists,
+the `<form>` is replaced by the embed and the SAME url goes in HubSpot's own
+redirect setting. `redirect` stays in `RESOURCES` as the record of it.
+
+**Both games have artwork** on their cards — the 3x3 for the puzzle, the hare
+for the run — on a pale plate, because the ink is navy and the card's own
+surface follows the theme.
+
+### /hubspot
+
+- **One button in the header.** The call is the ask and is the only navy box;
+  the audit is a text link with an arrow beside it, which is what every other
+  page does.
+- **A "What is HubSpot?" section**, the homepage's About split with the mark
+  on the left. Two files, one shown: `tools/hubspot.webp` on light,
+  `hubspot-logo-white.webp` on dark, the nav's brand-base / brand-alt swap.
+  The white file is the same artwork with every opaque pixel taken to white,
+  so the two are in register. **No partner badge** — it is in the header four
+  inches above.
+- "We work across all six hubs" is now **"Certified experts in all 6 Hubs"**.
+- **The tool clump off the homepage** sits under the hub cards, headed
+  "Connect HubSpot to all the tools in your stack", with HubSpot's own mark
+  dropped. `toolClump()` takes a `skip` list for that.
+- **The reviews block is one review.** The sticky title beside a scrolling
+  column was the tallest thing on the page and put twelve hundred words of
+  praise between the reader and the four things the page wants clicked. It is
+  now Amy's review — the one about a Marketing Hub implementation — centred
+  on paper with the stars above it and the partner directory one link below.
+  `.prof*` is gone from the stylesheet. `REVIEWS` is still in
+  `build-pages.js` and is now unused.
+- "Ways we can help" is **"How we help teams with HubSpot"**, and all four
+  rows have James' copy and his CTAs: Request an audit (the homepage's own
+  words for the audit), Schedule a discovery call, See how we do it, Retainer
+  options.
+
+### Checks
+
+`tools/resources-smoke.js` grew eleven assertions: the slider's three slides
+and dots, exactly one slide on before any script runs, hidden slides out of
+the tab order, art on every slide, no fact line on the featured card, no
+shelf subheads, tags on every case study card and no service in the corner,
+and for every gated page that the form has a destination and the no-script
+action agrees with it.
+
+Two of its existing assertions were rewritten rather than left failing: the
+placeholder check now passes on ZERO placeholders (it is guarding against a
+placeholder that is also a link, not counting them), and the gated check no
+longer hard-codes two items.
+
+All three suites pass: `tools/smoke.js`, `tools/resources-smoke.js`,
+`tools/hubs-smoke.js`.
+
+### Still open on these two
+
+- The puzzle and the run are still called "The RevOps puzzle" and "The RevOps
+  run" in `RESOURCES`. James referred to them as Scramble and Hopper; the art
+  keys use those names, the titles were left alone. Say the word and both
+  rename in one place.
+- The ROI calculator's gate is ours, not HubSpot's. See above.
+- Case study 5 (Ignite Group) is the first featured slide and its page is
+  still the template with bracketed copy.
 
 ---
 
@@ -1517,18 +1669,24 @@ coming back.
 
 **Blocking launch, needs building**
 
-- Real resources. Ten bracketed placeholder cards on `/resources` across
-  Blog, Videos and Downloadables. Each one is a title and an `href` in
-  `RESOURCES` in `tools/build-pages.js`.
+- ~~Real resources. Ten bracketed placeholder cards on `/resources`~~ —
+  cleared on 13 September. There are no bracketed cards left on the page:
+  two blog posts, one video, one gated download and the two games are all
+  real. The shelves are thin rather than padded, which is the honest state.
+  More is still wanted, and each one is a single object in `RESOURCES`.
 - The blog moved to `/resources/blog` on this domain; `blog.revhops.com` is
   gone. The Blog shelf is real now: two posts, each with a `thumb` cropped
   to the shelf's 16:9 in `assets/img/` and a `date` that takes the footer
   slot the placeholders use for "Coming soon". Add a post by adding an entry
   to the blog block of `RESOURCES` in `tools/build-pages.js`, newest first;
   the shelf teases four and the See-all carries the rest.
-- The two gated skeletons at `/resources/gated-video` and
-  `/resources/gated-download` have bracketed copy and no form. They need the
-  HubSpot form id, or deleting from `RESOURCES`.
+- ~~The two gated skeletons at `/resources/gated-video` and
+  `/resources/gated-download`~~ — deleted on 13 September. The one gated item
+  is the Marketing Hub ROI calculator, and its form is ours rather than
+  HubSpot's: four fields, the browser's own validation, and a redirect to the
+  sheet on submit. It still needs the HubSpot form id, at which point the
+  `<form>` is swapped for the embed and the same URL goes in HubSpot's
+  redirect setting.
 
 - Five service detail pages. `services.html` rows link to
   `revops-consulting.html`, `solution-design.html`, `crm-implementations.html`,

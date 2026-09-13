@@ -733,6 +733,128 @@
 })();
 
 /* ==========================================================================
+   RESOURCES — the featured slider
+
+   Three slides stacked in one grid cell, crossfading every fifteen seconds,
+   with three dots under the card. The stylesheet does the fade; this picks
+   which slide is .is-on.
+
+   WITHOUT THIS SCRIPT the first slide is already marked .is-on in the
+   markup and the dots are inert. Nobody sees a blank card and nobody sees
+   three slides on top of each other.
+
+   THE HIDDEN SLIDES ARE STILL IN THE LAYOUT — that is what keeps the card's
+   height still while it rotates — so their links have to be taken out of the
+   tab order by hand. A visibility: hidden element is already skipped by
+   most browsers, but the two of them are not the same guarantee and a link
+   you can Tab to but cannot see is the worst version of this.
+
+   The timer PAUSES on hover and on focus inside the card, because a card
+   that changes out from under somebody reading it is worse than one that
+   never rotates. It stops for good the moment a dot is clicked: at that
+   point the reader has said which one they want.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var box = document.querySelector('[data-res-slider]');
+  if (!box) return;
+
+  var slides = [].slice.call(box.querySelectorAll('[data-res-slide]'));
+  var dots   = [].slice.call(box.querySelectorAll('[data-res-dot]'));
+  if (slides.length < 2) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var current = 0;
+  var timer = null;
+  var done = false;      /* the reader has chosen; stop rotating for good */
+
+  function draw() {
+    slides.forEach(function (s, i) {
+      var on = i === current;
+      s.classList.toggle('is-on', on);
+      s.setAttribute('aria-hidden', on ? 'false' : 'true');
+      [].forEach.call(s.querySelectorAll('a, button'), function (el) {
+        if (on) el.removeAttribute('tabindex');
+        else el.setAttribute('tabindex', '-1');
+      });
+    });
+    dots.forEach(function (d, i) {
+      d.setAttribute('aria-current', i === current ? 'true' : 'false');
+    });
+  }
+
+  function go(i) {
+    current = (i + slides.length) % slides.length;
+    draw();
+  }
+
+  function start() {
+    if (timer || done || reduce.matches || document.hidden) return;
+    timer = setInterval(function () { go(current + 1); }, 15000);
+  }
+  function pause() {
+    if (!timer) return;
+    clearInterval(timer);
+    timer = null;
+  }
+
+  dots.forEach(function (d, i) {
+    d.addEventListener('click', function () { done = true; pause(); go(i); });
+  });
+
+  box.addEventListener('pointerenter', pause);
+  box.addEventListener('pointerleave', start);
+  box.addEventListener('focusin', pause);
+  box.addEventListener('focusout', function (e) {
+    if (!box.contains(e.relatedTarget)) start();
+  });
+
+  /* only running while the page is actually on screen */
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) pause(); else start();
+  });
+
+  draw();
+  start();
+})();
+
+/* ==========================================================================
+   RESOURCES — the gate
+
+   The form on a gated resource's landing page. It is ours rather than
+   HubSpot's for now — see resourcePage in tools/build-pages.js — and all it
+   does is send the browser to the resource's destination once the browser's
+   own validation has passed.
+
+   submit only fires on a valid form, because the fields carry `required`
+   and nothing sets novalidate, so there is no checking to repeat here.
+
+   The form's `action` is the same URL, so with no script at all the plain
+   GET still lands on the resource. It arrives with the field values on the
+   query string, which is untidy and is the correct trade for a fallback
+   nobody should reach.
+
+   NOTHING IS STORED. This is a gate in the sense that it asks; it is not a
+   gate in the sense that it stops anyone. When the HubSpot form id goes in,
+   this whole block stops mattering and the redirect is set in HubSpot.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var form = document.querySelector('[data-res-gate]');
+  if (!form) return;
+
+  var to = form.getAttribute('data-res-gate');
+  if (!to) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    window.location.href = to;
+  });
+})();
+
+/* ==========================================================================
    RESOURCES — pagination
 
    Any shelf whose markup contains a pager pages through its own cards in

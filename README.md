@@ -35,7 +35,7 @@ services/solution-design.html           /services/solution-design
 case-studies/index.html                 /case-studies
 case-studies/case-study-one.html        /case-studies/case-study-one
 resources/index.html                    /resources
-resources/gated-download.html           /resources/gated-download
+resources/marketing-hub-roi-calculator.html   /resources/marketing-hub-roi-calculator
 hubspot/index.html                      /hubspot
 pipedrive/index.html                    /pipedrive
 ```
@@ -180,8 +180,15 @@ the pagination, the lightbox and the gated landing page all follow from it.
   `/resources/<slug>` with the form on it and sends the card there instead —
   gated is a flag rather than a type, so a video and a download are gated the
   same way.
-- `featured: true` puts it in the gradient card at the top. Exactly one entry
-  carries it.
+- `redirect` is where a gated item's form sends you on submit, and the same
+  URL goes in HubSpot's redirect setting when the embed replaces the form.
+  `gateLede` and `gateNote` fill in the landing page's left column.
+- `art` is a key in `ART` and puts one of the inline line drawings in the
+  card's thumb instead of a picture. `thumb` is a picture, and an absolute
+  URL is used as-is rather than being made relative.
+- **The card at the top of the page is not in `RESOURCES`.** It is a slider
+  over `FEATURED`, a short list of its own: `{ art, title, href, go, copy }`.
+  Three entries today, rotating every fifteen seconds.
 - **Case studies are not in `RESOURCES`.** That shelf reads `CASES` directly,
   so the two lists cannot drift apart.
 

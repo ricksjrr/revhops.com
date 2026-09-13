@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>[Gated download title] — RevHops</title>
-<meta name="description" content="[One line on what it is for.] Ask for an email first.">
+<title>Marketing Hub ROI calculator — RevHops</title>
+<meta name="description" content="Put your own numbers in and see what implementing HubSpot Marketing Hub is worth before you sign anything.">
 <link rel="icon" href="../assets/img/revhops-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="../assets/css/site.css?v=60f2478eb6">
+<link rel="stylesheet" href="../assets/css/site.css?v=79ca08be3d">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -80,11 +80,11 @@
     <div class="page-hero-inner">
       <div class="page-hero-text">
         <a class="hero-back" href="../resources"><span class="arrow" aria-hidden="true">&larr;</span> All resources</a>
-        <h1 class="h1" data-nav-clear>[Gated download title]</h1>
-        <p class="lede">[One line on what it is for.] Ask for an email first.</p>
+        <h1 class="h1" data-nav-clear>Marketing Hub ROI calculator</h1>
+        <p class="lede">Put your own numbers in and see what implementing HubSpot Marketing Hub is worth before you sign anything.</p>
         <dl class="hero-meta">
           <div><dt>Type</dt><dd>Downloadable</dd></div>
-          <div><dt>Format</dt><dd>[PDF]</dd></div>
+          <div><dt>Format</dt><dd>Google Sheet</dd></div>
           <div><dt>Cost</dt><dd>Free</dd></div>
         </dl>
       </div>
@@ -96,16 +96,40 @@
   <div class="shell">
     <div class="res-gate">
       <div class="res-gate-text reveal reveal-left">
-        <p class="statement">[What this is, in a line.]</p>
-        <p class="statement-note">[Two or three sentences on who it is for and what they will
-          be able to do with it that they cannot do now.]</p>
+        <p class="statement">A spreadsheet that turns the Marketing Hub decision into a number.</p>
+        <p class="statement-note">Built for the people who have to justify the licence rather than use it. Put in your list size, what you spend on the tools it replaces, what a lead is worth and how much of the work is manual today. It gives you a first-year return, a payback month and the assumptions written down beside the answer, so the finance conversation is about the inputs rather than about whether the number is made up.</p>
       </div>
       <div class="res-gate-form reveal reveal-right">
         <h2 class="res-gate-title">Where should we send it?</h2>
-        <div class="res-form-ph">
-          <span class="res-form-note">HubSpot form</span>
-          <p>Portal 46722926 is already loaded. Drop the form id in and this block goes.</p>
-        </div>
+
+        <!-- Swap this whole <form> for the HubSpot embed when the form id
+             exists, and put the same URL in HubSpot's redirect setting. -->
+        <form class="form res-gate-fields" method="get"
+              action="https://docs.google.com/spreadsheets/d/1edXmchNdj7KFnjnOTsvUG1657feyzltLTfy5-xj_DaY/edit?gid=0#gid=0"
+              data-res-gate="https://docs.google.com/spreadsheets/d/1edXmchNdj7KFnjnOTsvUG1657feyzltLTfy5-xj_DaY/edit?gid=0#gid=0">
+          <div class="form-row">
+            <div class="field">
+              <label for="gate-first">First name</label>
+              <input id="gate-first" name="firstname" type="text" autocomplete="given-name" required>
+            </div>
+            <div class="field">
+              <label for="gate-last">Last name</label>
+              <input id="gate-last" name="lastname" type="text" autocomplete="family-name" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="gate-email">Work email</label>
+            <input id="gate-email" name="email" type="email" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="gate-company">Company</label>
+            <input id="gate-company" name="company" type="text" autocomplete="organization">
+          </div>
+          <div class="form-foot">
+            <button class="btn btn-primary" type="submit">Get it</button>
+            <p class="form-note">Straight through to it on submit. No sequence, no drip.</p>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -212,6 +236,6 @@
   </svg>
 </button>
 
-<script src="../assets/js/site.js?v=60f2478eb6"></script>
+<script src="../assets/js/site.js?v=79ca08be3d"></script>
 </body>
 </html>
