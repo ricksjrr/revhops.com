@@ -691,7 +691,12 @@ main > section > .shell {
 .reveal-left { transform: translate3d(-28px, 0, 0); }
 .reveal-right { transform: translate3d(28px, 0, 0); }
 
-.reveal .reveal.is-in 
+/* An orphan selector sat here — `.reveal .reveal.is-in` with no block and no
+   semicolon — which glued itself to the front of the next rule and turned
+   `.rail` into `.reveal .reveal.is-in .rail`. Nothing on the site uses a
+   bare `.rail` today, so it broke nothing visible, but it is the kind of
+   thing that eats the NEXT rule somebody writes here. Whatever the nested
+   reveal was going to say is gone; it can come back with braces on it. */
 .rail {
   height: 2px; border-radius: 2px; background: var(--line);
   position: relative; overflow: hidden; margin-bottom: 26px;
@@ -3080,6 +3085,16 @@ main { overflow-x: clip; }
   padding-bottom: clamp(30px, 2.8vw, 42px);
 }
 .page-hero-markhead .page-hero-inner { align-items: start; }
+/* AND THE SECTION UNDER IT GIVES THE PADDING BACK. Every other header on
+   the site has no bottom padding, so the whole gap is the next section's
+   --sec-pad and every page opens the same. This one has to carry the
+   badge's overhang, and left alone that overhang was simply added to the
+   gap: the header ran 40px longer than anywhere else before the first
+   heading. Subtracting it here keeps the distance the site's, and the badge
+   stands in the space rather than pushing it open. */
+.page-hero-markhead + .section {
+  padding-top: calc(var(--sec-pad) - clamp(30px, 2.8vw, 42px));
+}
 
 /* A THIRD BIGGER THAN THE BAND. The badge is height-bound — max-height: 100%
    of the media column — so the only way to grow it is to let it past that,
@@ -5481,15 +5496,17 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   padding-top: clamp(46px, 5.4vw, 84px);
   padding-bottom: clamp(18px, 2.2vw, 30px);
 }
-/* 15% NARROWER THAN THE SHELL, and left-aligned in it rather than centred.
-   At the full width the card was a band across the page and the copy in it
-   ran to a 60% measure of something very wide. Left-aligned because every
-   heading, card and shelf below it starts on the shell's left edge, and a
-   centred card at the top would be the one thing on the page that does not.
+/* 15% NARROWER THAN THE SHELL, and CENTRED IN IT. At the full width the
+   card was a band across the page with its copy running to a 60% measure of
+   something very wide. It was left-aligned first, on the reasoning that
+   every heading and shelf below it starts on the shell's left edge — which
+   read as a card that had slipped, because the gap it left was all on one
+   side. Centred, the 15% comes off both edges and the eyebrow, the card and
+   the dots are one block.
 
-   The drawing is positioned off the CARD, so it comes in with the right
-   edge and the overhang is unaffected. */
-.res-feature-wrap { position: relative; max-width: 85%; }
+   The drawing is positioned off the CARD, so it comes in with the right edge
+   and the overhang is unaffected. */
+.res-feature-wrap { position: relative; max-width: 85%; margin-inline: auto; }
 @media (max-width: 900px) {
   /* below the breakpoint the shell is already the narrow measure and taking
      another 15% off it leaves a card with two words to a line */

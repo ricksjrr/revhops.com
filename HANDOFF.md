@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `5afd5f1971` — derived from a hash of the assets by
+**Current build stamp:** `8f33c9de97` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -24,6 +24,41 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   disk for exactly this reason.
 - **there is no remote yet**, so the Pushing section at the end still does
   not work as written. See "Deploying to GitHub Pages" in the README.
+
+---
+
+## 13 September, fourth pass
+
+- **The featured card is centred in the shell**, not left-aligned. The 15%
+  now comes off both edges. Left-aligned it read as a card that had slipped,
+  because all of the gap it left was on one side.
+- **The gap under /hubspot's header is the site's gap again.** That header
+  is the only one that carries a bottom padding of its own — the badge's
+  overhang — and left alone that was simply added to the next section's
+  `--sec-pad`, so the page ran 40px longer than any other before its first
+  heading. `.page-hero-markhead + .section` subtracts it back. The badge
+  stands in the space rather than pushing it open, and the distance from it
+  to the heading is about 64px at 1440.
+- **An orphan CSS selector is gone.** `.reveal .reveal.is-in` sat above
+  `.rail` with no block and no semicolon on it, which glued the two together
+  and turned `.rail` into `.reveal .reveal.is-in .rail`. Nothing uses a bare
+  `.rail` today so it broke nothing visible — but it would have quietly
+  eaten the next rule anybody added there. It predates this session.
+
+### Open — cannot reproduce
+
+**James reports the homepage's maturity section is "squished and
+right-justified".** Measured on the built file at 390, 600, 700, 745, 770,
+790, 820, 880, 900, 1000, 1024, 1100, 1280, 1440, 1512, 1536, 1680 and 1920,
+at 720 / 760 / 860 / 900 / 1000 tall, on all five stages, and at five scroll
+positions: `.mat` and `.mcards` are the same box as `.shell` every time, the
+three card columns are equal to a pixel, and nothing carries a transform.
+No console errors from the page's own scripts.
+
+So it is something not in the built file: a stale stylesheet, a specific
+browser or zoom level, or the deployed copy, which is several commits
+behind. Needs a screenshot and a window width before it is worth chasing
+further.
 
 ---
 
