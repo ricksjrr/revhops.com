@@ -3054,6 +3054,33 @@ main { overflow-x: clip; }
   min-width: 0;
 }
 
+/* ---------- a header whose mark is bigger than its band ----------
+
+   /hubspot only. Two things this fixes, and they are the same thing:
+
+   THE TITLE SAT 44px LOWER THAN EVERY OTHER PAGE'S. The shared header
+   centres its two columns on each other, which is right when the artwork is
+   a photograph running the height of the band. With a badge in that column
+   it meant the title floated in the middle while /services, /resources and
+   the rest all start theirs at the same height. Top-aligned here, with
+   .page-hero-nomedia's extra 30px, so the two pages open on the same line.
+
+   THE BADGE RAN OUT OF THE BOTTOM OF THE SECTION. It is a third taller than
+   the band by design — see .is-big — and centred, so it overhangs by about
+   28px at each end. At the top that is clearance under the nav; at the
+   bottom it was crossing into the section below. The bottom padding here is
+   that overhang and nothing more: the header still gives no gap of its own,
+   it just stops the artwork leaving the room. Re-measure if .is-big's
+   percentage changes.
+
+   The badge does not move down so much as stay put while the copy rises,
+   which is the same picture and one fewer number to keep in step. */
+.page-hero-markhead {
+  padding-top: calc(var(--nav-h) + clamp(26px, 3vw, 48px) + 30px);
+  padding-bottom: clamp(30px, 2.8vw, 42px);
+}
+.page-hero-markhead .page-hero-inner { align-items: start; }
+
 /* A THIRD BIGGER THAN THE BAND. The badge is height-bound — max-height: 100%
    of the media column — so the only way to grow it is to let it past that,
    and the only way to let it past that is to stop clipping. .is-mark never
@@ -5454,7 +5481,20 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   padding-top: clamp(46px, 5.4vw, 84px);
   padding-bottom: clamp(18px, 2.2vw, 30px);
 }
-.res-feature-wrap { position: relative; }
+/* 15% NARROWER THAN THE SHELL, and left-aligned in it rather than centred.
+   At the full width the card was a band across the page and the copy in it
+   ran to a 60% measure of something very wide. Left-aligned because every
+   heading, card and shelf below it starts on the shell's left edge, and a
+   centred card at the top would be the one thing on the page that does not.
+
+   The drawing is positioned off the CARD, so it comes in with the right
+   edge and the overhang is unaffected. */
+.res-feature-wrap { position: relative; max-width: 85%; }
+@media (max-width: 900px) {
+  /* below the breakpoint the shell is already the narrow measure and taking
+     another 15% off it leaves a card with two words to a line */
+  .res-feature-wrap { max-width: none; }
+}
 
 /* SAYS WHAT THE CARD IS. Three cards rotating at the top of a page of cards
    needed something to mark them as a set rather than as the first shelf, and
@@ -6052,9 +6092,16 @@ div.res-card .res-go { color: var(--muted); }
    section read as a gap with a quote in it.
    ========================================================================== */
 .hs-testi-section { padding-block: clamp(38px, 4.2vw, 60px); }
+/* THE QUOTE LEADS, the proof sits beside it. The screenshot went second on
+   13 September: it is the evidence for the review, and evidence reads better
+   after the claim than before it.
+
+   The proof column is 20% narrower than it was, and the shot fills it, so
+   the picture is sized by the grid rather than by a width on the image —
+   one number, and the link under it stays flush with its left edge. */
 .hs-testi {
   display: grid;
-  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  grid-template-columns: minmax(0, 1.26fr) minmax(0, .74fr);
   align-items: center;
   gap: clamp(28px, 4.4vw, 64px);
 }

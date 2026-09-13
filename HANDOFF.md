@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `fc727a7448` — derived from a hash of the assets by
+**Current build stamp:** `5afd5f1971` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -24,6 +24,50 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   disk for exactly this reason.
 - **there is no remote yet**, so the Pushing section at the end still does
   not work as written. See "Deploying to GitHub Pages" in the README.
+
+---
+
+## 13 September, third pass
+
+- **The featured card is 15% narrower than the shell** and left-aligned in
+  it. At full width it was a band across the page with its copy running to a
+  60% measure of something very wide. Left-aligned, not centred, because
+  every heading and card below it starts on the shell's left edge. The
+  drawing is positioned off the card, so the overhang came in with the right
+  edge and nothing else had to move. Below 900px the cap comes off: the
+  shell is already the narrow measure there.
+- **Both games are renamed**: The RevOps puzzle is **RevOps Unscrambler**
+  and The RevOps run is **RevOps Runner**. Titles, `<title>` tags and the
+  runner's `aria-label` all follow. The `ART` keys stayed `scramble` and
+  `hopper` — internal, and not worth the churn.
+- **No format tag on the games cards.** Both said "Plays in the browser" in
+  the corner, under a heading that says Games, on a website.
+- **The HubSpot review leads and the screenshot follows it**, swapped on the
+  grid, and the proof column is 20% narrower. The shot fills its column, so
+  the picture is sized by the grid rather than by a width on the image and
+  the link under it stays flush with its left edge. The reveal directions
+  swapped with the columns.
+- **/hubspot's title sits where /services' title sits.** The shared header
+  centres its two columns on each other, which is right for a photograph
+  running the height of the band and wrong for a badge: it left this one
+  page's title 44px lower than every other page's. `.page-hero-markhead`
+  top-aligns the columns and takes `.page-hero-nomedia`'s extra 30px, so the
+  two pages open on the same line at every width — measured at 1440, 1200
+  and 1024, h1 and lede both to the pixel.
+
+  The badge is a third taller than the band by design and centred, so it
+  overhangs about 28px at each end; at the bottom it was crossing into the
+  section below. The header now carries a bottom padding that is that
+  overhang and nothing more. **Re-measure if `.is-big`'s percentage
+  changes.** The badge does not move down so much as hold still while the
+  copy rises — the same picture, one fewer number to keep in step.
+
+### Open
+
+- **The RevOps Runner card still has the line drawing on it.** James has a
+  picture for it; it did not come through with the message. Drop the file in
+  `assets/img/` and set `thumb` on the `games` entry in `RESOURCES` — `art`
+  and `thumb` are alternatives, so removing `art` is the other half of it.
 
 ---
 
@@ -232,10 +276,10 @@ All three suites pass: `tools/smoke.js`, `tools/resources-smoke.js`,
 
 ### Still open on these two
 
-- The puzzle and the run are still called "The RevOps puzzle" and "The RevOps
-  run" in `RESOURCES`. James referred to them as Scramble and Hopper; the art
-  keys use those names, the titles were left alone. Say the word and both
-  rename in one place.
+- ~~The puzzle and the run are still called "The RevOps puzzle" and "The
+  RevOps run"~~ — renamed on 13 September to **RevOps Unscrambler** and
+  **RevOps Runner**. The `ART` keys are still `scramble` and `hopper`; they
+  are internal and were not worth churning.
 - The ROI calculator's gate is ours, not HubSpot's. See above.
 - Case study 5 (Ignite Group) is the first featured slide and its page is
   still the template with bracketed copy.

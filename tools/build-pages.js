@@ -1787,6 +1787,10 @@ var hubspot = {
   navCurrent: '/hubspot',
   title: 'HubSpot Platinum Solutions Partner — RevHops',
   description: 'RevHops is a HubSpot Platinum Solutions Partner working across all six hubs: Sales, Marketing, Revenue, Service, Data and Content.',
+  /* The title sits where the /services title sits and the badge drops into
+     the space beside it, rather than the pair of them being centred on each
+     other halfway down the band. See .page-hero-markhead. */
+  heroClass: 'page-hero-markhead',
   h1: 'HubSpot',
   lede: 'An all-in-one, best-in-class platform that unifies sales, marketing, support &amp; finance in one spot.',
 
@@ -1851,18 +1855,7 @@ var hubspot = {
     section(
 '    <div class="hs-testi">\n' +
 '\n' +
-'      <div class="hs-testi-proof reveal reveal-left">\n' +
-'        <a class="hs-testi-shot" href="' + PARTNER_PROFILE + '"\n' +
-'           target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">\n' +
-'          <img src="../assets/img/hubspot-partner-profile.webp"\n' +
-'               alt="" loading="lazy">\n' +
-'        </a>\n' +
-'        <a class="text-link hs-testi-link" href="' + PARTNER_PROFILE + '"\n' +
-'           target="_blank" rel="noopener">View our HubSpot partner profile\n' +
-'           <span class="arrow" aria-hidden="true">&rarr;</span></a>\n' +
-'      </div>\n' +
-'\n' +
-'      <figure class="hs-testi-body reveal reveal-right">\n' +
+'      <figure class="hs-testi-body reveal reveal-left">\n' +
 '        <h2 class="hs-testi-title"><span class="q">&ldquo;</span>&thinsp;Responsive &amp; Thorough&thinsp;<span class="q">&rdquo;</span></h2>\n' +
 '        <blockquote class="hs-testi-quote">\n' +
 '          <p>We partnered with RevHops on a complex HubSpot Marketing Hub Enterprise\n' +
@@ -1879,6 +1872,18 @@ var hubspot = {
 '        </figcaption>\n' +
       fiveStars('hs-testi-stars').replace(/^ {10}/gm, '        ') +
 '      </figure>\n' +
+'\n' +
+'\n' +
+'      <div class="hs-testi-proof reveal reveal-right">\n' +
+'        <a class="hs-testi-shot" href="' + PARTNER_PROFILE + '"\n' +
+'           target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">\n' +
+'          <img src="../assets/img/hubspot-partner-profile.webp"\n' +
+'               alt="" loading="lazy">\n' +
+'        </a>\n' +
+'        <a class="text-link hs-testi-link" href="' + PARTNER_PROFILE + '"\n' +
+'           target="_blank" rel="noopener">View our HubSpot partner profile\n' +
+'           <span class="arrow" aria-hidden="true">&rarr;</span></a>\n' +
+'      </div>\n' +
 '\n' +
 '    </div>\n', 'section hs-testi-section') +
 
@@ -2377,7 +2382,7 @@ var privacy = legalPage({
 });
 
 /* ---------- the puzzle ----------
-   A sliding tile game, linked from the footer only. The board, clock and
+   RevOps Unscrambler. A sliding tile game, linked from the footer only. The board, clock and
    dialog are markup here; everything that moves is assets/js/puzzle.js,
    which only this page loads (see `scripts` in tail()). The pictures are
    branded illustrations in assets/img/puzzle/, listed in puzzle.js. */
@@ -2385,7 +2390,7 @@ var privacy = legalPage({
 var puzzle = {
   file: 'puzzle.html',
   depth: 0,
-  title: 'The RevOps puzzle — RevHops',
+  title: 'RevOps Unscrambler — RevHops',
   description: 'A sliding tile puzzle from RevHops. Put the pieces of your revenue operations back in the right place, against the clock.',
   h1: 'Put your RevOps back together',
   lede: 'Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.',
@@ -2458,7 +2463,8 @@ var puzzle = {
 };
 
 /* ---------- the run ----------
-   A side-scrolling runner, linked from the footer only, beside the puzzle.
+   RevOps Runner. A side-scrolling runner, linked from the footer only,
+   beside the Unscrambler.
    The stats, board, cover, touch pads and dialog are markup here;
    everything that moves is assets/js/hop.js, which only this page loads.
    The rabbit is the brand icon, revhops-icon-white.png. */
@@ -2466,7 +2472,7 @@ var puzzle = {
 var hop = {
   file: 'hop.html',
   depth: 0,
-  title: 'The RevOps run — RevHops',
+  title: 'RevOps Runner — RevHops',
   description: 'A side-scrolling runner from RevHops. Jump the fires, duck the requests and see how far you get as the pace picks up.',
   h1: 'Outrun the request queue',
   lede: 'Jump the fires and duck the requests. The pace picks up the longer you last, so see how far you get.',
@@ -2489,7 +2495,7 @@ var hop = {
 '        </p>\n' +
 '      </div>\n' +
 '\n' +
-'      <div class="hp-stage" data-hp-stage tabindex="0" role="application" aria-label="The RevOps run. Space to jump, down arrow to duck.">\n' +
+'      <div class="hp-stage" data-hp-stage tabindex="0" role="application" aria-label="RevOps Runner. Space to jump, down arrow to duck.">\n' +
 '        <canvas class="hp-canvas" data-hp-canvas aria-hidden="true"></canvas>\n' +
 '        <div class="hp-cover" data-hp-cover>\n' +
 '          <button class="btn btn-primary btn-lg" type="button" data-hp-start>Start running</button>\n' +
@@ -2750,10 +2756,13 @@ var RESOURCES = [
   /* ---- games ----
      The two real ones. Both are finished and both link out, which is why
      the featured card is one of them rather than a bracketed placeholder. */
-  { type: 'games', title: 'The RevOps puzzle', meta: 'Plays in the browser',
+  /* NO `meta` ON EITHER. Both cards said "Plays in the browser" in the
+     corner, under a heading that says Games, on a website. It was answering
+     a question nobody had. */
+  { type: 'games', title: 'RevOps Unscrambler',
     href: '/puzzle', art: 'scramble',
     copy: 'Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.' },
-  { type: 'games', title: 'The RevOps run', meta: 'Plays in the browser',
+  { type: 'games', title: 'RevOps Runner',
     href: '/hop', art: 'hopper',
     copy: 'Jump the fires and duck the requests. The pace picks up the longer you last.' }
 ];
@@ -3020,7 +3029,7 @@ var FEATURED = [
     href: '/resources/marketing-hub-roi-calculator', go: 'Get the calculator',
     copy: 'Put your own numbers in and see what implementing HubSpot Marketing Hub is worth before you sign anything.' },
 
-  { art: 'scramble', kind: 'Game', title: 'The RevOps puzzle',
+  { art: 'scramble', kind: 'Game', title: 'RevOps Unscrambler',
     href: '/puzzle', go: 'Play it',
     copy: 'Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.' }
 ];
