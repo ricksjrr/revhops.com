@@ -32,7 +32,7 @@ w.Element.prototype.scrollIntoView=function(){};
 w.eval(js);
 
 const secs=[...d.querySelectorAll('[data-res-section]')].map(s=>s.getAttribute('data-res-section'));
-JSON.stringify(secs)===JSON.stringify(['blog','case-studies','videos','downloadables','games'])
+JSON.stringify(secs)===JSON.stringify(['downloadables','case-studies','blog','videos','games'])
   ? ok('five shelves, in the order RESOURCE_TYPES declares them') : bad('shelves are '+secs);
 
 /* Four, not five. A shelf with a See-all destination is a teaser: the
@@ -111,9 +111,30 @@ slides.length>1&&slides.length===fdots.length
 slides.filter(s=>s.classList.contains('is-on')).length===1
   ? ok('exactly one slide is showing, so the card is never blank without script')
   : bad('the slider does not have one slide on at rest');
+/* Whichever shape the slide is — a link with a card inside it, or a card
+   with a link inside it — nothing focusable on a hidden one may be reachable
+   by Tab. The slide is the link today; this does not assume it. */
+const focusables=s=>[...(/^(A|BUTTON)$/.test(s.tagName)?[s]:[]), ...s.querySelectorAll('a,button')];
 slides.filter(s=>!s.classList.contains('is-on'))
-  .every(s=>[...s.querySelectorAll('a,button')].every(el=>el.getAttribute('tabindex')==='-1'))
+  .every(s=>{const f=focusables(s);return f.length&&f.every(el=>el.getAttribute('tabindex')==='-1');})
   ? ok('and the hidden slides keep their links out of the tab order') : bad('a hidden slide is tabbable');
+
+/* THE WHOLE CARD IS THE TARGET, and it says what kind of thing it is. */
+slides.every(s=>/^(A|BUTTON)$/.test(s.tagName)&&(s.tagName==='BUTTON'||s.getAttribute('href')))
+  ? ok('every featured slide is one link, card-wide') : bad('a featured slide is not itself the link');
+slides.every(s=>{const k=s.querySelector('.res-feature-kind');return k&&k.textContent.trim();})
+  ? ok('and each one names its resource type') : bad('a featured slide has no type tag');
+d.querySelector('.res-feature-eyebrow')
+  ? ok('the slider is labelled as the featured set') : bad('nothing marks the top card as featured');
+
+/* THE SHELVES ARE IN JAMES' ORDER, and the filter pills follow them. */
+{
+  const want=['downloadables','case-studies','blog','videos','games'];
+  const got=[...d.querySelectorAll('[data-res-section]')].map(s=>s.dataset.resSection);
+  JSON.stringify(got)===JSON.stringify(want) ? ok('shelves in order: '+want.join(', ')) : bad('shelf order is '+got.join(', '));
+  const pills=[...d.querySelectorAll('[data-res-pick]')].map(t=>t.dataset.resPick);
+  JSON.stringify(pills)===JSON.stringify(['all'].concat(want)) ? ok('and the filter pills agree with them') : bad('pills read '+pills.join(', '));
+}
 [...d.querySelectorAll('[data-res-slide] .rh-art')].length===slides.length
   ? ok('every slide carries its drawing') : bad('a slide is missing its art');
 d.querySelector('.res-feature-fact')

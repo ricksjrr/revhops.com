@@ -187,8 +187,12 @@ the pagination, the lightbox and the gated landing page all follow from it.
   card's thumb instead of a picture. `thumb` is a picture, and an absolute
   URL is used as-is rather than being made relative.
 - **The card at the top of the page is not in `RESOURCES`.** It is a slider
-  over `FEATURED`, a short list of its own: `{ art, title, href, go, copy }`.
-  Three entries today, rotating every fifteen seconds.
+  over `FEATURED`, a short list of its own:
+  `{ art, kind, title, href, go, copy }`. `kind` is the type chip on the
+  card. Three entries today, rotating every fifteen seconds, and each slide
+  is one card-wide link.
+- **The order of `RESOURCE_TYPES` is the order of the page**, and of the
+  filter pills above it. Reordering the shelves is reordering that array.
 - **Case studies are not in `RESOURCES`.** That shelf reads `CASES` directly,
   so the two lists cannot drift apart.
 

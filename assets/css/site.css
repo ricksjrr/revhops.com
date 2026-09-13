@@ -262,6 +262,15 @@ ul { margin: 0; padding: 0; list-style: none; }
 }
 .btn-outline:hover { background: var(--warm); border-color: var(--warm); color: #304157; }
 .btn-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+/* .text-link carries align-self: flex-start of its own, which outranks the
+   row's align-items and sat it 14px above the centre of the button beside
+   it. Standing alone in a stack that is right; next to a 50px button it is
+   two things that were meant to be one row. */
+.btn-row > .text-link { align-self: center; }
+/* and a little more air than the row's 12px, because a text link ends in an
+   arrow and the arrow was pointing at the button rather than at its own
+   destination */
+.btn-row > .text-link:not(:last-child) { margin-inline-end: 8px; }
 
 /* ---------- pills, chips, cards ---------- */
 .pill {
@@ -3045,6 +3054,39 @@ main { overflow-x: clip; }
   min-width: 0;
 }
 
+/* A THIRD BIGGER THAN THE BAND. The badge is height-bound — max-height: 100%
+   of the media column — so the only way to grow it is to let it past that,
+   and the only way to let it past that is to stop clipping. .is-mark never
+   needed the clip: it is contained artwork on the page ground with no plate
+   and no radius, so there is nothing for overflow: hidden to protect.
+
+   It is centred in the column, so the extra height falls half above and half
+   below. At 1440 that is 29px each way: clear of the nav at the top, and at
+   the bottom it lands inside the next section's own top padding rather than
+   on anything in it. Re-check both if the band's height changes. */
+.page-hero-media.is-mark.is-big { overflow: visible; }
+.page-hero-media.is-mark.is-big img { max-height: 133%; }
+
+/* The whole mark is the link. No chrome on it — the badge is finished
+   artwork and a border round it would read as a second frame — so hover is
+   the arrow-less version of what every card does, and the ring sits outside
+   it where it is not fighting the badge's own edge. */
+.page-hero-mark-link {
+  display: grid;
+  place-items: center;
+  /* it has to FILL the column, not shrink to the badge: the badge's
+     max-height is a percentage, and a percentage of a box that is sized by
+     its own content resolves to nothing */
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  transition: transform .4s var(--ease-out);
+}
+.page-hero-mark-link:hover { transform: translateY(-3px); }
+.page-hero-mark-link:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 6px; border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) { .page-hero-mark-link:hover { transform: none; } }
+
 @media (max-width: 900px) {
   /* the artwork comes back into the flow and runs the width of the column,
      so a phone gets a proper 16:9 band rather than a sliver down one side */
@@ -5414,6 +5456,21 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 }
 .res-feature-wrap { position: relative; }
 
+/* SAYS WHAT THE CARD IS. Three cards rotating at the top of a page of cards
+   needed something to mark them as a set rather than as the first shelf, and
+   the dots alone were not saying it. Slate rather than the warm .cs-eyebrow
+   takes: this one labels a section, it does not open a story. */
+.res-feature-eyebrow {
+  margin: 0 0 clamp(10px, 1.2vw, 15px);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .78rem;
+  line-height: 1.2;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+
 /* THE THREE SLIDES SHARE ONE GRID CELL. Stacked rather than laid out in a
    row, so the card is as tall as the tallest of the three and does not
    resize under the reader when it rotates. The hidden two keep their space
@@ -5425,6 +5482,8 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   position: relative;
   display: flex;
   align-items: flex-end;
+  text-decoration: none;
+  color: inherit;
   min-height: clamp(210px, 22vw, 300px);
   padding: clamp(26px, 3.4vw, 54px);
   border-radius: var(--radius-card);
@@ -5458,8 +5517,35 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 
 /* 60% and not a column: the drawing is absolutely placed against the card,
    so nothing in the flow is holding the copy off it. */
-.res-feature-text { position: relative; z-index: 1; max-width: min(62ch, 60%); }
+.res-feature-text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: min(62ch, 60%);
+}
+
+/* WHAT KIND OF THING THIS IS. The shelves below say it with a heading over
+   a grid; up here there is no heading, so the card says it itself. Pinned
+   ink and a pale chip, like everything else on this plate. */
+.res-feature-kind {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  margin-bottom: clamp(10px, 1.2vw, 15px);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(48, 65, 87, .28);
+  background: rgba(250, 250, 248, .66);
+  color: #304157;
+  font-size: .68rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
 .res-feature-title {
+  display: block;
   margin: 0;
   font-family: var(--font-head);
   font-weight: 700;
@@ -5470,31 +5556,36 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   text-wrap: balance;
 }
 .res-feature-copy {
+  display: block;
   margin: clamp(12px, 1.4vw, 18px) 0 0;
   font-size: clamp(.94rem, .9rem + .14vw, 1.04rem);
   line-height: 1.6;
   color: #3C4B60;
 }
-/* A text link rather than a boxed button: buttons on this site mean booking
-   or requesting. Pinned navy for the same reason the title is. */
+/* Looks like the text link it used to be and is not one: the whole card is
+   the link now, so this is a span and the hover and the focus ring belong to
+   the card. A boxed button would be wrong here anyway — on this site those
+   mean booking or requesting. Pinned navy, same as the title. */
 .res-feature-go {
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: 8px;
   margin-top: clamp(16px, 1.8vw, 24px);
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
   font-family: var(--font-body);
   font-weight: 700;
   font-size: .95rem;
-  text-decoration: none;
   color: #304157;
 }
 .res-feature-go .arrow { display: inline-block; transition: transform .3s var(--ease-out); }
-.res-feature-go:hover .arrow { transform: translateX(5px); }
-.res-feature-go:focus-visible { outline: 2px solid #304157; outline-offset: 4px; border-radius: 4px; }
+.res-feature:hover .res-feature-go .arrow { transform: translateX(5px); }
+/* The ring goes round the whole card, and outside it, because the card's own
+   edge is a light plate on a light page and a ring drawn inside it would be
+   reading against the artwork. */
+.res-feature:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 4px; }
+/* No lift: it is 1300px wide and moving it moves the drawing hanging off the
+   top of it. The shadow alone says the whole thing is one target. */
+.res-feature:hover { box-shadow: 0 26px 52px -28px rgba(28, 38, 53, .38); }
 
 /* THE OVERHANG. Pinned to the card's bottom edge and taller than the card
    by a fixed beat, so it rises out of the top. HEIGHT drives it and the
@@ -5947,47 +6038,65 @@ div.res-card .res-go { color: var(--muted); }
    directory — which is the version a sceptical reader can verify anyway.
    ========================================================================== */
 
-/* ---------- what HubSpot is ----------
-   The homepage's About split with a mark in the left column instead of a
-   photograph, and NO PARTNER BADGE: that is in the header four inches above
-   this, and twice on one screen is a logo wall.
+/* ---------- the one review ----------
 
-   Two files, one shown. The full-colour logo on the light theme, the
-   reversed one on dark — the same brand-base / brand-alt swap the nav uses.
-   The reversed file is the same artwork with every opaque pixel taken to
-   white, so the two are in register and the mark does not shift when the
-   theme does. */
-.hs-what-mark { display: flex; align-items: center; justify-content: center; }
-.hs-logo { display: block; width: min(360px, 86%); height: auto; }
-.hs-logo-alt { display: none; }
-:root[data-theme="dark"] .hs-logo-base { display: none; }
-:root[data-theme="dark"] .hs-logo-alt { display: block; }
-@media (max-width: 860px) {
-  /* the mark goes above the copy and comes down a size: a 360px logo over a
-     phone-width paragraph reads as a banner rather than an illustration */
-  .hs-logo { width: min(260px, 70%); }
+   TWO COLUMNS: the directory listing on the left, the review on the right.
+   The screenshot is the argument — 5.0 from ten ratings, all of them five
+   stars, and the Platinum chip under our own name. That is what the old
+   "Every review is five stars" heading was claiming in words, made instead
+   by the thing itself, and both the picture and the link under it go to the
+   page where a reader can check it.
+
+   TIGHTER THAN THE PAGE'S RHYTHM on purpose. One quote in two columns does
+   not need the air a full-width block does, and at the standard padding the
+   section read as a gap with a quote in it.
+   ========================================================================== */
+.hs-testi-section { padding-block: clamp(38px, 4.2vw, 60px); }
+.hs-testi {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  align-items: center;
+  gap: clamp(28px, 4.4vw, 64px);
 }
 
-/* ---------- the one review ----------
-   Centred on paper, no plate. The quote is the largest type in the middle
-   of the page; giving it a card as well would make it a pull-quote inside
-   an article that does not exist. The measure is capped at 54rem, which is
-   about 90 characters — wide for body copy and right for one quote that is
-   meant to be read as a block rather than scanned. */
-.hs-testi {
+/* ---------- the proof ---------- */
+.hs-testi-proof {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: clamp(14px, 1.8vw, 20px);
-  max-width: 54rem;
-  margin-inline: auto;
-  text-align: center;
+  align-items: flex-start;
+  gap: clamp(14px, 1.6vw, 20px);
 }
-/* larger than the five on the end of a homepage quote: here they open the
-   block rather than sign it off */
-.hs-testi-stars { justify-content: center; }
-.hs-testi-stars svg { width: 22px; height: 22px; }
+/* A screenshot, so it keeps its own light ground in both themes and takes a
+   hairline and a radius to sit on the page as an object rather than as a
+   rectangle that fell out of a browser. Decorative: the caption under it and
+   the quote beside it both say what it is, and reading a whole directory
+   listing out is not a service to anybody. */
+.hs-testi-shot {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 1px rgba(28, 38, 53, .1), 0 22px 44px -30px rgba(28, 38, 53, .5);
+  transition: transform .4s var(--ease-out), box-shadow var(--mcard-t) var(--mcard-ease);
+}
+.hs-testi-shot img { display: block; width: 100%; height: auto; }
+.hs-testi-shot:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px rgba(28, 38, 53, .14), 0 28px 54px -28px rgba(28, 38, 53, .45);
+}
+@media (prefers-reduced-motion: reduce) { .hs-testi-shot:hover { transform: none; } }
+/* the shot carries tabindex="-1": one target, one tab stop, and this is it */
+.hs-testi-link { font-size: .92rem; }
 
+/* ---------- the review ---------- */
+.hs-testi-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(12px, 1.5vw, 18px);
+  margin: 0;
+}
 /* the quote marks carry the warm and stay upright while the words lean,
    exactly as .testi-title does — an italic quote mark beside an italic word
    reads as a smudge */
@@ -5996,7 +6105,7 @@ div.res-card .res-go { color: var(--muted); }
   font-family: var(--font-head);
   font-weight: 700;
   font-style: italic;
-  font-size: clamp(1.35rem, 1.1rem + 1.2vw, 2rem);
+  font-size: clamp(1.3rem, 1.05rem + 1.1vw, 1.85rem);
   line-height: 1.16;
   letter-spacing: -.03em;
   color: var(--ink);
@@ -6007,39 +6116,35 @@ div.res-card .res-go { color: var(--muted); }
 .hs-testi-quote { margin: 0; }
 .hs-testi-quote p {
   margin: 0;
-  font-size: clamp(1rem, .95rem + .45vw, 1.2rem);
+  font-size: clamp(.98rem, .94rem + .34vw, 1.14rem);
   line-height: 1.62;
   color: var(--body);
 }
-/* weight rather than a marker, the same call the homepage quotes make: a
-   highlighter sweep across a centred quote lands as a stripe */
+/* weight rather than a marker, the same call the homepage quotes make */
 .hs-testi-quote .hl { background-image: none; color: var(--ink); font-weight: 700; }
 
 .hs-testi-by {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  justify-content: center;
   gap: 6px 12px;
-  margin-top: clamp(16px, 2vw, 24px);
+  margin-top: clamp(4px, .6vw, 8px);
   font-size: .9rem;
   color: var(--slate);
 }
 .hs-testi-by cite { font-style: normal; font-weight: 700; color: var(--ink); }
 .hs-testi-by .sep { color: var(--mist); }
 
-/* the five-stars claim, demoted to a line under the quote. It used to be an
-   h2 over a scrolling column; as a sentence beside the link it is the same
-   fact without a section built on top of it. */
-.hs-testi-more {
-  max-width: 54rem;
-  margin: clamp(24px, 2.8vw, 34px) auto 0;
-  text-align: center;
-  font-size: .92rem;
-  line-height: 1.65;
-  color: var(--body);
+/* UNDER THE ATTRIBUTION, not over the quote. Above it they read as
+   decoration on the heading; here they read as Amy's rating, which is what
+   they are. */
+.hs-testi-stars svg { width: 19px; height: 19px; }
+
+@media (max-width: 900px) {
+  /* the proof goes above the quote: a screenshot of a two-column web page
+     shrunk into half a phone is not readable as anything */
+  .hs-testi { grid-template-columns: minmax(0, 1fr); gap: clamp(24px, 6vw, 34px); }
 }
-.hs-testi-more .text-link { white-space: nowrap; }
 
 /* ==========================================================================
    PRICING — /pricing

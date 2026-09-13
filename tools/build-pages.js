@@ -193,9 +193,21 @@ function pageHero(p) {
       '<span class="arrow" aria-hidden="true">&larr;</span> ' + p.eyebrow[0] + '</a>\n'
     : '';
 
+  /* `big` lets a contained mark run a third past the band's height — see
+     .page-hero-media.is-big. `href` wraps it, for the one mark on the site
+     that is a claim somebody might want to check. */
+  var img = m
+    ? '<img src="' + a + m.src + '" alt="' + m.alt + '"' +
+      (m.alt ? '' : ' aria-hidden="true"') + '>'
+    : '';
   var media = m
-    ? '      <div class="page-hero-media' + (m.mark ? ' is-mark' : '') + '">\n' +
-      '        <img src="' + a + m.src + '" alt="' + m.alt + '"' + (m.alt ? '' : ' aria-hidden="true"') + '>\n' +
+    ? '      <div class="page-hero-media' + (m.mark ? ' is-mark' : '') +
+      (m.big ? ' is-big' : '') + '">\n' +
+      (m.href
+        ? '        <a class="page-hero-mark-link" href="' + m.href + '"' +
+          (/^https?:/.test(m.href) ? ' target="_blank" rel="noopener"' : '') + '>' +
+          img + '</a>\n'
+        : '        ' + img + '\n') +
       '      </div>\n'
     : '';
 
@@ -1765,6 +1777,10 @@ var WAYS = [
     copy: 'Whether it was recently set up or eight years old, we can jump into your account and get to work. We&rsquo;re your HubSpot on-call support &amp; an extra pair of RevOps hands.' }
 ];
 
+/* Named once. It is on the badge, on the screenshot and on the link under
+   it, and three copies of a URL is three chances for one of them to rot. */
+var PARTNER_PROFILE = 'https://ecosystem.hubspot.com/marketplace/solutions/revhops';
+
 var hubspot = {
   file: 'hubspot/index.html',
   depth: 1,
@@ -1772,56 +1788,25 @@ var hubspot = {
   title: 'HubSpot Platinum Solutions Partner — RevHops',
   description: 'RevHops is a HubSpot Platinum Solutions Partner working across all six hubs: Sales, Marketing, Revenue, Service, Data and Content.',
   h1: 'HubSpot',
-  lede: 'A Platinum Solutions Partner across all six hubs. We will implement it, optimize it, or tell you it is not the right fit.',
+  lede: 'An all-in-one, best-in-class platform that unifies sales, marketing, support &amp; finance in one spot.',
 
   /* The badge, contained rather than cropped — see .page-hero-media.is-mark.
-     It is the only mark on the site that sits in this column. */
-  media: { src: 'assets/img/hubspot-platinum-badge.webp', alt: 'HubSpot Platinum Solutions Partner', mark: true },
+     It is the only mark on the site that sits in this column, it is a third
+     bigger than the band would otherwise allow it to be, and it is a link to
+     the partner directory: it is the one claim on this page somebody might
+     reasonably want to check. */
+  media: { src: 'assets/img/hubspot-platinum-badge.webp', alt: 'HubSpot Platinum Solutions Partner',
+           mark: true, big: true, href: PARTNER_PROFILE },
 
-  /* ONE BUTTON. The call is the ask and it is the only navy box on the
-     page; the audit is a text link beside it, which is the pattern every
-     other page uses. Two boxed buttons side by side made the reader pick
-     between them before they had read anything. */
-  headButtons: '          <a class="btn btn-primary" href="/call">Schedule a discovery call</a>\n' +
-               '          <a class="text-link" href="/audit">Request a HubSpot audit ' +
-               '<span class="arrow" aria-hidden="true">&rarr;</span></a>',
+  /* ONE BUTTON, and it is on the right. The call is the ask and the only
+     navy box on the page; the audit is a text link to the left of it. Two
+     boxed buttons side by side made the reader pick between them before
+     they had read anything. .btn-row centres them on each other. */
+  headButtons: '          <a class="text-link" href="/audit">Request a HubSpot audit ' +
+               '<span class="arrow" aria-hidden="true">&rarr;</span></a>\n' +
+               '          <a class="btn btn-primary" href="/call">Schedule a discovery call</a>',
 
   body:
-
-    /* WHAT IT IS. The split off the homepage's About block, mark on the
-       left and the answer on the right. The page went straight from "we are
-       a Platinum partner" to six hub cards, which assumes the reader
-       already knows what a hub is.
-
-       NO PARTNER BADGE HERE. It is in the header column four inches above
-       this and twice on one screen is a logo wall.
-
-       Two marks and one is hidden: the full-colour logo on the light theme,
-       the reversed one on dark. Same brand-base / brand-alt swap the nav
-       uses, and the reversed file is the same artwork with every opaque
-       pixel taken to white, so the two are in register. */
-    section(
-'    <div class="split hs-what" style="align-items:center">\n' +
-'      <div class="hs-what-mark reveal reveal-left">\n' +
-'        <img class="hs-logo hs-logo-base" src="../assets/img/tools/hubspot.webp"\n' +
-'             alt="HubSpot" loading="lazy">\n' +
-'        <img class="hs-logo hs-logo-alt" src="../assets/img/hubspot-logo-white.webp"\n' +
-'             alt="" aria-hidden="true" loading="lazy">\n' +
-'      </div>\n' +
-'      <div class="stack gap-20 reveal reveal-right">\n' +
-'        <h2 class="h2">What is HubSpot?</h2>\n' +
-'        <p class="small">HubSpot is a customer platform: one place where marketing, sales,\n' +
-'          service and finance work off the same records instead of four systems that\n' +
-'          disagree with each other. It started as marketing software and is now six hubs\n' +
-'          sitting on a shared CRM, and the shared CRM is the part that matters. The\n' +
-'          contact your campaign touched is the contact your rep calls, and the contact the\n' +
-'          invoice belongs to.</p>\n' +
-'        <p class="small">It suits teams who would rather spend their time selling than\n' +
-'          stitching tools together, and it is not the cheapest way to own a CRM. Which of\n' +
-'          those two facts weighs more is the conversation we are happy to have before you\n' +
-'          buy anything.</p>\n' +
-'      </div>\n' +
-'    </div>\n') +
 
     /* THE SIX HUBS. Cards rather than rows, because each one is a page in
        waiting and a card carries its own link without the row's hairlines
@@ -1841,46 +1826,61 @@ var hubspot = {
       secHead('Connect HubSpot to all the tools in your stack', null, 'centred') +
       toolClump(1, ['hubspot']), 'section') +
 
-    /* THE PARTNER PROFILE. ONE REVIEW, CENTRED.
+    /* THE PARTNER PROFILE. ONE REVIEW, AND THE PROOF BESIDE IT.
 
        It was a sticky title beside a column of three reviews that scrolled
        past it. That column was the tallest thing on the page and it asked
        the reader to get through twelve hundred words of praise on the way
        to the four things we actually want them to click.
 
-       So: one review, the one that is about a HubSpot implementation
-       specifically, on the plate this site already uses for a pinned-ink
-       panel. The other two are still on the homepage and the whole set is
-       one link away, which is where a reader who wants more should go
-       anyway — the partner directory is the version they can verify.
+       Now it is two columns: a screenshot of the directory listing on the
+       left, the one review that is about a HubSpot implementation on the
+       right. THE SCREENSHOT IS THE ARGUMENT. 5.0 from ten ratings, 100% of
+       them five stars, and the Platinum chip under our own name — that is
+       the claim the old heading was making in words, made instead by the
+       thing itself, on a page a reader can go and check. Both the picture
+       and the link under it go there.
 
-       The quote gets its one highlighted phrase back. On the old three-up
-       it came out because three highlights in a column retire the device;
-       with a single quote it is doing what it is for. */
+       The stars moved BELOW the attribution. Above the quote they read as
+       decoration on the heading; under Amy's name they read as her rating,
+       which is what they are.
+
+       The section is tighter than the page's usual rhythm — see
+       .hs-testi-section — because one quote in two columns does not need
+       the air a full-width block does. */
     section(
-'    <div class="hs-testi reveal">\n' +
-      fiveStars('hs-testi-stars').replace(/^ {10}/gm, '      ') +
-'      <h2 class="hs-testi-title"><span class="q">&ldquo;</span>&thinsp;Responsive &amp; Thorough&thinsp;<span class="q">&rdquo;</span></h2>\n' +
-'      <blockquote class="hs-testi-quote">\n' +
-'        <p>We partnered with RevHops on a complex HubSpot Marketing Hub Enterprise\n' +
-'          implementation, and the experience was excellent from start to finish.\n' +
-'          <span class="hl">James was highly responsive, extremely well-organized, and\n' +
-'          thorough.</span> RevHops put together a clear, structured plan, communicated\n' +
-'          recommendations in a way that was easy to align on, and followed up proactively\n' +
-'          to ensure everyone fully understood the strategy and next steps.</p>\n' +
-'        <footer class="hs-testi-by">\n' +
+'    <div class="hs-testi">\n' +
+'\n' +
+'      <div class="hs-testi-proof reveal reveal-left">\n' +
+'        <a class="hs-testi-shot" href="' + PARTNER_PROFILE + '"\n' +
+'           target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">\n' +
+'          <img src="../assets/img/hubspot-partner-profile.webp"\n' +
+'               alt="" loading="lazy">\n' +
+'        </a>\n' +
+'        <a class="text-link hs-testi-link" href="' + PARTNER_PROFILE + '"\n' +
+'           target="_blank" rel="noopener">View our HubSpot partner profile\n' +
+'           <span class="arrow" aria-hidden="true">&rarr;</span></a>\n' +
+'      </div>\n' +
+'\n' +
+'      <figure class="hs-testi-body reveal reveal-right">\n' +
+'        <h2 class="hs-testi-title"><span class="q">&ldquo;</span>&thinsp;Responsive &amp; Thorough&thinsp;<span class="q">&rdquo;</span></h2>\n' +
+'        <blockquote class="hs-testi-quote">\n' +
+'          <p>We partnered with RevHops on a complex HubSpot Marketing Hub Enterprise\n' +
+'            implementation, and the experience was excellent from start to finish.\n' +
+'            <span class="hl">James was highly responsive, extremely well-organized, and\n' +
+'            thorough.</span> RevHops put together a clear, structured plan, communicated\n' +
+'            recommendations in a way that was easy to align on, and followed up proactively\n' +
+'            to ensure everyone fully understood the strategy and next steps.</p>\n' +
+'        </blockquote>\n' +
+'        <figcaption class="hs-testi-by">\n' +
 '          <cite>Amy</cite>\n' +
 '          <span class="sep" aria-hidden="true">|</span>\n' +
 '          <span>VP of Client Services</span>\n' +
-'        </footer>\n' +
-'      </blockquote>\n' +
-'    </div>\n' +
+'        </figcaption>\n' +
+      fiveStars('hs-testi-stars').replace(/^ {10}/gm, '        ') +
+'      </figure>\n' +
 '\n' +
-'    <p class="hs-testi-more reveal">Every client who has rated us on the HubSpot partner\n' +
-'      directory has left five stars.\n' +
-'      <a class="text-link" href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"\n' +
-'         target="_blank" rel="noopener">Read them all <span class="arrow" aria-hidden="true">&rarr;</span></a></p>\n',
-      'section hs-testi-section') +
+'    </div>\n', 'section hs-testi-section') +
 
     /* THE ASK. James' four, in his order. .to-white because the closing
        panel bleeds up over whatever section is last. */
@@ -2582,16 +2582,21 @@ var hop = {
    the rest; a line of explanation between the two was one more thing to read
    on the way to the thing being described. `sub` is still honoured if one
    ever comes back. */
+/* THE ORDER OF THIS ARRAY IS THE ORDER OF THE PAGE, and of the filter pills
+   above it. James' order, 13 September: the things somebody can take away
+   and use first, the proof second, the reading after that, and the two games
+   last where they belong. Reordering the page is reordering this list; the
+   last entry gets .to-white because the closing panel bleeds up over it. */
 var RESOURCE_TYPES = [
-  { slug: 'blog', name: 'Blog',
-    all: '/resources/blog', allLabel: 'View all blog posts' },
+  { slug: 'downloadables', name: 'Downloadables' },
 
   { slug: 'case-studies', name: 'Case studies',
     all: '/case-studies', allLabel: 'View all case studies' },
 
-  { slug: 'videos', name: 'Videos' },
+  { slug: 'blog', name: 'Blog',
+    all: '/resources/blog', allLabel: 'View all blog posts' },
 
-  { slug: 'downloadables', name: 'Downloadables' },
+  { slug: 'videos', name: 'Videos' },
 
   { slug: 'games', name: 'Games' }
 ];
@@ -3007,15 +3012,15 @@ function resShelf(type, cards, depth, cls) {
    Order is deliberate: the case study is the strongest of the three and it
    is what a first-time visitor should land on. */
 var FEATURED = [
-  { art: 'case-study', title: 'Ignite Group',
+  { art: 'case-study', kind: 'Case study', title: 'Ignite Group',
     href: '/case-studies/case-study-5', go: 'Read the case study',
     copy: 'Three countries running three versions of the same pipeline, and a board asking for one number. What we were handed, what changed, and what it was worth.' },
 
-  { art: 'calculator', title: 'Marketing Hub ROI calculator',
+  { art: 'calculator', kind: 'Downloadable', title: 'Marketing Hub ROI calculator',
     href: '/resources/marketing-hub-roi-calculator', go: 'Get the calculator',
     copy: 'Put your own numbers in and see what implementing HubSpot Marketing Hub is worth before you sign anything.' },
 
-  { art: 'scramble', title: 'The RevOps puzzle',
+  { art: 'scramble', kind: 'Game', title: 'The RevOps puzzle',
     href: '/puzzle', go: 'Play it',
     copy: 'Eight pieces, one gap and a clock. Slide the tiles until the picture is whole, then come back and beat your time.' }
 ];
@@ -3023,18 +3028,27 @@ var FEATURED = [
 function resFeatured(depth) {
   if (!FEATURED.length) return '';
 
+  /* THE WHOLE SLIDE IS THE LINK. It was an <article> with a text link inside
+     it, which meant a card the size of a billboard had one clickable line on
+     it. The "Read the case study" line is now a span that looks like the
+     link it used to be and the <a> is the card.
+
+     That is also why site.js cannot simply look for links INSIDE a hidden
+     slide when it takes them out of the tab order: on this markup the slide
+     is the link. */
   var slides = FEATURED.map(function (f, i) {
-    return '        <article class="res-feature' + (i === 0 ? ' is-on' : '') + '"\n' +
-           '                 data-res-slide aria-hidden="' + (i === 0 ? 'false' : 'true') + '">\n' +
-           '          <div class="res-feature-text">\n' +
-           '            <h2 class="res-feature-title">' + f.title + '</h2>\n' +
-           '            <p class="res-feature-copy">' + f.copy + '</p>\n' +
-           '            <a class="res-feature-go" href="' + f.href + '"' +
-                        (i === 0 ? '' : ' tabindex="-1"') + '>' + f.go +
-                        ' <span class="arrow" aria-hidden="true">&rarr;</span></a>\n' +
-           '          </div>\n' +
-           '          <div class="res-feature-art">' + art(f.art) + '</div>\n' +
-           '        </article>';
+    return '        <a class="res-feature' + (i === 0 ? ' is-on' : '') + '"\n' +
+           '           data-res-slide href="' + f.href + '"' +
+           (i === 0 ? '' : ' tabindex="-1"') + ' aria-hidden="' + (i === 0 ? 'false' : 'true') + '">\n' +
+           '          <span class="res-feature-text">\n' +
+           '            <span class="res-feature-kind">' + f.kind + '</span>\n' +
+           '            <span class="res-feature-title">' + f.title + '</span>\n' +
+           '            <span class="res-feature-copy">' + f.copy + '</span>\n' +
+           '            <span class="res-feature-go">' + f.go +
+                        ' <span class="arrow" aria-hidden="true">&rarr;</span></span>\n' +
+           '          </span>\n' +
+           '          <span class="res-feature-art">' + art(f.art) + '</span>\n' +
+           '        </a>';
   }).join('\n');
 
   var dots = FEATURED.map(function (f, i) {
@@ -3047,9 +3061,10 @@ function resFeatured(depth) {
 '     Three resources on the case study plate, rotating every fifteen\n' +
 '     seconds. Edit FEATURED in tools/build-pages.js; nothing here is\n' +
 '     written by hand, and the drawings are in ART beside it. -->\n' +
-'<section class="res-feature-section">\n' +
+'<section class="res-feature-section" aria-labelledby="featured-heading">\n' +
 '  <div class="shell">\n' +
 '    <div class="res-feature-wrap reveal" data-res-slider>\n' +
+'      <h2 class="res-feature-eyebrow" id="featured-heading">Featured resources</h2>\n' +
 '      <div class="res-feature-stack">\n' +
 slides + '\n' +
 '      </div>\n' +

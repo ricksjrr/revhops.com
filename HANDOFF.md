@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `79ca08be3d` — derived from a hash of the assets by
+**Current build stamp:** `fc727a7448` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -24,6 +24,69 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   disk for exactly this reason.
 - **there is no remote yet**, so the Pushing section at the end still does
   not work as written. See "Deploying to GitHub Pages" in the README.
+
+---
+
+## 13 September, second pass: James' notes on both pages
+
+### /resources
+
+- **The whole featured card is the link.** It was an `<article>` with one
+  clickable line in it, which is a card the size of a billboard with a
+  target the size of a sentence. The slide is an `<a>` now and "Read the
+  case study" is a span that looks like the link it used to be.
+  `site.js` had to change with it: on this markup the slide IS the link, so
+  looking only INSIDE a hidden slide for things to take out of the tab order
+  finds nothing and leaves two invisible cards Tab-reachable. Both shapes
+  are handled there and in the check, so the markup can go back either way.
+- **Each featured card names its type** — Case study, Downloadable, Game —
+  in a pale chip above the title, `kind` in `FEATURED`.
+- **"FEATURED RESOURCES" sits above the card**, so three rotating cards at
+  the top of a page of cards read as a set rather than as the first shelf.
+  The dots alone were not saying it.
+- **The shelf order is James' order**: Downloadables, Case studies, Blog,
+  Videos, Games. It is the order of `RESOURCE_TYPES` and nothing else —
+  the page, the filter pills and the `.to-white` on the last shelf all
+  follow it.
+
+### /hubspot
+
+- **The What is HubSpot section is out**, one day old. `assets/img/
+  hubspot-logo-white.webp` went with it; it existed only for that block.
+- **The lede** is "An all-in-one, best-in-class platform that unifies sales,
+  marketing, support & finance in one spot."
+- **The audit is on the left, the call on the right**, centred on each
+  other. `.text-link` carries `align-self: flex-start` of its own, which
+  outranks `.btn-row`'s `align-items: center` and was sitting it 14px above
+  the button's centre — overridden for text links inside a button row, with
+  a little more air than the row's 12px so the arrow is not pointing at the
+  button.
+- **The Platinum badge is a third bigger and links to the partner
+  directory.** It is height-bound by the media column, so `is-big` stops the
+  clip (a contained mark on the page ground never needed it) and lets the
+  artwork run to 133%. Centred, so the extra falls half above and half below:
+  29px each way at 1440, clear of the nav and inside the next section's own
+  top padding. Re-check both if the band's height changes. `media` now takes
+  `big` and `href`; the link must fill the column or the badge's percentage
+  max-height resolves against a box sized by its own content, which is
+  nothing.
+- **The review section is two columns**: a screenshot of the directory
+  listing on the left with the profile link under it, Amy's review on the
+  right. THE SCREENSHOT IS THE ARGUMENT — 5.0 from ten ratings, all five
+  stars, the Platinum chip under our own name — so the "Every review is five
+  stars" sentence came out. Saying it in words and then showing the page it
+  comes from was saying it twice.
+- **The stars moved below Amy's name and title.** Over the quote they read
+  as decoration on the heading; under the attribution they read as her
+  rating, which is what they are.
+- **The section is tighter than the page's rhythm**, `clamp(38px, 4.2vw,
+  60px)` rather than the standard block. One quote in two columns does not
+  need the air a full-width block does.
+
+`tools/resources-smoke.js` gained five more assertions: every slide is
+itself one card-wide link, every slide names its type, something marks the
+slider as the featured set, and the shelves and the filter pills are both in
+the declared order.
 
 ---
 

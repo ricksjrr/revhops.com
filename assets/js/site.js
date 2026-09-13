@@ -774,7 +774,13 @@
       var on = i === current;
       s.classList.toggle('is-on', on);
       s.setAttribute('aria-hidden', on ? 'false' : 'true');
-      [].forEach.call(s.querySelectorAll('a, button'), function (el) {
+      /* THE SLIDE IS ITSELF THE LINK on the current markup, so looking
+         only INSIDE it finds nothing and leaves two invisible cards sitting
+         in the tab order. Both cases are covered here rather than in the
+         template, because which one it is is the template's business. */
+      var focusable = [].slice.call(s.querySelectorAll('a, button'));
+      if (s.tagName === 'A' || s.tagName === 'BUTTON') focusable.unshift(s);
+      focusable.forEach(function (el) {
         if (on) el.removeAttribute('tabindex');
         else el.setAttribute('tabindex', '-1');
       });
