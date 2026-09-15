@@ -977,7 +977,7 @@ function caseCard(c, depth, cls) {
     '            <div class="case-text">\n' +
     '              <h3 class="case-title">' + c.name + '</h3>\n' +
     '              <span class="case-svc">\n' +
-    c.svc.map(function (slug) {
+    c.svc.slice(0, 2).map(function (slug) {
       return '                <span>' + serviceName(slug) + '</span>';
     }).join('\n') + '\n' +
     '              </span>\n' +

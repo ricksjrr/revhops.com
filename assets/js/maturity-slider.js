@@ -42,9 +42,12 @@
         'More than once, you’ve wondered “Should growing be this hard?”'
       ],
       caseStudy: {
-        who: 'Ike Commercial Real Estate',
-        line: 'Ike Commercial Real Estate needed a way to systematize the way they do business.',
-        logo: 'assets/img/logos/ike.webp',
+        /* No client name on this one: the visitor meets the firm when they
+           open the story. `photo` takes the place of `logo` and renders as
+           a filled square rather than a mark on the paper. */
+        who: 'A commercial real estate firm',
+        line: 'A relationship business, run on a CRM that added a step to everything they did.',
+        photo: 'assets/img/case-studies/ike-commercial-real-estate.webp',
         href: 'case-studies/Ike-Commercial-Real-Estate'
       }
     },
@@ -424,7 +427,8 @@
             '<h3 class="mcard-case-who">' + esc(s.caseStudy.who) + '</h3>' +
             '<p class="mcard-case-line">' + esc(s.caseStudy.line) + '</p>' +
           '</div>' +
-          '<img class="mcard-shot" src="' + esc(s.caseStudy.logo) + '" alt="' +
+          '<img class="mcard-shot' + (s.caseStudy.photo ? ' is-photo' : '') + '" src="' +
+            esc(s.caseStudy.photo || s.caseStudy.logo) + '" alt="' +
             esc(s.caseStudy.who) + '"' + (s.caseStudy.solid ? ' data-solid' : '') +
             ' loading="lazy">' +
         '</div>' +

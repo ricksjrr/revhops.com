@@ -1082,6 +1082,15 @@ main { overflow-x: clip; }
    words knocked out of it cannot be multiplied onto the card — the disc goes
    and the words go with it. */
 .mcard-shot[data-solid] { mix-blend-mode: normal; opacity: .9; }
+/* A photograph rather than a client mark. None of the marquee treatment
+   applies: it fills its square, keeps its own colour in both themes, and
+   takes the card radius so it does not read as a stray image. */
+.mcard-shot.is-photo {
+  object-fit: cover;
+  mix-blend-mode: normal;
+  opacity: 1;
+  border-radius: var(--radius-card);
+}
 /* This card absorbs whatever height the signup card below it does not use,
    so the pair matches the two single cards beside them. The story link
    drops to the bottom-left corner. */
@@ -1851,14 +1860,14 @@ main { overflow-x: clip; }
    figures on 15 September: a card is the door to the story, and a number
    with no page around it is a claim the visitor cannot check yet.
 
-   Set like the eyebrows elsewhere, in the warm accent, with a dot between
-   them rather than a comma so a wrapped second service still reads as one
-   of a pair. */
+   Set like the eyebrows elsewhere, in the warm accent, one per line and
+   two at most: a third turns the foot of the card into a list, and a card
+   is a door rather than an index. */
 .case-svc {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 2px 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
   min-width: 0;
   font-family: var(--font-head);
   font-weight: 700;
@@ -1869,11 +1878,7 @@ main { overflow-x: clip; }
   color: var(--warm);
   text-shadow: 0 1px 2px rgba(12, 18, 26, .5);
 }
-.case-svc span + span::before {
-  content: '·';
-  margin-right: 8px;
-  color: rgba(255, 255, 255, .7);
-}
+
 
 .case-go {
   flex: none;
@@ -4290,6 +4295,8 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 :root[data-theme="dark"] .mcard:hover .mcard-shot { opacity: 1; }
 /* and flattening that one to white would leave a blank white disc */
 :root[data-theme="dark"] .mcard-shot[data-solid] { filter: none; opacity: .95; }
+/* and a photograph is not artwork to flatten at all */
+:root[data-theme="dark"] .mcard-shot.is-photo { filter: none; opacity: 1; }
 
 /* ---- back to top ----
    A navy chip on a navy page. Same fix as the floating bar: a light edge
