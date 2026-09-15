@@ -97,7 +97,7 @@
       caseStudy: {
         who: 'Core Income Advisors',
         line: 'Core Income Advisors implemented a customized sales process that adapted to the unique way they do business.',
-        photo: 'assets/img/case-study-placeholder.svg',
+        photo: 'assets/img/case-studies/core-income-advisors.webp',
         href: 'case-studies/Core-Income-Advisors'
       }
     },

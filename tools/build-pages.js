@@ -911,6 +911,7 @@ var CASES = [
     crm: 'hubspot', industry: 'financial-services',
     /* 30 to 100 people, which straddles two bands; the larger one */
     stage: 'growth',
+    img: 'assets/img/case-studies/core-income-advisors.webp',
     copy: {
       lede: 'Core Income Advisors had been through HubSpot partner agencies before and come away with recommendations that never solved the problem in front of them. Their COO evaluated several firms and chose us. The sales, marketing and operations teams now have a standing weekly session and a specialist who has learned how the business makes money.',
       problem: {
@@ -990,7 +991,8 @@ var CASES = [
       },
       quote: {
         text: 'At first I was skeptical. Moving house can be a lot to handle, but when you move in the end, you always feel better right? Well, we are in the same place now! Not only is HubSpot a lot easier to manage from an Admin perspective, it\u2019s also way easier on our users. Henrik and James made sure we had the tools at hand to make the most out of this! Thanks to RevHops, we are now in a spot where we have a springboard to a better integrated view of our sales and marketing activities. We have a better grasp on our GTM strategies since we can now better analyze conversions and have everything in one platform.',
-        cite: 'Jeroen Kunst <span class="sep">|</span> RevOps Manager, Ignite Group'
+        cite: 'Jeroen Kunst <span class="sep">|</span> RevOps Manager, Ignite Group',
+        photo: 'assets/img/case-studies/jeroen-kunst.webp'
       }
     } }
 ];
