@@ -1758,8 +1758,11 @@ main { overflow-x: clip; }
 .case-nav button[disabled] { opacity: .32; cursor: default; }
 .case-nav button:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 3px; }
 
-/* no pointer, no need for the buttons — the swipe is right there */
-@media (hover: none) { .case-nav { display: none; } }
+/* The buttons used to come off on a touch device, on the reasoning that
+   the swipe is right there. They are back: the swipe has been unreliable on
+   at least one phone, and a rail with no visible control and no working
+   gesture is a dead row of cards. Take this rule out again once the gesture
+   is trusted everywhere. */
 @media (max-width: 700px) {
   .case-head { grid-template-columns: minmax(0, 1fr); }
   .case-head > span { display: none; }
@@ -1774,8 +1777,18 @@ main { overflow-x: clip; }
   display: flex;
   gap: clamp(14px, 1.6vw, 22px);
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
+  /* PROXIMITY, NOT MANDATORY, AND NO CSS scroll-behavior.
+
+     Both of those fight a finger on WebKit. `mandatory` re-snaps mid-drag,
+     and `scroll-behavior: smooth` on a snap container makes every touch
+     scroll a smooth animation the drag then has to interrupt — between
+     them the rail would take the arrows and scrollLeft but sit still under
+     a thumb. The arrows still animate: site.js passes behavior 'smooth' to
+     scrollBy itself, which is where that belonged. */
+  scroll-snap-type: x proximity;
+  /* legacy iOS: momentum scrolling inside an overflow container. Ignored
+     everywhere modern, and harmless where it is not. */
+  -webkit-overflow-scrolling: touch;
   /* Room for the hover shadow. overflow-x: auto forces overflow-y to auto
      too, so this box clips vertically whether or not it is asked to — the
      shadow was being cut off at the rail's own bottom edge, not by the
