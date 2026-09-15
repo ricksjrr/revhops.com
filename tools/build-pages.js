@@ -773,10 +773,17 @@ var INDUSTRIES = [
    with, and a derived list of fifteen logos was answering a question nobody
    asked. */
 var CRMS = [
-  ['hubspot',    'HubSpot'],
-  ['pipedrive',  'Pipedrive'],
-  ['salesforce', 'Salesforce']
+  ['hubspot',      'HubSpot'],
+  ['pipedrive',    'Pipedrive'],
+  ['salesforce',   'Salesforce'],
+  ['gohighlevel',  'GoHighLevel']
 ];
+
+/* `crm` is one slug or several. Several is how a migration reads: the tool
+   they left is as much a reason to click as the one they landed on. */
+function crmList(c) {
+  return [].concat(c.crm);
+}
 
 /* slug, stage name, headcount band. Both the name and the band come from
    STAGES in assets/js/maturity-slider.js — if that array changes, this one
@@ -798,19 +805,21 @@ var STAGES = [
    assets/js/maturity-slider.js carries the same five by hand and links to
    these slugs, so a name changed here has to change there too.
 
-   `figs` is [figure, what it measures] and the pairs are the homepage's.
-   The ones still reading 00 are waiting on James' numbers; the placeholder
-   is deliberate and visible rather than invented. */
+   `figs` no longer reaches a card. The cards carried two figures until 15
+   September and now carry the services the case is tagged with: a card is
+   the door, and the numbers belong on the page behind it. The pairs stay
+   here because casePageOld still reads them. */
 var CASES = [
   { slug: 'Ike-Commercial-Real-Estate', name: 'Ike Commercial Real Estate',
     figs: [['3,500', 'Records migrated'], ['6 wks', 'Assessment to live']],
     svc: ['solution-design', 'crm-implementations'],
-    crm: 'hubspot', industry: 'professional-services', stage: 'startup',
+    crm: ['hubspot', 'gohighlevel'], industry: 'professional-services', stage: 'startup',
     logo: 'assets/img/logos/ike.webp',
+    img: 'assets/img/case-studies/ike-commercial-real-estate.webp',
     /* `tools` overrides the meta row that would otherwise read straight off
        CRMS. The filter still answers to crm: 'hubspot'; the row says which
        hubs, because on this engagement that is the fact worth having. */
-    tools: 'HubSpot (Marketing Hub, Sales Hub)',
+    tools: 'HubSpot (Marketing Hub, Sales Hub), Go High Level',
     copy: {
       lede: 'Ike Commercial Real Estate is a small firm in a relationship business, running on a CRM that made them work for every piece of context. In six weeks we assessed, designed, built and trained them onto HubSpot Marketing and Sales Hub, shaped around the way they actually work with clients. Four people now run their entire day out of one system.',
       problem: {
@@ -961,20 +970,21 @@ function logoBand(depth) {
    and a card that only knows it on one page is how the two filters drift. */
 function caseCard(c, depth, cls) {
   var svc =
-    (c.svc      ? '\n           data-services="' + c.svc.join(' ') + '"'   : '') +
-    (c.crm      ? '\n           data-crm="' + c.crm + '"'                  : '') +
-    (c.industry ? '\n           data-industry="' + c.industry + '"'        : '') +
-    (c.stage    ? '\n           data-stage="' + c.stage + '"'              : '');
+    (c.svc      ? '\n           data-services="' + c.svc.join(' ') + '"'         : '') +
+    (c.crm      ? '\n           data-crm="' + crmList(c).join(' ') + '"'         : '') +
+    (c.industry ? '\n           data-industry="' + c.industry + '"'              : '') +
+    (c.stage    ? '\n           data-stage="' + c.stage + '"'                    : '');
   return '<a class="case-card' + (cls ? ' ' + cls : '') + '" href="' + '/case-studies/' + c.slug + '"' + svc + '>\n' +
-    '          <img src="' + up(depth) + 'assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">\n' +
+    '          <img src="' + up(depth) + (c.img || 'assets/img/case-study-placeholder.svg') +
+      '" alt="" aria-hidden="true" loading="lazy">\n' +
     '          <div class="case-body">\n' +
     '            <div class="case-text">\n' +
-    '              <h3 class="case-title">' + c.name + '</h3>\n' +
-    '              <div class="case-figs">\n' +
-    c.figs.map(function (f) {
-      return '                <span class="case-fig"><b>' + f[0] + '</b><span>' + f[1] + '</span></span>';
+    '              <span class="case-svc">\n' +
+    c.svc.map(function (slug) {
+      return '                <span>' + serviceName(slug) + '</span>';
     }).join('\n') + '\n' +
-    '              </div>\n' +
+    '              </span>\n' +
+    '              <h3 class="case-title">' + c.name + '</h3>\n' +
     '            </div>\n' +
     '            <span class="case-go" aria-hidden="true">&rarr;</span>\n' +
     '          </div>\n' +
@@ -1203,7 +1213,9 @@ function casePage(c, i) {
      checkboxes are built from. */
   var meta = [
     ['Service(s) used', c.svc.map(serviceName).join(', ')],
-    ['Tools used',      c.tools || labelFor(CRMS, c.crm, 1)],
+    ['Tools used',      c.tools || crmList(c).map(function (t) {
+                          return labelFor(CRMS, t, 1);
+                        }).join(', ')],
     ['Industry',        labelFor(INDUSTRIES, c.industry, 1)],
     ['Team size',       labelFor(STAGES, c.stage, 2) + ' people']
   ];
@@ -3002,15 +3014,17 @@ function caseResCard(c, depth) {
      The service label in the bottom corner went with them: services are the
      first tags in this row now, and naming one of them twice on one card
      made the corner read as a category the card belonged to. */
-  var tags = c.svc.map(serviceName).concat([
-    labelFor(CRMS, c.crm, 1),
+  var tags = c.svc.map(serviceName).concat(crmList(c).map(function (t) {
+    return labelFor(CRMS, t, 1);
+  })).concat([
     labelFor(INDUSTRIES, c.industry, 1),
     labelFor(STAGES, c.stage, 2) + ' people'
   ]);
 
   return '        <a class="res-card reveal" href="/case-studies/' + c.slug + '" data-res-type="case-studies">\n' +
     '          <span class="res-thumb">\n' +
-    '            <img src="' + a + 'assets/img/case-study-placeholder.svg" alt="" aria-hidden="true" loading="lazy">\n' +
+    '            <img src="' + a + (c.img || 'assets/img/case-study-placeholder.svg') +
+      '" alt="" aria-hidden="true" loading="lazy">\n' +
     '          </span>\n' +
     '          <h3 class="res-title">' + c.name + '</h3>\n' +
     '          <span class="res-tags">\n' +
