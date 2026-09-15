@@ -72,8 +72,8 @@
       caseStudy: {
         who: 'The Davani Group',
         line: 'Davani Group had PMF, but needed systems & processes documented in order to grow.',
-        photo: 'assets/img/case-study-placeholder.svg',
-        href: 'case-studies/case-study-2'
+        photo: 'assets/img/case-studies/the-davani-group.webp',
+        href: 'case-studies/The-Davani-Group'
       }
     },
     {

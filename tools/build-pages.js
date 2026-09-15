@@ -855,10 +855,42 @@ var CASES = [
       }
     } },
 
-  { slug: 'case-study-2', name: 'The Davani Group',
-    figs: [['00%', '[measure]'], ['00h', '[measure]']],
+  { slug: 'The-Davani-Group', name: 'The Davani Group',
+    figs: [['32%', 'Shorter sales cycle'], ['00h', '[measure]']],
     svc: ['crm-implementations', 'lead-to-cash-process-mapping'],
-    crm: 'hubspot', industry: 'professional-services', stage: 'scaleup' },
+    crm: 'hubspot', industry: 'professional-services', stage: 'scaleup',
+    img: 'assets/img/case-studies/the-davani-group.webp',
+    copy: {
+      lede: 'The Davani Group bought HubSpot and were then left alone with it. We mapped their lead to cash process end to end, built the agreed version into the CRM, and gave a founder-led sales team a process that no longer lives in anybody\u2019s head. The sales cycle came down by a third.',
+      problem: {
+        h: 'They owned the tool. Nobody had set it up.',
+        p: [
+          'The Davani Group sources and sells custom stone surfaces for homes and businesses, a team of twenty five in a trade where the work is won on relationships and finished on site. They had already bought HubSpot before we met them, which is usually a good sign. Then nothing happened. The licence was live, nobody had configured it, and within months they were paying in full for a CRM doing a fraction of what they bought it for.',
+          'Underneath that was the harder problem: there was no sales process to configure. What happened after a lead arrived depended on which salesperson picked it up and what they remembered to do that week. A good deal of the selling was still founder-led, and the rest of it lived in the heads of individual reps. Nothing was written down, so nothing could be repeated, taught or handed over.',
+          'Tracking a deal meant rebuilding the picture by hand every time somebody asked. Leadership had no way to answer how much was in the pipeline, how fast it was moving, or where it kept getting stuck.'
+        ]
+      },
+      solution: {
+        h: 'Map the whole thing first, then build it',
+        p: [
+          'We opened with a lead to cash process design engagement, run with the operations admin and the sales team rather than around them. Every step went on the map, from the moment a lead arrives to the moment an invoice is collected, including the parts that existed only as habit.',
+          'Seeing it end to end was itself the finding. It was the first time anyone at Davani had looked at the whole process laid out in one place, and it showed them things no CRM project would have: where their own offer created friction for a customer, and where the service could be better before any software was involved.',
+          'The implementation then put the agreed process into HubSpot. A pipeline whose stages mean something, the workflows that fire on a closed deal to start customer onboarding and hand the job to the project side, and the invoicing end joined up rather than left to memory. Adoption is where these projects die, and this one met the usual resistance. It goes easier when the tool has been shaped around the business instead of the business bent around the tool, which is the whole argument for mapping first.'
+        ]
+      },
+      results: {
+        h: 'A process that runs without being remembered',
+        p: [
+          'The sales cycle is 32% shorter. The time a rep spends tracking and managing their own pipeline went from hours to minutes, because the deal record is now the work rather than a report written about the work afterwards.',
+          'Sales leadership can see pipeline velocity, forecast off something better than a feeling, and look at where deals stall rather than guess at it. A stalling deal is visible while there is still time to save it.',
+          'The process itself is the asset they did not have before. It is written down, so a new hire can be taught it, the founder can step out of a deal without it going quiet, and improving it is something the business can now do on purpose.'
+        ],
+        stats: [
+          ['32%', 'Shorter sales cycle', 'down'],
+          ['Minutes', 'Pipeline admin that used to take hours', '']
+        ]
+      }
+    } },
 
   { slug: 'case-study-3', name: 'Core Income',
     figs: [['00%', '[measure]'], ['$00k', '[measure]']],
