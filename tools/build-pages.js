@@ -814,7 +814,6 @@ var CASES = [
     figs: [['3,500', 'Records migrated'], ['6 wks', 'Assessment to live']],
     svc: ['solution-design', 'crm-implementations'],
     crm: ['hubspot', 'gohighlevel'], industry: 'professional-services', stage: 'startup',
-    logo: 'assets/img/logos/ike.webp',
     img: 'assets/img/case-studies/ike-commercial-real-estate.webp',
     copy: {
       lede: 'Ike Commercial Real Estate is a small firm in a relationship business, running on a CRM that made them work for every piece of context. In six weeks we assessed, designed, built and trained them onto HubSpot Marketing and Sales Hub, shaped around the way they actually work with clients. Four people now run their entire day out of one system.',
@@ -1248,9 +1247,8 @@ function casePage(c, i) {
 '  <div class="shell">\n' +
 '    <div class="cs-layout">\n' +
 '      <aside class="cs-side" aria-label="Case study details">\n' +
-'        <div class="cs-logo">' + (c.logo
-        ? '<img src="' + up(1) + c.logo + '" alt="' + c.name + '">'
-        : '[Client logo]') + '</div>\n' +
+'        <div class="cs-shot"><img src="' + up(1) +
+      (c.img || 'assets/img/case-study-placeholder.svg') + '" alt="" aria-hidden="true"></div>\n' +
 '        <div class="cs-meta">\n' +
       meta.map(function (row) {
         return '          <div class="cs-meta-row">\n' +

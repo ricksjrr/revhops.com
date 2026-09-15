@@ -4962,40 +4962,26 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   margin-bottom: clamp(12px, 1.4vw, 18px);
 }
 
-/* ---------- the client's logo ----------
-   Sits above the meta, at the top of the left column. A dashed well like the
-   asset slots, on the card radius, so it reads as a hole waiting for a mark
-   rather than as a box that shipped empty. 3:2 because most wordmarks are
-   wider than they are tall; `object-fit: contain` so a square one is letter-
-   boxed rather than cropped. Drop an <img> in and the dashes go solid. */
-.cs-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 3 / 2;
+/* ---------- the case study's picture ----------
+   Sits above the meta at the top of the left column, and it is the same file
+   the card carries, cropped the other way. It held the client's wordmark in
+   a dashed well until 15 September: a mark named the client a second time,
+   since the title above it already does, and said nothing about the work.
+
+   3:4 and `cover`, against the card's 3:4 landscape crop of the same
+   picture, so the page and the shelf read as two views of one thing. */
+.cs-shot {
+  aspect-ratio: 3 / 4;
   margin: 0 0 clamp(20px, 2.3vw, 30px);
-  padding: 14px;
-  border: 1px dashed var(--plate-line);
   border-radius: var(--radius-card);
   background: var(--plate);
-  color: var(--muted);
-  font-size: .72rem;
-  line-height: 1.4;
-  text-align: center;
   overflow: hidden;
 }
-.cs-logo > img { max-width: 100%; max-height: 100%; object-fit: contain; }
-.cs-logo:has(> img) { border-style: solid; }
-/* The client marks are greyscale line art on a transparent ground, so on the
-   navy plate they sit at about 1.9:1 and disappear. Same treatment as the
-   logo band: flattened to white. [data-solid] opts out for artwork that is
-   already a light mark, which would otherwise flatten to a blank shape. */
-:root[data-theme="dark"] .cs-logo > img { filter: brightness(0) invert(1); opacity: .82; }
-:root[data-theme="dark"] .cs-logo > img[data-solid] { filter: none; opacity: .92; }
+.cs-shot > img { display: block; width: 100%; height: 100%; object-fit: cover; }
 @media (max-width: 1000px) {
-  /* the column goes full width here, and a 3:2 well across the whole shell
-     is a billboard. Capped, and it stays on its own line above the meta row. */
-  .cs-logo { width: min(220px, 42vw); }
+  /* the column goes full width here, and a 3:4 picture across the whole
+     shell is a poster. Capped, and it keeps its own line above the meta. */
+  .cs-shot { width: min(200px, 38vw); }
 }
 
 /* ---------- the meta column ----------
@@ -6728,14 +6714,11 @@ div.res-card .res-go { color: var(--muted); }
   .hs-testi-proof { display: none; }
 
   /* ---------- a case study's meta ----------
-     The logo well is a dashed placeholder waiting for artwork, and on a
-     phone it is the first thing under the title — a hole where the client's
-     mark will be, at the top of the page, before anything has been said.
-     It comes back the moment there is a logo in it.
+     The picture stays on a phone now that it is a photograph of the work
+     rather than a dashed well waiting for a wordmark.
 
      The rule under the meta row is .cs-side's bottom border, and the first
      eyebrow was sitting straight on it. */
-  .cs-logo { display: none; }
   .cs-side { margin-bottom: clamp(22px, 5vw, 32px); }
 
   /* ---------- the back link sits where every other page's does ----------
