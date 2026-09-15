@@ -889,7 +889,9 @@ var CASES = [
           ['32%', 'Shorter sales cycle', 'down'],
           ['Minutes', 'Pipeline admin that used to take hours', '']
         ]
-      }
+      },
+      /* the quotation itself is still outstanding */
+      quote: { cite: 'Lucy Espino <span class="sep">|</span> Head of Ops, The Davani Group' }
     } },
 
   { slug: 'case-study-3', name: 'Core Income',
