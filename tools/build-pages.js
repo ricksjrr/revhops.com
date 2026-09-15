@@ -1275,11 +1275,16 @@ function casePage(c, i) {
 '          argued over, including the ones that went against us.]</p>\n' +
 '        <p class="small">[What it replaced, what stopped being manual, and the part that was\n' +
 '          harder than expected.]</p>\n') +
+    /* The empty wells are part of the template, not of a case study: they
+       show where the artwork goes on a page that has not been written yet.
+       A case with copy in it drops them until it has real assets to put
+       there, rather than publishing three dashed holes. */
+    (copy ? '' :
 '        <div class="cs-assets">\n' +
 '          <div class="cs-asset is-wide">[Asset 1 &mdash; lead image, screen recording or diagram]</div>\n' +
 '          <div class="cs-asset">[Asset 2]</div>\n' +
 '          <div class="cs-asset">[Asset 3]</div>\n' +
-'        </div>\n') +
+'        </div>\n')) +
 
   csBlock('The results', copy ? copy.results.h : '[The heading for what changed]',
     (copy ? csParas(copy.results.p) :
