@@ -816,10 +816,6 @@ var CASES = [
     crm: ['hubspot', 'gohighlevel'], industry: 'professional-services', stage: 'startup',
     logo: 'assets/img/logos/ike.webp',
     img: 'assets/img/case-studies/ike-commercial-real-estate.webp',
-    /* `tools` overrides the meta row that would otherwise read straight off
-       CRMS. The filter still answers to crm: 'hubspot'; the row says which
-       hubs, because on this engagement that is the fact worth having. */
-    tools: 'HubSpot (Marketing Hub, Sales Hub), Go High Level',
     copy: {
       lede: 'Ike Commercial Real Estate is a small firm in a relationship business, running on a CRM that made them work for every piece of context. In six weeks we assessed, designed, built and trained them onto HubSpot Marketing and Sales Hub, shaped around the way they actually work with clients. Four people now run their entire day out of one system.',
       problem: {
@@ -979,12 +975,12 @@ function caseCard(c, depth, cls) {
       '" alt="" aria-hidden="true" loading="lazy">\n' +
     '          <div class="case-body">\n' +
     '            <div class="case-text">\n' +
+    '              <h3 class="case-title">' + c.name + '</h3>\n' +
     '              <span class="case-svc">\n' +
     c.svc.map(function (slug) {
       return '                <span>' + serviceName(slug) + '</span>';
     }).join('\n') + '\n' +
     '              </span>\n' +
-    '              <h3 class="case-title">' + c.name + '</h3>\n' +
     '            </div>\n' +
     '            <span class="case-go" aria-hidden="true">&rarr;</span>\n' +
     '          </div>\n' +
@@ -1213,7 +1209,7 @@ function casePage(c, i) {
      checkboxes are built from. */
   var meta = [
     ['Service(s) used', c.svc.map(serviceName).join(', ')],
-    ['Tools used',      c.tools || crmList(c).map(function (t) {
+    ['Tools used',      crmList(c).map(function (t) {
                           return labelFor(CRMS, t, 1);
                         }).join(', ')],
     ['Industry',        labelFor(INDUSTRIES, c.industry, 1)],

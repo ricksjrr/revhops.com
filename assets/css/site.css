@@ -1799,6 +1799,32 @@ main { overflow-x: clip; }
 }
 .case-card:hover img { transform: scale(1.045); }
 
+/* THE SCRIM IS NOT DECORATION — it is what makes the card's text legible.
+
+   It came off when the cards were artwork with a dark foot built into it,
+   and went back on 15 September once a card could be any photograph: this
+   one is an aerial shot whose bottom third is white concrete and pale
+   asphalt, on which white type measures about 1.1:1 and disappears.
+
+   Deep navy rather than black, and it clears the top 42% so the picture
+   still reads as a picture. Measured in Pillow against the Ike aerial, the
+   worst pixel under the text band carries the white title at 7.8:1 and the
+   warm service line, which is small text and therefore needs 4.5:1, at
+   4.8:1. Re-measure if the stops move or a lighter photograph arrives. */
+.case-card::after {
+  content: '';
+  position: absolute;
+  inset: 42% 0 0 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(to top,
+    rgba(28, 38, 53, .96) 0%,
+    rgba(28, 38, 53, .92) 20%,
+    rgba(28, 38, 53, .78) 40%,
+    rgba(28, 38, 53, .40) 65%,
+    rgba(28, 38, 53, 0) 100%);
+}
+
 .case-body {
   position: absolute;
   inset: auto 0 0 0;
@@ -1809,7 +1835,7 @@ main { overflow-x: clip; }
   gap: 14px;
   padding: clamp(18px, 2vw, 24px);
 }
-.case-text { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.case-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .case-title {
   font-family: var(--font-head);
   font-weight: 700;
@@ -1817,12 +1843,11 @@ main { overflow-x: clip; }
   line-height: 1.2;
   letter-spacing: -.022em;
   color: #FFFFFF;
-  /* With the scrim gone this is the only thing keeping the title legible
-     over a light photograph. Not a gradient — a tight shadow that reads as
-     an edge rather than a wash. */
-  text-shadow: 0 1px 3px rgba(12, 18, 26, .85), 0 0 18px rgba(12, 18, 26, .5);
+  /* The scrim below does the legibility work now. This is left as a tight
+     edge so the title still sits off the picture rather than in it. */
+  text-shadow: 0 1px 2px rgba(12, 18, 26, .5);
 }
-/* The services the case is tagged with, above the title. It replaced two
+/* The services the case is tagged with, under the title. It replaced two
    figures on 15 September: a card is the door to the story, and a number
    with no page around it is a claim the visitor cannot check yet.
 
@@ -1842,7 +1867,7 @@ main { overflow-x: clip; }
   letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--warm);
-  text-shadow: 0 1px 3px rgba(12, 18, 26, .85), 0 0 14px rgba(12, 18, 26, .5);
+  text-shadow: 0 1px 2px rgba(12, 18, 26, .5);
 }
 .case-svc span + span::before {
   content: '·';
@@ -1855,7 +1880,7 @@ main { overflow-x: clip; }
   color: #FFFFFF;
   font-size: 1.35rem;
   line-height: 1;
-  text-shadow: 0 1px 3px rgba(12, 18, 26, .85), 0 0 14px rgba(12, 18, 26, .5);
+  text-shadow: 0 1px 2px rgba(12, 18, 26, .5);
   transition: color .3s var(--ease), transform .35s var(--ease-out);
 }
 .case-card:hover .case-go { color: var(--warm); transform: translateX(4px); }
