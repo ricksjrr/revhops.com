@@ -131,7 +131,13 @@ body {
   font-size: 16px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  /* `clip`, not `hidden`. overflow-x: hidden makes the body a scroll
+     container, and on a touch device that container swallows the horizontal
+     swipe before the case rail inside it ever sees it — the rail would move
+     with its arrows and with scrollLeft, and not with a thumb. `clip` still
+     stops the page itself sliding sideways, without creating a scroller.
+     <main> has been on clip for the same reason. */
+  overflow-x: clip;
 }
 img, svg { max-width: 100%; display: block; }
 button { font: inherit; color: inherit; }
@@ -1870,7 +1876,10 @@ main { overflow-x: clip; }
   gap: 3px;
   min-width: 0;
   font-family: var(--font-head);
-  font-weight: 700;
+  /* The title is the bold thing on a card. The services are a label under
+     it, so they keep the size, the tracking and the caps and give up the
+     weight. */
+  font-weight: 400;
   font-size: .68rem;
   line-height: 1.3;
   letter-spacing: .12em;
@@ -4985,20 +4994,23 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 }
 @media (max-width: 620px) {
   /* On a phone it stops being a thumbnail beside the meta and becomes the
-     picture at the top of the story: edge to edge, and the whole frame
-     rather than a crop of it, so the aspect ratio is the file's own.
-     100vw with an auto margin-inline escapes the shell's gutters, and the
-     corners go square because a full-bleed image has no card to sit on.
-     James' call, 15 September. */
+     picture at the top of the story: the full width of the shell, inside
+     the same gutters as the plate above it, on the card radius, and the
+     whole frame rather than a crop of it, so the aspect ratio is the
+     file's own. */
   .cs-shot {
-    width: 100vw;
-    margin-inline: calc(50% - 50vw);
+    width: 100%;
+    margin-inline: 0;
     margin-bottom: clamp(20px, 5vw, 28px);
     aspect-ratio: auto;
-    border-radius: 0;
+    border-radius: var(--radius-card);
     background: none;
   }
   .cs-shot > img { height: auto; object-fit: contain; }
+  /* .cs-side keeps 2px of padding for the sticky column's scrollbar, which
+     it does not have on a phone, and which left the picture 2px narrower
+     than the plate above it. */
+  .cs-side { padding-right: 0; }
 }
 
 /* ---------- the meta column ----------
@@ -5249,6 +5261,21 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 /* .quote supplies the italic body and the 12px stack; this only has to stop
    the blockquote from being a flex item that refuses to shrink */
 .cs-testi-quote { min-width: 0; margin: 0; }
+@media (max-width: 620px) {
+  /* Stacked and centred. The face moves under the attribution rather than
+     above the quotation: on a narrow column a photograph at the top is a
+     bump the eye has to get past before it reaches the words, and the words
+     are the point. */
+  .cs-testi {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: clamp(14px, 4vw, 20px);
+  }
+  .cs-testi-photo { order: 2; }
+  .cs-testi-quote { order: 1; align-items: center; }
+  .cs-testi .quote-by { justify-content: center; text-align: center; }
+}
 /* No measure cap: the quotation runs the full width of the column, the
    way the body copy beside it does. */
 .cs-testi-quote p { max-width: none; }
