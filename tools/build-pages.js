@@ -944,10 +944,38 @@ var CASES = [
       }
     } },
 
-  { slug: 'case-study-4', name: 'Woodside Homes',
+  { slug: 'Woodside-Homes', name: 'Woodside Homes',
     figs: [['3', 'business units'], ['00d', '[measure]']],
-    svc: ['solution-design', 'lead-to-cash-process-mapping'],
-    crm: 'hubspot', industry: 'ecommerce', stage: 'startup' },
+    svc: ['solution-design', 'hubspot-support-retainers'],
+    crm: 'hubspot', industry: 'professional-services', stage: 'maturity',
+    img: 'assets/img/case-studies/woodside-homes.webp',
+    copy: {
+      lede: 'Woodside Homes builds production homes across several regions, with acquired builders rolling up under one business. Management could not see which marketing was producing leads and sales. We spent the time to learn what each team actually needed to see, built the reporting to match, and taught the people who use it.',
+      problem: {
+        h: 'Nobody could see which marketing was working',
+        p: [
+          'Woodside Homes is a large production home builder with several acquisitions sitting under the business, spread across regions, each arriving with its own history and its own way of counting things. Management had a simple question the reporting could not answer: which marketing initiatives are generating leads and sales, and where should the next dollar of effort and budget go?',
+          'Underneath that, the marketing team was spending its time hunting for numbers rather than acting on them. What mattered was somewhere in HubSpot, and getting to it meant knowing where to dig. When finding a number is work, people stop looking, and decisions end up being made on whatever somebody remembers.',
+          'The rollups made it harder again. With no way to break performance out by region and by business unit, the group numbers averaged away the very thing an operator needed to see. At community level there was nothing at all, so nobody could say which communities were growing and which had stalled.'
+        ]
+      },
+      solution: {
+        h: 'Ask everyone what they need to see, then build that',
+        p: [
+          'The first part of the work was not building anything. We went and understood the reporting needs of every group that had one, down to the marketing team, who are the people actually running the initiatives being measured. We worked directly with the head of paid media and with the internal product owner for HubSpot, which is the pairing that makes a build like this stick after we leave.',
+          'Then the reporting itself: what matters, front and centre, without anyone having to go looking for it. Performance broken out by region and by business unit, so an acquired builder can be read on its own terms rather than averaged into the group. And reporting at community level, so it is obvious which communities are growing and which have stopped.',
+          'A large part of the engagement was teaching. Sitting with people and showing them how to work HubSpot efficiently, against the job they actually do rather than a training deck. A report nobody knows how to read is the same as no report.'
+        ]
+      },
+      results: {
+        h: 'The numbers are where people look',
+        p: [
+          'Management can see which marketing is producing leads and sales, which turns the budget conversation into a question of evidence rather than instinct.',
+          'Regional and business unit leaders see their own performance instead of the group average, and community-level reporting shows where growth is and where it has stopped. That last one reaches past marketing: the finance team uses it to price homes.',
+          'And the team can work the platform for itself. What they need is in front of them, and when something new is needed they know how to build it rather than wait for someone who can.'
+        ]
+      }
+    } },
 
   { slug: 'Ignite-Group', name: 'Ignite Group',
     figs: [['3', 'countries unified'], ['8', 'week build']],
@@ -1435,6 +1463,7 @@ function casePage(c, i) {
                '          </div>';
       }).join('\n') + '\n' +
 '        </div>\n') +
+      (copy && !copy.quote ? '' :
 '        <figure class="cs-testi">\n' +
 '          <div class="cs-testi-photo">' + (copy && copy.quote && copy.quote.photo
         ? '<img' + (copy.quote.photoMark ? ' class="is-mark"' : '') + ' src="' + up(1) +
@@ -1449,7 +1478,7 @@ function casePage(c, i) {
                  '[Name] <span class="sep">|</span> [Title], [Company]') + '</cite>\n' +
 '            </footer>\n' +
 '          </blockquote>\n' +
-'        </figure>\n') +
+'        </figure>\n')) +
 
 '      </div>\n' +
 '    </div>\n' +

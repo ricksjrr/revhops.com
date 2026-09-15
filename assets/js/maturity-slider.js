@@ -122,8 +122,8 @@
       caseStudy: {
         who: 'Woodside Homes',
         line: 'To support operations across most of the US, Woodside implemented business unit level reporting & process standardization.',
-        photo: 'assets/img/case-study-placeholder.svg',
-        href: 'case-studies/case-study-4'
+        photo: 'assets/img/case-studies/woodside-homes.webp',
+        href: 'case-studies/Woodside-Homes'
       }
     },
     {
