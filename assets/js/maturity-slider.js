@@ -95,10 +95,10 @@
         'Your one RevOps hire spends the week on tickets, so nothing structural ever gets fixed.'
       ],
       caseStudy: {
-        who: 'Core Income',
-        line: 'Core Income implemented a customized sales process that adapted to the unique way they do business.',
+        who: 'Core Income Advisors',
+        line: 'Core Income Advisors implemented a customized sales process that adapted to the unique way they do business.',
         photo: 'assets/img/case-study-placeholder.svg',
-        href: 'case-studies/case-study-3'
+        href: 'case-studies/Core-Income-Advisors'
       }
     },
     {

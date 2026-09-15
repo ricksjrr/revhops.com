@@ -905,10 +905,43 @@ var CASES = [
       }
     } },
 
-  { slug: 'case-study-3', name: 'Core Income',
+  { slug: 'Core-Income-Advisors', name: 'Core Income Advisors',
     figs: [['00%', '[measure]'], ['$00k', '[measure]']],
-    svc: ['hubspot-support-retainers', 'revops-consulting'],
-    crm: 'hubspot', industry: 'financial-services', stage: 'maturity' },
+    svc: ['hubspot-support-retainers'],
+    crm: 'hubspot', industry: 'financial-services',
+    /* 30 to 100 people, which straddles two bands; the larger one */
+    stage: 'growth',
+    copy: {
+      lede: 'Core Income Advisors had been through HubSpot partner agencies before and come away with recommendations that never solved the problem in front of them. Their COO evaluated several firms and chose us. The sales, marketing and operations teams now have a standing weekly session and a specialist who has learned how the business makes money.',
+      problem: {
+        h: 'Advice from people who had not learned the business',
+        p: [
+          'Core Income Advisors is a financial services firm. Deborah Isensee joined as COO and, soon after, went looking for help with HubSpot. They were not starting from nothing: they had hired HubSpot partner agencies before.',
+          'That was the problem. None of them had stopped to learn how the business actually worked, so what came back was generic. The advice was reasonable in the abstract and did not touch the problems the team had. Money had been spent and the platform still was not doing what they needed it to do.',
+          'Deborah evaluated several partners before picking one. That is the right way to buy this, and a useful thing to be measured against.'
+        ]
+      },
+      solution: {
+        h: 'A specialist on the team, not a project with an end date',
+        p: [
+          'The engagement is a HubSpot support retainer, which in practice means the team has a dedicated HubSpot specialist and a RevOps expert without either sitting on the payroll. There is no statement of work to point at when something new comes up, which is the whole point.',
+          'Every week people bring what they have: a question, something broken, a report nobody can build. We prioritise it together into a task list and then work it. The standup has sales, marketing and operations in the room, because the work crosses all three and the handovers between them are usually where the problem is.',
+          'What gets built is whatever moves revenue. Lead generation, sales enablement, operations reporting. Specific functionality, workflows, sequences and dashboards, each one built around how Core Income sells rather than how HubSpot demonstrates.'
+        ]
+      },
+      results: {
+        h: 'The platform does what the business needs it to',
+        p: [
+          'The team stopped working around HubSpot and started asking it for things. Reporting, workflows, sequences and dashboards exist now because somebody raised them at a standup and they were built that week.',
+          'The other half of the value is being told no. Knowing early and plainly what the platform will not do is worth as much as knowing what it will, and it is the part a partner who has not learned your business cannot give you.'
+        ]
+      },
+      quote: {
+        text: 'Our experience working with RevHops to build out specific functionality, reporting, workflows, sequences and dashboards has exceeded expectations. Having worked with HubSpot consultant agencies in the past - and failed, RevHops takes on the exact opposite approach. James has taken the time to learn our business model, understand the complexities and remained confident and transparent on what we can/cannot do within the platform. Looking forward to continued partnership with RevHops, excited to exceed expectations well into the future!',
+        cite: 'Deborah Isensee <span class="sep">|</span> COO, Core Income Advisors',
+        photo: 'assets/img/case-studies/deborah-isensee.webp'
+      }
+    } },
 
   { slug: 'case-study-4', name: 'Woodside Homes',
     figs: [['3', 'business units'], ['00d', '[measure]']],
@@ -1385,6 +1418,7 @@ function casePage(c, i) {
 '        <p class="small">[What is different now, in the terms the client would use rather\n' +
 '          than the ones we would. What the team can now do for itself, what stopped being\n' +
 '          anyone’s job, and anything that did not work.]</p>\n') +
+      (copy && (!copy.results.stats || !copy.results.stats.length) ? '' :
 '        <div class="cs-stats">\n' +
       /* [figure, label, direction]. Without copy: one plain, one up, one
          down — the three shapes a figure can take, so the template shows all
@@ -1398,7 +1432,7 @@ function casePage(c, i) {
                '            <span>' + f[1] + '</span>\n' +
                '          </div>';
       }).join('\n') + '\n' +
-'        </div>\n' +
+'        </div>\n') +
 '        <figure class="cs-testi">\n' +
 '          <div class="cs-testi-photo">' + (copy && copy.quote && copy.quote.photo
         ? '<img' + (copy.quote.photoMark ? ' class="is-mark"' : '') + ' src="' + up(1) +
