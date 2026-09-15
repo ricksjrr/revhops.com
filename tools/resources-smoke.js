@@ -43,7 +43,7 @@ d.querySelectorAll('[data-res-section="case-studies"] .res-card').length===4
   : bad('case studies shelf shows ' + d.querySelectorAll('[data-res-section="case-studies"] .res-card').length);
 [...d.querySelectorAll('[data-res-section] .res-grid')].every(g => g.children.length <= 8)
   ? ok('no shelf renders more than one page of cards') : bad('a shelf is longer than a page');
-[...d.querySelectorAll('[data-res-section="case-studies"] a.res-card')].every(a=>/case-studies\/case-study-\d/.test(a.getAttribute('href')))
+[...d.querySelectorAll('[data-res-section="case-studies"] a.res-card')].every(a=>/case-studies\/[A-Za-z0-9-]+$/.test(a.getAttribute('href')))
   ? ok('and each links at its own case study page') : bad('a case card links somewhere else');
 
 const seeAll=[...d.querySelectorAll('.res-all a')].map(a=>a.getAttribute('href'));

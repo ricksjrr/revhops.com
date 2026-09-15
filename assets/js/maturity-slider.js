@@ -45,7 +45,7 @@
         who: 'Ike Commercial Real Estate',
         line: 'Ike Commercial Real Estate needed a way to systematize the way they do business.',
         logo: 'assets/img/logos/ike.webp',
-        href: 'case-studies/case-study-1'
+        href: 'case-studies/Ike-Commercial-Real-Estate'
       }
     },
     {

@@ -802,10 +802,52 @@ var STAGES = [
    The ones still reading 00 are waiting on James' numbers; the placeholder
    is deliberate and visible rather than invented. */
 var CASES = [
-  { slug: 'case-study-1', name: 'Ike Commercial Real Estate',
-    figs: [['100%', 'New CRM build'], ['4', 'Sales team users']],
+  { slug: 'Ike-Commercial-Real-Estate', name: 'Ike Commercial Real Estate',
+    figs: [['3,500', 'Records migrated'], ['6 wks', 'Assessment to live']],
     svc: ['solution-design', 'crm-implementations'],
-    crm: 'salesforce', industry: 'b2b-saas', stage: 'growth' },
+    crm: 'hubspot', industry: 'professional-services', stage: 'startup',
+    logo: 'assets/img/logos/ike.webp',
+    /* `tools` overrides the meta row that would otherwise read straight off
+       CRMS. The filter still answers to crm: 'hubspot'; the row says which
+       hubs, because on this engagement that is the fact worth having. */
+    tools: 'HubSpot (Marketing Hub, Sales Hub)',
+    copy: {
+      lede: 'Ike Commercial Real Estate is a small firm in a relationship business, running on a CRM that made them work for every piece of context. In six weeks we assessed, designed, built and trained them onto HubSpot Marketing and Sales Hub, shaped around the way they actually work with clients. Four people now run their entire day out of one system.',
+      problem: {
+        h: 'The CRM was the obstacle, not the tool',
+        p: [
+          'Ike Commercial Real Estate helps businesses find commercial space and then sits on their side of the table for the negotiation: terms, location, price. It is a relationship business, and the way Ike builds and keeps those relationships is the thing clients are buying. Blake, their CEO, had already done the research and decided HubSpot was where they needed to be. What he did not have was a way to get there without losing anything on the way out of Go High Level.',
+          'The day to day was the real problem. In Go High Level, companies and contacts are not natively tied to each other, and even where a link exists, a note left on one record does not show up on the other. For a firm whose entire value is knowing its clients, that gap is expensive. The context for a single relationship sat in pieces, and assembling it before a call meant opening records one at a time and filling in the rest from memory. Every task took more steps than it should have. The tool was a source of friction rather than an enabler.',
+          'Email was its own problem. The sending domain was not properly verified, campaigns were landing in the Promotions tab instead of the inbox, and the numbers underneath were quietly underperforming as a result.'
+        ]
+      },
+      solution: {
+        h: 'Assess first, then build around how Ike actually works',
+        p: [
+          'We opened with assessment workshops, run with both the stakeholders and the people who would be in the tool every day. Not a requirements form, a conversation about what the work looks like. From that we wrote an implementation scope and agreed it before anything was built, so the project had a defined destination rather than a direction.',
+          'Ike does a couple of things with clients that no out of the box CRM object describes, and those are the things that make them worth hiring. So we built custom objects around them rather than asking Ike to bend their process to fit a standard deal pipeline. This was the most interesting part of the build and the part that took the most thinking.',
+          'Then the migration: 2,000 company records and 1,500 contacts moved across, properly associated on the other side. Notes and open tasks were the catch. Go High Level does not include either in its standard export, which for Ike meant leaving behind hundreds of client notes and live follow ups, the exact history the whole business runs on. We wrote a custom script to pull that data out of GHL and bring it over with everything else. Alongside the build we fixed the email foundation, verified the sending domain, and trained the team. After launch their feedback drove a round of small adjustments, which is usually where adoption is won or lost.'
+        ]
+      },
+      results: {
+        h: 'One system, with more in it than they had before',
+        p: [
+          'Four people now work exclusively out of HubSpot. Everything they knew about a client is in one place, with the note history that came with them, and nobody is checking a second tool to find the rest.',
+          'They also have things they never had. Email and website activity against the contact record, lead scoring, and visible progress through nurturing. For a team whose edge is knowing their clients well, that is a real addition rather than a dashboard: it is context they could not previously see, arriving without anyone having to go and get it.',
+          'The whole engagement, from the first assessment workshop to a trained team working live, took about six weeks.'
+        ],
+        /* [figure, what it measures, direction]. No arrows on this one: all
+           three are counts, not movements. */
+        stats: [
+          ['3,500', 'Records migrated from GHL', ''],
+          ['6 weeks', 'Assessment to trained and live', ''],
+          ['4', 'Users now in one system', '']
+        ]
+      },
+      /* the quote is the one thing still outstanding, so it keeps the
+         bracketed placeholder the other four have */
+      quote: { cite: '[Name] <span class="sep">|</span> CEO, Ike Commercial Real Estate' }
+    } },
 
   { slug: 'case-study-2', name: 'The Davani Group',
     figs: [['00%', '[measure]'], ['00h', '[measure]']],
@@ -1138,6 +1180,15 @@ function csArrow(dir) {
 
 /* one fixed section: orange eyebrow, a heading that changes per case, and
    whatever the section is made of underneath */
+/* A case with a `copy` object renders its own words; one without still
+   renders the bracketed template, which is how the other four ship until
+   the copy exists. Paragraphs arrive as an array of strings. */
+function csParas(list) {
+  return list.map(function (t) {
+    return '        <p class="small">' + t + '</p>\n';
+  }).join('');
+}
+
 function csBlock(eyebrow, title, inner) {
   return '      <section class="cs-block">\n' +
          '        <span class="cs-eyebrow">' + eyebrow + '</span>\n' +
@@ -1152,10 +1203,13 @@ function casePage(c, i) {
      checkboxes are built from. */
   var meta = [
     ['Service(s) used', c.svc.map(serviceName).join(', ')],
-    ['Tools used',      labelFor(CRMS, c.crm, 1)],
+    ['Tools used',      c.tools || labelFor(CRMS, c.crm, 1)],
     ['Industry',        labelFor(INDUSTRIES, c.industry, 1)],
     ['Team size',       labelFor(STAGES, c.stage, 2) + ' people']
   ];
+
+  /* set on a case that has been written; undefined leaves the template */
+  var copy = c.copy;
 
   var body = '';
 
@@ -1170,9 +1224,10 @@ function casePage(c, i) {
 '    <div class="cs-head-panel is-detail">\n' +
 '      <div class="cs-head-copy">\n' +
 '        <h1 class="h1" data-nav-clear>' + c.name + '</h1>\n' +
-'        <p class="cs-head-lede">[One or two sentences on who they are, what was\n' +
-'          broken, and what it is now. The whole story in a paragraph, so the rest of\n' +
-'          the page is detail rather than suspense.]</p>\n' +
+'        <p class="cs-head-lede">' + (copy ? copy.lede :
+         '[One or two sentences on who they are, what was broken, and what it is now. ' +
+         'The whole story in a paragraph, so the rest of the page is detail rather than ' +
+         'suspense.]') + '</p>\n' +
 '      </div>\n' +
 '    </div>\n' +
 '  </div>\n' +
@@ -1185,7 +1240,9 @@ function casePage(c, i) {
 '  <div class="shell">\n' +
 '    <div class="cs-layout">\n' +
 '      <aside class="cs-side" aria-label="Case study details">\n' +
-'        <div class="cs-logo">[Client logo]</div>\n' +
+'        <div class="cs-logo">' + (c.logo
+        ? '<img src="' + up(1) + c.logo + '" alt="' + c.name + '">'
+        : '[Client logo]') + '</div>\n' +
 '        <div class="cs-meta">\n' +
       meta.map(function (row) {
         return '          <div class="cs-meta-row">\n' +
@@ -1198,36 +1255,42 @@ function casePage(c, i) {
 '\n' +
 '      <div class="cs-body">\n' +
 
-  csBlock('The problem', '[The heading for this case’s problem]',
+  csBlock('The problem', copy ? copy.problem.h : '[The heading for this case’s problem]',
+    copy ? csParas(copy.problem.p) :
 '        <p class="small">[What the business does, how many people sell for it, and what the\n' +
 '          revenue system looked like on the day they called. Name the thing that finally\n' +
 '          made them pick up the phone.]</p>\n' +
 '        <p class="small">[The symptom everyone could see, and the cause nobody had gone\n' +
 '          looking for. What it was costing them while it went unfixed.]</p>\n') +
 
-  csBlock('The solution', '[The heading for what we built]',
+  csBlock('The solution', copy ? copy.solution.h : '[The heading for what we built]',
+    (copy ? csParas(copy.solution.p) :
 '        <p class="small">[What was scoped, what went first and why. The decisions that were\n' +
 '          argued over, including the ones that went against us.]</p>\n' +
 '        <p class="small">[What it replaced, what stopped being manual, and the part that was\n' +
-'          harder than expected.]</p>\n' +
+'          harder than expected.]</p>\n') +
 '        <div class="cs-assets">\n' +
 '          <div class="cs-asset is-wide">[Asset 1 &mdash; lead image, screen recording or diagram]</div>\n' +
 '          <div class="cs-asset">[Asset 2]</div>\n' +
 '          <div class="cs-asset">[Asset 3]</div>\n' +
 '        </div>\n') +
 
-  csBlock('The results', '[The heading for what changed]',
+  csBlock('The results', copy ? copy.results.h : '[The heading for what changed]',
+    (copy ? csParas(copy.results.p) :
 '        <p class="small">[What is different now, in the terms the client would use rather\n' +
 '          than the ones we would. What the team can now do for itself, what stopped being\n' +
-'          anyone’s job, and anything that did not work.]</p>\n' +
+'          anyone’s job, and anything that did not work.]</p>\n') +
 '        <div class="cs-stats">\n' +
-      /* one plain, one up, one down — the three shapes a figure can take, so
-         the template shows all of them rather than leaving the arrow to be
-         discovered in the CSS */
-      [['', ''], ['', 'up'], ['', 'down']].map(function (f) {
+      /* [figure, label, direction]. Without copy: one plain, one up, one
+         down — the three shapes a figure can take, so the template shows all
+         of them rather than leaving the arrow to be discovered in the CSS */
+      (copy ? copy.results.stats : [['XX%', '[What this figure measures]', ''],
+                                    ['XX%', '[What this figure measures]', 'up'],
+                                    ['XX%', '[What this figure measures]', 'down']])
+      .map(function (f) {
         return '          <div class="cs-stat">\n' +
-               '            <b>' + (f[1] ? csArrow(f[1]) : '') + 'XX%</b>\n' +
-               '            <span>[What this figure measures]</span>\n' +
+               '            <b>' + (f[2] ? csArrow(f[2]) : '') + f[0] + '</b>\n' +
+               '            <span>' + f[1] + '</span>\n' +
                '          </div>';
       }).join('\n') + '\n' +
 '        </div>\n' +
@@ -1237,7 +1300,8 @@ function casePage(c, i) {
 '            <p>[One quotation from the person who signed it off. Two or three sentences,\n' +
 '              in their words, not ours.]</p>\n' +
 '            <footer class="quote-by">\n' +
-'              <cite>[Name] <span class="sep">|</span> [Title], [Company]</cite>\n' +
+'              <cite>' + (copy && copy.quote && copy.quote.cite ? copy.quote.cite :
+                 '[Name] <span class="sep">|</span> [Title], [Company]') + '</cite>\n' +
 '            </footer>\n' +
 '          </blockquote>\n' +
 '        </figure>\n') +

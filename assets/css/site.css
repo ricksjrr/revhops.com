@@ -4953,6 +4953,12 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 }
 .cs-logo > img { max-width: 100%; max-height: 100%; object-fit: contain; }
 .cs-logo:has(> img) { border-style: solid; }
+/* The client marks are greyscale line art on a transparent ground, so on the
+   navy plate they sit at about 1.9:1 and disappear. Same treatment as the
+   logo band: flattened to white. [data-solid] opts out for artwork that is
+   already a light mark, which would otherwise flatten to a blank shape. */
+:root[data-theme="dark"] .cs-logo > img { filter: brightness(0) invert(1); opacity: .82; }
+:root[data-theme="dark"] .cs-logo > img[data-solid] { filter: none; opacity: .92; }
 @media (max-width: 1000px) {
   /* the column goes full width here, and a 3:2 well across the whole shell
      is a billboard. Capped, and it stays on its own line above the meta row. */
