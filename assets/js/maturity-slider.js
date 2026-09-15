@@ -97,7 +97,7 @@
       caseStudy: {
         who: 'Core Income Advisors',
         line: 'Core Income Advisors implemented a customized sales process that adapted to the unique way they do business.',
-        photo: 'assets/img/case-studies/core-income-advisors.webp',
+        photo: 'assets/img/case-studies/core-income-advisors-team.webp',
         href: 'case-studies/Core-Income-Advisors'
       }
     },
@@ -147,7 +147,7 @@
       caseStudy: {
         who: 'Ignite Group',
         line: 'Ignite Group migrated their 3-country sales organization from Salesforce to HubSpot’s Enterprise suite.',
-        photo: 'assets/img/case-studies/ignite-group.webp',
+        photo: 'assets/img/case-studies/ignite-group-amsterdam.webp',
         href: 'case-studies/Ignite-Group'
       }
     }

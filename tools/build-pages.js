@@ -911,7 +911,7 @@ var CASES = [
     crm: 'hubspot', industry: 'financial-services',
     /* 30 to 100 people, which straddles two bands; the larger one */
     stage: 'growth',
-    img: 'assets/img/case-studies/core-income-advisors.webp',
+    img: 'assets/img/case-studies/core-income-advisors-team.webp',
     copy: {
       lede: 'Core Income Advisors had been through HubSpot partner agencies before and come away with recommendations that never solved the problem in front of them. Their COO evaluated several firms and chose us. The sales, marketing and operations teams now have a standing weekly session and a specialist who has learned how the business makes money.',
       problem: {
@@ -986,7 +986,7 @@ var CASES = [
        this one at its Enterprise stage, which is its own data in
        assets/js/maturity-slider.js and does not read this field. */
     stage: 'maturity',
-    img: 'assets/img/case-studies/ignite-group.webp',
+    img: 'assets/img/case-studies/ignite-group-amsterdam.webp',
     copy: {
       lede: 'Ignite Group helps businesses win grants and subsidies across the Netherlands and Germany. Their Salesforce had not been properly owned since the admin who built it left, and a newly acquired division was running on spreadsheets and Word documents. We assessed, designed, built and trained them onto HubSpot, and stayed on for the year that followed.',
       problem: {
