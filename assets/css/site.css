@@ -1758,11 +1758,9 @@ main { overflow-x: clip; }
 .case-nav button[disabled] { opacity: .32; cursor: default; }
 .case-nav button:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 3px; }
 
-/* The buttons used to come off on a touch device, on the reasoning that
-   the swipe is right there. They are back: the swipe has been unreliable on
-   at least one phone, and a rail with no visible control and no working
-   gesture is a dead row of cards. Take this rule out again once the gesture
-   is trusted everywhere. */
+/* no pointer, no need for the buttons — the swipe is right there, and
+   site.js drives it by hand on touch so it is there on every browser */
+@media (hover: none) { .case-nav { display: none; } }
 @media (max-width: 700px) {
   .case-head { grid-template-columns: minmax(0, 1fr); }
   .case-head > span { display: none; }
@@ -1789,6 +1787,13 @@ main { overflow-x: clip; }
   /* legacy iOS: momentum scrolling inside an overflow container. Ignored
      everywhere modern, and harmless where it is not. */
   -webkit-overflow-scrolling: touch;
+  /* pan-y hands every horizontal touch gesture to the page's own handler in
+     site.js, and leaves the vertical one to the browser. Native horizontal
+     panning inside this box could not be relied on — on iOS it took the
+     arrows and scrollLeft and sat still under a thumb — so the rail stopped
+     asking for it. Trackpads and wheels are untouched: touch-action only
+     governs touch. */
+  touch-action: pan-y;
   /* Room for the hover shadow. overflow-x: auto forces overflow-y to auto
      too, so this box clips vertically whether or not it is asked to — the
      shadow was being cut off at the rail's own bottom edge, not by the

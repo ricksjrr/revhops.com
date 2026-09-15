@@ -360,6 +360,101 @@
 })();
 
 /* ==========================================================================
+   RevHops — the case rail, dragged by hand
+
+   The rail is a plain overflow-x container and every browser but one scrolls
+   it with a finger for free. On iOS it would not: the arrows moved it, a
+   scrollLeft moved it, and a thumb on the cards did nothing but light up the
+   one it landed on. Rather than keep guessing at which CSS property was
+   eating the gesture, the rail now declares touch-action: pan-y — the
+   browser keeps vertical scrolling, this module takes horizontal — and
+   moves scrollLeft itself.
+
+   Touch only. A mouse or a trackpad still scrolls the rail natively, which
+   is what people expect from a pointer, and a drag with a mouse would fight
+   text selection and the cards' own links.
+
+   A drag past a few pixels swallows the click that follows it, so a swipe
+   across a card does not open the case study behind it.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var rail = document.querySelector('[data-case-rail]');
+  if (!rail || !('PointerEvent' in window)) return;
+
+  var down = false, live = false, moved = 0;
+  var startX = 0, startY = 0, startLeft = 0;
+  var lastX = 0, lastT = 0, vx = 0, raf = 0;
+
+  function begin(e) {
+    if (e.pointerType !== 'touch') return;
+    down = true; live = false; moved = 0; vx = 0;
+    startX = lastX = e.clientX;
+    startY = e.clientY;
+    startLeft = rail.scrollLeft;
+    lastT = e.timeStamp;
+    if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    /* the pointer keeps reporting to the rail once the finger leaves it,
+       so a fast drag does not stop at the edge of the box */
+    if (rail.setPointerCapture) {
+      try { rail.setPointerCapture(e.pointerId); } catch (err) { /* fine */ }
+    }
+  }
+
+  function move(e) {
+    if (!down || e.pointerType !== 'touch') return;
+    var dx = e.clientX - startX;
+    var dy = e.clientY - startY;
+
+    /* Wait for the gesture to declare itself. Until it has travelled 6px
+       and is going sideways rather than down, this is somebody scrolling
+       the page and the rail should hold still. */
+    if (!live) {
+      if (Math.abs(dx) < 6 || Math.abs(dx) <= Math.abs(dy)) return;
+      live = true;
+      /* snapping mid-drag pulls the rail out from under the finger */
+      rail.style.scrollSnapType = 'none';
+    }
+
+    moved = Math.max(moved, Math.abs(dx));
+    rail.scrollLeft = startLeft - dx;
+
+    var dt = e.timeStamp - lastT;
+    if (dt > 0) vx = (e.clientX - lastX) / dt;   /* px per ms */
+    lastX = e.clientX;
+    lastT = e.timeStamp;
+  }
+
+  function glide() {
+    vx *= 0.94;
+    rail.scrollLeft -= vx * 16;
+    if (Math.abs(vx) > 0.02) raf = requestAnimationFrame(glide);
+    else { raf = 0; rail.style.scrollSnapType = ''; }
+  }
+
+  function end(e) {
+    if (!down) return;
+    down = false;
+    if (!live) return;
+    live = false;
+    if (e && e.timeStamp - lastT > 120) vx = 0;   /* held still before lifting */
+    if (Math.abs(vx) > 0.05) raf = requestAnimationFrame(glide);
+    else rail.style.scrollSnapType = '';
+  }
+
+  rail.addEventListener('pointerdown', begin);
+  rail.addEventListener('pointermove', move);
+  rail.addEventListener('pointerup', end);
+  rail.addEventListener('pointercancel', end);
+
+  /* a swipe is not a tap: swallow the click the gesture ends with */
+  rail.addEventListener('click', function (e) {
+    if (moved > 8) { e.preventDefault(); e.stopPropagation(); }
+  }, true);
+})();
+
+/* ==========================================================================
    RevHops — portrait tilt
 
    Writes --tx and --ty on [data-tilt] in the range -1 to 1, and nothing
