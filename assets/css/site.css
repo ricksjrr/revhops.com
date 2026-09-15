@@ -4903,6 +4903,12 @@ a.pcard:hover .arrow { transform: translateX(5px); }
     padding-bottom: 4px;
     border-bottom: 1px solid var(--line);
   }
+  /* ...except under the filters. Stacked above the grid on a narrow screen,
+     the chips already read as their own block, and a rule under them draws
+     a line across the page before the visitor has seen a single card. The
+     meta column on a case study page keeps its rule: there the line is what
+     separates the facts from the story beside them. */
+  .cs-side[data-cs-filters] { border-bottom: 0; padding-bottom: 0; }
   .cs-opts { flex-direction: row; flex-wrap: wrap; gap: 6px; }
   .cs-opt {
     width: auto;
