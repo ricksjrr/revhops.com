@@ -784,6 +784,10 @@ var CRMS = [
 function crmList(c) {
   return [].concat(c.crm);
 }
+/* and a firm can sit in two industries at once */
+function industryList(c) {
+  return [].concat(c.industry);
+}
 
 /* slug, stage name, headcount band. Both the name and the band come from
    STAGES in assets/js/maturity-slider.js — if that array changes, this one
@@ -911,10 +915,51 @@ var CASES = [
     svc: ['solution-design', 'lead-to-cash-process-mapping'],
     crm: 'hubspot', industry: 'ecommerce', stage: 'startup' },
 
-  { slug: 'case-study-5', name: 'Ignite Group',
-    figs: [['3', 'countries unified'], ['00x', '[measure]']],
+  { slug: 'Ignite-Group', name: 'Ignite Group',
+    figs: [['3', 'countries unified'], ['8', 'week build']],
     svc: ['revops-consulting', 'crm-implementations'],
-    crm: 'pipedrive', industry: 'b2b-saas', stage: 'enterprise' }
+    crm: ['salesforce', 'hubspot'],
+    industry: ['professional-services', 'financial-services'],
+    /* 300 people, so the 200-1,000 band. The maturity slider recommends
+       this one at its Enterprise stage, which is its own data in
+       assets/js/maturity-slider.js and does not read this field. */
+    stage: 'maturity',
+    img: 'assets/img/case-studies/ignite-group.webp',
+    copy: {
+      lede: 'Ignite Group helps businesses win grants and subsidies across the Netherlands and Germany. Their Salesforce had not been properly owned since the admin who built it left, and a newly acquired division was running on spreadsheets and Word documents. We assessed, designed, built and trained them onto HubSpot, and stayed on for the year that followed.',
+      problem: {
+        h: 'A CRM nobody had owned since the admin left',
+        p: [
+          'Ignite Group specialises in grants and subsidies: finding clients the right schemes, putting the applications together, and carrying the administration around them, with a grant portal and an academy alongside. They came to us through their investor, Silvertree, wanting an assessment of a Salesforce instance that no longer matched how the business actually worked. It was slowing down their ability to scale revenue and getting in the way of reporting. They could not say what was working, or where the opportunities were.',
+          'What we found was a system nobody had maintained since its original admin left. The data was inaccurate enough that sales had gone back to keeping their own spreadsheets on deal progress. The team worked off the handful of screens they knew were safe and avoided the parts of Salesforce they did not understand. They knew what they were missing. They did not have the time or the expertise to change it.',
+          'The recently acquired German division had it worse: the whole process, marketing to sales to quoting to billing, was manual, held in spreadsheets and Word documents. After a run of acquisitions the group was struggling to operate as one company, with no central sales and marketing approach, no clear definitions or SLAs, and legacy systems nobody trusted.'
+        ]
+      },
+      solution: {
+        h: 'The work before the work',
+        p: [
+          'We proposed a phased approach: assessment, solution design, implementation, training. The first job was to gather and document the central sales and marketing processes in both the Netherlands and Germany, as they actually ran rather than as anyone assumed they did.',
+          'Out of that came a set of requirements, and with them a decision Ignite could make on evidence instead of instinct: bend Salesforce far enough to fit the reality of the teams, or move to HubSpot. They chose HubSpot, for its lower total cost of ownership, an interface the team would actually use, and a faster time to launch on an implementation this size.',
+          'With every stakeholder aligned on the design and a new Revenue Operations Manager in the seat, we ran the build as weekly sprints over eight weeks, each one covering what had moved, what had to be decided and what was in the way. Near the end we held what we call the 80% meeting: a soft launch of the new processes and tools to the whole team, to collect feedback while there is still time to act on it. Hearing that something is amazing is good. Hearing that it would be better if it did X is more useful, and it is why the meeting exists. For Ignite it went the way we wanted.'
+        ]
+      },
+      results: {
+        h: 'One platform, and a view of the whole funnel',
+        p: [
+          'A sales organisation spread across three countries now runs in one place. Sales and marketing activity sits in a single platform rather than two systems and a drawer of spreadsheets, so conversion can be analysed rather than estimated, and the go to market strategy can be argued with numbers attached to it.',
+          'Administering it takes less of an admin\u2019s week, and using it takes less of everyone else\u2019s. That was the test the team applied at the 80% meeting, and it is the one that decides whether a CRM is still being used a year later.',
+          'We stayed on afterwards for a twelve month support retainer, which is the difference between a migration and a system that keeps working once the project team has gone.'
+        ],
+        stats: [
+          ['8 weeks', 'Weekly sprints to launch', ''],
+          ['3', 'Countries on one platform', '']
+        ]
+      },
+      quote: {
+        text: 'At first I was skeptical. Moving house can be a lot to handle, but when you move in the end, you always feel better right? Well, we are in the same place now! Not only is HubSpot a lot easier to manage from an Admin perspective, it\u2019s also way easier on our users. Henrik and James made sure we had the tools at hand to make the most out of this! Thanks to RevHops, we are now in a spot where we have a springboard to a better integrated view of our sales and marketing activities. We have a better grasp on our GTM strategies since we can now better analyze conversions and have everything in one platform.',
+        cite: 'Jeroen Kunst <span class="sep">|</span> RevOps Manager, Ignite Group'
+      }
+    } }
 ];
 
 /* The filter vocabulary, read back into words for the meta column on a case
@@ -1010,7 +1055,7 @@ function caseCard(c, depth, cls) {
   var svc =
     (c.svc      ? '\n           data-services="' + c.svc.join(' ') + '"'         : '') +
     (c.crm      ? '\n           data-crm="' + crmList(c).join(' ') + '"'         : '') +
-    (c.industry ? '\n           data-industry="' + c.industry + '"'              : '') +
+    (c.industry ? '\n           data-industry="' + industryList(c).join(' ') + '"'  : '') +
     (c.stage    ? '\n           data-stage="' + c.stage + '"'                    : '');
   return '<a class="case-card' + (cls ? ' ' + cls : '') + '" href="' + '/case-studies/' + c.slug + '"' + svc + '>\n' +
     '          <img src="' + up(depth) + (c.img || 'assets/img/case-study-placeholder.svg') +
@@ -1258,7 +1303,9 @@ function casePage(c, i) {
     ['Tools used',      crmList(c).map(function (t) {
                           return labelFor(CRMS, t, 1);
                         }).join(', ')],
-    ['Industry',        labelFor(INDUSTRIES, c.industry, 1)],
+    ['Industry',        industryList(c).map(function (i) {
+                          return labelFor(INDUSTRIES, i, 1);
+                        }).join(', ')],
     ['Team size',       labelFor(STAGES, c.stage, 2) + ' people']
   ];
 
@@ -3067,7 +3114,9 @@ function caseResCard(c, depth) {
   var tags = c.svc.map(serviceName).concat(crmList(c).map(function (t) {
     return labelFor(CRMS, t, 1);
   })).concat([
-    labelFor(INDUSTRIES, c.industry, 1),
+  ]).concat(industryList(c).map(function (i) {
+    return labelFor(INDUSTRIES, i, 1);
+  })).concat([
     labelFor(STAGES, c.stage, 2) + ' people'
   ]);
 
@@ -3182,7 +3231,7 @@ function resShelf(type, cards, depth, cls) {
    is what a first-time visitor should land on. */
 var FEATURED = [
   { art: 'case-study', kind: 'Case study', title: 'Ignite Group',
-    href: '/case-studies/case-study-5', go: 'Read the case study',
+    href: '/case-studies/Ignite-Group', go: 'Read the case study',
     copy: 'Three countries running three versions of the same pipeline, and a board asking for one number. What we were handed, what changed, and what it was worth.' },
 
   { art: 'calculator', kind: 'Downloadable', title: 'Marketing Hub ROI calculator',

@@ -4983,6 +4983,23 @@ a.pcard:hover .arrow { transform: translateX(5px); }
      shell is a poster. Capped, and it keeps its own line above the meta. */
   .cs-shot { width: min(200px, 38vw); }
 }
+@media (max-width: 620px) {
+  /* On a phone it stops being a thumbnail beside the meta and becomes the
+     picture at the top of the story: edge to edge, and the whole frame
+     rather than a crop of it, so the aspect ratio is the file's own.
+     100vw with an auto margin-inline escapes the shell's gutters, and the
+     corners go square because a full-bleed image has no card to sit on.
+     James' call, 15 September. */
+  .cs-shot {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    margin-bottom: clamp(20px, 5vw, 28px);
+    aspect-ratio: auto;
+    border-radius: 0;
+    background: none;
+  }
+  .cs-shot > img { height: auto; object-fit: contain; }
+}
 
 /* ---------- the meta column ----------
    .cs-side already handles the sticky, the scroll cap and the collapse to a

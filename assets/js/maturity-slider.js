@@ -147,8 +147,8 @@
       caseStudy: {
         who: 'Ignite Group',
         line: 'Ignite Group migrated their 3-country sales organization from Salesforce to HubSpot’s Enterprise suite.',
-        photo: 'assets/img/case-study-placeholder.svg',
-        href: 'case-studies/case-study-5'
+        photo: 'assets/img/case-studies/ignite-group.webp',
+        href: 'case-studies/Ignite-Group'
       }
     }
   ];
