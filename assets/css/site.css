@@ -1808,23 +1808,6 @@ main { overflow-x: clip; }
 }
 .case-card:hover img { transform: scale(1.045); }
 
-/* A client's mark rather than a photograph. It is line art on a transparent
-   ground, so cropping it to fill the card would cut the letters in half and
-   bury what was left under the scrim. Contained instead, on the plate, and
-   held clear of the scrim's reach. */
-.case-card.is-mark { background: var(--plate); }
-.case-card.is-mark img {
-  object-fit: contain;
-  padding: 16% 20% 46%;
-  mix-blend-mode: multiply;
-}
-.case-card.is-mark:hover img { transform: scale(1.03); }
-:root[data-theme="dark"] .case-card.is-mark img {
-  filter: brightness(0) invert(1);
-  mix-blend-mode: normal;
-  opacity: .88;
-}
-
 /* THE SCRIM IS NOT DECORATION — it is what makes the card's text legible.
 
    It came off when the cards were artwork with a dark foot built into it,
@@ -4995,13 +4978,6 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   overflow: hidden;
 }
 .cs-shot > img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* the same exception the card makes: a mark is contained on the plate */
-.cs-shot.is-mark > img { object-fit: contain; padding: 14%; mix-blend-mode: multiply; }
-:root[data-theme="dark"] .cs-shot.is-mark > img {
-  filter: brightness(0) invert(1);
-  mix-blend-mode: normal;
-  opacity: .85;
-}
 @media (max-width: 1000px) {
   /* the column goes full width here, and a 3:4 picture across the whole
      shell is a poster. Capped, and it keeps its own line above the meta. */
@@ -5234,6 +5210,21 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   overflow: hidden;
 }
 .cs-testi-photo > img { width: 100%; height: 100%; object-fit: cover; }
+/* Not every quotation comes with a face. A client's mark in the same well is
+   line art on a transparent ground, so it is contained inside the circle
+   rather than cropped to fill it, and flattened to white on the dark theme
+   the way the marquee flattens the same artwork. */
+.cs-testi-photo > img.is-mark {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  padding: 16%;
+  mix-blend-mode: multiply;
+}
+:root[data-theme="dark"] .cs-testi-photo > img.is-mark {
+  filter: brightness(0) invert(1);
+  mix-blend-mode: normal;
+  opacity: .85;
+}
 .cs-testi-photo:has(> img) { border-style: solid; }
 /* .quote supplies the italic body and the 12px stack; this only has to stop
    the blockquote from being a flex item that refuses to shrink */

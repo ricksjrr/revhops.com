@@ -72,10 +72,7 @@
       caseStudy: {
         who: 'The Davani Group',
         line: 'Davani Group had PMF, but needed systems & processes documented in order to grow.',
-        photo: 'assets/img/logos/dg.webp',
-        /* a mark rather than a photograph, so it keeps the contained
-           treatment the marquee gives client artwork */
-        mark: true,
+        photo: 'assets/img/case-studies/the-davani-group.webp',
         href: 'case-studies/The-Davani-Group'
       }
     },
@@ -426,7 +423,7 @@
             '<h3 class="mcard-case-who">' + esc(s.caseStudy.who) + '</h3>' +
             '<p class="mcard-case-line">' + esc(s.caseStudy.line) + '</p>' +
           '</div>' +
-          '<img class="mcard-shot' + (s.caseStudy.photo && !s.caseStudy.mark ? ' is-photo' : '') + '" src="' +
+          '<img class="mcard-shot' + (s.caseStudy.photo ? ' is-photo' : '') + '" src="' +
             esc(s.caseStudy.photo || s.caseStudy.logo) + '" alt="' +
             esc(s.caseStudy.who) + '"' + (s.caseStudy.solid ? ' data-solid' : '') +
             ' loading="lazy">' +

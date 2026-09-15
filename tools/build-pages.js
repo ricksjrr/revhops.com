@@ -859,10 +859,7 @@ var CASES = [
     figs: [['32%', 'Shorter sales cycle'], ['00h', '[measure]']],
     svc: ['crm-implementations', 'lead-to-cash-process-mapping'],
     crm: 'hubspot', industry: 'professional-services', stage: 'scaleup',
-    img: 'assets/img/logos/dg.webp',
-    /* a mark, not a photograph: contained on the plate rather than cropped
-       to fill, and flattened to white on the dark theme */
-    mark: true,
+    img: 'assets/img/case-studies/the-davani-group.webp',
     copy: {
       lede: 'The Davani Group bought HubSpot and were then left alone with it. We mapped their lead to cash process end to end, built the agreed version into the CRM, and gave a founder-led sales team a process that no longer lives in anybody\u2019s head. The sales cycle came down by a third.',
       problem: {
@@ -896,7 +893,11 @@ var CASES = [
       /* the quotation itself is still outstanding */
       quote: {
         text: 'Working with RevHops was a breeze. Questions are answered and weekly check ins are done, covering everything that needs to be discussed.',
-        cite: 'Lucy Espino <span class="sep">|</span> Head of Ops, The Davani Group'
+        cite: 'Lucy Espino <span class="sep">|</span> Head of Ops, The Davani Group',
+        /* the client's mark rather than a headshot, so it is contained in
+           the circle rather than cropped to fill it */
+        photo: 'assets/img/logos/dg.webp',
+        photoMark: true
       }
     } },
 
@@ -1011,8 +1012,7 @@ function caseCard(c, depth, cls) {
     (c.crm      ? '\n           data-crm="' + crmList(c).join(' ') + '"'         : '') +
     (c.industry ? '\n           data-industry="' + c.industry + '"'              : '') +
     (c.stage    ? '\n           data-stage="' + c.stage + '"'                    : '');
-  return '<a class="case-card' + (c.mark ? ' is-mark' : '') + (cls ? ' ' + cls : '') +
-    '" href="' + '/case-studies/' + c.slug + '"' + svc + '>\n' +
+  return '<a class="case-card' + (cls ? ' ' + cls : '') + '" href="' + '/case-studies/' + c.slug + '"' + svc + '>\n' +
     '          <img src="' + up(depth) + (c.img || 'assets/img/case-study-placeholder.svg') +
       '" alt="" aria-hidden="true" loading="lazy">\n' +
     '          <div class="case-body">\n' +
@@ -1294,7 +1294,7 @@ function casePage(c, i) {
 '  <div class="shell">\n' +
 '    <div class="cs-layout">\n' +
 '      <aside class="cs-side" aria-label="Case study details">\n' +
-'        <div class="cs-shot' + (c.mark ? ' is-mark' : '') + '"><img src="' + up(1) +
+'        <div class="cs-shot"><img src="' + up(1) +
       (c.img || 'assets/img/case-study-placeholder.svg') + '" alt="" aria-hidden="true"></div>\n' +
 '        <div class="cs-meta">\n' +
       meta.map(function (row) {
@@ -1354,7 +1354,8 @@ function casePage(c, i) {
 '        </div>\n' +
 '        <figure class="cs-testi">\n' +
 '          <div class="cs-testi-photo">' + (copy && copy.quote && copy.quote.photo
-        ? '<img src="' + up(1) + copy.quote.photo + '" alt="" aria-hidden="true">'
+        ? '<img' + (copy.quote.photoMark ? ' class="is-mark"' : '') + ' src="' + up(1) +
+          copy.quote.photo + '" alt="" aria-hidden="true">'
         : '[Photo]') + '</div>\n' +
 '          <blockquote class="cs-testi-quote quote">\n' +
 '            <p>' + (copy && copy.quote && copy.quote.text ? copy.quote.text :
