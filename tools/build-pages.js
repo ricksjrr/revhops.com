@@ -843,14 +843,16 @@ var CASES = [
         /* [figure, what it measures, direction]. No arrows on this one: all
            three are counts, not movements. */
         stats: [
-          ['3,500', 'Records migrated from GHL', ''],
-          ['6 weeks', 'Assessment to trained and live', ''],
-          ['4', 'Users now in one system', '']
+          ['5,000+', 'Records migrated successfully from GHL', ''],
+          ['6 weeks', 'Assessment to trained and live', '']
         ]
       },
       /* the quote is the one thing still outstanding, so it keeps the
          bracketed placeholder the other four have */
-      quote: { cite: '[Name] <span class="sep">|</span> CEO, Ike Commercial Real Estate' }
+      quote: {
+        cite: 'Blake Hardison <span class="sep">|</span> CEO, Ike Commercial Real Estate',
+        photo: 'assets/img/case-studies/blake-hardison.webp'
+      }
     } },
 
   { slug: 'case-study-2', name: 'The Davani Group',
@@ -1207,7 +1209,11 @@ function casePage(c, i) {
      the shelf can be filtered on, read out of the same arrays the filter
      checkboxes are built from. */
   var meta = [
-    ['Service(s) used', c.svc.map(serviceName).join(', ')],
+    /* linked: the reader who recognises the service they need is one click
+       from the page that sells it */
+    ['Service(s) used', c.svc.map(function (slug) {
+      return '<a href="/services/' + slug + '">' + serviceName(slug) + '</a>';
+    }).join(', ')],
     ['Tools used',      crmList(c).map(function (t) {
                           return labelFor(CRMS, t, 1);
                         }).join(', ')],
@@ -1306,7 +1312,9 @@ function casePage(c, i) {
       }).join('\n') + '\n' +
 '        </div>\n' +
 '        <figure class="cs-testi">\n' +
-'          <div class="cs-testi-photo">[Photo]</div>\n' +
+'          <div class="cs-testi-photo">' + (copy && copy.quote && copy.quote.photo
+        ? '<img src="' + up(1) + copy.quote.photo + '" alt="" aria-hidden="true">'
+        : '[Photo]') + '</div>\n' +
 '          <blockquote class="cs-testi-quote quote">\n' +
 '            <p>[One quotation from the person who signed it off. Two or three sentences,\n' +
 '              in their words, not ours.]</p>\n' +

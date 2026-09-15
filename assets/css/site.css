@@ -5012,6 +5012,18 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   letter-spacing: -.01em;
   color: var(--ink);
 }
+/* The services are links to their own pages. Same device as .cs-clear: the
+   underline is there from the start and only takes a colour on hover, so
+   the column reads as a list of facts rather than a row of links. */
+.cs-meta-val a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: transparent;
+  transition: color .25s var(--ease), text-decoration-color .25s var(--ease);
+}
+.cs-meta-val a:hover { color: var(--ink-hover); text-decoration-color: currentColor; }
+.cs-meta-val a:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 3px; border-radius: 3px; }
 @media (max-width: 1000px) {
   /* the filter column lays its options out as a wrapping row at this width;
      the meta does the same, so the two pages collapse the same way */

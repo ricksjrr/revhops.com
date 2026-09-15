@@ -45,8 +45,8 @@
         /* No client name on this one: the visitor meets the firm when they
            open the story. `photo` takes the place of `logo` and renders as
            a filled square rather than a mark on the paper. */
-        who: 'A commercial real estate firm',
-        line: 'A relationship business, run on a CRM that added a step to everything they did.',
+        who: 'Migrating from GHL to HubSpot',
+        line: 'A relationship business, run on a CRM that added a step to everything. Six weeks to a team live in HubSpot.',
         photo: 'assets/img/case-studies/ike-commercial-real-estate.webp',
         href: 'case-studies/Ike-Commercial-Real-Estate'
       }
@@ -72,7 +72,7 @@
       caseStudy: {
         who: 'The Davani Group',
         line: 'Davani Group had PMF, but needed systems & processes documented in order to grow.',
-        logo: 'assets/img/logos/dg.webp',
+        photo: 'assets/img/case-study-placeholder.svg',
         href: 'case-studies/case-study-2'
       }
     },
@@ -97,7 +97,7 @@
       caseStudy: {
         who: 'Core Income',
         line: 'Core Income implemented a customized sales process that adapted to the unique way they do business.',
-        logo: 'assets/img/logos/core-income.webp',
+        photo: 'assets/img/case-study-placeholder.svg',
         href: 'case-studies/case-study-3'
       }
     },
@@ -122,7 +122,7 @@
       caseStudy: {
         who: 'Woodside Homes',
         line: 'To support operations across most of the US, Woodside implemented business unit level reporting & process standardization.',
-        logo: 'assets/img/logos/woodside-homes.webp',
+        photo: 'assets/img/case-study-placeholder.svg',
         href: 'case-studies/case-study-4'
       }
     },
@@ -147,12 +147,7 @@
       caseStudy: {
         who: 'Ignite Group',
         line: 'Ignite Group migrated their 3-country sales organization from Salesforce to HubSpot’s Enterprise suite.',
-        /* not line art on a transparent ground: a near-white disc with the
-           wordmark knocked out of it, so it cannot be multiplied onto the
-           card or flattened to white for the dark theme. Same exception the
-           marquee makes for it. */
-        logo: 'assets/img/logos/ignite-group.webp',
-        solid: true,
+        photo: 'assets/img/case-study-placeholder.svg',
         href: 'case-studies/case-study-5'
       }
     }
@@ -175,9 +170,10 @@
      be a second, navy variant for the dark theme; the theme went on
      3 September and the pair went with it. */
   var ICON_SRC = 'assets/img/revhops-icon-white.png';
-  /* Each stage's case study carries its own client mark — see `logo` on the
-     STAGES entries. Paths are relative to the page this module is mounted
-     on, which is the homepage and nothing else. */
+  /* Each stage's case study carries the picture off its own card — see
+     `photo` on the STAGES entries, which holds the same file the card on
+     /case-studies uses. Paths are relative to the page this module is
+     mounted on, which is the homepage and nothing else. */
 
   /* The headline. Split in two because the tail sits on its own line, via a
      block-level span rather than a hard break, so it holds at any width.
