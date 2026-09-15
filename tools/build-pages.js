@@ -774,7 +774,6 @@ var INDUSTRIES = [
    asked. */
 var CRMS = [
   ['hubspot',      'HubSpot'],
-  ['pipedrive',    'Pipedrive'],
   ['salesforce',   'Salesforce'],
   ['gohighlevel',  'GoHighLevel']
 ];
@@ -790,16 +789,17 @@ function industryList(c) {
 }
 
 /* slug, stage name, headcount band. Both the name and the band come from
-   STAGES in assets/js/maturity-slider.js — if that array changes, this one
-   changes with it or the two halves of the site disagree about what
-   "Growth" means. The name is unused on this page now that Growth stage has
-   gone; it stays because the band is meaningless without it. */
+   STAGES in assets/js/maturity-slider.js. The 1,000+ band came off on
+   15 September: no case study sits in it, and a filter option that can
+   only ever return nothing is a dead end the visitor has to discover by
+   clicking it. The slider keeps its own Enterprise stage, which is its own
+   data. The name is unused on this page now that the Growth stage filter
+   has gone; it stays because the band is meaningless without it. */
 var STAGES = [
   ['startup',    'Startup',    '1&ndash;10'],
   ['scaleup',    'Scaleup',    '10&ndash;50'],
   ['growth',     'Growth',     '50&ndash;200'],
-  ['maturity',   'Maturity',   '200&ndash;1,000'],
-  ['enterprise', 'Enterprise', '1,000+']
+  ['maturity',   'Maturity',   '200&ndash;1,000']
 ];
 
 /* THE FIVE CLIENTS, in the order the homepage's maturity slider recommends
@@ -817,6 +817,7 @@ var CASES = [
   { slug: 'Ike-Commercial-Real-Estate', name: 'Ike Commercial Real Estate',
     figs: [['3,500', 'Records migrated'], ['6 wks', 'Assessment to live']],
     svc: ['solution-design', 'crm-implementations'],
+    location: 'Scottsdale, AZ',
     crm: ['hubspot', 'gohighlevel'], industry: 'professional-services', stage: 'startup',
     img: 'assets/img/case-studies/ike-commercial-real-estate.webp',
     copy: {
@@ -862,6 +863,7 @@ var CASES = [
   { slug: 'The-Davani-Group', name: 'The Davani Group',
     figs: [['32%', 'Shorter sales cycle'], ['00h', '[measure]']],
     svc: ['crm-implementations', 'lead-to-cash-process-mapping'],
+    location: 'Seattle, WA',
     crm: 'hubspot', industry: 'professional-services', stage: 'scaleup',
     img: 'assets/img/case-studies/the-davani-group.webp',
     copy: {
@@ -908,6 +910,7 @@ var CASES = [
   { slug: 'Core-Income-Advisors', name: 'Core Income Advisors',
     figs: [['00%', '[measure]'], ['$00k', '[measure]']],
     svc: ['hubspot-support-retainers'],
+    location: 'Twin Cities, Minnesota',
     crm: 'hubspot', industry: 'financial-services',
     /* 30 to 100 people, which straddles two bands; the larger one */
     stage: 'growth',
@@ -947,6 +950,7 @@ var CASES = [
   { slug: 'Woodside-Homes', name: 'Woodside Homes',
     figs: [['3', 'business units'], ['00d', '[measure]']],
     svc: ['solution-design', 'hubspot-support-retainers'],
+    location: 'SLC, UT',
     crm: 'hubspot', industry: 'professional-services', stage: 'maturity',
     img: 'assets/img/case-studies/woodside-homes.webp',
     copy: {
@@ -980,6 +984,7 @@ var CASES = [
   { slug: 'Ignite-Group', name: 'Ignite Group',
     figs: [['3', 'countries unified'], ['8', 'week build']],
     svc: ['revops-consulting', 'crm-implementations'],
+    location: 'Amsterdam, Netherlands',
     crm: ['salesforce', 'hubspot'],
     industry: ['professional-services', 'financial-services'],
     /* 300 people, so the 200-1,000 band. The maturity slider recommends
@@ -1358,11 +1363,13 @@ function casePage(c, i) {
      the shelf can be filtered on, read out of the same arrays the filter
      checkboxes are built from. */
   var meta = [
-    /* linked: the reader who recognises the service they need is one click
-       from the page that sells it */
+    /* One service per line, linked: two of them comma-joined wrapped onto
+       three lines in a 20% column and read as one long name. The reader who
+       recognises the service they need is one click from the page that
+       sells it. */
     ['Service(s) used', c.svc.map(function (slug) {
-      return '<a href="/services/' + slug + '">' + serviceName(slug) + '</a>';
-    }).join(', ')],
+      return '<span><a href="/services/' + slug + '">' + serviceName(slug) + '</a></span>';
+    }).join('')],
     ['Tools used',      crmList(c).map(function (t) {
                           return labelFor(CRMS, t, 1);
                         }).join(', ')],
@@ -1371,6 +1378,10 @@ function casePage(c, i) {
                         }).join(', ')],
     ['Team size',       labelFor(STAGES, c.stage, 2) + ' people']
   ];
+  /* Location is the one fact in this column the shelf cannot filter on.
+     Nobody arrives looking for a case study in a particular city, but
+     everybody wants to know where the client is once they are reading. */
+  if (c.location) meta.push(['Location', c.location]);
 
   /* set on a case that has been written; undefined leaves the template */
   var copy = c.copy;

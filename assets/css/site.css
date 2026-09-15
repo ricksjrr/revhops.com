@@ -5032,6 +5032,9 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 /* The services are links to their own pages. Same device as .cs-clear: the
    underline is there from the start and only takes a colour on hover, so
    the column reads as a list of facts rather than a row of links. */
+/* each service on its own line */
+.cs-meta-val > span { display: block; }
+.cs-meta-val > span + span { margin-top: 3px; }
 .cs-meta-val a {
   color: inherit;
   text-decoration: underline;
@@ -5246,7 +5249,9 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 /* .quote supplies the italic body and the 12px stack; this only has to stop
    the blockquote from being a flex item that refuses to shrink */
 .cs-testi-quote { min-width: 0; margin: 0; }
-.cs-testi-quote p { max-width: 62ch; }
+/* No measure cap: the quotation runs the full width of the column, the
+   way the body copy beside it does. */
+.cs-testi-quote p { max-width: none; }
 @media (max-width: 560px) {
   .cs-testi { flex-direction: column; gap: 16px; }
 }

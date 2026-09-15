@@ -20,7 +20,9 @@
   /* ----------------------------------------------------------------------
      STAGE CONTENT
      Edit here — the module rebuilds itself from this array.
-     caseStudy entries are placeholders. Swap in the real ones.
+     No caseStudy names a client: the visitor meets the firm when they open
+     the story. `who` is what the work was, `line` is the page's own lede
+     cut to four lines, which is the height of the thumbnail beside it.
      ---------------------------------------------------------------------- */
   var STAGES = [
     {
@@ -70,8 +72,8 @@
         'You are growing, but you cannot yet say which part of it you could repeat on purpose.'
       ],
       caseStudy: {
-        who: 'The Davani Group',
-        line: 'Davani Group had PMF, but needed systems & processes documented in order to grow.',
+        who: 'Lead to cash, mapped and built',
+        line: 'They bought HubSpot and were left alone with it. We mapped the process and cut the sales cycle by a third.',
         photo: 'assets/img/case-studies/the-davani-group.webp',
         href: 'case-studies/The-Davani-Group'
       }
@@ -95,8 +97,8 @@
         'Your one RevOps hire spends the week on tickets, so nothing structural ever gets fixed.'
       ],
       caseStudy: {
-        who: 'Core Income Advisors',
-        line: 'Core Income Advisors implemented a customized sales process that adapted to the unique way they do business.',
+        who: 'A HubSpot specialist on the team',
+        line: 'Partner agencies that never learned the business. Now a HubSpot specialist sits in their weekly standup.',
         photo: 'assets/img/case-studies/core-income-advisors-team.webp',
         href: 'case-studies/Core-Income-Advisors'
       }
@@ -120,8 +122,8 @@
         'The system is sophisticated enough now that people have learned to work around it rather than in it.'
       ],
       caseStudy: {
-        who: 'Woodside Homes',
-        line: 'To support operations across most of the US, Woodside implemented business unit level reporting & process standardization.',
+        who: 'Reporting that answers the question',
+        line: 'Management could not see which marketing produced leads. We built the reporting each team needed to see.',
         photo: 'assets/img/case-studies/woodside-homes.webp',
         href: 'case-studies/Woodside-Homes'
       }
@@ -145,8 +147,8 @@
         'The cost is not a line item. It is every initiative that moves at the speed of your slowest integration.'
       ],
       caseStudy: {
-        who: 'Ignite Group',
-        line: 'Ignite Group migrated their 3-country sales organization from Salesforce to HubSpot’s Enterprise suite.',
+        who: 'Three countries onto one platform',
+        line: 'A Salesforce nobody had owned since its admin left. Eight weeks of sprints onto HubSpot, in three countries.',
         photo: 'assets/img/case-studies/ignite-group-amsterdam.webp',
         href: 'case-studies/Ignite-Group'
       }
