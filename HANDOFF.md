@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `d3d36c906c` — derived from a hash of the assets by
+**Current build stamp:** `de867ab06e` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -26,6 +26,21 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   not work as written. See "Deploying to GitHub Pages" in the README.
 
 ---
+
+## 16 September: hub case study centred, homepage case card clickable
+
+- **Hub pages.** `.hub-case` in `site.css` is now `card | minmax(0, 600px)`
+  with `justify-content: center`, and the lede inside it drops its 62ch cap,
+  so the card and copy sit as one group with equal space either side
+  (measured 184px / 184px at 1440 wide). Markup from `hubCase()` unchanged.
+  Mobile (single column) is as it was.
+- **Homepage maturity slider.** The whole "Case study for a similar team"
+  card now opens the story. A stretched link: `.mcard-case` is
+  `position: relative` and `.mcard-link::after` covers the card, so the
+  title, copy and photo all click through while the one `<a>` stays the only
+  focusable element. Hovering the card also warms the link and nudges its
+  arrow. CSS only; `maturity-slider.js` untouched.
+- Rebuilt; `smoke.js`, `resources-smoke.js` and `hubs-smoke.js` all pass.
 
 ## 16 September: service page 'What you get' cards, new copy and line art
 

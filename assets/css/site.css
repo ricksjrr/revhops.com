@@ -1109,6 +1109,21 @@ main { overflow-x: clip; }
    foot of the card anyway, which is where it was. */
 .mcard-case .mcard-case-row { margin-block: auto; }
 .mcard-case .mcard-link { align-self: flex-start; margin-top: 0; }
+/* The whole case study card is the link, not just "Read the story" (16
+   September). A stretched link rather than wrapping the card in an <a>: the
+   card body is rebuilt on every stage change and the link stays the one
+   focusable, announced element. Its ::after covers the card, so a click on
+   the title, the copy or the photo lands on the link. */
+.mcard-case { position: relative; cursor: pointer; }
+.mcard-case .mcard-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+.mcard-case:hover .mcard-link { color: var(--ink-hover); }
+.mcard-case:hover .mcard-link .arrow { transform: translateX(4px); }
 
 .mcard-case-who {
   font-family: var(--font-head);
@@ -6906,16 +6921,22 @@ div.res-card .res-go { color: var(--muted); }
    name, the lede from its page and a link. Built by hubCase() in
    tools/build-pages.js. Tokens only, so no dark rules.
    ========================================================================== */
+/* The card and its copy sit as one group centred in the shell, with equal
+   space either side (16 September, second pass). The copy column has a fixed
+   ceiling rather than 1fr, and the lede drops its 62ch cap so the text runs
+   to the edge of that column: otherwise the column is wider than the words
+   in it and the group only looks centred on paper. */
 .hub-case {
   display: grid;
-  grid-template-columns: clamp(260px, 30vw, 400px) minmax(0, 1fr);
+  grid-template-columns: clamp(260px, 30vw, 400px) minmax(0, 600px);
+  justify-content: center;
   gap: clamp(28px, 5vw, 80px);
   align-items: center;
 }
 .hub-case .hub-case-card { width: 100%; }
 /* the scrim only exists to carry the card's type, and this card has none */
 .hub-case .hub-case-card::after { content: none; }
-.hub-case-copy .lede { margin-top: clamp(12px, 1.4vw, 18px); }
+.hub-case-copy .lede { margin-top: clamp(12px, 1.4vw, 18px); max-width: none; }
 .hub-case-copy .text-link { margin-top: clamp(18px, 2vw, 26px); }
 @media (max-width: 760px) {
   .hub-case { grid-template-columns: minmax(0, 1fr); }
