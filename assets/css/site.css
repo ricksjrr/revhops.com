@@ -6889,3 +6889,63 @@ div.res-card .res-go { color: var(--muted); }
   .hub-case { grid-template-columns: minmax(0, 1fr); }
   .hub-case .hub-case-card { max-width: 360px; }
 }
+
+
+/* ==========================================================================
+   HOMEPAGE — ONE GAP BETWEEN EVERY SECTION (16 September)
+
+   Every homepage section already carries --sec-pad top and bottom, but the
+   space you actually see between two sections was 146px in one place and
+   215px in another at a 1470 laptop. The difference was all slack inside
+   components: the logo rail's hover room, the tool clump's mask padding,
+   and the close sitting at two thirds of the rhythm. Each of those is
+   subtracted here, so the distance from the last thing you can see in one
+   section to the first thing you can see in the next is 2 x --sec-pad all
+   the way down. James asked for it uniform; no section gets a small gap
+   before it and a big one after.
+
+   The one exception is the hero to the logo rail, which is still set by
+   --proof-lead (100px under the stage cards) so the logos stay above the
+   fold.
+
+   Scoped to body.home because .start-section, .logo-band and the rest are
+   shared with inner pages that have their own rhythm.
+   ========================================================================== */
+/* the rail's 12px of hover room, plus the clear margin inside the logo
+   files, sits under the marks */
+.home .logo-band { padding-bottom: calc(var(--sec-pad) - 17px); }
+/* the clump's mask padding sits under the last row of marks (the 5px back
+   is the row nudges, which lift the lowest mark off the box) */
+.home .to-white-2 { padding-bottom: calc(var(--sec-pad) - clamp(18px, 2vw, 30px) + 5px); }
+/* The close takes the full rhythm, not two thirds of it. 5px off the top:
+   at 7rem the shout's capitals sit that much further under their box than
+   a section heading's do. */
+.home .start-section {
+  padding-top: calc(var(--sec-pad) - 5px);
+  padding-bottom: var(--sec-pad);
+}
+
+/* ABOUT: the copy centres on the picture, not on the picture's padding.
+   The pair used to carry 12% bottom padding as room for the badge, and the
+   grid centred the copy on that taller box, so the copy sat about 30px low
+   against what you can see. The padding goes and the badge is pushed down
+   by its own height instead: its solid artwork ends at 83% of the file (the
+   rest is soft shadow), so 21% lands it just past the photograph's foot,
+   where it was before. Collapsed, the pair sits above the copy and needs its
+   room back. */
+.home .about-stack { padding-bottom: 0; }
+.home .about-img-front { translate: 0 21%; }
+/* A heading's first ink sits a few pixels under its box and a turned
+   photograph's corner sits a few pixels over it, so this section starts
+   10px lower than the rest to land on the same line as a heading would. The
+   badge's point hangs just past the box, so the foot gets 5px back too. */
+.home .to-white-1 {
+  padding-top: calc(var(--sec-pad) + 10px);
+  padding-bottom: calc(var(--sec-pad) + 5px);
+}
+@media (max-width: 1000px) {
+  .home .about-stack { padding-bottom: 12%; }
+  .home .about-img-front { translate: none; }
+  /* collapsed, the copy is the last thing in the section */
+  .home .to-white-1 { padding-bottom: var(--sec-pad); }
+}

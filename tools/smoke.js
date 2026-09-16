@@ -140,7 +140,7 @@ console.log('\n— page —');
   // a bad string slice once duplicated the whole document, and every DOM
   // assertion still passed because querySelector finds the first match
   const singles = { '<!DOCTYPE': 1, '<html lang': 1, '</html>': 1, '<main>': 1, '</main>': 1,
-                    '<footer class="footer">': 1, '<body>': 1 };
+                    '<footer class="footer">': 1, '<body class="home">': 1 };
   for (const [tag, n] of Object.entries(singles)) {
     const got = html.split(tag).length - 1;
     got === n ? ok('one ' + tag) : bad(got + ' x ' + tag + ', the document may be duplicated');
