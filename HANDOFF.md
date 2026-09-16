@@ -52,6 +52,12 @@ James' list, all in `puzzle` and `hop` in `tools/build-pages.js` and the
   `outline: none`. Asked for; it trades away the keyboard ring on that one
   button.
 
+- **No warm ring round the Unscrambler board.** `.pz-board.is-solved` lost
+  its 4px `--warm` ring, light and dark; the board shows solved at rest, so
+  that ring was on screen before every game.
+- **"All games" above both titles**, the same `eyebrow` back link the
+  resource and service pages use, pointing at `/resources#games`.
+
 Verified with all three smoke suites and headless Chromium at 1440 and 390.
 
 ## 16 September: /pipedrive, rebuilt on /hubspot's layout

@@ -2682,6 +2682,7 @@ var privacy = legalPage({
 
 var puzzle = {
   file: 'puzzle.html',
+  eyebrow: ['All games', '/resources#games'],
   depth: 0,
   title: 'RevOps Unscrambler — RevHops',
   description: 'A sliding tile puzzle from RevHops. Put the pieces of your revenue operations back in the right place, against the clock.',
@@ -2765,6 +2766,7 @@ var puzzle = {
 
 var hop = {
   file: 'hop.html',
+  eyebrow: ['All games', '/resources#games'],
   depth: 0,
   title: 'RevOps Runner — RevHops',
   description: 'A side-scrolling runner from RevHops. Jump the fires, duck the requests and see how far you get as the pace picks up.',
