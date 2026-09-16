@@ -6949,3 +6949,63 @@ div.res-card .res-go { color: var(--muted); }
   /* collapsed, the copy is the last thing in the section */
   .home .to-white-1 { padding-bottom: var(--sec-pad); }
 }
+
+/* ==========================================================================
+   /PIPEDRIVE, rebuilt 16 September on /hubspot's layout
+   ========================================================================== */
+
+/* ---------- a mark with a file per theme ----------
+   The partner badge has no colour of its own: navy on the light theme,
+   white on the dark. Both files are in the markup and this picks one. They
+   share one grid cell so the link's box does not change size between them. */
+.page-hero-mark-link .mark-light,
+.page-hero-mark-link .mark-dark { grid-area: 1 / 1; }
+.page-hero-mark-link .mark-dark { display: none; }
+:root[data-theme="dark"] .page-hero-mark-link .mark-light { display: none; }
+:root[data-theme="dark"] .page-hero-mark-link .mark-dark  { display: block; }
+
+/* ---------- the trial ----------
+   Copy first, the co-branded banner beside it, in the grid /hubspot's review
+   uses. The banner keeps Pipedrive's purple in both themes: it is their
+   artwork, so it takes the same hairline and shadow the profile screenshot
+   does rather than any theme rule. */
+.pd-trial {
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+  align-items: center;
+  gap: clamp(28px, 4.4vw, 64px);
+}
+.pd-trial-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(12px, 1.4vw, 18px);
+}
+.pd-trial-copy .h2, .pd-trial-copy p { margin: 0; }
+.pd-trial-copy .btn-row { margin-top: clamp(4px, .8vw, 10px); }
+/* the partner claim, in words, beside the artwork that makes it */
+.pd-trial-status { font-weight: 700; color: var(--ink); line-height: 1.5; }
+.pd-trial-shot {
+  display: block;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(28, 38, 53, .1), 0 22px 44px -30px rgba(28, 38, 53, .5);
+  transition: transform .4s var(--ease-out), box-shadow var(--mcard-t) var(--mcard-ease);
+}
+.pd-trial-shot img { display: block; width: 100%; height: auto; }
+.pd-trial-shot:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 0 1px rgba(28, 38, 53, .14), 0 28px 54px -28px rgba(28, 38, 53, .45);
+}
+@media (prefers-reduced-motion: reduce) { .pd-trial-shot:hover { transform: none; } }
+@media (max-width: 900px) {
+  .pd-trial { grid-template-columns: minmax(0, 1fr); gap: clamp(24px, 6vw, 34px); }
+}
+/* SMALLER THAN THE COLUMN. The badge is a wordmark rather than a shield, and
+   at the column's full width "pipedrive" set larger than the page's own H1.
+   Written at this specificity to beat .page-hero-media.is-mark img. The phone
+   rule further up still wins below 900px, where it is already small. */
+@media (min-width: 901px) {
+  .page-hero-media.is-mark .page-hero-mark-link img.mark-light,
+  .page-hero-media.is-mark .page-hero-mark-link img.mark-dark { max-width: min(340px, 78%); }
+}

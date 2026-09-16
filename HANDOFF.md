@@ -27,6 +27,33 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 16 September: /pipedrive, rebuilt on /hubspot's layout
+
+Same five parts as /hubspot, in the same order: the header with the partner
+badge in the mark column, "What you get out of the box" (six cards, chips
+gone), the tool clump, a trial section where /hubspot has its review, and
+"How we help teams with Pipedrive". The co-branded banner at the top and
+"Which plan you actually need" came out; `PD_PLANS` went with them.
+
+- **The badge is not the green box any more.** In the mark column it read
+  as a sticker louder than the H1. It is Pipedrive's artwork with the box
+  dropped: `pipedrive-partner-badge-navy.webp` on light (the footer's white
+  file, recoloured) and the white file on dark. `pageHero()` takes
+  `srcDark` for that, and `rel` so the link can say `sponsored`. Capped at
+  340px on desktop. If Pipedrive's brand rules object to the recolour, swap
+  in whatever single-colour version they supply.
+- **There is no Pipedrive partner profile**, so the badge links to the
+  affiliate trial, James' call.
+- **The trial section** carries the partner status in words ("certified by
+  Pipedrive in sales and customer support", which is what Authorized requires),
+  the trial button, the affiliate disclosure beside it, and the banner.
+- **The header** is /hubspot's pair: audit as an arrow link, the call as the
+  one button. The trial is no longer in the header.
+- **The clump drops Pipedrive, HubSpot and Salesforce.** `toolClump()` now
+  evens the rows when a skip leaves them more than two apart; /hubspot (6
+  over 8) and the homepage are unchanged.
+- The page's one highlight moved to "out of the box".
+
 ## 16 September: the six hub pages, cut down
 
 James' brief, all six pages at once since they are one template (`hubPage()`
