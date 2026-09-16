@@ -3004,6 +3004,9 @@ var RESOURCES = [
      alternative is a file that silently goes stale the day the video is
      re-uploaded. Save a crop into assets/img and set `thumb` instead if
      that ever matters more than staying in step. */
+  { type: 'videos', title: '2026 HubSpot Beginner\'s Guide', video: 'mwtGIepbACM',
+    thumb: 'https://i.ytimg.com/vi/mwtGIepbACM/maxresdefault.jpg',
+    copy: 'Everything someone new to HubSpot needs in 90 minutes' },
   { type: 'videos', title: 'You to the power of AI', video: 'pPQngmSEIe0',
     thumb: 'https://i.ytimg.com/vi/pPQngmSEIe0/maxresdefault.jpg',
     copy: 'INBOUND 2025 keynote from HubSpot CTO, Dharmesh Shah.' },
