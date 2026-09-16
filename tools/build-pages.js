@@ -2708,6 +2708,8 @@ var puzzle = {
 '          <div><dt>Moves</dt><dd data-pz-moves>0</dd></div>\n' +
 '          <div><dt>Your best</dt><dd data-pz-best>None yet</dd></div>\n' +
 '        </dl>\n' +
+'        <p class="small pz-help">Click any tile in line with the gap to slide it across.\n' +
+'          On a keyboard, the arrow keys work too.</p>\n' +
 '        <div class="pz-preview">\n' +
 '          <img data-pz-thumb src="assets/img/puzzle/dashboard.svg" alt="" width="116" height="116">\n' +
 '          <div class="stack gap-8">\n' +
@@ -2719,8 +2721,6 @@ var puzzle = {
 '          <button class="btn btn-primary" type="button" data-pz-restart hidden>Shuffle again</button>\n' +
 '          <button class="text-link" type="button" data-pz-next>Try a different picture <span class="arrow">&rarr;</span></button>\n' +
 '        </div>\n' +
-'        <p class="small pz-help">Click any tile in line with the gap to slide it across.\n' +
-'          On a keyboard, the arrow keys work too.</p>\n' +
 '      </div>\n' +
 '\n' +
 '    </div>\n' +
@@ -2747,8 +2747,9 @@ var puzzle = {
 '      <span><small>Moves</small><b data-pz-win-moves>0</b></span>\n' +
 '    </div>\n' +
 '    <p class="pz-record" data-pz-record hidden>New personal best</p>\n' +
-'    <div class="btn-row">\n' +
+'    <div class="pz-win-actions">\n' +
 '      <button class="btn btn-primary" type="button" data-pz-again>Play again</button>\n' +
+'      <p class="pz-win-ask">Need help unscrambling your RevOps processes?</p>\n' +
 '      <a class="btn btn-outline" href="/call">Schedule a discovery call</a>\n' +
 '    </div>\n' +
 '  </div>\n' +
@@ -2826,8 +2827,9 @@ var hop = {
 '      <span><small>Time</small><b data-hp-over-time>0:00.0</b></span>\n' +
 '    </div>\n' +
 '    <p class="hp-record" data-hp-record hidden>New personal best</p>\n' +
-'    <div class="btn-row">\n' +
+'    <div class="hp-over-actions">\n' +
 '      <button class="btn btn-primary" type="button" data-hp-again>Run again</button>\n' +
+'      <p class="hp-over-ask">Keep getting knocked down by RevOps requests?</p>\n' +
 '      <a class="btn btn-outline" href="/call">Schedule a discovery call</a>\n' +
 '    </div>\n' +
 '  </div>\n' +

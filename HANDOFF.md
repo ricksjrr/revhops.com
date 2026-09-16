@@ -27,6 +27,33 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 16 September: the two games, rearranged
+
+James' list, all in `puzzle` and `hop` in `tools/build-pages.js` and the
+`.pz-*` / `.hp-*` blocks in `site.css`.
+
+- **More room under the header.** `.pz-section` and `.hp-section` padding-top
+  went from `clamp(8px, 1.4vw, 20px)` to `clamp(32px, 4vw, 60px)`.
+- **Instructions sit under the stats.** On /puzzle `.pz-help` moved in the
+  markup to straight after `.pz-stats`; on /hop `.hp-top` is a column now, so
+  the help drops under the stats instead of sitting at the far right.
+- **The Unscrambler is one centred group on desktop.** `.pz` is
+  `minmax(0, 540px) auto` with `justify-content: center`, so the panel is its
+  content's width and the board and panel centre together.
+- **On mobile the picture preview and "Try a different picture" centre.**
+  Under 900px: stats, help, board, preview, link, in that order.
+- **Both end dialogs** now run Play/Run again, a line, then the call button:
+  "Need help unscrambling your RevOps processes?" and "Keep getting knocked
+  down by RevOps requests?" (`.pz-win-ask`, `.hp-over-ask`). The old
+  `.btn-row` wrapper is `.pz-win-actions` / `.hp-over-actions`.
+- **No focus ring on the again button.** The dialog focuses it on open and
+  the 2px navy outline read as a border round a navy button.
+  `.pz-win .btn-primary:focus-visible` and `.hp-over` twin set
+  `outline: none`. Asked for; it trades away the keyboard ring on that one
+  button.
+
+Verified with all three smoke suites and headless Chromium at 1440 and 390.
+
 ## 16 September: /pipedrive, rebuilt on /hubspot's layout
 
 Same five parts as /hubspot, in the same order: the header with the partner

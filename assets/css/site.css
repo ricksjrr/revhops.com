@@ -3439,11 +3439,17 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   initial-value: 8px;
 }
 
-.pz-section { padding-top: clamp(8px, 1.4vw, 20px); }
+/* room under the header's lede before the game starts, asked for 16 September */
+.pz-section { padding-top: clamp(32px, 4vw, 60px); }
 
+/* The board and its panel are one group, centred on the page: the panel
+   column is sized to its content rather than taking the rest of the row,
+   which left the pair hard against the left edge with a third of the
+   screen empty beside it. */
 .pz {
   display: grid;
-  grid-template-columns: minmax(0, 540px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 540px) auto;
+  justify-content: center;
   gap: clamp(28px, 5vw, 80px);
   align-items: center;
 }
@@ -3587,6 +3593,9 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 .pz-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
 .pz-actions .text-link { align-self: center; background: none; border: 0; padding: 0; cursor: pointer; }
 .pz-help { color: var(--muted); max-width: 40ch; }
+/* the instructions read with the stats above them, so they sit closer to
+   those than the panel's gap would put them */
+.pz-stats + .pz-help { margin-top: calc(-1 * clamp(8px, 1vw, 14px)); }
 
 /* ---------- the win dialog ---------- */
 .pz-win {
@@ -3658,7 +3667,19 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   font-weight: 700;
   font-size: .85rem;
 }
-.pz-win .btn-row { justify-content: center; margin-top: 8px; }
+.pz-win-actions { display: flex; flex-direction: column; align-items: center; margin-top: 8px; }
+/* the line before the call: sets the second button apart from Play again */
+.pz-win .pz-win-ask {
+  max-width: 34ch;
+  margin: 26px 0 12px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+}
+/* Play again takes focus when the dialog opens, and the ring it drew read as
+   a second navy border round a navy button. Removed 16 September, asked for. */
+.pz-win .btn-primary:focus-visible { outline: none; }
 /* the second button is an outline, so the pair reads as one choice, not two
    equal shouts */
 .pz-win .btn-outline { background: transparent; color: var(--ink-strong); border-color: var(--ink-strong); }
@@ -3690,17 +3711,19 @@ a.pcard:hover .arrow { transform: translateX(5px); }
      help go below. */
   .pz { display: flex; flex-direction: column; gap: 20px; align-items: stretch; }
   .pz-panel { display: contents; }
-  .pz-stats { order: -1; }
+  .pz-stats { order: -2; }
+  .pz-help { order: -1; }
+  .pz-stats + .pz-help { margin-top: -8px; }
   .pz-board { max-width: 540px; margin-inline: auto; }
-  .pz-preview { order: 1; }
-  .pz-actions { order: 2; }
-  .pz-help { order: 3; }
+  /* the picture and the link under it centre on the screen */
+  .pz-preview { order: 1; align-self: center; }
+  .pz-actions { order: 2; justify-content: center; }
   .pz-preview img { width: 72px; }
 }
 @media (max-width: 560px) {
   .pz-board { --pz-gap: 5px; }
   .pz-actions .btn { width: auto; }
-  .pz-win .btn-row { flex-direction: column; align-items: stretch; }
+  .pz-win-actions { align-items: stretch; }
   .pz-win .btn { width: 100%; }
 }
 
@@ -3731,7 +3754,7 @@ a.pcard:hover .arrow { transform: translateX(5px); }
    on either navy, so the only thing the theme changes is the board itself.
    ========================================================================== */
 
-.hp-section { padding-top: clamp(8px, 1.4vw, 20px); }
+.hp-section { padding-top: clamp(32px, 4vw, 60px); }
 
 .hp {
   display: flex;
@@ -3741,12 +3764,12 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   margin-inline: auto;
 }
 
+/* the stats, then the instructions under them, then the board */
 .hp-top {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 14px 40px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 /* the same stats as the puzzle, word for word in the CSS */
@@ -3935,7 +3958,16 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   font-weight: 700;
   font-size: .85rem;
 }
-.hp-over .btn-row { justify-content: center; margin-top: 8px; }
+.hp-over-actions { display: flex; flex-direction: column; align-items: center; margin-top: 8px; }
+.hp-over .hp-over-ask {
+  max-width: 34ch;
+  margin: 26px 0 12px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+}
+.hp-over .btn-primary:focus-visible { outline: none; }
 .hp-over .btn-outline { background: transparent; color: var(--ink-strong); border-color: var(--ink-strong); }
 .hp-over .btn-outline:hover { background: var(--warm); border-color: var(--warm); color: #304157; }
 .hp-close {
@@ -3961,10 +3993,9 @@ a.pcard:hover .arrow { transform: translateX(5px); }
 @media (max-width: 700px) {
   /* a 3:1 board on a phone is a letterbox; 2:1 gives the rabbit room */
   .hp-stage { aspect-ratio: 2 / 1; }
-  .hp-top { flex-direction: column; align-items: flex-start; }
 }
 @media (max-width: 560px) {
-  .hp-over .btn-row { flex-direction: column; align-items: stretch; }
+  .hp-over-actions { align-items: stretch; }
   .hp-over .btn { width: 100%; }
   .hp-over-stats { gap: 10px 18px; padding: 12px 16px; }
 }
