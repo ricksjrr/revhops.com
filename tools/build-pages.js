@@ -449,7 +449,10 @@ function pcard(o) {
        a grey rectangle, because an empty frame reads as "no artwork yet"
        and a filled grey box reads as a broken image. Swap it for an <img>
        when the pictures land. */
-    (o.media ? '          <span class="res-thumb pcard-thumb">' +
+    /* `art` swaps the well for a line drawing out of ART, on the same
+       light plate the resource shelves give theirs (.res-thumb.is-art). */
+    (o.art ? '          <span class="res-thumb pcard-thumb is-art">' + art(o.art) + '</span>\n'
+     : o.media ? '          <span class="res-thumb pcard-thumb">' +
                '<span class="res-thumb-ph" aria-hidden="true"></span></span>\n' : '') +
     (o.n ? '          <span class="pcard-n">' + o.n + '</span>\n' : '') +
     '          <h3 class="pcard-title">' + o.title + '</h3>\n' +
@@ -516,9 +519,9 @@ var SERVICES = [
       { n: 'Week three', title: 'Sign-off and estimate', copy: 'A walkthrough, a decision log and a build estimate that holds because the scope is no longer moving.' }
     ],
     leave: [
-      { title: 'A specification', copy: 'Detailed enough to hand to any competent builder. Us included, but you are not obliged to.' },
-      { title: 'A decision log', copy: 'Every call and the reason behind it, so in six months nobody has to guess why it works that way.' },
-      { title: 'A ranked backlog', copy: 'Split into what ships first and what can wait, sized so you can start on Monday.' }
+      { title: 'Assessment calls', art: 'assessment-call', copy: 'We&rsquo;ll conduct assessment calls to determine what&rsquo;s not working, where you want to go and what success looks like.' },
+      { title: 'RevOps flowchart', art: 'flowchart', copy: 'We&rsquo;ll map out every customer interaction and revenue impact stage for your business.' },
+      { title: 'Solution Design document', art: 'solution-doc', copy: 'A single document outlining where you&rsquo;re at, where you want to go and exactly how you&rsquo;ll get there.' }
     ],
     price: ['$3,000', 'Fixed price'],
     dur: ['2–3 weeks', 'Two workshops, one review'],
@@ -563,9 +566,9 @@ var SERVICES = [
       { n: 'Phase four', title: 'Handover', copy: 'Recorded training, written documentation, and two weeks of hypercare while your team takes the controls.' }
     ],
     leave: [
-      { title: 'A portal your team runs', copy: 'Not one they submit tickets against. That distinction is the whole point of the engagement.' },
-      { title: 'Full documentation', copy: 'Every object, workflow and integration, with the reasoning attached rather than just the settings.' },
-      { title: 'A list of what we did not build', copy: 'And why. The things deliberately left out are as useful to know as the things shipped.' }
+      { title: 'A CRM your team loves to use', art: 'crm-love', copy: 'You&rsquo;ll get a CRM that works with the way your team does business, not against you.' },
+      { title: 'Full documentation', art: 'manual', copy: 'Every object, workflow and integration, with the reasoning attached. Like a user&rsquo;s manual, for your CRM!' },
+      { title: 'Training &amp; support', art: 'training', copy: 'We don&rsquo;t build, launch and then skip town. We&rsquo;ll help train &amp; support your team to ensure adoption.' }
     ],
     price: ['From $5,000', 'Scoped and quoted after design'],
     dur: ['6–12 weeks', 'Weekly working sessions'],
@@ -609,9 +612,9 @@ var SERVICES = [
       { n: 'Any day', title: 'A channel, not a form', copy: 'Requests go to a shared channel. Anything blocking revenue gets looked at the same day.' }
     ],
     leave: [
-      { title: 'A named admin', copy: 'The same person every month, who already knows why your portal is the way it is.' },
-      { title: 'Hours that roll', copy: 'Within the quarter, so a quiet month is banked rather than burned on filler.' },
-      { title: 'No lock-in', copy: 'Thirty days notice, both ways. Nobody has ever done better work because the client was stuck with them.' }
+      { title: 'HubSpot experts in your corner', art: 'expert', copy: 'You&rsquo;ll get the HubSpot expertise you need to move quick, optimize your account and get results.' },
+      { title: 'No limit on monthly hours', art: 'unlimited', copy: 'No limit on monthly hours - set pricing you can budget in, while saving on an otherwise FT hire.' },
+      { title: 'Bi-weekly standups &amp; PM tool access', art: 'standups', copy: 'We&rsquo;ll have bi-weekly standups for our engagement and access to our project management tool.' }
     ],
     price: ['Starting at $3,500/mo', 'Set by how long you commit'],
     dur: ['Rolling monthly', 'Thirty days notice either way'],
@@ -655,9 +658,9 @@ var SERVICES = [
       { n: 'Each quarter', title: 'An order of operations', copy: 'Not a wish list. What to do first, what it costs to keep ignoring the rest.' }
     ],
     leave: [
-      { title: 'Definitions everyone shares', copy: 'What a qualified lead is, what stage three means, and what the forecast is actually counting.' },
-      { title: 'Written positions', copy: 'Including the ones you disagree with. We will put those in writing too.' },
-      { title: 'A plan with an order', copy: 'Sequenced by what unblocks the most, not by what is easiest to sell you.' }
+      { title: 'RevOps experts in your corner', art: 'expert', copy: 'You&rsquo;ll get the RevOps expertise you need to align sales, marketing, service and finance and grow revenue.' },
+      { title: 'No limit on monthly hours', art: 'unlimited', copy: 'No limit on monthly hours - set pricing you can budget in, while saving on an otherwise FT hire.' },
+      { title: 'Bi-weekly standups &amp; PM tool access', art: 'standups', copy: 'We&rsquo;ll have bi-weekly standups for our engagement and access to our project management tool.' }
     ],
     price: ['Starting at $3,500/mo', 'Set by how long you commit'],
     dur: ['Rolling monthly', 'Fortnightly sessions'],
@@ -701,9 +704,9 @@ var SERVICES = [
       { n: 'Step three', title: 'Draw the whole thing', copy: 'One page, every handoff, owner and system of record marked, including the spreadsheets holding it together.' }
     ],
     leave: [
-      { title: 'The map', copy: 'As a working file you can keep editing, not a PDF that is out of date by the time it is read.' },
-      { title: 'Measured stalls', copy: 'Where records sit and for how long, in days rather than in adjectives.' },
-      { title: 'A ranked fix list', copy: 'Cheapest and highest impact first, with what it costs to leave each one alone.' }
+      { title: 'Complete flowchart', art: 'flowchart', copy: 'From lead generated to invoice paid, we&rsquo;ll map out every step along the way.' },
+      { title: 'Stalled revenue insights', art: 'hourglass', copy: 'Where records sit and for how long, in days rather than in adjectives.' },
+      { title: 'A ranked fix list', art: 'ranked', copy: 'Cheapest and highest impact first, with what it costs to leave each one alone.' }
     ],
     price: ['$4,200', 'Fixed price'],
     dur: ['2–3 weeks', 'Interviews, then one findings session'],
@@ -1274,7 +1277,7 @@ function servicePage(s) {
     secHead('What you get') +
 '    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
     pcards(s.leave.map(function (d) {
-      return { title: d.title, copy: d.copy, media: true };
+      return { title: d.title, copy: d.copy, art: d.art, media: true };
     }), 'pcards-3') +
 '    </div>\n', 'section-tight');
 
@@ -2908,14 +2911,17 @@ var RESOURCE_TYPES = [
 /* ==========================================================================
    THE LINE ART
 
-   Four navy line drawings, INLINE rather than four SVG files. They are used
+   Navy line drawings, INLINE rather than SVG files. The first four are the
+   resources drawings; the other eleven (16 September) sit in the 'What you
+   get' card thumbs on the service pages, keyed by `art` on each `leave`
+   entry in SERVICES. The resources four are used
    at two sizes on two grounds — a third of the featured card, where the
    drawing breaks out over the card's top edge, and inside a 16:9 card thumb
    on the games shelf — and inline means one copy of each path and
    `currentColor` doing the theme swap, instead of a file plus a filter to
    invert it when the page goes dark.
 
-   All four share one 240x260 box, one 3.6 stroke and round joins, so a
+   All of them share one 240x260 box, one 3.6 stroke and round joins, so a
    slide that changes its drawing does not change the composition's weight.
    Keep anything new to the same box: the featured card sizes the art off
    its own height and lets the width fall out of the aspect ratio.
@@ -2984,7 +2990,144 @@ var ART = {
     '<path d="M146 139c10 4 16 10 17 18 5 1 10 0 14-2"/>' +
     '<path d="M135 145c8 6 13 13 14 21 5 1 10 0 14-2"/>' +
     '<path d="M106 140c-4 12-13 19-24 21-6 0-11-1-15-4"/>' +
-    '<path d="M92 105c-9-1-14 5-13 11 1 6 8 9 14 6"/>'
+    '<path d="M92 105c-9-1-14 5-13 11 1 6 8 9 14 6"/>',
+
+  /* a video call, two faces on one screen and a word each way */
+  'assessment-call':
+    '<rect x="16" y="60" width="208" height="140" rx="16"/>' +
+    '<rect x="32" y="76" width="80" height="92" rx="10"/>' +
+    '<rect x="128" y="76" width="80" height="92" rx="10"/>' +
+    '<circle cx="72" cy="108" r="14"/>' +
+    '<path d="M50 168c0-18 10-30 22-30s22 12 22 30"/>' +
+    '<circle cx="168" cy="108" r="14"/>' +
+    '<path d="M146 168c0-18 10-30 22-30s22 12 22 30"/>' +
+    '<circle cx="104" cy="184" r="5"/>' +
+    '<circle cx="136" cy="184" r="5"/>' +
+    '<path d="M104 200v24M136 200v24M84 234h72"/>' +
+    '<path d="M36 16h60a12 12 0 0 1 12 12v12a12 12 0 0 1-12 12H62l-12 10v-10H36a12 12 0 0 1-12-12V28a12 12 0 0 1 12-12z"/>' +
+    '<circle cx="50" cy="34" r="2.8" fill="currentColor" stroke="none"/>' +
+    '<circle cx="66" cy="34" r="2.8" fill="currentColor" stroke="none"/>' +
+    '<circle cx="82" cy="34" r="2.8" fill="currentColor" stroke="none"/>' +
+    '<path d="M204 26h-52a10 10 0 0 0-10 10v6a10 10 0 0 0 10 10h28l12 10v-10h12a10 10 0 0 0 10-10v-6a10 10 0 0 0-10-10z"/>' +
+    '<path d="M158 39h36"/>',
+
+  /* a flowchart: start, one decision, two branches, one end. Shared by the RevOps flowchart on /services/solution-design and the complete flowchart on lead to cash */
+  'flowchart':
+    '<rect x="78" y="14" width="84" height="34" rx="17"/>' +
+    '<path d="M120 48v14"/>' +
+    '<path d="M114 56l6 7 6-7"/>' +
+    '<path d="M120 66l34 32-34 32-34-32z"/>' +
+    '<path d="M86 98H46v44"/>' +
+    '<path d="M40 136l6 7 6-7"/>' +
+    '<path d="M154 98h40v44"/>' +
+    '<path d="M188 136l6 7 6-7"/>' +
+    '<rect x="14" y="148" width="64" height="42" rx="8"/>' +
+    '<rect x="162" y="148" width="64" height="42" rx="8"/>' +
+    '<path d="M46 190v39h28"/>' +
+    '<path d="M68 223l7 6-7 6"/>' +
+    '<path d="M194 190v39h-28"/>' +
+    '<path d="M172 223l-7 6 7 6"/>' +
+    '<rect x="78" y="212" width="84" height="34" rx="17"/>',
+
+  /* the solution design document: a page with a dotted route from where you are to a flag where you want to be */
+  'solution-doc':
+    '<path d="M42 16h118l46 46v170a12 12 0 0 1-12 12H42a12 12 0 0 1-12-12V28a12 12 0 0 1 12-12z"/>' +
+    '<path d="M160 16v34a12 12 0 0 0 12 12h34"/>' +
+    '<path d="M54 48h72M54 70h48"/>' +
+    '<circle cx="64" cy="210" r="9"/>' +
+    '<path d="M76 206c44-4 18-50 56-56s28-18 28-34" stroke-dasharray="7 9"/>' +
+    '<path d="M160 116V78"/>' +
+    '<path d="M160 80h28l-9 11 9 11h-28"/>',
+
+  /* a CRM window, contact and pipeline, with a heart over it */
+  'crm-love':
+    '<rect x="14" y="70" width="212" height="170" rx="16"/>' +
+    '<path d="M14 100h212"/>' +
+    '<circle cx="34" cy="85" r="4"/>' +
+    '<circle cx="50" cy="85" r="4"/>' +
+    '<circle cx="66" cy="85" r="4"/>' +
+    '<path d="M70 100v140"/>' +
+    '<path d="M30 124h24M30 148h24M30 172h18"/>' +
+    '<circle cx="106" cy="134" r="18"/>' +
+    '<path d="M136 126h64M136 144h40"/>' +
+    '<rect x="88" y="172" width="36" height="48" rx="6"/>' +
+    '<rect x="136" y="172" width="36" height="34" rx="6"/>' +
+    '<rect x="184" y="172" width="26" height="22" rx="6"/>' +
+    '<path d="M186 58c-24-15-32-28-26-38 6-10 20-9 26 1 6-10 20-11 26-1 6 10-2 23-26 38z"/>',
+
+  /* an open manual with a bookmark, for full documentation */
+  'manual':
+    '<path d="M120 62c-24-14-62-16-98-8v160c36-8 74-6 98 8z"/>' +
+    '<path d="M120 62c24-14 62-16 98-8v160c-36-8-74-6-98 8z"/>' +
+    '<path d="M22 214v14c36-8 74-6 98 8 24-14 62-16 98-8v-14"/>' +
+    '<path d="M40 92c22-4 44-3 62 3M40 118c22-4 44-3 62 3M40 144c22-4 44-3 62 3M40 170c16-3 30-2 42 1"/>' +
+    '<path d="M138 118c22-6 44-7 62-3M138 144c22-6 44-7 62-3M138 170c22-6 44-7 62-3"/>' +
+    '<path d="M178 48v48l10-9 10 9V50"/>',
+
+  /* an easel with a checklist half ticked, for training and support */
+  'training':
+    '<rect x="20" y="26" width="200" height="140" rx="12"/>' +
+    '<path d="M104 26V14h32v12"/>' +
+    '<path d="M120 166v74M82 166l-28 74M158 166l28 74"/>' +
+    '<circle cx="54" cy="62" r="11"/>' +
+    '<path d="M49 62l4 4 7-8"/>' +
+    '<circle cx="54" cy="96" r="11"/>' +
+    '<path d="M49 96l4 4 7-8"/>' +
+    '<circle cx="54" cy="130" r="11"/>' +
+    '<path d="M78 62h104M78 96h120M78 130h70"/>',
+
+  /* someone in a headset with a star on the chest. Shared by both experts-in-your-corner cards, HubSpot and RevOps */
+  'expert':
+    '<circle cx="120" cy="96" r="40"/>' +
+    '<path d="M72 102c0-68 96-68 96 0"/>' +
+    '<rect x="62" y="88" width="18" height="32" rx="8"/>' +
+    '<rect x="160" y="88" width="18" height="32" rx="8"/>' +
+    '<path d="M70 120c0 24 16 34 38 34"/>' +
+    '<circle cx="112" cy="154" r="4.5"/>' +
+    '<path d="M40 244c0-50 34-78 80-78s80 28 80 78"/>' +
+    '<path d="M152 194l6.5 13.5 15 2-11 10.5 2.8 14.8L152 227.8l-13.3 7 2.8-14.8-11-10.5 15-2z"/>',
+
+  /* a calendar with infinity in it, for no limit on monthly hours. Shared by both retainers */
+  'unlimited':
+    '<rect x="22" y="40" width="196" height="196" rx="18"/>' +
+    '<path d="M22 88h196"/>' +
+    '<path d="M74 22v34M166 22v34"/>' +
+    '<path d="M120 162c-16-24-52-24-52 0s36 24 52 0 52-24 52 0-36 24-52 0z"/>',
+
+  /* a project board with a repeat under it, for bi-weekly standups and PM tool access. Shared by both retainers */
+  'standups':
+    '<rect x="14" y="18" width="212" height="170" rx="16"/>' +
+    '<path d="M14 50h212"/>' +
+    '<path d="M86 50v138M154 50v138"/>' +
+    '<rect x="26" y="64" width="48" height="28" rx="6"/>' +
+    '<rect x="26" y="104" width="48" height="28" rx="6"/>' +
+    '<rect x="98" y="64" width="44" height="28" rx="6"/>' +
+    '<rect x="166" y="64" width="48" height="28" rx="6"/>' +
+    '<rect x="166" y="104" width="48" height="28" rx="6"/>' +
+    '<rect x="166" y="144" width="48" height="28" rx="6"/>' +
+    '<path d="M32 34h28"/>' +
+    '<path d="M142 218a22 22 0 0 0-44 0"/>' +
+    '<path d="M91 211l7 8 7-8"/>' +
+    '<path d="M98 228a22 22 0 0 0 44 0"/>' +
+    '<path d="M135 235l7-8 7 8"/>',
+
+  /* an hourglass mid-pour, for stalled revenue measured in days */
+  'hourglass':
+    '<path d="M56 22h128M56 238h128"/>' +
+    '<path d="M74 22c0 64 36 82 36 108s-36 44-36 108"/>' +
+    '<path d="M166 22c0 64-36 82-36 108s36 44 36 108"/>' +
+    '<path d="M86 72h68c-8 22-24 32-34 42-10-10-26-20-34-42z"/>' +
+    '<path d="M120 134v44" stroke-dasharray="4 9"/>' +
+    '<path d="M86 230c6-20 22-32 34-32s28 12 34 32z"/>',
+
+  /* a clipboard numbered one to three, the lines getting shorter, for the ranked fix list */
+  'ranked':
+    '<rect x="34" y="34" width="172" height="210" rx="16"/>' +
+    '<rect x="86" y="18" width="68" height="32" rx="9"/>' +
+    '<path d="M62 84l7-6v30"/>' +
+    '<path d="M60 136c0-7 5-11 10-11s10 4 10 10c0 8-20 14-20 22h20"/>' +
+    '<path d="M61 184h18l-10 10c7 0 12 4 12 10s-5 10-11 10-10-3-11-7"/>' +
+    '<path d="M100 88h82M100 142h62M100 198h44"/>'
 };
 
 /* Decorative in both places it is used: the title beside it already names

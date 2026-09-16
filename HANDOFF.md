@@ -27,6 +27,26 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 16 September: service page 'What you get' cards, new copy and line art
+
+James' CSV (`Claude outputs/services-what-you-get.csv`) replaced the three
+`leave` entries on all five service pages in `SERVICES` in
+`tools/build-pages.js`. Straight apostrophes became `&rsquo;`, `&` became
+`&amp;`, and "We'll have a bi-weekly standups" lost its stray "a".
+
+- **The dashed wells are gone.** Each `leave` entry carries an `art` key;
+  `pcard()` renders it as `.res-thumb.pcard-thumb.is-art` with the drawing
+  from `ART`, so it is the resources shelf's plate and ink, dark theme
+  included. `media: true` without `art` still gives the empty well.
+- **Eleven new drawings in `ART`**, same 240x260 box and 3.6 stroke:
+  `assessment-call`, `flowchart`, `solution-doc`, `crm-love`, `manual`,
+  `training`, `expert`, `unlimited`, `standups`, `hourglass`, `ranked`.
+- **Shared drawings.** `flowchart` is on both Solution design (RevOps
+  flowchart) and Lead to cash (Complete flowchart). The two retainers, HubSpot
+  support and RevOps consulting, now have near-identical cards and share
+  `expert`, `unlimited` and `standups`.
+- Rebuilt; `smoke.js`, `resources-smoke.js` and `hubs-smoke.js` all pass.
+
 ## 16 September: the two games, rearranged
 
 James' list, all in `puzzle` and `hop` in `tools/build-pages.js` and the
