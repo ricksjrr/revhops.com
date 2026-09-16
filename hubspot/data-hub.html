@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="../assets/css/site.css?v=0fd88cf8e8">
+<link rel="stylesheet" href="../assets/css/site.css?v=5ef5aa7e1a">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -84,7 +84,7 @@
         <p class="lede">Syncs, data quality, custom code and the reporting layer resting on them. The unglamorous half of HubSpot, and where most portals quietly break.</p>
         <div class="btn-row">
           <a class="btn btn-primary" href="../call">Schedule a discovery call</a>
-          <a class="btn btn-outline" href="../contact">Request a portal audit</a>
+          <a class="text-link" href="../audit">Request a portal audit <span class="arrow" aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </div>
@@ -93,108 +93,46 @@
 
 <section class="section">
   <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">What Data Hub <span class="hl">quietly holds up</span></h2>
-      <p class="sec-sub">HubSpot calls it turning scattered data into intelligence. Read it as the plumbing: what syncs where, which system wins a disagreement, and whether the properties your reports are built on mean the same thing to three different teams.</p>
-    </div>
-    <div style="margin-top:clamp(22px,2.6vw,34px)">
     <div class="pcards pcards-3">
         <div class="pcard reveal">
           <h3 class="pcard-title">Data sync</h3>
           <p class="pcard-copy">Two-way sync to the rest of the stack out of the box, with the field mapping visible rather than buried in somebody’s script.</p>
-          <div class="pcard-chips">
-            <span class="chip">Data Sync</span>
-            <span class="chip">100+ integrations</span>
-            <span class="chip">Two-way sync</span>
-          </div>
         </div>
         <div class="pcard reveal">
           <h3 class="pcard-title">Data quality</h3>
           <p class="pcard-copy">Formatting, duplicates, and the alert that tells you a property stopped being filled in three weeks ago.</p>
-          <div class="pcard-chips">
-            <span class="chip">Data Quality Overview</span>
-            <span class="chip">Format automation</span>
-            <span class="chip">Duplicate management</span>
-          </div>
         </div>
         <div class="pcard reveal">
           <h3 class="pcard-title">Programmable automation</h3>
           <p class="pcard-copy">Custom code inside a workflow and webhooks out of it, for the logic no native action covers. Used sparingly, on purpose.</p>
-          <div class="pcard-chips">
-            <span class="chip">Custom code actions</span>
-            <span class="chip">Webhooks</span>
-            <span class="chip">Programmable Automation</span>
-          </div>
         </div>
         <div class="pcard reveal">
           <h3 class="pcard-title">Datasets and Data Studio</h3>
           <p class="pcard-copy">A curated layer between the raw records and the dashboard, so a report is built once rather than rebuilt by each analyst.</p>
-          <div class="pcard-chips">
-            <span class="chip">Data Studio</span>
-            <span class="chip">Datasets</span>
-            <span class="chip">Calculated properties</span>
-          </div>
         </div>
         <div class="pcard reveal">
           <h3 class="pcard-title">Warehouse and cloud storage</h3>
           <p class="pcard-copy">Bidirectional sync with the cloud data platform finance and product already use, which ends the export-and-email habit.</p>
-          <div class="pcard-chips">
-            <span class="chip">Cloud Data Storage Integrations</span>
-            <span class="chip">Bidirectional sync</span>
-            <span class="chip">Snapshots</span>
-          </div>
         </div>
         <div class="pcard reveal">
           <h3 class="pcard-title">The reporting foundation</h3>
           <p class="pcard-copy">Dashboards people trust because they read from one definition. That trust is a data project rather than a charting one.</p>
-          <div class="pcard-chips">
-            <span class="chip">Dashboards and Reporting</span>
-            <span class="chip">Custom properties</span>
-            <span class="chip">Field mappings</span>
-          </div>
         </div>
     </div>
-    </div>
   </div>
 </section>
 
 <section class="section">
   <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">Which tier you actually need</h2>
-      <p class="sec-sub">Nobody is upsold harder than a HubSpot buyer in month one. Here is the short version without the numbers, because HubSpot moves those and a stale price is worse than none.</p>
-    </div>
-    <div class="reveal" style="margin-top:clamp(18px,2.2vw,28px);max-width:64ch">
-      <ul class="ticks">
-          <li><b>Free</b> includes data sync, which is more than most people realise and often enough to retire a manual export.</li>
-          <li><b>Starter</b> adds field mappings and the simpler quality automation. A reasonable floor for a two-system stack.</li>
-          <li><b>Professional</b> is programmable automation, the data quality tooling and webhooks. The tier a real integration needs.</li>
-          <li><b>Enterprise</b> adds datasets, snapshots and the cloud data storage sync. Ask for it when a warehouse is already in the picture.</li>
-          <li>Data Hub is the hub bought latest, usually after a year of custom code that a Professional licence would have replaced. Worth pricing before the next integration rather than after it.</li>
-        </ul>
-      <div class="btn-row" style="margin-top:clamp(22px,2.6vw,32px)">
-        <a class="btn btn-primary" href="../contact">Ask us which tier</a>
+    <div class="hub-case">
+      <a class="case-card hub-case-card reveal" href="../case-studies/Core-Income-Advisors" tabindex="-1" aria-hidden="true">
+        <img src="../assets/img/case-studies/core-income-advisors-team.webp" alt="" loading="lazy">
+      </a>
+      <div class="hub-case-copy reveal">
+        <h2 class="h2">Core Income Advisors</h2>
+        <p class="lede">Core Income Advisors had been through HubSpot partner agencies before and come away with recommendations that never solved the problem in front of them. Their COO evaluated several firms and chose us. The sales, marketing and operations teams now have a standing weekly session and a specialist who has learned how the business makes money.</p>
+        <a class="text-link" href="../case-studies/Core-Income-Advisors">Read the story <span class="arrow" aria-hidden="true">&rarr;</span></a>
       </div>
-      <p class="partner-note">Current pricing is on
-        <a href="https://www.hubspot.com/pricing" target="_blank" rel="noopener">HubSpot’s pricing page</a>.
-        As a Platinum partner we can quote it too, and we will tell you when a lower tier does the job.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">Where we usually find it broken</h2>
-      <p class="sec-sub">Four things we see in portal after portal. Not one of them is a licensing problem.</p>
-    </div>
-    <div class="reveal" style="margin-top:clamp(18px,2.2vw,28px)">
-      <ul class="ticks ticks-2">
-          <li>A sync turned on in both directions before anyone decided which system wins a disagreement.</li>
-          <li>Deduplication done once, by hand, in a spreadsheet, and never again after that person left.</li>
-          <li>Custom code doing the work a field mapping would have done, maintained by whoever happened to write it.</li>
-          <li>Reports built on properties that three teams fill in three different ways.</li>
-        </ul>
     </div>
   </div>
 </section>
@@ -340,6 +278,6 @@
   </svg>
 </button>
 
-<script src="../assets/js/site.js?v=0fd88cf8e8"></script>
+<script src="../assets/js/site.js?v=5ef5aa7e1a"></script>
 </body>
 </html>

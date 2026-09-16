@@ -27,6 +27,29 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 16 September: the six hub pages, cut down
+
+James' brief, all six pages at once since they are one template (`hubPage()`
+in `tools/build-pages.js`):
+
+- **Gone:** the heading and subheading over the six cards, "Which tier you
+  actually need", "Where we usually find it broken", and the chips inside
+  every card. The data went too (`head`, `sub`, `tiers`, `wrong`, `chips`);
+  it is in git before this change if wanted.
+- **The audit ask in the header is an arrow link now**, and it points at
+  `/audit`. It was a second button going to `/contact`, the last audit link
+  on the site that did not land on `/audit`.
+- **A case study sits under the cards**, from `caseStudy` on each hub, a slug
+  in `CASES`. The card is the picture only, then the client name, the lede
+  from its page and "Read the story". James' picks: Sales, Revenue and
+  Service to Ignite, Marketing to Woodside, Data and Content to Core Income.
+  Ignite is the fallback. A bad slug stops the build.
+- **The pages now carry no warm highlight.** It lived in the cut heading.
+  `tools/hubs-smoke.js` allows at most one rather than exactly one.
+
+CSS is one `.hub-case` block at the foot of `site.css`, tokens only. Checked
+in headless Chromium at 1440 light and dark and at 390.
+
 ## 13 September: prices, hub pages, and two more phone fixes
 
 - **A monthly price is `$3,500/mo`**, not "$3,500 a month", everywhere it

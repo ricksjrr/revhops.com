@@ -6867,3 +6867,25 @@ div.res-card .res-go { color: var(--muted); }
      desktop clamp's 61px floor. */
   .logo-run img { height: 96px; }
 }
+
+/* ==========================================================================
+   HUB PAGES: THE FEATURED CASE STUDY, added 16 September
+   The poster card from /case-studies with nothing on it, beside the client's
+   name, the lede from its page and a link. Built by hubCase() in
+   tools/build-pages.js. Tokens only, so no dark rules.
+   ========================================================================== */
+.hub-case {
+  display: grid;
+  grid-template-columns: clamp(260px, 30vw, 400px) minmax(0, 1fr);
+  gap: clamp(28px, 5vw, 80px);
+  align-items: center;
+}
+.hub-case .hub-case-card { width: 100%; }
+/* the scrim only exists to carry the card's type, and this card has none */
+.hub-case .hub-case-card::after { content: none; }
+.hub-case-copy .lede { margin-top: clamp(12px, 1.4vw, 18px); }
+.hub-case-copy .text-link { margin-top: clamp(18px, 2vw, 26px); }
+@media (max-width: 760px) {
+  .hub-case { grid-template-columns: minmax(0, 1fr); }
+  .hub-case .hub-case-card { max-width: 360px; }
+}

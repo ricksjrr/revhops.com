@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="../assets/css/site.css?v=0fd88cf8e8">
+<link rel="stylesheet" href="../assets/css/site.css?v=5ef5aa7e1a">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -84,7 +84,7 @@
         <p class="lede">Quotes, CPQ, invoicing, subscriptions and payments, built so the number in the CRM is the number finance sees. Quote to cash without the spreadsheet in the middle.</p>
         <div class="btn-row">
           <a class="btn btn-primary" href="../call">Schedule a discovery call</a>
-          <a class="btn btn-outline" href="../contact">Request a portal audit</a>
+          <a class="text-link" href="../audit">Request a portal audit <span class="arrow" aria-hidden="true">&rarr;</span></a>
         </div>
       </div>
     </div>
@@ -93,107 +93,46 @@
 
 <section class="section">
   <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">What Revenue Hub <span class="hl">puts in one place</span></h2>
-      <p class="sec-sub">HubSpot’s line is that your CRM already knows your customers and can now handle your revenue too. That is the right idea, and the work is all in the seams: approvals, proration, tax, and what happens to the record when a subscription changes mid-term.</p>
-    </div>
-    <div style="margin-top:clamp(22px,2.6vw,34px)">
     <div class="pcards pcards-3">
         <div class="pcard reveal">
           <h3 class="pcard-title">Quotes and CPQ</h3>
           <p class="pcard-copy">Priced off a product library with the discount rules written down, approved by the person meant to approve it, signed in the same place.</p>
-          <div class="pcard-chips">
-            <span class="chip">Quotes</span>
-            <span class="chip">CPQ</span>
-            <span class="chip">Contracts</span>
-          </div>
         </div>
         <div class="pcard reveal">
           <h3 class="pcard-title">Invoicing</h3>
           <p class="pcard-copy">Invoices raised from the deal rather than retyped into another system, with the reminders going out without anyone chasing them.</p>
-          <div class="pcard-chips">
-            <span class="chip">Invoicing</span>
-            <span class="chip">Invoice reminders</span>
-            <span class="chip">Accounting integrations</span>
-          </div>
         </div>
         <div class="pcard reveal">
           <h3 class="pcard-title">Subscriptions and billing</h3>
           <p class="pcard-copy">Recurring billing, upgrades, downgrades and the mid-term change that is where most billing set-ups start to drift.</p>
-          <div class="pcard-chips">
-            <span class="chip">Subscription billing</span>
-            <span class="chip">Recurring payments</span>
-            <span class="chip">Upgrades and downgrades</span>
-          </div>
         </div>
         <div class="pcard reveal">
           <h3 class="pcard-title">Payments</h3>
           <p class="pcard-copy">Payment links and checkout against the record. HubSpot Payments is US only and Stripe covers the rest, which is a decision worth making early.</p>
-          <div class="pcard-chips">
-            <span class="chip">Payments</span>
-            <span class="chip">Payment links</span>
-            <span class="chip">Stripe processing</span>
-          </div>
         </div>
         <div class="pcard reveal">
           <h3 class="pcard-title">Revenue reporting</h3>
           <p class="pcard-copy">Recurring revenue, collections and a forecast reading from billing data rather than from a stage somebody forgot to move.</p>
-          <div class="pcard-chips">
-            <span class="chip">Revenue reporting</span>
-            <span class="chip">External revenue integrations</span>
-            <span class="chip">Dashboards</span>
-          </div>
         </div>
         <div class="pcard reveal">
           <h3 class="pcard-title">The AI layer</h3>
           <p class="pcard-copy">Breeze drafting the quote and chasing the invoice. Useful once the rules underneath are right, and a faster way to be wrong before that.</p>
-          <div class="pcard-chips">
-            <span class="chip">Breeze assistant</span>
-            <span class="chip">Revenue agent</span>
-            <span class="chip">Customer agent</span>
-          </div>
         </div>
     </div>
-    </div>
   </div>
 </section>
 
 <section class="section">
   <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">Which tier you actually need</h2>
-      <p class="sec-sub">Nobody is upsold harder than a HubSpot buyer in month one. Here is the short version without the numbers, because HubSpot moves those and a stale price is worse than none.</p>
-    </div>
-    <div class="reveal" style="margin-top:clamp(18px,2.2vw,28px);max-width:64ch">
-      <ul class="ticks">
-          <li><b>Free</b> covers quotes, invoices and payment links. For a business selling one thing at one price it is genuinely enough.</li>
-          <li><b>Professional</b> is CPQ, subscription billing and revenue reporting. The tier for anyone whose pricing has options in it.</li>
-          <li><b>Enterprise</b> adds the approval depth, permissioning and integration ceilings a finance team with a controller will ask for.</li>
-          <li>Revenue Hub has no Starter tier, so the step up from free is a real one. Payment processing fees sit outside the licence and are worth pricing before you commit.</li>
-        </ul>
-      <div class="btn-row" style="margin-top:clamp(22px,2.6vw,32px)">
-        <a class="btn btn-primary" href="../contact">Ask us which tier</a>
+    <div class="hub-case">
+      <a class="case-card hub-case-card reveal" href="../case-studies/Ignite-Group" tabindex="-1" aria-hidden="true">
+        <img src="../assets/img/case-studies/ignite-group-amsterdam.webp" alt="" loading="lazy">
+      </a>
+      <div class="hub-case-copy reveal">
+        <h2 class="h2">Ignite Group</h2>
+        <p class="lede">Ignite Group helps businesses win grants and subsidies across the Netherlands and Germany. Their Salesforce had not been properly owned since the admin who built it left, and a newly acquired division was running on spreadsheets and Word documents. We assessed, designed, built and trained them onto HubSpot, and stayed on for the year that followed.</p>
+        <a class="text-link" href="../case-studies/Ignite-Group">Read the story <span class="arrow" aria-hidden="true">&rarr;</span></a>
       </div>
-      <p class="partner-note">Current pricing is on
-        <a href="https://www.hubspot.com/pricing" target="_blank" rel="noopener">HubSpot’s pricing page</a>.
-        As a Platinum partner we can quote it too, and we will tell you when a lower tier does the job.</p>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="shell">
-    <div class="sec-head sec-head-left reveal">
-      <h2 class="h2">Where we usually find it broken</h2>
-      <p class="sec-sub">Four things we see in portal after portal. Not one of them is a licensing problem.</p>
-    </div>
-    <div class="reveal" style="margin-top:clamp(18px,2.2vw,28px)">
-      <ul class="ticks ticks-2">
-          <li>Quotes built as PDFs outside the CRM, so what finance bills is not what sales sold.</li>
-          <li>Subscription changes handled by hand, then a recurring revenue figure nobody can reconcile.</li>
-          <li>Payments live before the tax and accounting side was decided, which makes it a cleanup rather than a fix.</li>
-          <li>Two systems holding revenue and a monthly meeting to work out which one is lying.</li>
-        </ul>
     </div>
   </div>
 </section>
@@ -339,6 +278,6 @@
   </svg>
 </button>
 
-<script src="../assets/js/site.js?v=0fd88cf8e8"></script>
+<script src="../assets/js/site.js?v=5ef5aa7e1a"></script>
 </body>
 </html>

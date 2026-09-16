@@ -7,8 +7,8 @@
    Sibling of tools/smoke.js (homepage) and tools/resources-smoke.js. The six
    pages under /hubspot/ are one template run six times from HUB_PAGES in
    tools/build-pages.js, so what is worth testing is that the data still
-   produces the page, and that the six do not drift apart: same five
-   sections in the same order, one highlight each, every internal link
+   produces the page, and that the six do not drift apart: same three
+   sections in the same order, at most one highlight each, every internal link
    landing on a file that exists, and the last section carrying .to-white so
    the closing panel has something white to bleed into.
 
@@ -58,8 +58,10 @@ SLUGS.forEach(slug => {
 
   /* one highlight per page and no more. Six pages with four each is how the
      marker stopped meaning anything the first time. */
+  /* It lived in the heading over the cards, which came out on 16 September,
+     so the pages carry none. At most one if it ever comes back. */
   const hl = d.querySelectorAll('.hl').length;
-  hl === 1 ? ok(slug + ': exactly one warm highlight') : bad(slug + ': ' + hl + ' highlights');
+  hl <= 1 ? ok(slug + ': no more than one warm highlight') : bad(slug + ': ' + hl + ' highlights');
 
   /* six feature cards, none of them linked: an arrow that goes nowhere is
      worse than no arrow, which is the /pipedrive rule. */
@@ -68,20 +70,44 @@ SLUGS.forEach(slug => {
     : bad(slug + ': ' + (cards ? cards.children.length : 0) + ' feature cards');
   cards && [...cards.children].every(c => c.tagName === 'DIV')
     ? ok(slug + ': and not one of them pretends to be a link') : bad(slug + ': a feature card is an anchor');
-  cards && [...cards.children].every(c => c.querySelectorAll('.chip').length === 3)
-    ? ok(slug + ': three HubSpot feature names chipped on each') : bad(slug + ': a card is missing its chips');
+  /* THE CHIPS CAME OFF on 16 September. James called them repetitive and
+     meaningless, so a chip coming back is a regression, not a nicety. */
+  cards && cards.querySelectorAll('.chip, .pcard-chips').length === 0
+    ? ok(slug + ': no chips inside the feature cards') : bad(slug + ': chips are back in the feature cards');
 
-  /* the tiers list, and no dollar figure anywhere on the page. HubSpot moves
-     its prices; a stale number here is worse than none. */
-  const ticks = [...d.querySelectorAll('.ticks')];
-  ticks.length === 2 ? ok(slug + ': a tier list and a what-goes-wrong list')
-    : bad(slug + ': ' + ticks.length + ' ticks lists');
+  /* THE TIER LIST AND WHERE-IT-GOES-WRONG CAME OUT on 16 September, and so
+     did the heading and subheading over the cards. No dollar figure
+     anywhere, still: HubSpot moves its prices. */
+  d.querySelectorAll('.ticks').length === 0 ? ok(slug + ': no tier or what-goes-wrong list')
+    : bad(slug + ': a ticks list is back');
+  !/Which tier|usually find it broken|is really for|actually does/.test(d.querySelector('main').textContent)
+    ? ok(slug + ': none of the cut section headings are back') : bad(slug + ': a cut section heading is back');
   /\$\s?\d/.test(d.querySelector('main').textContent)
     ? bad(slug + ': a dollar figure crept onto the page') : ok(slug + ': no prices on the page');
-  ticks[0] && ticks[0].children.length >= 4 ? ok(slug + ': the tier list covers every tier plus the caveat')
-    : bad(slug + ': tier list is short');
-  ticks[1] && ticks[1].classList.contains('ticks-2') && ticks[1].children.length === 4
-    ? ok(slug + ': four failure modes in two columns') : bad(slug + ': the what-goes-wrong list is wrong');
+
+  /* the header: the call is the button, the audit is an arrow link to /audit */
+  const heroText = d.querySelector('.page-hero-text') || d.querySelector('.page-hero');
+  const audit = heroText && [...heroText.querySelectorAll('a')].find(a => /audit/i.test(a.textContent));
+  audit && audit.classList.contains('text-link') && !audit.classList.contains('btn') && /audit$/.test(audit.getAttribute('href'))
+    ? ok(slug + ': the audit ask is an arrow link to /audit')
+    : bad(slug + ': the audit ask is ' + (audit ? audit.className + ' -> ' + audit.getAttribute('href') : 'missing'));
+
+  /* THE CASE STUDY, added 16 September. One, under the cards, a bare card
+     with no name or services on it, then the name, the lede and a link. The
+     slug is James' pick per hub. */
+  const PICK = { 'sales-hub': 'Ignite-Group', 'marketing-hub': 'Woodside-Homes', 'revenue-hub': 'Ignite-Group',
+                 'service-hub': 'Ignite-Group', 'data-hub': 'Core-Income-Advisors', 'content-hub': 'Core-Income-Advisors' };
+  const hc = d.querySelectorAll('.hub-case');
+  hc.length === 1 ? ok(slug + ': one featured case study') : bad(slug + ': ' + hc.length + ' featured case studies');
+  const hcCard = hc[0] && hc[0].querySelector('.case-card');
+  hcCard && hcCard.querySelector('img') && !hcCard.querySelector('.case-body, .case-title, .case-svc')
+    ? ok(slug + ': the case card is the picture and nothing else') : bad(slug + ': the case card carries text');
+  const hcLink = hc[0] && hc[0].querySelector('.hub-case-copy a.text-link');
+  hcLink && new RegExp('case-studies/' + PICK[slug] + '$').test(hcLink.getAttribute('href')) && /Read the story/.test(hcLink.textContent)
+    ? ok(slug + ': "Read the story" goes to ' + PICK[slug]) : bad(slug + ': the story link is wrong');
+  hc[0] && hc[0].querySelector('.hub-case-copy h2') && hc[0].querySelector('.hub-case-copy p.lede') &&
+    hc[0].querySelector('.hub-case-copy p.lede').textContent.trim().length > 80
+    ? ok(slug + ': the case name and its lede are beside the card') : bad(slug + ': the case name or lede is missing');
 
   /* the ask */
   const rows = [...d.querySelectorAll('.svc-row')];
