@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insurance AUM — case study — RevHops</title>
+<meta name="description" content="How RevHops rebuilt the revenue system at Insurance AUM, and what changed as a result.">
+<link rel="icon" href="../assets/img/revhops-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
+<link rel="stylesheet" href="../assets/css/site.css?v=de867ab06e">
+
+<!-- Theme before the first paint, and no scroll restoration on reload.
+     Both have to be inline and in the head: read the saved theme any later
+     and anyone on dark gets a white flash, and a restored scroll position a
+     few pixels down the page lands with the nav already collapsed. -->
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('revhops-theme');
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  } catch (e) { /* private mode: light theme, no toggle memory, nothing breaks */ }
+
+  if ('scrollRestoration' in history && !location.hash) {
+    history.scrollRestoration = 'manual';
+  }
+})();
+</script>
+
+<!-- HubSpot tracking, portal 46722926. Async and deferred, so it never
+     blocks the first paint. Goes in the head of every public page. -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/46722926.js"></script>
+</head>
+<body>
+
+<!-- ============================= NAV =============================
+     Identical on every page. Two states: transparent at rest so the header
+     circle runs through it, a floating navy bar once [data-nav-clear] has
+     scrolled past. Generated — edit NAV_ITEMS in tools/build-pages.js. -->
+<header class="nav" data-nav>
+  <div class="shell nav-inner">
+    <a class="brand" href="../" aria-label="RevHops home">
+      <img class="brand-base" src="../assets/img/revhops-logo.png" alt="revhops">
+      <img class="brand-alt" src="../assets/img/revhops-logo-white.png" alt="" aria-hidden="true">
+    </a>
+    <nav class="nav-links" data-nav-links aria-label="Primary">
+      <a href="../services">Services</a>
+      <a href="../case-studies" aria-current="page">Case studies</a>
+      <a href="../resources">Resources</a>
+      <a href="../hubspot">HubSpot</a>
+      <a href="../pricing">Pricing</a>
+      <a href="../about">About</a>
+      <a href="../contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <button class="theme-toggle" data-theme-toggle type="button"
+              aria-pressed="false" aria-label="Switch to the dark theme">
+        <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2.2v2.4M12 19.4v2.4M4.1 4.1l1.7 1.7M18.2 18.2l1.7 1.7M2.2 12h2.4M19.4 12h2.4M4.1 19.9l1.7-1.7M18.2 5.8l1.7-1.7"/>
+        </svg>
+        <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.1 14.6A8.4 8.4 0 0 1 9.4 3.9a8.4 8.4 0 1 0 10.7 10.7z"/>
+        </svg>
+      </button>
+      <a class="btn btn-primary" href="../call">Schedule a discovery call</a>
+      <button class="nav-toggle" data-nav-toggle aria-expanded="false" aria-label="Menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main class="cs-detail">
+
+<!-- ===================== HEADER PLATE =====================
+     The plate off /case-studies, left-aligned and carrying a description.
+     The H1 carries data-nav-clear, as it does on every page: the bar
+     collapses as it reaches the title. -->
+<section class="cs-head">
+  <div class="shell">
+    <a class="hero-back cs-back" href="../case-studies"><span class="arrow" aria-hidden="true">&larr;</span> All case studies</a>
+    <div class="cs-head-panel is-detail">
+      <div class="cs-head-copy">
+        <h1 class="h1" data-nav-clear>Insurance AUM</h1>
+        <p class="cs-head-lede">Insurance AUM has a membership database and a platform it wants that audience registered on, and before we met there was no system for connecting the two. We designed and built the marketing automation to nurture and engage their members in HubSpot, tied it to in-app activity, and built the reporting to show what was working. Then we stayed on through a retainer to support the marketing and sales teams.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== THE STORY =====================
+     20 / 80, the same split as the shelf. Meta down the left, three fixed
+     sections down the right. -->
+<section class="section cs-body-section to-white">
+  <div class="shell">
+    <div class="cs-layout">
+      <aside class="cs-side" aria-label="Case study details">
+        <div class="cs-shot"><img src="../assets/img/case-studies/insurance-aum.webp" alt="" aria-hidden="true"></div>
+        <div class="cs-meta">
+          <div class="cs-meta-row">
+            <p class="cs-meta-label">Service(s) used</p>
+            <p class="cs-meta-val"><span><a href="../services/crm-implementations">CRM implementations</a></span><span><a href="../services/hubspot-support-retainers">HubSpot support retainers</a></span></p>
+          </div>
+          <div class="cs-meta-row">
+            <p class="cs-meta-label">Tools used</p>
+            <p class="cs-meta-val">HubSpot</p>
+          </div>
+          <div class="cs-meta-row">
+            <p class="cs-meta-label">Industry</p>
+            <p class="cs-meta-val">Professional Services</p>
+          </div>
+          <div class="cs-meta-row">
+            <p class="cs-meta-label">Team size</p>
+            <p class="cs-meta-val">10&ndash;50 people</p>
+          </div>
+          <div class="cs-meta-row">
+            <p class="cs-meta-label">Location</p>
+            <p class="cs-meta-val">Malvern, PA</p>
+          </div>
+        </div>
+      </aside>
+
+      <div class="cs-body">
+      <section class="cs-block">
+        <span class="cs-eyebrow">The problem</span>
+        <h2 class="h2">A membership database with no way to engage it</h2>
+        <p class="small">Insurance AUM is a professional services firm based in Malvern, Pennsylvania. Its value depends on an engaged membership, and on getting the people in its database registered on the platform. The audience was already there. What was missing was any systematic way of talking to it.</p>
+        <p class="small">Engagement happened when somebody found the time for it. Nothing nurtured a contact toward registering, and nothing responded to what a member did or did not do once they were in. The database was not segmented either, so there was no way to say something different to a person based on their role or their industry.</p>
+        <p class="small">And nobody could say which efforts were growing membership. Without reporting built around that question, there was no way to tell what was working and what to stop doing.</p>
+      </section>
+      <section class="cs-block">
+        <span class="cs-eyebrow">The solution</span>
+        <h2 class="h2">Campaigns that respond to what members actually do</h2>
+        <p class="small">We started with the database. Contacts were segmented by buyer type, using job title, role and industry, so messaging and outreach could be written for the person receiving it rather than for everyone at once.</p>
+        <p class="small">Then the campaigns. We designed and built the workflows, automations and emails that move a contact toward registering and keep a member engaged afterwards, with retargeting ads running alongside them. The part that makes it work is the in-app data: user activity and engagement from the platform sit inside HubSpot, so a campaign can react to what a member has actually done rather than guess at it.</p>
+        <p class="small">Last, the reporting. Custom reports and dashboards built around the two questions the team needed answered: which efforts are increasing membership, and which are increasing member engagement.</p>
+      </section>
+      <section class="cs-block">
+        <span class="cs-eyebrow">The results</span>
+        <h2 class="h2">A system for engagement and a view of what works</h2>
+        <p class="small">Engaging the membership is a system now rather than a job someone has to remember. Contacts are nurtured toward registration, members hear what is relevant to their role and industry, and the messaging follows how they use the platform.</p>
+        <p class="small">The team can see what is working. The dashboards connect campaign effort to membership and engagement, so decisions about where to spend time and budget start from the numbers.</p>
+        <p class="small">After the implementation, Insurance AUM kept us on through a HubSpot support retainer as an extra pair of hands for the marketing and sales teams. Part of that work has been a LinkedIn retargeting campaign, which we planned and built, to promote their industry-specific regional events around the country.</p>
+      </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NEXT STEPS =====================
+     The page's closing full stop. Pulled up over the section above by
+     --start-bleed, which is why that section drifts to white. -->
+<section class="section start-section">
+  <div class="start-wide reveal">
+    <h2 class="start-shout">Ready to hop <br>with RevHops?</h2>
+    <a class="btn btn-primary btn-lg" href="../call">Schedule a discovery call</a>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================= FOOTER ============================= -->
+<footer class="footer">
+  <div class="shell">
+
+    <div class="footer-top">
+
+      <div class="footer-brand">
+        <img class="footer-mark" src="../assets/img/revhops-logo-white.png" alt="revhops">
+        <p class="footer-pitch">We help revenue growth teams make the hop from chaos to clarity through people, systems &amp; tools.</p>
+        <a class="footer-mail" href="mailto:team@revhops.com">team@revhops.com</a>
+        <p class="footer-place">Phoenix, Arizona</p>
+      </div>
+
+      <nav class="footer-links" aria-label="Footer">
+        <div>
+          <h4><a href="../services">Services</a></h4>
+          <ul class="stack gap-8">
+            <li><a href="../services/solution-design">Solution design</a></li>
+            <li><a href="../services/crm-implementations">CRM implementations</a></li>
+            <li><a href="../services/hubspot-support-retainers">HubSpot support retainers</a></li>
+            <li><a href="../services/revops-consulting">RevOps consulting</a></li>
+            <li><a href="../services/lead-to-cash-process-mapping">Lead to cash mapping</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul class="stack gap-8">
+            <li><a href="../hubspot">HubSpot</a></li>
+            <li><a href="../pipedrive">Pipedrive</a></li>
+            <li><a href="../about">About us</a></li>
+            <li><a href="../pricing">Pricing</a></li>
+            <li><a href="../contact">Contact</a></li>
+          </ul>
+        </div>
+        <!-- RESOURCES, added 11 September. Four destinations that already
+             exist: the blog lives in HubSpot at /resources/blog, and the
+             other three are the shelves on /resources. Case studies, the
+             puzzle and the run moved out of Company on the same day rather
+             than being listed in both places. -->
+        <div>
+          <h4><a href="../resources">Resources</a></h4>
+          <ul class="stack gap-8">
+            <li><a href="../resources/blog">Blog</a></li>
+            <li><a href="../case-studies">Case studies</a></li>
+            <li><a href="../newsletter">Newsletter</a></li>
+            <li><a href="../resources#games">Games</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Two reversed partner marks, stacked and set to one width so they
+           read as a single lockup rather than the logo wall that got the
+           first Pipedrive badge pulled. Both are white artwork on the navy:
+           no chip, no filter, and 0% of either mark's ink falls under 3:1.
+           The Pipedrive mark is the green Authorized Partner badge with its
+           box dropped, so it is the same artwork, reversed. -->
+      <div class="footer-badges">
+        <a class="footer-badge footer-badge-hubspot"
+           href="https://ecosystem.hubspot.com/marketplace/solutions/revhops"
+           target="_blank" rel="noopener"
+           aria-label="RevHops on the HubSpot partner directory">
+          <img src="../assets/img/hubspot-platinum-badge-white.webp"
+               alt="HubSpot Platinum Solutions Partner" loading="lazy">
+        </a>
+        <a class="footer-badge footer-badge-pipedrive"
+           href="https://app.pipedrive.com/affiliate/pdp-revhops?utm_source=RevHops&amp;utm_medium=partners_program&amp;utm_content=copy_text&amp;utm_term=pdp-revhops"
+           target="_blank" rel="noopener"
+           aria-label="RevHops is a Pipedrive Authorized Partner">
+          <img src="../assets/img/pipedrive-partner-badge-white.webp"
+               alt="Pipedrive Authorized Partner" loading="lazy">
+        </a>
+      </div>
+
+    </div>
+
+    <!-- The legal line sits on its own row above the copyright, slashes
+         between the three, both rows centred. It used to sit beside the
+         copyright, which read as one long sentence that happened to have
+         links in it. -->
+    <div class="footer-bottom">
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="../terms">Terms of Service</a>
+        <span class="footer-legal-sep" aria-hidden="true">/</span>
+        <a href="../privacy">Privacy Policy</a>
+        <span class="footer-legal-sep" aria-hidden="true">/</span>
+        <a href="../llms.txt">LLMs.txt</a>
+      </nav>
+      <span class="footer-copy">&copy; <span data-year>2026</span> RevHops. All rights reserved.</span>
+    </div>
+
+  </div>
+</footer>
+
+<button class="to-top" data-to-top type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19V5M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<script src="../assets/js/site.js?v=de867ab06e"></script>
+</body>
+</html>

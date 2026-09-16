@@ -918,6 +918,41 @@ var CASES = [
       }
     } },
 
+  { slug: 'Insurance-AUM', name: 'Insurance AUM',
+    /* casePageOld still reads figs; no figures on this one yet */
+    figs: [['00%', '[measure]'], ['00', '[measure]']],
+    svc: ['crm-implementations', 'hubspot-support-retainers'],
+    location: 'Malvern, PA',
+    crm: 'hubspot', industry: 'professional-services', stage: 'scaleup',
+    img: 'assets/img/case-studies/insurance-aum.webp',
+    copy: {
+      lede: 'Insurance AUM has a membership database and a platform it wants that audience registered on, and before we met there was no system for connecting the two. We designed and built the marketing automation to nurture and engage their members in HubSpot, tied it to in-app activity, and built the reporting to show what was working. Then we stayed on through a retainer to support the marketing and sales teams.',
+      problem: {
+        h: 'A membership database with no way to engage it',
+        p: [
+          'Insurance AUM is a professional services firm based in Malvern, Pennsylvania. Its value depends on an engaged membership, and on getting the people in its database registered on the platform. The audience was already there. What was missing was any systematic way of talking to it.',
+          'Engagement happened when somebody found the time for it. Nothing nurtured a contact toward registering, and nothing responded to what a member did or did not do once they were in. The database was not segmented either, so there was no way to say something different to a person based on their role or their industry.',
+          'And nobody could say which efforts were growing membership. Without reporting built around that question, there was no way to tell what was working and what to stop doing.'
+        ]
+      },
+      solution: {
+        h: 'Campaigns that respond to what members actually do',
+        p: [
+          'We started with the database. Contacts were segmented by buyer type, using job title, role and industry, so messaging and outreach could be written for the person receiving it rather than for everyone at once.',
+          'Then the campaigns. We designed and built the workflows, automations and emails that move a contact toward registering and keep a member engaged afterwards, with retargeting ads running alongside them. The part that makes it work is the in-app data: user activity and engagement from the platform sit inside HubSpot, so a campaign can react to what a member has actually done rather than guess at it.',
+          'Last, the reporting. Custom reports and dashboards built around the two questions the team needed answered: which efforts are increasing membership, and which are increasing member engagement.'
+        ]
+      },
+      results: {
+        h: 'A system for engagement and a view of what works',
+        p: [
+          'Engaging the membership is a system now rather than a job someone has to remember. Contacts are nurtured toward registration, members hear what is relevant to their role and industry, and the messaging follows how they use the platform.',
+          'The team can see what is working. The dashboards connect campaign effort to membership and engagement, so decisions about where to spend time and budget start from the numbers.',
+          'After the implementation, Insurance AUM kept us on through a HubSpot support retainer as an extra pair of hands for the marketing and sales teams. Part of that work has been a LinkedIn retargeting campaign, which we planned and built, to promote their industry-specific regional events around the country.'
+        ]
+      }
+    } },
+
   { slug: 'Core-Income-Advisors', name: 'Core Income Advisors',
     figs: [['00%', '[measure]'], ['$00k', '[measure]']],
     svc: ['hubspot-support-retainers'],
