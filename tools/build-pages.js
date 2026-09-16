@@ -612,7 +612,7 @@ var SERVICES = [
       { n: 'Any day', title: 'A channel, not a form', copy: 'Requests go to a shared channel. Anything blocking revenue gets looked at the same day.' }
     ],
     leave: [
-      { title: 'HubSpot experts in your corner', art: 'expert', copy: 'You&rsquo;ll get the HubSpot expertise you need to move quick, optimize your account and get results.' },
+      { title: 'HubSpot experts in your corner', art: 'hubspot-badge', copy: 'You&rsquo;ll get the HubSpot expertise you need to move quick, optimize your account and get results.' },
       { title: 'No limit on monthly hours', art: 'unlimited', copy: 'No limit on monthly hours - set pricing you can budget in, while saving on an otherwise FT hire.' },
       { title: 'Bi-weekly standups &amp; PM tool access', art: 'standups', copy: 'We&rsquo;ll have bi-weekly standups for our engagement and access to our project management tool.' }
     ],
@@ -658,7 +658,7 @@ var SERVICES = [
       { n: 'Each quarter', title: 'An order of operations', copy: 'Not a wish list. What to do first, what it costs to keep ignoring the rest.' }
     ],
     leave: [
-      { title: 'RevOps experts in your corner', art: 'expert', copy: 'You&rsquo;ll get the RevOps expertise you need to align sales, marketing, service and finance and grow revenue.' },
+      { title: 'RevOps experts in your corner', art: 'revops-bulb', copy: 'You&rsquo;ll get the RevOps expertise you need to align sales, marketing, service and finance and grow revenue.' },
       { title: 'No limit on monthly hours', art: 'unlimited', copy: 'No limit on monthly hours - set pricing you can budget in, while saving on an otherwise FT hire.' },
       { title: 'Bi-weekly standups &amp; PM tool access', art: 'standups', copy: 'We&rsquo;ll have bi-weekly standups for our engagement and access to our project management tool.' }
     ],
@@ -2912,7 +2912,7 @@ var RESOURCE_TYPES = [
    THE LINE ART
 
    Navy line drawings, INLINE rather than SVG files. The first four are the
-   resources drawings; the other eleven (16 September) sit in the 'What you
+   resources drawings; the other twelve (16 September) sit in the 'What you
    get' card thumbs on the service pages, keyed by `art` on each `leave`
    entry in SERVICES. The resources four are used
    at two sizes on two grounds — a third of the featured card, where the
@@ -3076,16 +3076,33 @@ var ART = {
     '<circle cx="54" cy="130" r="11"/>' +
     '<path d="M78 62h104M78 96h120M78 130h70"/>',
 
-  /* someone in a headset with a star on the chest. Shared by both experts-in-your-corner cards, HubSpot and RevOps */
-  'expert':
-    '<circle cx="120" cy="96" r="40"/>' +
-    '<path d="M72 102c0-68 96-68 96 0"/>' +
-    '<rect x="62" y="88" width="18" height="32" rx="8"/>' +
-    '<rect x="160" y="88" width="18" height="32" rx="8"/>' +
-    '<path d="M70 120c0 24 16 34 38 34"/>' +
-    '<circle cx="112" cy="154" r="4.5"/>' +
-    '<path d="M40 244c0-50 34-78 80-78s80 28 80 78"/>' +
-    '<path d="M152 194l6.5 13.5 15 2-11 10.5 2.8 14.8L152 227.8l-13.3 7 2.8-14.8-11-10.5 15-2z"/>',
+  /* a rosette with a gem in it and five stars under it, for HubSpot experts in your corner. An invented badge, not HubSpot's own */
+  'hubspot-badge':
+    '<path d="M104 141L88 196l16-6 10 14 6-58"/>' +
+    '<path d="M136 141l16 55-16-6-10 14-6-58"/>' +
+    '<path d="M120 28A9 9 0 0 1 139.8 31.5A9 9 0 0 1 157.3 41.6A9 9 0 0 1 170.2 57A9 9 0 0 1 177.1 75.9A9 9 0 0 1 177.1 96.1A9 9 0 0 1 170.2 115A9 9 0 0 1 157.3 130.4A9 9 0 0 1 139.8 140.5A9 9 0 0 1 120 144A9 9 0 0 1 100.2 140.5A9 9 0 0 1 82.7 130.4A9 9 0 0 1 69.8 115A9 9 0 0 1 62.9 96.1A9 9 0 0 1 62.9 75.9A9 9 0 0 1 69.8 57A9 9 0 0 1 82.7 41.6A9 9 0 0 1 100.2 31.5A9 9 0 0 1 120 28z"/>' +
+    '<circle cx="120" cy="86" r="38"/>' +
+    '<path d="M104 72h32l12 14-28 30-28-30z"/>' +
+    '<path d="M92 86h56M112 72l-6 14 14 30 14-30-6-14"/>' +
+    '<path d="M40 217L43.3 225.5L52.4 226L45.3 231.7L47.6 240.5L40 235.6L32.4 240.5L34.7 231.7L27.6 226L36.7 225.5z" fill="currentColor"/>' +
+    '<path d="M80 217L83.3 225.5L92.4 226L85.3 231.7L87.6 240.5L80 235.6L72.4 240.5L74.7 231.7L67.6 226L76.7 225.5z" fill="currentColor"/>' +
+    '<path d="M120 217L123.3 225.5L132.4 226L125.3 231.7L127.6 240.5L120 235.6L112.4 240.5L114.7 231.7L107.6 226L116.7 225.5z" fill="currentColor"/>' +
+    '<path d="M160 217L163.3 225.5L172.4 226L165.3 231.7L167.6 240.5L160 235.6L152.4 240.5L154.7 231.7L147.6 226L156.7 225.5z" fill="currentColor"/>' +
+    '<path d="M200 217L203.3 225.5L212.4 226L205.3 231.7L207.6 240.5L200 235.6L192.4 240.5L194.7 231.7L187.6 226L196.7 225.5z" fill="currentColor"/>',
+
+  /* a light bulb giving off dollar signs, no rays, for RevOps experts in your corner */
+  'revops-bulb':
+    '<path d="M98 194v-12c0-18-30-32-30-66a52 52 0 0 1 104 0c0 34-30 48-30 66v12z"/>' +
+    '<path d="M100 210h40M106 226h28"/>' +
+    '<path d="M108 194v-30l-10-26M132 194v-30l10-26M98 138c7 6 15 6 22 0 7 6 15 6 22 0"/>' +
+    '<path d="M42.8 102C40.2 97 25.2 97 25.2 105.8C25.2 113.2 42.8 110.8 42.8 118.2C42.8 127 27.8 127 25.2 122"/>' +
+    '<path d="M34 93.2V130.8"/>' +
+    '<path d="M214.8 102C212.2 97 197.2 97 197.2 105.8C197.2 113.2 214.8 110.8 214.8 118.2C214.8 127 199.8 127 197.2 122"/>' +
+    '<path d="M206 93.2V130.8"/>' +
+    '<path d="M67.3 31.6C65.2 27.4 52.6 27.4 52.6 34.8C52.6 41 67.3 39 67.3 45.2C67.3 52.6 54.8 52.6 52.6 48.4"/>' +
+    '<path d="M60 24.2V55.8"/>' +
+    '<path d="M187.3 31.6C185.2 27.4 172.7 27.4 172.7 34.8C172.7 41 187.3 39 187.3 45.2C187.3 52.6 174.8 52.6 172.7 48.4"/>' +
+    '<path d="M180 24.2V55.8"/>',
 
   /* a calendar with infinity in it, for no limit on monthly hours. Shared by both retainers */
   'unlimited':
@@ -3094,22 +3111,18 @@ var ART = {
     '<path d="M74 22v34M166 22v34"/>' +
     '<path d="M120 162c-16-24-52-24-52 0s36 24 52 0 52-24 52 0-36 24-52 0z"/>',
 
-  /* a project board with a repeat under it, for bi-weekly standups and PM tool access. Shared by both retainers */
+  /* a project board, for bi-weekly standups and PM tool access. Shared by both retainers */
   'standups':
-    '<rect x="14" y="18" width="212" height="170" rx="16"/>' +
-    '<path d="M14 50h212"/>' +
-    '<path d="M86 50v138M154 50v138"/>' +
-    '<rect x="26" y="64" width="48" height="28" rx="6"/>' +
-    '<rect x="26" y="104" width="48" height="28" rx="6"/>' +
-    '<rect x="98" y="64" width="44" height="28" rx="6"/>' +
-    '<rect x="166" y="64" width="48" height="28" rx="6"/>' +
-    '<rect x="166" y="104" width="48" height="28" rx="6"/>' +
-    '<rect x="166" y="144" width="48" height="28" rx="6"/>' +
-    '<path d="M32 34h28"/>' +
-    '<path d="M142 218a22 22 0 0 0-44 0"/>' +
-    '<path d="M91 211l7 8 7-8"/>' +
-    '<path d="M98 228a22 22 0 0 0 44 0"/>' +
-    '<path d="M135 235l7-8 7 8"/>',
+    '<rect x="14" y="44" width="212" height="170" rx="16"/>' +
+    '<path d="M14 76h212"/>' +
+    '<path d="M86 76v138M154 76v138"/>' +
+    '<rect x="26" y="90" width="48" height="28" rx="6"/>' +
+    '<rect x="26" y="130" width="48" height="28" rx="6"/>' +
+    '<rect x="98" y="90" width="44" height="28" rx="6"/>' +
+    '<rect x="166" y="90" width="48" height="28" rx="6"/>' +
+    '<rect x="166" y="130" width="48" height="28" rx="6"/>' +
+    '<rect x="166" y="170" width="48" height="28" rx="6"/>' +
+    '<path d="M32 60h28"/>',
 
   /* an hourglass mid-pour, for stalled revenue measured in days */
   'hourglass':
