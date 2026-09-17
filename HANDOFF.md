@@ -776,6 +776,25 @@ in.
 
 ---
 
+## 17 September: footer, Platforms column
+
+**HubSpot and Pipedrive left Company for a new fourth column, Platforms**,
+HubSpot first. Company is now About us, Pricing, Contact. Done in `footer()`
+in `tools/build-pages.js` **and** by hand in `index.html`, as always.
+
+**Desktop spacing is a flex row now.** `.footer-links` went from a 3-track
+grid capped at 660px to `display: flex; justify-content: space-between`, so
+the gaps between the four columns are equal and the row fills its cell. The
+phone rules still switch it to a one-column grid; Platforms takes `order: 4`
+there, so mobile reads Services, Resources, Company, Platforms, all centred.
+
+**The address line reads "Based out of Phoenix, AZ".** Footer only; the
+About page, Terms, Privacy and `llms.txt` still say Phoenix, Arizona.
+
+**`.footer h4 a` now inherits font-size.** The linked headings (Services,
+Resources) were picking up `.footer a`'s .9rem and sat smaller than Company,
+which its own comment said should not happen.
+
 ## 11 September: /audit
 
 **`/audit` is new**, and it is where every "request an audit" click on the

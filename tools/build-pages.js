@@ -263,7 +263,7 @@ function footer(p) {
 '        <img class="footer-mark" src="' + a + 'assets/img/revhops-logo-white.png" alt="revhops">\n' +
 '        <p class="footer-pitch">We help revenue growth teams make the hop from chaos to clarity through people, systems &amp; tools.</p>\n' +
 '        <a class="footer-mail" href="mailto:team@revhops.com">team@revhops.com</a>\n' +
-'        <p class="footer-place">Phoenix, Arizona</p>\n' +
+'        <p class="footer-place">Based out of Phoenix, AZ</p>\n' +
 '      </div>\n' +
 '\n' +
 '      <nav class="footer-links" aria-label="Footer">\n' +
@@ -281,8 +281,6 @@ function footer(p) {
 '        <div>\n' +
 '          <h4>Company</h4>\n' +
 '          <ul class="stack gap-8">\n' +
-'            <li><a href="/hubspot">HubSpot</a></li>\n' +
-'            <li><a href="/pipedrive">Pipedrive</a></li>\n' +
 '            <li><a href="/about">About us</a></li>\n' +
 '            <li><a href="/pricing">Pricing</a></li>\n' +
 '            <li><a href="/contact">Contact</a></li>\n' +
@@ -300,6 +298,15 @@ function footer(p) {
 '            <li><a href="/case-studies">Case studies</a></li>\n' +
 '            <li><a href="/newsletter">Newsletter</a></li>\n' +
 '            <li><a href="/resources#games">Games</a></li>\n' +
+'          </ul>\n' +
+'        </div>\n' +
+'        <!-- PLATFORMS, added 17 September. HubSpot and Pipedrive moved out\n' +
+'             of Company into a column of their own, HubSpot first. -->\n' +
+'        <div>\n' +
+'          <h4>Platforms</h4>\n' +
+'          <ul class="stack gap-8">\n' +
+'            <li><a href="/hubspot">HubSpot</a></li>\n' +
+'            <li><a href="/pipedrive">Pipedrive</a></li>\n' +
 '          </ul>\n' +
 '        </div>\n' +
 '      </nav>\n' +

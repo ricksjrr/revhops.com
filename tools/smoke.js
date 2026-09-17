@@ -619,7 +619,7 @@ console.log('\n— footer —');
     : bad('the marks are not stacked on a shared width, the logo wall is back');
   const pdLink = [...d.querySelectorAll('.footer-links a')]
     .find(a => /pipedrive/.test(a.getAttribute('href')));
-  pdLink ? ok('/pipedrive is linked from the Company column')
+  pdLink ? ok('/pipedrive is linked from the Platforms column')
          : bad('/pipedrive is not linked from the footer, so nothing points at it');
   // the Resources column, added 11 September. Four destinations, and the one
   // that did not exist before it was linked is /newsletter, built the same

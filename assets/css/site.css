@@ -2493,15 +2493,19 @@ main { overflow-x: clip; }
    of its own, so it stays plain text. The anchor inherits the h4 rather than
    carrying its own size, so a linked heading and an unlinked one set
    identically. */
-.footer h4 a { color: inherit; }
+.footer h4 a { color: inherit; font-size: inherit; }
 .footer h4 a:hover { color: var(--paper); }
 
+/* Four columns since 17 September (Platforms joined). A flex row with
+   space-between rather than equal grid tracks: the columns hold text of very
+   different widths, so equal tracks left uneven air between them. This way
+   the gaps between the four are equal and the row fills its grid cell. The
+   phone rules further down switch it back to a single-column grid. */
 .footer-links {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  justify-content: space-between;
   gap: clamp(18px, 2.4vw, 36px);
   width: 100%;
-  max-width: 660px;
 }
 
 /* TWO REVERSED PARTNER MARKS, STACKED.
@@ -4192,6 +4196,7 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   }
   .footer-links > div:nth-child(2) { order: 3; grid-column: auto; }  /* Company   */
   .footer-links > div:nth-child(3) { order: 2; grid-column: auto; }  /* Resources */
+  .footer-links > div:nth-child(4) { order: 4; grid-column: auto; }  /* Platforms */
   .footer-links ul { align-items: center; }
 
   .footer-badges { justify-self: center; }
