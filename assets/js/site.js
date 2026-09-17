@@ -229,6 +229,16 @@
         entries.forEach(function (entry) {
           if (!entry.isIntersecting) return;
           entry.target.classList.add('is-in');
+          /* A GROUP REVEALS AS ONE. On /case-studies the second row of cards
+             waited for a scroll, so the page looked like it held three case
+             studies. A container carrying data-reveal-group is watched
+             instead of its cards, and when it arrives every card in it
+             comes in, still staggered. */
+          if (entry.target.hasAttribute('data-reveal-group')) {
+            Array.prototype.forEach.call(entry.target.children, function (c) {
+              if (c.classList.contains('reveal')) c.classList.add('is-in');
+            });
+          }
           io.unobserve(entry.target);
         });
       }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
@@ -242,7 +252,13 @@
           : [el];
         var k = sibs.indexOf(el);
         if (k > 0) el.style.transitionDelay = Math.min(k, 5) * 85 + 'ms';
-        io.observe(el);
+        var group = el.parentElement && el.parentElement.hasAttribute('data-reveal-group')
+          ? el.parentElement : null;
+        if (group) {
+          if (!group.__revealWatched) { group.__revealWatched = true; io.observe(group); }
+        } else {
+          io.observe(el);
+        }
       });
     }
   }

@@ -953,6 +953,41 @@ var CASES = [
       }
     } },
 
+  { slug: 'Ixly', name: 'Ixly',
+    /* casePageOld still reads figs; no figures on this one yet */
+    figs: [['00%', '[measure]'], ['00', '[measure]']],
+    svc: ['solution-design', 'crm-implementations', 'revops-consulting'],
+    location: 'Utrecht, Netherlands',
+    crm: 'hubspot', industry: 'b2b-saas', stage: 'scaleup',
+    img: 'assets/img/case-studies/ixly.webp',
+    copy: {
+      lede: 'Ixly is a B2B SaaS company in the HR and talent space, selling several offers out of a single pipeline. We mapped their go to market process in person in Utrecht, implemented Sales Hub and Marketing Hub around it, and built the reporting their executive team now uses to measure growth. We stayed on afterwards on a RevOps consulting retainer.',
+      problem: {
+        h: 'Several offers and one pipeline',
+        p: [
+          'Ixly builds software for HR and talent teams, and it sells more than one offer. Before we worked together, every one of those offers ran through the same pipeline.',
+          'With everything jumbled together, growth within each service line could not be tracked on its own. Neither could renewals, or customers moving to and from other service lines. For a SaaS business with more than one product, those are the numbers that matter most, and they were the ones Ixly could not see.',
+          'Marketing had the same problem from the other side. There was no way to segment the audience by intent, by persona or by firmographic data, so there was no way to decide who should hear what.'
+        ]
+      },
+      solution: {
+        h: 'Mapped in the room before anything was built',
+        p: [
+          'The engagement started as a paid solution design project. We met the team in person in Utrecht and mapped their go to market process from start to finish, with the people who run it in the room.',
+          'That map became the brief for the implementation of Sales Hub and Marketing Hub. The offers were separated so that each service line, its renewals and its movement to and from the others could be tracked on its own terms. The database was set up to segment by intent, persona and firmographic data, so messaging could be aimed rather than broadcast.',
+          'We also rebuilt their email templates as custom-coded templates for the product marketing emails and the newsletter. And for the executive team, we built a suite of custom reports and dashboards to measure growth KPIs on a weekly, monthly and quarterly basis.'
+        ]
+      },
+      results: {
+        h: 'Growth they can read one service line at a time',
+        p: [
+          'Each service line can now be read on its own. Growth in one is no longer hidden inside the total, and renewals and customers moving between service lines are tracked rather than pieced together.',
+          'Marketing reaches an audience segmented by intent, persona and firmographics, through templates built for the emails they actually send.',
+          'The executive team measures growth every week, month and quarter from dashboards built for that job. After the implementation we moved onto a RevOps consulting retainer, so the system keeps pace with the business rather than falling behind it again.'
+        ]
+      }
+    } },
+
   { slug: 'Core-Income-Advisors', name: 'Core Income Advisors',
     figs: [['00%', '[measure]'], ['$00k', '[measure]']],
     svc: ['hubspot-support-retainers'],
@@ -1876,7 +1911,7 @@ var caseIndex = {
       csSide() +
 '\n      <div class="cs-results">\n' +
 '        <p class="cs-count" data-cs-count role="status">Showing all ' + CASES.length + ' case studies</p>\n' +
-'        <div class="cs-grid" data-cs-grid>\n' +
+'        <div class="cs-grid" data-cs-grid data-reveal-group>\n' +
         CASES.map(function (c) { return '        ' + caseCard(c, 1, 'reveal'); }).join('\n') + '\n' +
 '        </div>\n' +
 '      </div>\n' +
@@ -3311,6 +3346,7 @@ function resCard(r, depth) {
   } else if (live && href) {
     tag = 'a';
     attrs = ' class="res-card reveal" href="' + href + '"' +
+            (r.gated ? ' data-res-gated' : '') +
             (r.file ? ' download' : '') +
             (/^https?:/.test(href) ? ' target="_blank" rel="noopener"' : '');
   }
@@ -3337,9 +3373,11 @@ function resCard(r, depth) {
       '<svg viewBox="0 0 24 24"><path d="M8 5.1v13.8L19 12z"/></svg></span>'
     : '';
 
-  /* The one place a chip sits on a card, and it is a state rather than a
-     category: this one asks for an email and the others do not. */
-  var lock = r.gated ? '\n            <span class="res-lock">Gated</span>' : '';
+  /* NO GATED CHIP. There was one, a "Gated" label over the thumbnail, and it
+     came off on 17 September: the card's "Get it" already says a form is
+     next, and a warning label on the thing you most want downloaded reads
+     as a reason not to click. data-res-gated stays on the card so the
+     smoke test can still find the gated ones. */
 
   /* `live`, not `ph`: a gated item is still a placeholder in its copy but
      its page exists, so the card is a link and saying "Coming soon" on a
@@ -3357,7 +3395,7 @@ function resCard(r, depth) {
 
   return '        <' + tag + attrs + ' data-res-type="' + r.type + '">\n' +
     '          <span class="res-thumb' + (r.art ? ' is-art' : '') + '">' +
-      media + badge + lock + '\n          </span>\n' +
+      media + badge + '\n          </span>\n' +
     '          <h3 class="res-title">' + r.title + '</h3>\n' +
     (r.copy ? '          <p class="res-copy">' + r.copy + '</p>\n' : '') +
     '          <span class="res-foot">\n' +

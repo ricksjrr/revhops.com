@@ -72,20 +72,22 @@ tabs[0].dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
    calculator went in, and a shelf with nothing left to fill in is the state
    this check is hoping for rather than a broken build. What it is guarding
    against is a placeholder that is also a link. */
-const phs=[...d.querySelectorAll('.res-card:not([data-res-type="case-studies"]):not(:has(.res-lock))')].filter(c=>/^\[/.test(c.querySelector('.res-title').textContent));
+const phs=[...d.querySelectorAll('.res-card:not([data-res-type="case-studies"]):not([data-res-gated])')].filter(c=>/^\[/.test(c.querySelector('.res-title').textContent));
 phs.every(c=>c.tagName==='DIV')
   ? ok(phs.length ? phs.length+' placeholder cards, all inert divs rather than dead links'
                   : 'no placeholder cards left on the shelves')
   : bad('a placeholder card is clickable and goes nowhere');
 
-/* Gated: however many there are, each carries the chip, points at its own
+/* Gated: however many there are, each is marked data-res-gated, points at its own
    generated page, and that page exists. Counting them was the old version
    of this and it failed the day the count changed rather than the day
    something broke. */
-const gated=[...d.querySelectorAll('a.res-card')].filter(a=>a.querySelector('.res-lock'));
+const gated=[...d.querySelectorAll('a.res-card[data-res-gated]')];
 const gatedHrefs=gated.map(a=>a.getAttribute('href'));
 gated.length && gatedHrefs.every(h=>/(^|\/)resources\/[a-z0-9-]+$/.test(h))
-  ? ok(gated.length+' gated item(s), each carrying the chip and going to its own page') : bad('gated routing is wrong');
+  ? ok(gated.length+' gated item(s), each going to its own page') : bad('gated routing is wrong');
+d.querySelector('.res-lock')
+  ? bad('the Gated chip came back') : ok('no Gated chip on any card');
 gatedHrefs.every(h=>fs.existsSync(path.join(ROOT,h.replace(/^[./]+/,'')+'.html')))
   ? ok('and every one of those pages was generated') : bad('a gated page is missing');
 
