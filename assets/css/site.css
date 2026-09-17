@@ -6453,8 +6453,8 @@ div.res-card .res-go { color: var(--muted); }
 /* ==========================================================================
    PRICING — /pricing
 
-   Three things that are not on any other page: the fork under the header,
-   the margin above a price grid, and the included-in-every-retainer strip.
+   Two things that are not on any other page: the 50/50 split between
+   projects and the retainer, and the margin above a price grid.
    Everything else on the page is .price-teaser, .sec-head-left and .ticks,
    already here and already dark-safe.
 
@@ -6463,75 +6463,53 @@ div.res-card .res-go { color: var(--muted); }
    --mist. The moment one of them becomes a literal, this needs one.
    ========================================================================== */
 
-/* The page rhythm, matching /services: one value for every section so the
-   fork, the projects and the retainers all sit on the same beat. */
+/* The page rhythm, matching /services. */
 .pricing-index .section { padding-block: clamp(56px, 6.4vw, 92px); }
 
 /* The header carries no bottom padding of its own (.page-hero-nomedia), so
    the air under the Schedule a call link is this section's to give. */
-.pricing-index .pick-section { padding-top: clamp(46px, 5.4vw, 78px); }
+.pricing-index .pr-split-section { padding-top: clamp(46px, 5.4vw, 78px); }
 
 /* The close bleeds up over the retainer section. 100px, the same as
    /services and /case-studies — the homepage's full bleed is tuned to the
    testimonial block and would swallow the included strip here. */
 .pricing-index .start-section { --start-bleed: 100px; }
 
-/* An anchored section must clear the floating bar, which is a pill 20px
-   down from the top of the screen. The section's own padding does the rest;
-   this only stops the top edge tucking under the bar. */
-.pricing-index .section[id] { scroll-margin-top: calc(var(--nav-float-gap) + 66px); }
+/* An anchored column must clear the floating bar, which is a pill 20px
+   down from the top of the screen. Nothing on the page links to the two ids
+   any more; they stay so an old /pricing#retainers link still lands. */
+.pricing-index .pr-col[id] { scroll-margin-top: calc(var(--nav-float-gap) + 66px); }
 
-/* ---------- the fork ----------
+/* ---------- projects | retainer ----------
 
-   Two panels, one question. Written as two cards rather than two buttons
-   because a boxed button on this site means booking or requesting, and
-   these do neither — they move you down the page you are already on.
+   50/50 on desktop, cards stacked one per row inside each column. Each
+   column is a subgrid over the split's two rows, so the two section heads
+   share a row and the first card on each side starts on the same line even
+   when one subheading wraps further than the other.
 
-   Built on .price-teaser-cell's shape deliberately: the visitor meets this
-   pair first and the price cells second, and the second should read as more
-   of the first rather than as a different kind of object. */
-.pick {
+   At 940px and under the columns stack and each price grid goes back to its
+   own responsive columns (two across, then one under 700px), because a
+   single card stretched across a tablet is a very long thin box. */
+.pr-split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(16px, 2vw, 26px);
+  grid-template-rows: auto auto;
+  column-gap: clamp(32px, 4.4vw, 64px);
+  align-items: start;
 }
-.pick-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: clamp(26px, 3vw, 40px);
-  background: var(--card-veil);
-  -webkit-backdrop-filter: blur(16px) saturate(1.15);
-          backdrop-filter: blur(16px) saturate(1.15);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  text-decoration: none;
-  transition: border-color .3s var(--ease), transform .5s var(--ease-out);
+.pr-col {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  min-width: 0;
 }
-.pick-card:hover { border-color: var(--mist); transform: translateY(-3px); }
-.pick-card:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 4px; }
-/* a span, not a heading: the two sections below carry the real h2s and a
-   heading here would put the same two titles in the outline twice */
-.pick-title {
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: clamp(1.24rem, 1.02rem + .95vw, 1.75rem);
-  line-height: 1.12;
-  letter-spacing: -.032em;
-  color: var(--ink);
+@media (min-width: 941px) {
+  .pr-split .price-teaser { grid-template-columns: minmax(0, 1fr); }
 }
-.pick-copy {
-  font-size: .95rem;
-  line-height: 1.6;
-  color: var(--body);
-  max-width: 40ch;
-}
-/* the link sits at the bottom of the card whichever copy is longer */
-.pick-card .text-link { margin-top: auto; padding-top: 6px; }
-.pick-card:hover .arrow { transform: translateX(5px); }
-
-@media (max-width: 760px) {
-  .pick { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 940px) {
+  .pr-split { grid-template-columns: minmax(0, 1fr); row-gap: clamp(56px, 6.4vw, 92px); }
+  .pr-col { display: block; grid-row: auto; }
 }
 
 /* ---------- the grids under a section head ---------- */
@@ -6542,19 +6520,6 @@ div.res-card .res-go { color: var(--muted); }
    three cells with different amounts of copy still line their links up. */
 .pr-cell-go { margin-top: auto; padding-top: 10px; }
 .price-teaser-cell:hover .pr-cell-go .arrow { transform: translateX(5px); }
-
-/* ---------- what every retainer includes ----------
-
-   Two lines, so a card each would be two mostly-empty boxes. A ticked list
-   under a label reads as a footnote to the three prices above it, which is
-   what it is. */
-.pr-inc {
-  margin-top: clamp(24px, 2.8vw, 38px);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.pr-inc .ticks-2 { max-width: 62ch; }
 
 /* A price cell that is not a link does not lift. The hover on
    .price-teaser-cell is there to answer a cursor that is about to click, and

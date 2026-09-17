@@ -1937,34 +1937,23 @@ var pricing = {
 
   body:
 
-    /* THE FORK. No section head over it: the two cards are the question and
-       the header has already asked it. Both are plain fragment links, which
-       relativise() leaves alone. */
-'\n<!-- ===================== THE FORK =====================\n' +
-'     Which half of the page you want. Anchors, not pages. -->\n' +
-'<section class="section pick-section">\n' +
+    /* TWO COLUMNS, one section. One-time projects on the left, the monthly
+       retainer on the right, 50/50 on desktop with the cards stacked in each
+       column. The fork that used to sit above them came out on 17 September:
+       with both halves side by side on one screen there is nothing to jump
+       to. So did the "In every retainer" ticks. The column ids stay, so an
+       old /pricing#retainers link still lands. .to-white because the close
+       bleeds up over whatever section is last. */
+'\n<!-- ===================== PROJECTS | RETAINER ===================== -->\n' +
+'<section class="section to-white pr-split-section">\n' +
 '  <div class="shell">\n' +
-'    <div class="pick">\n' +
-'      <a class="pick-card reveal" href="#projects">\n' +
-'        <span class="pick-title">One-time project</span>\n' +
-'        <p class="pick-copy">A defined piece of work with a start and an end date. Solution design, process mapping, or a build.</p>\n' +
-'        <span class="text-link">See project pricing <span class="arrow">&rarr;</span></span>\n' +
-'      </a>\n' +
-'      <a class="pick-card reveal" href="#retainers">\n' +
-'        <span class="pick-title">Ongoing monthly support</span>\n' +
-'        <p class="pick-copy">A monthly retainer for consulting and HubSpot admin work, priced by how long you commit.</p>\n' +
-'        <span class="text-link">See retainer pricing <span class="arrow">&rarr;</span></span>\n' +
-'      </a>\n' +
-'    </div>\n' +
-'  </div>\n' +
-'</section>\n' +
+'    <div class="pr-split">\n' +
 
     /* PROJECTS. Three cells off SERVICES, each linking to its own page. The
        figure is price[0] and the line under it is price[1], so a cell says
        what the number is and what kind of number it is. */
-'\n<!-- ===================== ONE-TIME PROJECTS ===================== -->\n' +
-'<section class="section" id="projects">\n' +
-'  <div class="shell">\n' +
+'\n    <!-- one-time projects -->\n' +
+'    <div class="pr-col" id="projects">\n' +
     secHead('One-time projects',
             'Scope written down and agreed before anything starts. If the scope moves we requote before the work does, not after.') +
 '    <div class="price-teaser pr-grid reveal">\n' +
@@ -1977,17 +1966,13 @@ var pricing = {
                '      </a>';
       }).join('\n') + '\n' +
 '    </div>\n' +
-'  </div>\n' +
-'</section>\n' +
+'    </div>\n' +
 
-    /* RETAINERS. One offering, three commitments. .to-white because the
-       close bleeds up over whatever section is last. */
-'\n<!-- ===================== MONTHLY RETAINER =====================\n' +
-'     One retainer covering both RevOps consulting and HubSpot support. The\n' +
-'     only variable is the term, which is why the three cells differ in one\n' +
-'     line each and not in a feature matrix. -->\n' +
-'<section class="section to-white" id="retainers">\n' +
-'  <div class="shell">\n' +
+    /* RETAINERS. One offering covering both RevOps consulting and HubSpot
+       support. The only variable is the term, which is why the three cells
+       differ in one line each and not in a feature matrix. */
+'\n    <!-- monthly retainer -->\n' +
+'    <div class="pr-col" id="retainers">\n' +
     secHead('Ongoing monthly support',
             'RevOps consulting and HubSpot support on one retainer. The rate is set by how long you commit, not by how many hours you use.') +
 '    <div class="price-teaser pr-grid reveal">\n' +
@@ -2006,13 +1991,8 @@ var pricing = {
                '      </div>';
       }).join('\n') + '\n' +
 '    </div>\n' +
+'    </div>\n' +
 '\n' +
-'    <div class="pr-inc reveal">\n' +
-'      <p class="label">In every retainer</p>\n' +
-'      <ul class="ticks ticks-2">\n' +
-'        <li>No limit on monthly hours</li>\n' +
-'        <li>Bi-weekly standups</li>\n' +
-'      </ul>\n' +
 '    </div>\n' +
 '  </div>\n' +
 '</section>\n'
