@@ -27,6 +27,12 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 17 September, fourth pass: nav order
+
+Services, Case studies, Pricing, HubSpot, Resources, Contact. `NAV_ITEMS` in
+`build-pages.js` and index.html's own copy, which is checked by `smoke.js`
+now so the two cannot drift.
+
 ## 17 September, third pass: /about out of the chrome, values everywhere
 
 James is not sold on /about. The page still exists and is still built;

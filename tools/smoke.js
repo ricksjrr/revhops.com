@@ -151,6 +151,11 @@ console.log('\n— page —');
     'Approachable experts | Professionally, light-hearted | Candid guides'
     ? ok('value cards carry the three labels') : bad('the One / Two / Three labels are back');
   // /about came out of the nav and the footer on 17 September; the page stays
+  // the order James set on 17 September
+  [...d.querySelectorAll('.nav-links a')].map(a => a.textContent.trim()).join(' > ') ===
+    'Services > Case studies > Pricing > HubSpot > Resources > Contact'
+    ? ok('nav in the order asked for') : bad('nav order drifted: ' +
+      [...d.querySelectorAll('.nav-links a')].map(a => a.textContent.trim()).join(' > '));
   [...d.querySelectorAll('.nav-links a')].some(a => /about/.test(a.getAttribute('href')))
     ? bad('About is back in the nav') : ok('no About in the nav');
   [...d.querySelectorAll('.footer a')].some(a => /about/.test(a.getAttribute('href')))

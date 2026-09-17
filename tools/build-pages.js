@@ -61,11 +61,11 @@ function up(depth) { return depth === 0 ? '' : '../'.repeat(depth); }
 var NAV_ITEMS = [
   ['/services',     'Services'],
   ['/case-studies', 'Case studies'],
-  ['/resources',    'Resources'],
-  ['/hubspot',      'HubSpot'],
   ['/pricing',      'Pricing'],
-  /* /about came out of the nav on 17 September. The page is still there and
-     still built; nothing links to it from the chrome. */
+  ['/hubspot',      'HubSpot'],
+  ['/resources',    'Resources'],
+  /* /about came out of the nav on 17 September, and the page came off the
+     site with it. It is still built above but not written. */
   ['/contact',      'Contact']
 ];
 
