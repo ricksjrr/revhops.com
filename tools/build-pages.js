@@ -284,7 +284,7 @@ function footer(p) {
 '          <ul class="stack gap-8">\n' +
 '            <li><a href="/pricing">Pricing</a></li>\n' +
 '            <li><a href="/contact">Contact</a></li>\n' +
-'            <li><a href="/call">Schedule a discovery call</a></li>\n' +
+'            <li><a href="/call">Schedule a call</a></li>\n' +
 '          </ul>\n' +
 '        </div>\n' +
 '        <!-- RESOURCES, added 11 September. Four destinations that already\n' +
@@ -494,7 +494,7 @@ function hoperate(cls) {
   return section(
     secHead('How we <span class="hl">hop-erate</span>') +
 '    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-    pcards(VALUES) +
+    pcards(VALUES, 'pcards-values') +
 '    </div>\n', cls || 'section-tight');
 }
 

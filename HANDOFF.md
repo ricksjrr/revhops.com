@@ -46,8 +46,13 @@ nothing in the chrome points at it any more.
   `build-pages.js` over a `VALUES` array: /about, the homepage after "Small,
   by design", and /services after the case study rail. index.html is not in
   PAGES, so its copy of the markup is by hand and has to be kept in step.
-- **The card labels are set in caps**, `text-transform` on `.pcard-n`. The
-  numbered cards on /newsletter are unaffected.
+- **The card labels are set in caps and warm**, on `.pcards-values
+  .pcard-n`. The accent `#F2C39B` is 1.6:1 on white, so a new `--warm-ink`
+  token carries it on the paper: `#9E6433`, same hue, 4.86:1 on white. In
+  dark the cards sit on navy and the token resolves back to `--warm`. The
+  numbered cards on /newsletter keep the muted grey. Smoke recomputes the
+  contrast from the stylesheet.
+- **Footer: "Schedule a call"**, not "Schedule a discovery call".
 - **The cards lost their numbers and their chips.** One / Two / Three became
   Approachable experts, Professionally, light-hearted, Candid guides, and the
   two tags at the foot of each card are gone.

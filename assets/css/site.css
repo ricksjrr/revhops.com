@@ -12,6 +12,12 @@
   --slate: #6B7A93;
   --mist: #C6D3E0;
   --warm: #F2C39B;
+  /* Warm as INK on the paper. #F2C39B is the accent on navy and measures
+     1.6:1 on white, so it cannot carry a word on a card. This is the same
+     hue at 4.86:1 on white and 4.65:1 on paper, which clears AA for the
+     small bold label it is used on. In dark the label sits on navy, so the
+     dark block puts the real accent back. */
+  --warm-ink: #9E6433;
   /* the doc's Do / Don't annotation colours, used as success and failure */
   --ok:      #5C7A5C;
   --ok-bg:   #F1F6F1;
@@ -3310,7 +3316,9 @@ main { overflow-x: clip; }
               box-shadow var(--mcard-t) var(--mcard-ease);
 }
 /* the number, where a card is one of a sequence. Faint and large, behind
-   the title rather than beside it, so it reads as a marker and not as data */
+   the title rather than beside it, so it reads as a marker and not as data.
+   On the value cards it is a phrase rather than a number and takes the warm
+   ink; the numbered cards on /newsletter stay muted. */
 .pcard-n {
   font-family: var(--font-head);
   font-weight: 700;
@@ -3321,6 +3329,8 @@ main { overflow-x: clip; }
   text-transform: uppercase;
   color: var(--muted);
 }
+.pcards-values .pcard-n { color: var(--warm-ink); }
+
 .pcard-title {
   text-wrap: balance;
   font-family: var(--font-head);
@@ -4280,6 +4290,7 @@ a.pcard:hover .arrow { transform: translateX(5px); }
      Headings stop short of pure white on purpose: #FFFFFF over a whole
      paragraph on this navy glares. Full white is kept for the small, sparse
      things where it reads as emphasis rather than as a wall. */
+  --warm-ink: var(--warm);
   --ink: #F2F6FA;
   --ink-strong: #FFFFFF;
   --ink-hover: #FFFFFF;
