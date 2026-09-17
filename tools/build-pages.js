@@ -1023,6 +1023,41 @@ var CASES = [
       }
     } },
 
+  { slug: 'Ocean-Bottle', name: 'Ocean Bottle',
+    /* casePageOld still reads figs; no figures on this one yet */
+    figs: [['00%', '[measure]'], ['00', '[measure]']],
+    svc: ['crm-implementations'],
+    location: 'London, UK',
+    crm: 'hubspot', industry: 'ecommerce', stage: 'scaleup',
+    img: 'assets/img/case-studies/ocean-bottle.webp',
+    copy: {
+      lede: 'Ocean Bottle sells reusable bottles to consumers and to businesses, and the business side had never had the attention it deserved. We joined their marketing agency on a shared project to build the CRM behind it: lead scoring, lifecycle stages that move on their own, nurture campaigns for the B2B offer, and attribution that shows which channels produce leads and pipeline.',
+      problem: {
+        h: 'A B2B offer running in the shadow of the online store',
+        p: [
+          'Ocean Bottle is a London eCommerce brand whose reusable bottles fund the collection of ocean-bound plastic. Most of what the business had built was pointed at the online store and the people buying from it.',
+          'They also sell to businesses, and that side of the go to market had always come second. Leads from companies arrived alongside everything else, with no way to tell a serious buyer from a passing enquiry and no process to move them along once they did.',
+          'Ocean Bottle already worked with a marketing agency on managed marketing services. The agency could run the campaigns. What was missing was the CRM work underneath them, and a way to show which of those campaigns were paying for themselves.'
+        ]
+      },
+      solution: {
+        h: 'CRM expertise inside a cross functional team',
+        p: [
+          'We were brought in for the CRM, working alongside the agency and the Ocean Bottle team rather than as a separate project. The B2B funnel crossed marketing, sales and the agency, so the work had to as well.',
+          'We built lead scoring so the team could see which businesses were worth a conversation, and lifecycle stage automation so a contact moves from lead to customer without anyone updating a field by hand. On top of that sit the automated marketing workflows and nurture campaigns that promote the B2B offer to the right people at the right stage.',
+          'eCommerce was newer ground for us than the service businesses we usually work with, and the integrations with commerce tools like Shopify were the most complex part of the build. The order data has to reach the CRM cleanly before any of the scoring or the lifecycle logic can be trusted.'
+        ]
+      },
+      results: {
+        h: 'Attribution that shows where the money should go',
+        p: [
+          'For the first time the B2B side of Ocean Bottle has a funnel of its own. Leads are scored, stages move by themselves, and nurture campaigns keep business buyers warm until they are ready to talk.',
+          'We also implemented marketing attribution, so every lead and every deal in the pipeline is assigned to the channel that produced it. The agency can now report on its ROI with numbers behind it.',
+          'That makes the next decision easier for everyone. Ocean Bottle and the agency can see which channels deserve more effort and budget, and which do not.'
+        ]
+      }
+    } },
+
   { slug: 'Core-Income-Advisors', name: 'Core Income Advisors',
     figs: [['00%', '[measure]'], ['$00k', '[measure]']],
     svc: ['hubspot-support-retainers'],
