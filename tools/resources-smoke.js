@@ -38,10 +38,14 @@ JSON.stringify(secs)===JSON.stringify(['case-studies','videos','blog','downloada
 /* Four, not five. A shelf with a See-all destination is a teaser: the
    fifth card would start a second row on its own and make the link
    pointless. The slice is in resShelf(). */
-d.querySelectorAll('[data-res-section="case-studies"] .res-card').length===4
+/* Since 17 September the rest are in the markup too, hidden and marked
+   data-res-extra, so the search can find them. What is SHOWN is still four. */
+d.querySelectorAll('[data-res-section="case-studies"] .res-card:not([hidden])').length===4
   ? ok('the case studies shelf teases four and sends you on for the rest')
-  : bad('case studies shelf shows ' + d.querySelectorAll('[data-res-section="case-studies"] .res-card').length);
-[...d.querySelectorAll('[data-res-section] .res-grid')].every(g => g.children.length <= 8)
+  : bad('case studies shelf shows ' + d.querySelectorAll('[data-res-section="case-studies"] .res-card:not([hidden])').length);
+[...d.querySelectorAll('[data-res-section] .res-card[data-res-extra]')].every(c => c.hidden)
+  ? ok('and the cards past the teaser are hidden until a search finds them') : bad('an extra teaser card is showing');
+[...d.querySelectorAll('[data-res-section] .res-grid')].every(g => g.querySelectorAll(':scope > :not([data-res-extra])').length <= 8)
   ? ok('no shelf renders more than one page of cards') : bad('a shelf is longer than a page');
 [...d.querySelectorAll('[data-res-section="case-studies"] a.res-card')].every(a=>/case-studies\/[A-Za-z0-9-]+$/.test(a.getAttribute('href')))
   ? ok('and each links at its own case study page') : bad('a case card links somewhere else');
@@ -180,6 +184,53 @@ dead.length?bad('dead links: '+dead.join(', ')):ok('every internal link on /reso
 const abs=[...d.querySelectorAll('a[href^="/"]:not([href^="//"])')].map(a=>a.getAttribute('href'));
 abs.length?bad('root-absolute links survived relativise(): '+abs):ok('no root-absolute links');
 
+/* ---------------------------------------------------- search, 17 September */
+{
+  const input = d.querySelector('[data-res-search]');
+  const status = d.querySelector('[data-res-search-status]');
+  const bar = d.querySelector('.res-filter-bar');
+  const type = v => { input.value = v; input.dispatchEvent(new w.Event('input', { bubbles: true })); };
+  const shownShelves = () => [...d.querySelectorAll('[data-res-section]')].filter(s => !s.hidden).map(s => s.dataset.resSection);
+  const shownCards = () => [...d.querySelectorAll('[data-res-section]:not([hidden]) .res-card:not([hidden])')];
+  const click = el => el.dispatchEvent(new w.MouseEvent('click', { bubbles: true }));
+
+  input && input.type === 'search' ? ok('a search box exists') : bad('no search box');
+  bar && bar.contains(d.querySelector('[data-res-filter]')) && bar.contains(input)
+    ? ok('and it shares a row with the filter pills') : bad('search is not in the filter row');
+  d.querySelector('label[for="' + input.id + '"]') ? ok('and it has a label') : bad('search has no label');
+
+  click(d.querySelector('[data-res-pick="all"]'));
+  const lastCase = [...d.querySelectorAll('[data-res-section="case-studies"] .res-card')].pop();
+  const lastName = lastCase.querySelector('.res-title').textContent;
+  type(lastName.toUpperCase());
+  shownCards().includes(lastCase) ? ok('search finds a case study hidden past the teaser (' + lastName + ')') : bad('search missed ' + lastName);
+  shownCards().every(c => c.querySelector('.res-title') && c.textContent.toLowerCase().includes(lastName.toLowerCase()))
+    ? ok('and every card left showing mentions it') : bad('a card that does not match is showing');
+
+  type('keynote dharmesh');
+  JSON.stringify(shownShelves()) === JSON.stringify(['videos']) && shownCards().length === 2
+    ? ok('every word must match, and shelves with nothing left go') : bad('keynote search shows ' + shownShelves() + ' / ' + shownCards().length);
+  status.classList.contains('is-quiet') && /2 resources match/.test(status.textContent)
+    ? ok('the count goes to screen readers only') : bad('status reads ' + status.textContent);
+
+  type('open');
+  shownCards().length === 0 ? ok('the "Open" link text is not searched') : bad('"open" matched ' + shownCards().length);
+
+  click(d.querySelector('[data-res-pick="games"]'));
+  type('keynote');
+  shownCards().length === 0 && !status.hidden && !status.classList.contains('is-quiet') && /in Games/.test(status.textContent)
+    ? ok('search works inside the chosen pill and says so when it finds nothing') : bad('scoped empty state wrong: ' + status.textContent);
+  click(status.querySelector('button'));
+  JSON.stringify(shownShelves()) === JSON.stringify(['videos']) && d.querySelector('[data-res-pick="all"]').getAttribute('aria-pressed') === 'true'
+    ? ok('and "Search all resources" widens it to every shelf') : bad('widening failed: ' + shownShelves());
+
+  type('zzzz nothing');
+  click(status.querySelector('button'));
+  input.value === '' && status.hidden && shownShelves().length === 5 &&
+    d.querySelectorAll('[data-res-section="case-studies"] .res-card:not([hidden])').length === 4
+    ? ok('clearing puts the page back exactly as it was') : bad('clear did not restore the page');
+}
+
 /* ---------------------------------------------------- pagination, synthetic
 
    No shelf has more than eight items yet, so the generated page carries no
@@ -221,6 +272,14 @@ abs.length?bad('root-absolute links survived relativise(): '+abs):ok('no root-ab
   count.textContent === 'Page 2 of 2' ? ok('a click past the end does nothing') : bad('paged past the end');
   click(prev);
   visible() === 8 && all[0].hidden === false ? ok('and back returns the first eight') : bad('going back did not restore page one');
+
+  const pagerEl = fd.querySelector('[data-res-pager]');
+  fd.dispatchEvent(new fw.CustomEvent('revhops:res-search', { detail: { query: 'x' } }));
+  pagerEl.hidden ? ok('the pager steps aside while a search runs') : bad('pager still showing during a search');
+  click(next);
+  fd.dispatchEvent(new fw.CustomEvent('revhops:res-search', { detail: { query: '' } }));
+  !pagerEl.hidden && visible() === 8 && count.textContent === 'Page 1 of 2'
+    ? ok('and clearing the search hands the shelf back on page one') : bad('pager not restored after search');
 }
 
 console.log(fail?'\n'+fail+' FAILURE(S)\n':'\nall resource checks passed\n');

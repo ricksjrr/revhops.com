@@ -3554,7 +3554,14 @@ function resShelf(type, cards, depth, cls) {
      case study started a second row on its own, which reads as a broken
      grid and makes the See-all link pointless. A shelf without a See-all
      keeps every card and pages through them instead. */
-  if (type.all) cards = cards.slice(0, per);
+  /* THE REST ARE STILL IN THE MARKUP, hidden and marked data-res-extra,
+     since 17 September. The search box beside the filter searches every
+     resource, and a case study that only exists behind the See-all link
+     could not be found from this page. With no search running they stay
+     hidden and the shelf is the same one row of four it always was. */
+  if (type.all) cards = cards.map(function (c, i) {
+    return i < per ? c : c.replace('class="res-card reveal"', 'class="res-card reveal" data-res-extra hidden');
+  });
 
   var pages = Math.ceil(cards.length / per) || 1;
 
@@ -3694,19 +3701,37 @@ dots + '\n' +
    shelf, not on five headings with one card under each.
 
    Generated from RESOURCE_TYPES, so a sixth type is a sixth pill and no
-   edit here. site.js reads data-res-pick and nothing else. */
+   edit here. site.js reads data-res-pick and nothing else.
+
+   THE SEARCH BOX, 17 September, sits at the right-hand end of the same row
+   on a wide screen and drops under the pills on a narrow one. Unlike the
+   pills it DOES hide cards: a search is a question about individual things,
+   so it shows only the cards that mention every word typed, and a shelf
+   with nothing left under its heading goes too. It works inside whichever
+   pill is chosen, so Videos plus "keynote" is the keynote videos. The
+   status line under the row says so when nothing matches. */
 function resFilter() {
-  return '\n<!-- ===================== TYPE FILTER =====================\n' +
-'     Generated from RESOURCE_TYPES. Hides sections, not cards. -->\n' +
+  return '\n<!-- ===================== TYPE FILTER + SEARCH =====================\n' +
+'     Generated from RESOURCE_TYPES. The pills hide sections; the search\n' +
+'     hides cards. Both are in site.js. -->\n' +
 '<section class="res-filter-section">\n' +
 '  <div class="shell">\n' +
-'    <div class="res-filter reveal" data-res-filter role="group" aria-label="Filter by resource type">\n' +
+'    <div class="res-filter-bar reveal">\n' +
+'    <div class="res-filter" data-res-filter role="group" aria-label="Filter by resource type">\n' +
 '      <button class="res-tab" type="button" aria-pressed="true" data-res-pick="all">All</button>\n' +
   RESOURCE_TYPES.map(function (t) {
     return '      <button class="res-tab" type="button" aria-pressed="false" data-res-pick="' +
            t.slug + '">' + t.name + '</button>';
   }).join('\n') + '\n' +
 '    </div>\n' +
+'    <div class="res-search" role="search">\n' +
+'      <label class="sr-only" for="res-search-input">Search resources</label>\n' +
+'      <svg class="res-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>\n' +
+'      <input class="res-search-input" id="res-search-input" type="search" placeholder="Search resources"\n' +
+'             autocomplete="off" spellcheck="false" enterkeyhint="search" data-res-search>\n' +
+'    </div>\n' +
+'    </div>\n' +
+'    <p class="res-search-status" data-res-search-status role="status" aria-live="polite" hidden></p>\n' +
 '  </div>\n' +
 '</section>\n';
 }

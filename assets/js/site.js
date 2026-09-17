@@ -813,6 +813,20 @@
 
    It reads data-res-pick and data-res-section and nothing else, so a sixth
    resource type is a sixth pair of those in the markup and no change here.
+
+   THE SEARCH, 17 September, lives in the same module because the two have
+   to agree on what is showing. The pill decides which shelves are in play;
+   the search then hides every card in them that does not contain all of
+   the words typed, and any shelf left empty. It reads the title, the copy,
+   the fact line, the case study meta rows and the shelf's own name — not
+   the "Open" / "Watch" line, or searching "open" would match everything.
+
+   Cards marked data-res-extra are the ones past a teaser shelf's first
+   four. They only ever show as search results.
+
+   A shelf with a pager hands its cards to the search while a query is
+   running and takes them back when it is cleared, through the
+   revhops:res-search event the pager module listens for.
    ========================================================================== */
 (function () {
   var box = document.querySelector('[data-res-filter]');
@@ -822,13 +836,106 @@
   var sections = Array.prototype.slice.call(document.querySelectorAll('[data-res-section]'));
   if (!tabs.length || !sections.length) return;
 
+  var input = document.querySelector('[data-res-search]');
+  var status = document.querySelector('[data-res-search-status]');
+  var current = 'all';
+  var query = '';
+
+  /* Case, accents and curly apostrophes all fold away, so "beginners",
+     "Beginner's" and "Beginner’s" find the same card. */
+  function fold(str) {
+    str = String(str || '').toLowerCase();
+    if (str.normalize) str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return str.replace(/[\u2018\u2019]/g, "'").replace(/\s+/g, ' ');
+  }
+
+  var shelves = sections.map(function (s) {
+    var head = s.querySelector('.res-shelf-head h2');
+    var name = head ? head.textContent : '';
+    return {
+      el: s,
+      slug: s.getAttribute('data-res-section'),
+      name: name,
+      cards: Array.prototype.slice.call(s.querySelectorAll('.res-card')).map(function (c) {
+        var bits = [name];
+        Array.prototype.forEach.call(
+          c.querySelectorAll('.res-title, .res-copy, .res-fact, .res-meta'),
+          function (el) { bits.push(el.textContent); });
+        return { el: c, extra: c.hasAttribute('data-res-extra'), text: fold(bits.join(' ')) };
+      })
+    };
+  });
+
+  function apply() {
+    var words = fold(query).trim().split(' ').filter(Boolean);
+    var total = 0;
+
+    shelves.forEach(function (sh) {
+      var inPlay = current === 'all' || sh.slug === current;
+      var found = 0;
+      sh.cards.forEach(function (c) {
+        var show = words.length
+          ? inPlay && words.every(function (w) { return c.text.indexOf(w) !== -1; })
+          : !c.extra;
+        c.el.hidden = !show;
+        if (show) found++;
+      });
+      sh.el.hidden = !inPlay || (words.length > 0 && found === 0);
+      if (inPlay) total += found;
+    });
+
+    document.dispatchEvent(new CustomEvent('revhops:res-search', { detail: { query: words.join(' ') } }));
+
+    if (!status) return;
+    if (!words.length) { status.hidden = true; status.textContent = ''; return; }
+
+    status.hidden = false;
+    var shelf = null;
+    shelves.forEach(function (sh) { if (sh.slug === current) shelf = sh; });
+
+    if (total) {
+      status.classList.add('is-quiet');
+      status.textContent = total + (total === 1 ? ' resource matches' : ' resources match');
+      return;
+    }
+
+    /* Nothing found. Inside one shelf, the useful next step is the whole
+       page rather than an empty box. */
+    status.classList.remove('is-quiet');
+    status.textContent = 'Nothing ' + (shelf ? 'in ' + shelf.name + ' ' : '') +
+      'matches \u201C' + query.trim() + '\u201D. ';
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'text-link';
+    btn.textContent = shelf ? 'Search all resources' : 'Clear search';
+    btn.addEventListener('click', function () {
+      if (shelf) { pick('all'); }
+      else if (input) { input.value = ''; query = ''; apply(); input.focus(); }
+    });
+    status.appendChild(btn);
+  }
+
   function pick(val) {
+    current = val;
     tabs.forEach(function (t) {
       t.setAttribute('aria-pressed', t.getAttribute('data-res-pick') === val ? 'true' : 'false');
     });
-    sections.forEach(function (s) {
-      s.hidden = !(val === 'all' || s.getAttribute('data-res-section') === val);
+    apply();
+  }
+
+  if (input) {
+    input.addEventListener('input', function () { query = input.value; apply(); });
+    input.addEventListener('search', function () { query = input.value; apply(); });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && input.value) {
+        e.preventDefault();
+        input.value = '';
+        query = '';
+        apply();
+      }
     });
+    /* A value the browser restored on back/forward counts as a search. */
+    if (input.value) query = input.value;
   }
 
   tabs.forEach(function (t) {
@@ -840,6 +947,8 @@
   var hash = (location.hash || '').replace('#', '');
   if (hash && sections.some(function (s) { return s.getAttribute('data-res-section') === hash; })) {
     pick(hash);
+  } else if (query) {
+    apply();
   }
 })();
 
@@ -1019,6 +1128,15 @@ Array.prototype.forEach.call(document.querySelectorAll('[data-res-pager]'), func
 
   if (prev) prev.addEventListener('click', function () { go(-1); });
   if (next) next.addEventListener('click', function () { go(1); });
+
+  /* While a search is running it decides which cards show and the pager
+     steps aside; clearing it hands the shelf back on page one. */
+  document.addEventListener('revhops:res-search', function (e) {
+    var searching = !!(e.detail && e.detail.query);
+    pager.hidden = searching;
+    if (!searching) { page = 0; draw(); }
+  });
+
   draw();
 });
 

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="../assets/css/site.css?v=e714024cba">
+<link rel="stylesheet" href="../assets/css/site.css?v=ee0ea1b8de">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -141,11 +141,13 @@
   </div>
 </section>
 
-<!-- ===================== TYPE FILTER =====================
-     Generated from RESOURCE_TYPES. Hides sections, not cards. -->
+<!-- ===================== TYPE FILTER + SEARCH =====================
+     Generated from RESOURCE_TYPES. The pills hide sections; the search
+     hides cards. Both are in site.js. -->
 <section class="res-filter-section">
   <div class="shell">
-    <div class="res-filter reveal" data-res-filter role="group" aria-label="Filter by resource type">
+    <div class="res-filter-bar reveal">
+    <div class="res-filter" data-res-filter role="group" aria-label="Filter by resource type">
       <button class="res-tab" type="button" aria-pressed="true" data-res-pick="all">All</button>
       <button class="res-tab" type="button" aria-pressed="false" data-res-pick="case-studies">Case studies</button>
       <button class="res-tab" type="button" aria-pressed="false" data-res-pick="videos">Videos</button>
@@ -153,6 +155,14 @@
       <button class="res-tab" type="button" aria-pressed="false" data-res-pick="downloadables">Downloadables</button>
       <button class="res-tab" type="button" aria-pressed="false" data-res-pick="games">Games</button>
     </div>
+    <div class="res-search" role="search">
+      <label class="sr-only" for="res-search-input">Search resources</label>
+      <svg class="res-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>
+      <input class="res-search-input" id="res-search-input" type="search" placeholder="Search resources"
+             autocomplete="off" spellcheck="false" enterkeyhint="search" data-res-search>
+    </div>
+    </div>
+    <p class="res-search-status" data-res-search-status role="status" aria-live="polite" hidden></p>
   </div>
 </section>
 
@@ -218,6 +228,81 @@
             <span class="res-meta-row"><span class="res-meta-label">Tools used</span><span class="res-meta-val"><span>HubSpot</span></span></span>
             <span class="res-meta-row"><span class="res-meta-label">Industry</span><span class="res-meta-val"><span>B2B SaaS</span></span></span>
             <span class="res-meta-row"><span class="res-meta-label">Team size</span><span class="res-meta-val"><span>10&ndash;50 people</span></span></span>
+          </span>
+          <span class="res-foot">
+            <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>
+          </span>
+        </a>
+        <a class="res-card reveal" data-res-extra hidden href="../case-studies/Inbox-Storage" data-res-type="case-studies">
+          <span class="res-thumb">
+            <img src="../assets/img/case-studies/inbox-storage.webp" alt="" aria-hidden="true" loading="lazy">
+          </span>
+          <h3 class="res-title">Inbox Storage</h3>
+          <span class="res-meta">
+            <span class="res-meta-row"><span class="res-meta-label">Service(s) used</span><span class="res-meta-val"><span>RevOps consulting</span><span>Lead to cash process mapping</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Tools used</span><span class="res-meta-val"><span>HubSpot</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Industry</span><span class="res-meta-val"><span>Professional Services</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Team size</span><span class="res-meta-val"><span>10&ndash;50 people</span></span></span>
+          </span>
+          <span class="res-foot">
+            <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>
+          </span>
+        </a>
+        <a class="res-card reveal" data-res-extra hidden href="../case-studies/Ocean-Bottle" data-res-type="case-studies">
+          <span class="res-thumb">
+            <img src="../assets/img/case-studies/ocean-bottle.webp" alt="" aria-hidden="true" loading="lazy">
+          </span>
+          <h3 class="res-title">Ocean Bottle</h3>
+          <span class="res-meta">
+            <span class="res-meta-row"><span class="res-meta-label">Service(s) used</span><span class="res-meta-val"><span>CRM implementations</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Tools used</span><span class="res-meta-val"><span>HubSpot</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Industry</span><span class="res-meta-val"><span>eCommerce</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Team size</span><span class="res-meta-val"><span>10&ndash;50 people</span></span></span>
+          </span>
+          <span class="res-foot">
+            <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>
+          </span>
+        </a>
+        <a class="res-card reveal" data-res-extra hidden href="../case-studies/Core-Income-Advisors" data-res-type="case-studies">
+          <span class="res-thumb">
+            <img src="../assets/img/case-studies/core-income-advisors-team.webp" alt="" aria-hidden="true" loading="lazy">
+          </span>
+          <h3 class="res-title">Core Income Advisors</h3>
+          <span class="res-meta">
+            <span class="res-meta-row"><span class="res-meta-label">Service(s) used</span><span class="res-meta-val"><span>HubSpot support retainers</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Tools used</span><span class="res-meta-val"><span>HubSpot</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Industry</span><span class="res-meta-val"><span>Financial Services</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Team size</span><span class="res-meta-val"><span>50&ndash;200 people</span></span></span>
+          </span>
+          <span class="res-foot">
+            <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>
+          </span>
+        </a>
+        <a class="res-card reveal" data-res-extra hidden href="../case-studies/Woodside-Homes" data-res-type="case-studies">
+          <span class="res-thumb">
+            <img src="../assets/img/case-studies/woodside-homes.webp" alt="" aria-hidden="true" loading="lazy">
+          </span>
+          <h3 class="res-title">Woodside Homes</h3>
+          <span class="res-meta">
+            <span class="res-meta-row"><span class="res-meta-label">Service(s) used</span><span class="res-meta-val"><span>Solution design</span><span>HubSpot support retainers</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Tools used</span><span class="res-meta-val"><span>HubSpot</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Industry</span><span class="res-meta-val"><span>Professional Services</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Team size</span><span class="res-meta-val"><span>200&ndash;1,000 people</span></span></span>
+          </span>
+          <span class="res-foot">
+            <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>
+          </span>
+        </a>
+        <a class="res-card reveal" data-res-extra hidden href="../case-studies/Ignite-Group" data-res-type="case-studies">
+          <span class="res-thumb">
+            <img src="../assets/img/case-studies/ignite-group-amsterdam.webp" alt="" aria-hidden="true" loading="lazy">
+          </span>
+          <h3 class="res-title">Ignite Group</h3>
+          <span class="res-meta">
+            <span class="res-meta-row"><span class="res-meta-label">Service(s) used</span><span class="res-meta-val"><span>RevOps consulting</span><span>CRM implementations</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Tools used</span><span class="res-meta-val"><span>Salesforce, HubSpot</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Industry</span><span class="res-meta-val"><span>Professional Services, Financial Services</span></span></span>
+            <span class="res-meta-row"><span class="res-meta-label">Team size</span><span class="res-meta-val"><span>200&ndash;1,000 people</span></span></span>
           </span>
           <span class="res-foot">
             <span class="res-go">Read it <span class="arrow" aria-hidden="true">&rarr;</span></span>
@@ -486,6 +571,6 @@
   </svg>
 </button>
 
-<script src="../assets/js/site.js?v=e714024cba"></script>
+<script src="../assets/js/site.js?v=ee0ea1b8de"></script>
 </body>
 </html>

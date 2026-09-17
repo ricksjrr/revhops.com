@@ -27,6 +27,27 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 17 September: search on /resources
+
+**A search box sits at the right-hand end of the filter pill row** on a wide
+screen, and takes its own full-width line under the pills below 860px. It is
+built in `resFilter()` in `tools/build-pages.js`, styled in the type filter
+block of `site.css`, and runs inside the filter module in `site.js`.
+
+- **It hides cards, not shelves.** A card shows when it contains every word
+  typed (title, copy, fact line, case study meta rows, shelf name; not the
+  "Open" / "Watch" line). Case, accents and curly apostrophes are ignored. A
+  shelf with no matches left hides.
+- **It works inside the chosen pill.** Nothing found inside one shelf offers
+  "Search all resources"; nothing found anywhere offers "Clear search".
+- **Teaser shelves now render every card.** Cards past the first four carry
+  `data-res-extra hidden` and only show as search results, so a case study
+  behind the See-all link can still be found. The resources smoke test
+  counts shown cards now rather than cards in the markup.
+- **A paged shelf's pager steps aside** while a search runs and returns on
+  page one when it clears (`revhops:res-search` event).
+- Covered by new checks in `tools/resources-smoke.js`.
+
 ## 16 September: hub case study centred, homepage case card clickable
 
 - **Hub pages.** `.hub-case` in `site.css` is now `card | minmax(0, 600px)`
