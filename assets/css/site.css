@@ -5290,38 +5290,20 @@ a.pcard:hover .arrow { transform: translateX(5px); }
    A round photo on the left, the words to the right of it, the attribution
    under the words. The photo is a circle because it is a face; everything
    else on this page is on the 12px card radius. */
-/* The photo centres on the QUOTATION, not on the quotation plus the name
-   under it. Two columns and two rows: the photo and the words share row
-   one, the attribution sits alone in row two. The blockquote spans both
-   rows as a subgrid, so it stays one element (and one blockquote to a
-   screen reader) while its paragraph and its footer each land in a row of
-   the outer grid. Both items in row one centre, so when a short quote is
-   shorter than the photo, the words centre on the face instead. The row
-   gap is the 12px .quote stack, carried up here because a subgrid takes
-   its gaps from the parent. */
+/* The photo centres on the whole testimonial: the quotation and the name
+   line under it together. */
 .cs-testi {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-rows: auto auto;
-  column-gap: clamp(18px, 2.2vw, 30px);
-  row-gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.2vw, 30px);
   margin: clamp(30px, 3.4vw, 48px) 0 0;
 }
-.cs-testi > .cs-testi-photo { grid-column: 1; grid-row: 1; align-self: center; }
-.cs-testi > .cs-testi-quote {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-  display: grid;
-  grid-template-rows: subgrid;
-  gap: inherit;
-}
-.cs-testi > .cs-testi-quote > p { align-self: center; }
-/* The body copy's paragraph spacing gives this one a 20px top margin, which
-   would push the centre of the words 10px below the centre of the photo.
-   Only while the two sit side by side: stacked on a phone, it is the space
-   above the quotation and stays. */
+/* The body copy's paragraph spacing gives the quotation a 20px top margin,
+   which would sit the block's centre 10px below the words' own. Only while
+   the photo sits beside it: stacked on a phone, it is the space above the
+   quotation and stays. */
 @media (min-width: 621px) {
-  .cs-testi > .cs-testi-quote > p { margin-block: 0; }
+  .cs-testi-quote > p { margin-block: 0; }
 }
 .cs-testi-photo {
   flex: none;
@@ -5365,7 +5347,6 @@ a.pcard:hover .arrow { transform: translateX(5px); }
      bump the eye has to get past before it reaches the words, and the words
      are the point. */
   .cs-testi {
-    display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -5373,7 +5354,6 @@ a.pcard:hover .arrow { transform: translateX(5px); }
   }
   .cs-testi-photo { order: 2; }
   .cs-testi-quote { order: 1; align-items: center; }
-  .cs-testi > .cs-testi-quote { display: flex; }
   .cs-testi .quote-by { justify-content: center; text-align: center; }
 }
 /* No measure cap: the quotation runs the full width of the column, the
