@@ -254,8 +254,8 @@ console.log('\n— case rail —');
   (d.querySelector('[data-case-prev]') && d.querySelector('[data-case-next]'))
     ? ok('prev and next arrows present') : bad('arrows missing');
   /data-case-prev/.test(js) ? ok('arrows wired in site.js') : bad('arrows are not wired');
-  d.querySelectorAll('.case-card').length === 7
-    ? ok('7 case cards') : bad(d.querySelectorAll('.case-card').length + ' case cards');
+  d.querySelectorAll('.case-card').length === 9
+    ? ok('9 case cards') : bad(d.querySelectorAll('.case-card').length + ' case cards');
   const h = d.querySelector('.case-head .h2').textContent.trim();
   h === "We've hopped with some of the best" ? ok('heading is "' + h + '"') : bad('heading is "' + h + '"');
   d.querySelector('.case-cta') ? bad('see-all CTA came back') : ok('no see-all CTA');

@@ -1259,7 +1259,7 @@ function logoBand(depth) {
   var names = [['dg', 'DG'], ['woodside-homes', 'Woodside Homes'], ['core-income', 'Core Income'],
                ['ignite-group', 'Ignite Group'], ['key-tree', ''], ['cialdini-institute', 'Cialdini Institute'],
                ['casadomaine', 'Casadomaine Custom Homes'], ['financial-lease', 'Financial Lease'],
-               ['inbox-storage', 'Inbox Storage']];
+               ['inbox-storage', 'Inbox Storage'], ['ixly', 'Ixly'], ['ocean-bottle', 'Ocean Bottle']];
   return '\n<section class="logo-band" aria-label="Clients we have worked with" style="--proof-lead:clamp(18px,2.4vw,40px)">\n' +
 '  <div class="logo-rail">\n' +
     [0, 1].map(function (copy) {
