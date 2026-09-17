@@ -27,6 +27,29 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 17 September, third pass: /about out of the chrome, values everywhere
+
+James is not sold on /about. The page still exists and is still built;
+nothing in the chrome points at it any more.
+
+- **/about is out of NAV_ITEMS and out of the footer's Company column.**
+  Company is Pricing, Contact, Schedule a discovery call, the last one new.
+  The homepage carries its own copies of both, so they were edited by hand
+  there as well.
+- **"How we hop-erate" is a shared section now**, `hoperate()` in
+  `build-pages.js` over a `VALUES` array: /about, the homepage after "Small,
+  by design", and /services after the case study rail. index.html is not in
+  PAGES, so its copy of the markup is by hand and has to be kept in step.
+- **The cards lost their numbers and their chips.** One / Two / Three became
+  Approachable experts, Professionally, light-hearted, Candid guides, and the
+  two tags at the foot of each card are gone.
+- **The "About us" link under "Small, by design" is gone**, and that
+  paragraph lost `.small`, so it is set at body size like every other
+  paragraph on the site.
+- `tools/smoke.js` gained checks for the section order, the three labels, no
+  chips, no /about in the nav or footer, and the call link in the footer; the
+  highlight count went from four to five with the new section head.
+
 ## 17 September, second pass: the team section
 
 - **The homepage link under "Small, by design"** reads `About us` and points

@@ -123,9 +123,27 @@ console.log('\n— page —');
   const cas = at(x => x.querySelector('.case-rail'));
   const abt = at(x => x.querySelector('.about-stack'));
   const tls = at(x => x.querySelector('.tool-clump'));
+  // 17 September: the three value cards sit between the about pair and the
+  // clump, and the same three are on /about and /services.
+  const val = at(x => x.querySelector('.pcards'));
   const stp = at(x => x.querySelector('.start-wide'));
   (cas === svc + 1) ? ok('case studies follow services') : bad('services ' + svc + ', case ' + cas);
-  (tls === abt + 1) ? ok('tool clump follows about') : bad('about ' + abt + ', tools ' + tls);
+  d.querySelector('.pcard-chips')
+    ? bad('the value cards carry chips again') : ok('no chips on the value cards');
+  (val === abt + 1) ? ok('how we hop-erate follows about') : bad('about ' + abt + ', values ' + val);
+  (tls === val + 1) ? ok('tool clump follows the values') : bad('values ' + val + ', tools ' + tls);
+  [...d.querySelectorAll('.pcard-n')].map(n => n.textContent.trim()).join(' | ') ===
+    'Approachable experts | Professionally, light-hearted | Candid guides'
+    ? ok('value cards carry the three labels') : bad('the One / Two / Three labels are back');
+  // /about came out of the nav and the footer on 17 September; the page stays
+  [...d.querySelectorAll('.nav-links a')].some(a => /about/.test(a.getAttribute('href')))
+    ? bad('About is back in the nav') : ok('no About in the nav');
+  [...d.querySelectorAll('.footer a')].some(a => /about/.test(a.getAttribute('href')))
+    ? bad('About is back in the footer') : ok('no About in the footer');
+  [...d.querySelectorAll('.footer a')].some(a => /call/.test(a.getAttribute('href')))
+    ? ok('the footer books a call') : bad('no discovery call link in the footer');
+  d.querySelector('.about-split .small')
+    ? bad('the about paragraph is set small again') : ok('about paragraph at body size');
   const tst = at(x => x.querySelector('.testi'));
   (tst === tls + 1) ? ok('testimonials follow the tool clump') : bad('tools ' + tls + ', testimonials ' + tst);
   (stp === tst + 1) ? ok('the close follows the testimonials') : bad('testimonials ' + tst + ', close ' + stp);
@@ -562,6 +580,8 @@ console.log('\n— highlights —');
   // from three of the four section heads, so one is left.
   const want = {
     "We've hopped with some of the best": 'some of the best',
+    // 17 September: the values section came over from /about
+    'How we hop-erate': 'hop-erate',
   };
   const heads = [...d.querySelectorAll('h2.h2')];
   for (const [full, phrase] of Object.entries(want)) {
@@ -579,8 +599,9 @@ console.log('\n— highlights —');
     ? ok('the quote body highlight runs from "James has taken" to "and transparent"')
     : bad('the quote highlight is "' + (inQuote ? inQuote.textContent.replace(/\s+/g, ' ').trim().slice(0, 40) : 'absent') + '"');
   // one section head plus one in each of the three testimonials
-  d.querySelectorAll('.hl').length === 4
-    ? ok('exactly four highlights, no drift') : bad(d.querySelectorAll('.hl').length + ' highlights');
+  // two section heads plus one in each of the three testimonials
+  d.querySelectorAll('.hl').length === 5
+    ? ok('exactly five highlights, no drift') : bad(d.querySelectorAll('.hl').length + ' highlights');
   [...d.querySelectorAll('.testi-col')].every(c => c.querySelector('.quote p .hl'))
     ? ok('every testimonial carries one') : bad('a testimonial is missing its highlight');
   // RETIRED 12 September. The marker paints nothing at any width now; the

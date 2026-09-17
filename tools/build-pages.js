@@ -64,7 +64,8 @@ var NAV_ITEMS = [
   ['/resources',    'Resources'],
   ['/hubspot',      'HubSpot'],
   ['/pricing',      'Pricing'],
-  ['/about',        'About'],
+  /* /about came out of the nav on 17 September. The page is still there and
+     still built; nothing links to it from the chrome. */
   ['/contact',      'Contact']
 ];
 
@@ -281,9 +282,9 @@ function footer(p) {
 '        <div>\n' +
 '          <h4>Company</h4>\n' +
 '          <ul class="stack gap-8">\n' +
-'            <li><a href="/about">About us</a></li>\n' +
 '            <li><a href="/pricing">Pricing</a></li>\n' +
 '            <li><a href="/contact">Contact</a></li>\n' +
+'            <li><a href="/call">Schedule a discovery call</a></li>\n' +
 '          </ul>\n' +
 '        </div>\n' +
 '        <!-- RESOURCES, added 11 September. Four destinations that already\n' +
@@ -473,6 +474,28 @@ function pcard(o) {
       : '') +
     (o.href ? '          <span class="text-link" style="margin-top:auto">' + (o.link || 'Read more') + ' <span class="arrow">&rarr;</span></span>\n' : '') +
     '        </' + tag + '>';
+}
+
+/* ---------- how we hop-erate ----------
+   Three value cards. They started on /about and are on the homepage and
+   /services since 17 September, so they live here rather than in one page's
+   body. The line above each title is what the card is claiming to be; the
+   title is how it behaves. It replaced One / Two / Three on 17 September. */
+var VALUES = [
+  { n: 'Approachable experts', title: 'Show, don\'t tell',
+    copy: 'We\'re veteran experts and we know our stuff, but it\'s the work we do, not our words, that we let do the talking.' },
+  { n: 'Professionally, light-hearted', title: 'Seriously, fun',
+    copy: 'Working with us is as enjoyable and fun as it is effective. You know, the whole work hard, play hard thing.' },
+  { n: 'Candid guides', title: 'Clarity over comfort',
+    copy: 'The most important thing we can do is guide you down the right path, not the easy or convenient one.' }
+];
+
+function hoperate(cls) {
+  return section(
+    secHead('How we <span class="hl">hop-erate</span>') +
+'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
+    pcards(VALUES) +
+'    </div>\n', cls || 'section-tight');
 }
 
 function pcards(list, cls) {
@@ -1931,6 +1954,10 @@ AUDIT_ROW +
 '      </div>\n' +
 '    </div>\n', 'section case-section') +
 
+    /* The values, straight after the case studies since 17 September: the
+       same three cards the homepage and /about carry. */
+    hoperate() +
+
     /* THE STACK — the homepage's clump, under the rail and before the close.
        No subheading: the title says it, and the fifteen marks say the rest. */
     section(
@@ -2390,21 +2417,7 @@ var about = {
        on 17 September. The page now runs head, values, clients, team. */
     /* The values, under their own name rather than "core values" — the
        phrase is on every consultancy About page and means nothing by now. */
-    section(
-      secHead('How we <span class="hl">hop-erate</span>') +
-'    <div style="margin-top:clamp(22px,2.6vw,34px)">\n' +
-      pcards([
-        { n: 'One', title: 'Show, don\'t tell',
-          copy: 'We\'re veteran experts and we know our stuff, but it\'s the work we do, not our words, that we let do the talking.',
-          chips: ['Proof', 'Not promises'] },
-        { n: 'Two', title: 'Seriously, fun',
-          copy: 'Working with us is as enjoyable and fun as it is effective. You know, the whole work hard, play hard thing.',
-          chips: ['Effective', 'Enjoyable'] },
-        { n: 'Three', title: 'Clarity over comfort',
-          copy: 'The most important thing we can do is guide you down the right path, not the easy or convenient one.',
-          chips: ['Honest', 'Direct'] }
-      ]) +
-'    </div>\n', 'section-tight') +
+    hoperate() +
 
     logoBand(0) +
 
