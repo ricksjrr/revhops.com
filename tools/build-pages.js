@@ -3376,23 +3376,21 @@ function caseResCard(c, depth) {
   var a = up(depth);
 
   /* THE SAME FOUR ROWS THE CASE STUDY'S OWN META COLUMN CARRIES, in the
-     same order, read out of the same arrays. The figures used to sit here
-     instead, and while they are still placeholders on four of the five that
-     meant a shelf of cards saying 00% and [measure]. The tags say something
-     true today and they are what somebody scanning the shelf is actually
-     sorting on.
+     same order, read out of the same arrays, and set the same way: a light
+     label with the value in bold under it. They were boxed tags until 17
+     September. The figures sat here before that, and while they were still
+     placeholders they meant a shelf of cards saying 00% and [measure].
 
-     The service label in the bottom corner went with them: services are the
-     first tags in this row now, and naming one of them twice on one card
-     made the corner read as a category the card belonged to. */
-  var tags = c.svc.map(serviceName).concat(crmList(c).map(function (t) {
-    return labelFor(CRMS, t, 1);
-  })).concat([
-  ]).concat(industryList(c).map(function (i) {
-    return labelFor(INDUSTRIES, i, 1);
-  })).concat([
-    labelFor(STAGES, c.stage, 2) + ' people'
-  ]);
+     Services stay unlinked here, unlike on the case study page: the whole
+     card is already a link, and a link inside a link is invalid markup.
+     Location is left off, as it was when these were tags. Every element is
+     a span because the card is an <a>. */
+  var meta = [
+    ['Service(s) used', c.svc.map(serviceName)],
+    ['Tools used',      [crmList(c).map(function (t) { return labelFor(CRMS, t, 1); }).join(', ')]],
+    ['Industry',        [industryList(c).map(function (i) { return labelFor(INDUSTRIES, i, 1); }).join(', ')]],
+    ['Team size',       [labelFor(STAGES, c.stage, 2) + ' people']]
+  ];
 
   return '        <a class="res-card reveal" href="/case-studies/' + c.slug + '" data-res-type="case-studies">\n' +
     '          <span class="res-thumb">\n' +
@@ -3400,9 +3398,13 @@ function caseResCard(c, depth) {
       '" alt="" aria-hidden="true" loading="lazy">\n' +
     '          </span>\n' +
     '          <h3 class="res-title">' + c.name + '</h3>\n' +
-    '          <span class="res-tags">\n' +
-      tags.map(function (t) {
-        return '            <span class="res-tag">' + t + '</span>';
+    '          <span class="res-meta">\n' +
+      meta.map(function (row) {
+        return '            <span class="res-meta-row">' +
+          '<span class="res-meta-label">' + row[0] + '</span>' +
+          '<span class="res-meta-val">' + row[1].map(function (v) {
+            return '<span>' + v + '</span>';
+          }).join('') + '</span></span>';
       }).join('\n') + '\n' +
     '          </span>\n' +
     '          <span class="res-foot">\n' +

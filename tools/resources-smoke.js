@@ -145,10 +145,16 @@ d.querySelector('.res-feature-fact')
 d.querySelector('.res-shelf-head .sec-sub')
   ? bad('a shelf subhead came back') : ok('no subheads under the shelf headings');
 
-/* CASE STUDY CARDS CARRY THEIR META AS TAGS, and no service in the corner. */
+/* CASE STUDY CARDS CARRY THEIR META AS LABEL AND VALUE ROWS, the way the
+   case study page does, and no service in the corner. They were boxed tags
+   until 17 September; the boxes must not come back. */
 const csCards=[...d.querySelectorAll('.res-card[data-res-type="case-studies"]')];
-csCards.length&&csCards.every(c=>c.querySelectorAll('.res-tag').length>=3)
-  ? ok('every case study card carries its meta as tags') : bad('a case study card has no tags');
+const META_LABELS=['Service(s) used','Tools used','Industry','Team size'];
+csCards.length&&csCards.every(c=>JSON.stringify([...c.querySelectorAll('.res-meta-label')].map(l=>l.textContent))===JSON.stringify(META_LABELS)
+  && [...c.querySelectorAll('.res-meta-val')].every(v=>v.textContent.trim()))
+  ? ok('every case study card carries the four meta rows, labelled') : bad('a case study card is missing its meta rows');
+d.querySelector('.res-tag, .res-tags')
+  ? bad('the boxed tags came back') : ok('no boxed tags on any card');
 csCards.every(c=>!c.querySelector('.res-fact'))
   ? ok('and the service label in the corner is gone') : bad('a case study card still names a service in the corner');
 

@@ -6102,24 +6102,30 @@ div.res-card { opacity: .72; }
 }
 .res-copy { margin: 0; font-size: .86rem; line-height: 1.55; color: var(--body); }
 
-/* ---------- tags on a card ----------
-   The case study's own meta rows, in the order its page lists them. Quiet
-   on purpose: five of them wrapping to three rows under a title is the
-   normal case, and a tag with any weight to it competes with the title. */
-.res-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.res-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--plate-line);
-  background: var(--plate);
-  color: var(--plate-ink);
-  font-size: .7rem;
-  font-weight: 700;
-  line-height: 1.55;
-  letter-spacing: .01em;
+/* ---------- meta on a case study card ----------
+   The case study page's own meta column, shrunk to a card: a light label,
+   the value in bold under it, one service per line. No boxes. Sizes step
+   down from .cs-meta-label / .cs-meta-val so four rows under a title still
+   leave the title as the loudest thing on the card. */
+.res-meta { display: flex; flex-direction: column; gap: 10px; }
+.res-meta-row { display: flex; flex-direction: column; gap: 2px; }
+.res-meta-label {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: .74rem;
+  line-height: 1.35;
+  color: var(--muted);
 }
+.res-meta-val {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .82rem;
+  line-height: 1.35;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+.res-meta-val > span { display: block; }
+.res-meta-val > span + span { margin-top: 2px; }
 .res-copy b { color: var(--ink); font-weight: 700; }
 
 /* pushed to the bottom so the link sits on one line across a row of cards
