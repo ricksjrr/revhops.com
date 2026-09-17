@@ -53,7 +53,6 @@ between roughly 10 and 500 employees in the US and Europe.
 - [Pipedrive](https://revhops.com/pipedrive) — Authorized Pipedrive partner:
   what the product does, which plan to buy, and the five ways in
 - [Pricing](https://revhops.com/pricing) — published starting prices
-- [About us](https://revhops.com/about) — who runs it and how it works
 - [Contact](https://revhops.com/contact) — form and email
 - [Newsletter](https://revhops.com/newsletter) — one email a month, sign-up form
 - [Schedule a call](https://revhops.com/call) — the booking page

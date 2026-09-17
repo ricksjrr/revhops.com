@@ -32,6 +32,12 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 James is not sold on /about. The page still exists and is still built;
 nothing in the chrome points at it any more.
 
+- **/about is off the site entirely.** `about` is still defined in
+  `build-pages.js` and still edited like any other page, but it is not in
+  `PAGES`, so `about.html` is no longer written, and the built file was
+  deleted. Nothing serves /about, so there is nothing to find. Putting it
+  back is adding `about` to `PAGES`, rebuilding, and restoring the two nav
+  and footer entries. Its line came out of `llms.txt` as well.
 - **/about is out of NAV_ITEMS and out of the footer's Company column.**
   Company is Pricing, Contact, Schedule a discovery call, the last one new.
   The homepage carries its own copies of both, so they were edited by hand

@@ -4585,13 +4585,19 @@ function hubPage(h) {
 
 /* ---------- write everything ---------- */
 
+/* OFF THE SITE, 17 September. `about` is still built above and is still
+   edited like any other page, but it is NOT in PAGES, so about.html is not
+   written and nothing serves /about. The file was deleted from the repo the
+   same day. Putting the page back is one word: add `about` to the list
+   below, run the build, and add it back to NAV_ITEMS and the footer's
+   Company column (and to index.html's own copies of both). */
 var PAGES = [servicesIndex]
   .concat(SERVICES.map(servicePage))
   .concat([caseIndex])
   .concat(CASES.map(casePage))
   .concat([resourcesIndex])
   .concat(GATED.map(resourcePage))
-  .concat([pricing, hubspot, pipedrive, about, contact, audit, newsletter, terms, privacy, callPage, clientCallPage, puzzle, hop])
+  .concat([pricing, hubspot, pipedrive, contact, audit, newsletter, terms, privacy, callPage, clientCallPage, puzzle, hop])
   .concat(HUB_PAGES.map(hubPage));
 
 var written = 0;
