@@ -3316,6 +3316,9 @@ main { overflow-x: clip; }
   font-weight: 700;
   font-size: .78rem;
   letter-spacing: .1em;
+  /* Caps since 17 September, when the numbers on the value cards became
+     phrases. The numbered cards on /newsletter are unaffected. */
+  text-transform: uppercase;
   color: var(--muted);
 }
 .pcard-title {

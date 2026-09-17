@@ -128,6 +128,8 @@ console.log('\n— page —');
   const val = at(x => x.querySelector('.pcards'));
   const stp = at(x => x.querySelector('.start-wide'));
   (cas === svc + 1) ? ok('case studies follow services') : bad('services ' + svc + ', case ' + cas);
+  /text-transform: uppercase/.test(rule('.pcard-n'))
+    ? ok('the value card labels are set in caps') : bad('the labels lost their caps');
   d.querySelector('.pcard-chips')
     ? bad('the value cards carry chips again') : ok('no chips on the value cards');
   (val === abt + 1) ? ok('how we hop-erate follows about') : bad('about ' + abt + ', values ' + val);
