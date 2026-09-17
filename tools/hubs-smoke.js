@@ -95,7 +95,7 @@ SLUGS.forEach(slug => {
   /* THE CASE STUDY, added 16 September. One, under the cards, a bare card
      with no name or services on it, then the name, the lede and a link. The
      slug is James' pick per hub. */
-  const PICK = { 'sales-hub': 'Ignite-Group', 'marketing-hub': 'Woodside-Homes', 'revenue-hub': 'Ignite-Group',
+  const PICK = { 'sales-hub': 'Ignite-Group', 'marketing-hub': 'Woodside-Homes', 'revenue-hub': 'Inbox-Storage',
                  'service-hub': 'Ignite-Group', 'data-hub': 'Core-Income-Advisors', 'content-hub': 'Core-Income-Advisors' };
   const hc = d.querySelectorAll('.hub-case');
   hc.length === 1 ? ok(slug + ': one featured case study') : bad(slug + ': ' + hc.length + ' featured case studies');

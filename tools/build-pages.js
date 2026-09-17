@@ -988,6 +988,41 @@ var CASES = [
       }
     } },
 
+  { slug: 'Inbox-Storage', name: 'Inbox Storage',
+    /* casePageOld still reads figs; no figures on this one yet */
+    figs: [['00%', '[measure]'], ['00', '[measure]']],
+    svc: ['revops-consulting', 'lead-to-cash-process-mapping'],
+    location: 'Amsterdam, Netherlands',
+    crm: 'hubspot', industry: 'professional-services', stage: 'scaleup',
+    img: 'assets/img/case-studies/inbox-storage.webp',
+    copy: {
+      lede: 'Inbox Storage had already built a tool that prices a storage enquiry to the square metre, and every quote it produced stopped in a database. We mapped their lead to cash process and guided the team through a Revenue Hub implementation that carries the quote into HubSpot and on to an invoice and a contract. The hundreds of hours a month that gave back went into a new market, and into growth the team had never seen before.',
+      problem: {
+        h: 'A precise quote that went nowhere',
+        p: [
+          'Inbox Storage provides physical storage space for the belongings people most want kept safe. They had built something most companies their size do not have: a purpose-built tool, made in house, that lets a website visitor generate a quote for their exact needs. Square metres, type of storage and length of commitment are all priced before anyone on the team is involved.',
+          'The trouble was what happened next. Once a visitor submitted their details, the information stayed in the database. HubSpot, where the sales team worked, knew nothing about it.',
+          'So the team closed the gap by hand. Estimates were copied out of the database, and deals and quotes were created manually, one at a time. It added up to hundreds of hours every month spent retyping information the business already had.'
+        ]
+      },
+      solution: {
+        h: 'From quote request to contract in one system',
+        p: [
+          'The owner and the head of sales brought us in with a clear brief. Give HubSpot the context sitting in the estimate database, so a price quote can travel all the way to a quoted invoice and a contract without being rebuilt by hand at each step.',
+          'We started by mapping the lead to cash process, from the moment a visitor submits a quote to the moment the invoice and contract go out. That map settled what each step needed to know and where the information had to come from.',
+          'Then we guided the team through an implementation of Revenue Hub, built on HubSpot-native CPQ workflows. The detail a visitor enters on the website now reaches the CRM, and the deal, the quote, the invoice and the contract are built from it rather than from someone’s copy of it.'
+        ]
+      },
+      results: {
+        h: 'Hours back and a market they had been missing',
+        p: [
+          'The manual entry is gone. Nobody copies estimates out of a database any more, and deals and quotes are no longer built one at a time. That removed hundreds of hours of busy work from every month.',
+          'The team put that time to use. They moved some of those resources onto a new market that was being underserved, with an offer of theirs that had never had the activation it deserved.',
+          'The result was quarter over quarter growth unlike anything the team had seen before.'
+        ]
+      }
+    } },
+
   { slug: 'Core-Income-Advisors', name: 'Core Income Advisors',
     figs: [['00%', '[measure]'], ['$00k', '[measure]']],
     svc: ['hubspot-support-retainers'],
@@ -4240,7 +4275,7 @@ var HUB_PAGES = [
 
   {
     slug: 'revenue-hub',
-    caseStudy: 'Ignite-Group',
+    caseStudy: 'Inbox-Storage',
     title: 'HubSpot Revenue Hub &mdash; RevHops',
     desc: 'Quotes, CPQ, invoicing, subscriptions and payments in HubSpot, built so the number in the CRM is the number finance bills.',
     lede: 'Quotes, CPQ, invoicing, subscriptions and payments, built so the number in the CRM is the number finance sees. Quote to cash without the spreadsheet in the middle.',
