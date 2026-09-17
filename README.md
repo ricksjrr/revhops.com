@@ -16,7 +16,7 @@ is still gone.
 
 No remote is configured yet. See "Deploying to GitHub Pages" below.
 
-**Twenty-two pages exist.** `index.html` is hand-maintained. The other twenty
+**Thirty-eight pages exist.** `index.html` is hand-maintained. The rest
 are written by `tools/build-pages.js` and **will be overwritten by the next
 run of it** — edit the generator, not the HTML, or fold your change back in
 afterwards. See "The page builder" below.
@@ -27,21 +27,34 @@ Most pages are a flat `.html` file at the root, named for the page:
 `pricing.html` served at `/pricing`. GitHub Pages serves it for both `/pricing`
 and `/pricing.html`, so shared links can drop the extension.
 
-Two are folders, because the URLs have a level in them:
+**EVERY PAGE IS A FILE AT THE ROOT. NOTHING IS A `<name>/index.html`,
+including the five that used to be**, and this is not a tidying preference:
 
 ```
-services/index.html                     /services
+services.html                           /services
 services/solution-design.html           /services/solution-design
-case-studies/index.html                 /case-studies
-case-studies/case-study-one.html        /case-studies/case-study-one
-resources/index.html                    /resources
+case-studies.html                       /case-studies
+case-studies/Ixly.html                  /case-studies/Ixly
+resources.html                          /resources
 resources/marketing-hub-roi-calculator.html   /resources/marketing-hub-roi-calculator
-hubspot/index.html                      /hubspot
-pipedrive/index.html                    /pipedrive
+hubspot.html                            /hubspot
+hubspot/sales-hub.html                  /hubspot/sales-hub
+pipedrive.html                          /pipedrive
 ```
 
-Nothing goes deeper than one level, and nothing else becomes a folder unless
-its URL needs one.
+So a folder holds the pages *under* a section and never the section's own
+page. GitHub Pages serves `services.html` for `/services` with no redirect,
+but for `services/index.html` it 301s `/services` to `/services/` — and that
+trailing slash is the whole reason this changed on 17 September, the day the
+site went live. `tools/serve.js` resolves `.html` before `index.html` and
+does not redirect, which is exactly why the slash never showed up in local
+preview and only appeared in production.
+
+**So do not add a `<name>/index.html`.** `tools/links-smoke.js` fails if one
+appears. The only `index.html` on this site is the homepage's.
+
+Nothing goes deeper than one level, and a folder is created only when a URL
+has a level in it.
 
 **Links between pages are relative and extensionless** — `services`,
 `../pricing`, `./` for home. They are written root-absolute in
@@ -118,6 +131,8 @@ tools/
   smoke.js                The test. See below.
   resources-smoke.js      /resources. hubs-smoke.js: the six hub pages.
   contact-smoke.js        /contact, its tabs and its form submission.
+  links-smoke.js          Every link and asset on every page, resolved from
+                          the URL that page is served at. Run it last.
   copy-export.js / copy-import.js / copy-map.json
 ```
 
@@ -300,6 +315,23 @@ a `mailto:` carrying what the visitor had typed.
 **The two-request path is the one running today**, because the four
 qualification properties do not exist in the portal yet, so that test is not
 covering an edge case. See `HANDOFF.md`.
+
+And one that reads every page rather than a chosen one:
+
+```
+node tools/links-smoke.js
+```
+
+It works out the URL each `.html` file is served at, resolves every `href`,
+`src` and `data-src` on it the way a browser would from that URL, and checks
+something is actually there. It also fails if any `<name>/index.html` comes
+back, because that page would only be reachable at a trailing slash, and if
+the cache stamp drifts between pages.
+
+**This is the suite that catches a wrong `depth`.** A page with the wrong one
+still builds, still opens from disk, and still passes every other suite; it
+just points its stylesheet, scripts, images and links one level off. Run it
+after anything that moves a file or changes a `depth`.
 
 `smoke.js` loads the homepage, runs both scripts, and checks the structure,
 the cache stamp, every local file reference, stylesheet brace balance, that the document

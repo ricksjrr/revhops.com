@@ -27,6 +27,73 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 17 September, ninth pass: the trailing slash, and a suite that would have caught it
+
+The site went live and every section page answered at a trailing slash:
+`revhops.com/services/` rather than `/services`. James did not want it.
+
+**The cause.** Five pages were written as `<name>/index.html`, because their
+URLs have a level under them. GitHub Pages serves `name.html` for `/name` with
+no redirect, but for `name/index.html` it **301s `/name` to `/name/`**. So
+`/services`, `/case-studies`, `/resources`, `/hubspot` and `/pipedrive` all
+bounced to a slash and the flat pages next to them did not.
+
+**The fix is where the file sits, not a redirect or a config.** All five moved
+to the root, `depth` went from 1 to 0 with them, and the folders stayed for
+the pages underneath:
+
+```
+services.html            /services          <- was services/index.html
+services/solution-design.html               /services/solution-design
+```
+
+`pipedrive/` had nothing else in it and is gone. **The only `index.html` left
+on the site is the homepage's**, and a new suite fails if a second appears.
+
+Two hardcoded `../assets/…` paths came off with it — the partner profile shot
+on `/hubspot` and the co-branded banner on `/pipedrive`. Both were written by
+hand rather than through `up(depth)`, so nothing recomputed them.
+
+### tools/links-smoke.js is new, and it is the important part
+
+**Why local preview never showed this.** `tools/serve.js` resolves `.html`
+before `index.html` and does not redirect at all, so both spellings worked
+locally and the slash only existed in production. Nothing was going to catch
+it from this folder.
+
+And a wrong `depth` is worse than a trailing slash: the page still builds,
+still opens from disk, still passes every other suite, and points its
+stylesheet, scripts, images and every link one level off. Four per-page suites
+and none of them were watching for a whole page pointing at nothing.
+
+So the new suite works out the URL each of the 38 pages is served at, resolves
+every `href`, `src` and `data-src` on it the way a browser would **from that
+URL**, and checks a file is there. It also fails on any `<name>/index.html`
+and on a cache stamp that has drifted between pages. 1,674 references, all
+resolving. **Run it after anything that moves a file or changes a `depth`.**
+
+Two assertions in the older suites had `../` baked into them and were updated
+rather than loosened: the See-all regex in `resources-smoke.js` and the hub
+link match in `hubs-smoke.js`.
+
+Verified beyond the suites: all 21 URLs crawled in headless Chromium, every
+one a 200 with no redirect, the stylesheet applied, and no failed local
+request on any of them.
+
+### One thing James needs to decide
+
+**`/resources/blog/…` is dead as of the move.** Two blog cards on `/resources`
+point at `resources/blog/hubspot-data-hub-wtf-is-it` and
+`resources/blog/hubspot-service-hub-for-b2b-saas-customer-success`. Those were
+HubSpot's to serve and worked while HubSpot answered for `revhops.com`. The
+apex is GitHub Pages now, so unless something else is serving that path they
+are 404s on a live page.
+
+`links-smoke.js` exempts everything under `/resources/blog` by name, with a
+comment saying why, so the suite is not crying about links it cannot check.
+**The exemption does not mean the links work.** Either point the HubSpot blog
+at `blog.revhops.com` and make those hrefs absolute, or pull the two cards.
+
 ## 17 September, eighth pass: bigger case cards, and the domain landmine defused
 
 **The case cards are 15% bigger** on the homepage and `/services`. One number:

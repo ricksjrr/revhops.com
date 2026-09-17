@@ -19,7 +19,7 @@
 const fs=require('fs'),path=require('path');
 const {JSDOM}=require('jsdom');
 const ROOT=path.resolve(__dirname,'..');
-const html=fs.readFileSync(path.join(ROOT,'resources/index.html'),'utf8');
+const html=fs.readFileSync(path.join(ROOT,'resources.html'),'utf8');
 const js=fs.readFileSync(path.join(ROOT,'assets/js/site.js'),'utf8');
 let fail=0;const ok=m=>console.log('  ok   '+m),bad=m=>{fail++;console.log('  FAIL '+m)};
 const dom=new JSDOM(html,{runScripts:'outside-only',pretendToBeVisual:true,url:'https://revhops.com/resources'});
@@ -51,7 +51,11 @@ d.querySelectorAll('[data-res-section="case-studies"] .res-card:not([hidden])').
   ? ok('and each links at its own case study page') : bad('a case card links somewhere else');
 
 const seeAll=[...d.querySelectorAll('.res-all a')].map(a=>a.getAttribute('href'));
-seeAll.length===2 && seeAll.some(h=>/\/resources\/blog$/.test(h)) && seeAll.some(h=>/case-studies$/.test(h))
+/* The page moved from resources/index.html to resources.html on 17 September
+   to lose its trailing slash, so its links lost a `../` with it. Matched on
+   the tail rather than anchored to a slash, so the next move does not break
+   this line too. */
+seeAll.length===2 && seeAll.some(h=>/resources\/blog$/.test(h)) && seeAll.some(h=>/case-studies$/.test(h))
   ? ok('two See-all links: the HubSpot blog and /case-studies') : bad('see-all links are '+seeAll);
 [...d.querySelectorAll('.res-all a')].every(a=>a.classList.contains('text-link'))
   ? ok('and both are text links, not boxed buttons') : bad('a See-all is a .btn, which on this site means booking');

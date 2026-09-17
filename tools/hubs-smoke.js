@@ -28,8 +28,12 @@ const NAMES = { 'sales-hub': 'Sales Hub', 'marketing-hub': 'Marketing Hub', 'rev
 
 /* Every card on /hubspot points at one of these, and until 11 September all
    six of those links 404ed. That is the bug this file exists to keep fixed. */
-const hubIndex = fs.readFileSync(path.join(ROOT, 'hubspot/index.html'), 'utf8');
-const linked = [...hubIndex.matchAll(/href="\.\.\/hubspot\/([a-z-]+)"/g)].map(m => m[1]);
+const hubIndex = fs.readFileSync(path.join(ROOT, 'hubspot.html'), 'utf8');
+/* `hubspot/<slug>`, not `../hubspot/<slug>`: the index moved from
+   hubspot/index.html to hubspot.html on 17 September so the site would stop
+   redirecting /hubspot to /hubspot/, and being at the root it no longer
+   writes a `../`. The six hub pages themselves did not move. */
+const linked = [...hubIndex.matchAll(/href="hubspot\/([a-z-]+)"/g)].map(m => m[1]);
 JSON.stringify(linked.sort()) === JSON.stringify([...SLUGS].sort())
   ? ok('/hubspot links at exactly the six hubs') : bad('/hubspot links at ' + linked);
 

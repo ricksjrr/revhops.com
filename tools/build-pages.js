@@ -1902,8 +1902,13 @@ var TESTIMONIALS =
    except the close's own plate. */
 
 var servicesIndex = {
-  file: 'services/index.html',
-  depth: 1,
+  file: 'services.html',
+  depth: 0,
+  /* Moved out of <name>/index.html on 17 September, when the site went live
+     and every folder page redirected to a trailing slash. GitHub Pages 301s
+     /name to /name/ when the page is name/index.html, and serves name.html
+     for /name with no redirect at all. The folder stays for the pages under
+     it; only the index moved up, so `depth` is 0 now. */
   navCurrent: '/services',
   title: 'RevOps services — RevHops',
   description: 'Solution design, CRM implementations, HubSpot support retainers, RevOps consulting and lead to cash process mapping.',
@@ -1998,8 +2003,13 @@ AUDIT_ROW +
    plate, which is a different object and carries its own nav sentinel.
    ---------------------------------------------------------------------- */
 var caseIndex = {
-  file: 'case-studies/index.html',
-  depth: 1,
+  file: 'case-studies.html',
+  depth: 0,
+  /* Moved out of <name>/index.html on 17 September, when the site went live
+     and every folder page redirected to a trailing slash. GitHub Pages 301s
+     /name to /name/ when the page is name/index.html, and serves name.html
+     for /name with no redirect at all. The folder stays for the pages under
+     it; only the index moved up, so `depth` is 0 now. */
   navCurrent: '/case-studies',
   /* svc-index is the class that carries nothing but the page rhythm now, and
      /case-studies wants the same one /services has. cs-index is what the
@@ -2253,8 +2263,13 @@ var WAYS = [
 var PARTNER_PROFILE = 'https://ecosystem.hubspot.com/marketplace/solutions/revhops';
 
 var hubspot = {
-  file: 'hubspot/index.html',
-  depth: 1,
+  file: 'hubspot.html',
+  depth: 0,
+  /* Moved out of <name>/index.html on 17 September, when the site went live
+     and every folder page redirected to a trailing slash. GitHub Pages 301s
+     /name to /name/ when the page is name/index.html, and serves name.html
+     for /name with no redirect at all. The folder stays for the pages under
+     it; only the index moved up, so `depth` is 0 now. */
   navCurrent: '/hubspot',
   title: 'HubSpot Platinum Solutions Partner — RevHops',
   description: 'RevHops is a HubSpot Platinum Solutions Partner working across all six hubs: Sales, Marketing, Revenue, Service, Data and Content.',
@@ -2349,7 +2364,7 @@ var hubspot = {
 '      <div class="hs-testi-proof reveal reveal-right">\n' +
 '        <a class="hs-testi-shot" href="' + PARTNER_PROFILE + '"\n' +
 '           target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">\n' +
-'          <img src="../assets/img/hubspot-partner-profile.webp"\n' +
+'          <img src="assets/img/hubspot-partner-profile.webp"\n' +
 '               alt="" loading="lazy">\n' +
 '        </a>\n' +
 '        <a class="text-link hs-testi-link" href="' + PARTNER_PROFILE + '"\n' +
@@ -3898,8 +3913,13 @@ function resFilter() {
    <dialog> in the top layer does not care where it is in the document, and
    one of them serves every video card on the page. */
 var resourcesIndex = {
-  file: 'resources/index.html',
-  depth: 1,
+  file: 'resources.html',
+  depth: 0,
+  /* Moved out of <name>/index.html on 17 September, when the site went live
+     and every folder page redirected to a trailing slash. GitHub Pages 301s
+     /name to /name/ when the page is name/index.html, and serves name.html
+     for /name with no redirect at all. The folder stays for the pages under
+     it; only the index moved up, so `depth` is 0 now. */
   navCurrent: '/resources',
   title: 'Resources — RevHops',
   description: 'RevOps resources from RevHops: blog posts, case studies, videos, downloadable templates and a couple of games.',
@@ -4105,8 +4125,13 @@ var PD_WAYS = [
 ];
 
 var pipedrive = {
-  file: 'pipedrive/index.html',
-  depth: 1,
+  file: 'pipedrive.html',
+  depth: 0,
+  /* Moved out of <name>/index.html on 17 September, when the site went live
+     and every folder page redirected to a trailing slash. GitHub Pages 301s
+     /name to /name/ when the page is name/index.html, and serves name.html
+     for /name with no redirect at all. The folder stays for the pages under
+     it; only the index moved up, so `depth` is 0 now. */
   navCurrent: '/pipedrive',
   title: 'Pipedrive Authorized Partner — RevHops',
   description: 'RevHops is an Authorized Pipedrive Partner. We set Pipedrive up, clean up the account you already have, and connect it to the rest of your stack.',
@@ -4163,7 +4188,7 @@ var pipedrive = {
 '      </div>\n' +
 '      <a class="pd-trial-shot reveal reveal-right" href="' + PD_TRIAL + '"\n' +
 '         target="_blank" rel="noopener sponsored" tabindex="-1" aria-hidden="true">\n' +
-'        <img src="' + up(1) + 'assets/img/pipedrive-revhops.webp" alt="" loading="lazy">\n' +
+'        <img src="assets/img/pipedrive-revhops.webp" alt="" loading="lazy">\n' +
 '      </a>\n' +
 '    </div>\n') +
 

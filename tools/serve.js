@@ -25,6 +25,16 @@
        /pricing         → pricing.html
        /assets/css/…    → the file itself
 
+   THE .html CANDIDATE COMES FIRST AND THAT ORDER IS THE POINT. GitHub Pages
+   serves name.html for /name, and 301s /name to /name/ when the page is
+   name/index.html instead. This server does not redirect, so for a long time
+   it resolved both spellings silently and the trailing slash on the five
+   folder pages never showed up locally — it was only visible once the site
+   was live. Those five moved to the root on 17 September and the only
+   index.html left is the homepage's, so the second candidate is now dead
+   weight kept for the day somebody adds a folder page back. If one comes
+   back, expect the slash.
+
    Anything it cannot resolve gets a plain 404 rather than a fallback to the
    homepage, because silently serving index.html for a typo is how a broken
    link survives a click-through test.
