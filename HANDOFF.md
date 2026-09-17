@@ -27,6 +27,16 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 17 September, second pass: the team section
+
+- **The homepage link under "Small, by design"** reads `About us` and points
+  at `/about` rather than `#team`.
+- **/about's Meet the team is two columns**, `.team-split`: the team grid on
+  the left at 420px, the homepage's "Small, by design" copy and ticks on the
+  right under an `h3`. One card no longer leaves two thirds of the shell
+  empty, and more people fill the left column without touching the copy.
+  Single column under 900px, card first.
+
 ## 17 September: five stage forms, smaller case cards, /about reordered
 
 **The hero's signup is five forms now, one per stage**, so HubSpot can tell

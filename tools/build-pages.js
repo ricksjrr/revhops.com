@@ -2410,11 +2410,32 @@ var about = {
 
     /* .to-white because the closing panel bleeds up into whatever is above
        it. The last section on every page carries this. */
+    /* The card is one person and would leave two thirds of the shell empty
+       on its own, so the homepage's "Small, by design" copy sits beside it:
+       the same claim, made where the person making it is on the page. When
+       the second and third people arrive their cards fill the left column
+       and the copy stays where it is. */
     section(
       secHead('Meet the team',
               'One of us today and more shortly. Whoever you meet on the first call is the person who does the work.') +
-'    <div class="team-grid">\n' +
+'    <div class="team-split">\n' +
+'      <div class="team-grid">\n' +
       TEAM.map(teamCard).join('\n') + '\n' +
+'      </div>\n' +
+'\n' +
+'      <div class="stack gap-20 team-copy reveal reveal-right">\n' +
+'        <h3 class="h3">Small, by design</h3>\n' +
+'        <p>The team you meet on a call is the team building behind the scenes. We&rsquo;ll never\n' +
+'          sell you on our expertise and then turn you over to someone who doesn&rsquo;t understand\n' +
+'          your business. We&rsquo;re experts in the tools you use everyday and know what it takes\n' +
+'          to build systems and tools your team will <em>actually</em> use... and love.</p>\n' +
+'        <ul class="ticks">\n' +
+'          <li>You talk to the people doing the work, from start to finish</li>\n' +
+'          <li>RevOps is all we do. We&rsquo;ll tell you if we&rsquo;re not a good fit for what you need</li>\n' +
+'          <li>HubSpot Platinum Solutions Partner</li>\n' +
+'          <li>We value doing what&rsquo;s right more than doing what&rsquo;s easy</li>\n' +
+'        </ul>\n' +
+'      </div>\n' +
 '    </div>\n', 'section to-white', 'team')
 };
 
