@@ -7067,6 +7067,19 @@ div.res-card .res-go { color: var(--muted); }
 .hub-case .hub-case-card { width: 100%; }
 /* the scrim only exists to carry the card's type, and this card has none */
 .hub-case .hub-case-card::after { content: none; }
+/* The label over the client's name, 17 September. Caps in the stylesheet
+   rather than in the copy, and the warm ink rather than the accent, which
+   is 1.6:1 on paper. Same treatment as the value card labels. */
+.hub-case-tag {
+  display: block;
+  margin-bottom: 10px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: .78rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--warm-ink);
+}
 .hub-case-copy .lede { margin-top: clamp(12px, 1.4vw, 18px); max-width: none; }
 .hub-case-copy .text-link { margin-top: clamp(18px, 2vw, 26px); }
 @media (max-width: 760px) {

@@ -102,6 +102,10 @@ SLUGS.forEach(slug => {
   const hcCard = hc[0] && hc[0].querySelector('.case-card');
   hcCard && hcCard.querySelector('img') && !hcCard.querySelector('.case-body, .case-title, .case-svc')
     ? ok(slug + ': the case card is the picture and nothing else') : bad(slug + ': the case card carries text');
+  const tag = hc[0] && hc[0].querySelector('.hub-case-copy .hub-case-tag');
+  (tag && tag.textContent.trim() === 'See our work in action')
+    ? ok(slug + ': the work-in-action label is over the name')
+    : bad(slug + ': the work-in-action label is missing');
   const hcLink = hc[0] && hc[0].querySelector('.hub-case-copy a.text-link');
   hcLink && new RegExp('case-studies/' + PICK[slug] + '$').test(hcLink.getAttribute('href')) && /Read the story/.test(hcLink.textContent)
     ? ok(slug + ': "Read the story" goes to ' + PICK[slug]) : bad(slug + ': the story link is wrong');

@@ -27,6 +27,13 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 17 September, fifth pass: a label on the hub case study
+
+`hubCase()` writes `<span class="hub-case-tag">See our work in action</span>`
+over the client's name on all six hub pages. Caps come from the stylesheet,
+not the copy, and the colour is `--warm-ink`, the same label treatment as the
+value cards. Checked in `hubs-smoke.js`.
+
 ## 17 September, fourth pass: nav order
 
 Services, Case studies, Pricing, HubSpot, Resources, Contact. `NAV_ITEMS` in

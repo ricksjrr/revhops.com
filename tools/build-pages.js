@@ -4501,6 +4501,7 @@ function hubCase(slug) {
 '        <img src="' + up(1) + (c.img || 'assets/img/case-study-placeholder.svg') + '" alt="" loading="lazy">\n' +
 '      </a>\n' +
 '      <div class="hub-case-copy reveal">\n' +
+'        <span class="hub-case-tag">See our work in action</span>\n' +
 '        <h2 class="h2">' + c.name + '</h2>\n' +
 '        <p class="lede">' + c.copy.lede + '</p>\n' +
 '        <a class="text-link" href="' + href + '">Read the story <span class="arrow" aria-hidden="true">&rarr;</span></a>\n' +
