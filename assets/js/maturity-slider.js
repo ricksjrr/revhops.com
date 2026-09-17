@@ -250,24 +250,15 @@
     cardsHTML +=
       '<div class="mcard-slot mcard-col">' +
         cardHTML(CARD_COUNT - 1) +
-        /* ==========================================================
-           Not wired to anything yet. Replace with your HubSpot form
-           embed, or point it at your endpoint. The hidden `stage`
-           field tracks the slider, so whatever receives this knows
-           which stage they picked.
-           ========================================================== */
-        '<form class="stage-form" data-stage-form>' +
-          '<h2 class="stage-form-title">Send me the info for my team’s stage</h2>' +
-          '<div class="stage-form-fields">' +
-            '<label class="sr-only" for="sf-email">Work email</label>' +
-            '<input id="sf-email" name="email" type="email" ' +
-              'placeholder="Work email" autocomplete="email" required>' +
-            '<input type="hidden" name="stage" data-stage-field value="">' +
-            '<button class="stage-form-send" type="submit">' +
-              'Send it <span class="arrow">&rarr;</span></button>' +
-          '</div>' +
-        '</form>' +
+        /* The signup forms are NOT written here. There are five, one per
+           stage, and they live as static markup inside the mount element
+           in index.html, because HubSpot only captures a form that is in
+           the page as loaded. They are lifted out before the innerHTML
+           below wipes the mount, and put back in this column after. */
       '</div>';
+
+    var formsHost = root.querySelector('[data-stage-forms]');
+    if (formsHost) formsHost.parentNode.removeChild(formsHost);
 
     root.innerHTML =
       '<div class="mat">' +
@@ -305,6 +296,13 @@
     };
     probe.src = iconPath;
 
+    /* Moved, not copied: the same nodes, so anything HubSpot's collected
+       forms script has already bound to them stays bound. */
+    var col = root.querySelector('.mcard-col');
+    if (formsHost && col) {
+      while (formsHost.firstElementChild) col.appendChild(formsHost.firstElementChild);
+    }
+
     return { start: start, last: lastI };
   }
 
@@ -334,6 +332,31 @@
       bodies.push(root.querySelector('[data-card-body="' + b + '"]'));
     }
     var cardsEl = root.querySelector('[data-mcards]');
+    var forms = Array.prototype.slice.call(root.querySelectorAll('[data-stage-form]'));
+
+    /* The confirmation. Each form submits into its own hidden iframe
+       (see the note on the forms in index.html), and HubSpot will not
+       capture a form with script on its submit event, so this listens to
+       the iframe finishing its load instead.
+
+       The iframe's first load is about:blank, and that is not a
+       submission. After a real one the frame holds stage-sent.html, which
+       over http reads back as that URL and from file:// throws, because
+       Chromium gives every file URL its own origin. Either way: sent. */
+    forms.forEach(function (f) {
+      var sink = document.querySelector('iframe[name="' + f.getAttribute('target') + '"]');
+      if (!sink) return;
+      sink.addEventListener('load', function () {
+        var href = '';
+        try { href = sink.contentWindow.location.href; } catch (err) { href = 'sent'; }
+        if (!href || href === 'about:blank') return;
+        f.classList.add('is-sent');
+        var fields = f.querySelector('.stage-form-fields');
+        var done = f.querySelector('[data-stage-done]');
+        if (fields) fields.hidden = true;
+        if (done) done.hidden = false;
+      });
+    });
 
     var hero = closest(root, '.hero');
 
@@ -366,8 +389,6 @@
       document.documentElement.setAttribute('data-stage', slug);
       document.documentElement.setAttribute('data-stage-index', String(i));
 
-      var field = root.querySelector('[data-stage-field]');
-      if (field) field.value = s.name;
 
       try {
         document.dispatchEvent(new CustomEvent('revhops:stage', {
@@ -395,8 +416,19 @@
       return '<div class="mcard-chips">' + out.join('') + '</div>';
     }
 
+    /* One form per stage, only the current one showing. Toggled here
+       rather than in publishStage so the form swaps with the cards, under
+       the same fade, and so lockCardsHeight measures each stage with its
+       own form in place. */
+    function showForm(i) {
+      forms.forEach(function (f) {
+        f.hidden = parseInt(f.getAttribute('data-stage-form'), 10) !== i;
+      });
+    }
+
     function renderCards(i) {
       var s = STAGES[i];
+      showForm(i);
 
       var html = [
         /* situation and stack share one card, split by a hairline */

@@ -27,6 +27,46 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 17 September: five stage forms, smaller case cards, /about reordered
+
+**The hero's signup is five forms now, one per stage**, so HubSpot can tell
+which stage someone asked about and a workflow can send that stage's PDF.
+Ids are `stage-form-startup`, `-scaleup`, `-growth`, `-maturity`,
+`-enterprise`. Built for HubSpot's non-HubSpot form capture, whose rules
+drive every choice:
+
+- **Static markup in `index.html`**, inside the maturity mount in a
+  `[data-stage-forms]` wrapper. `build()` in `maturity-slider.js` lifts the
+  wrapper out before its innerHTML wipe and moves the forms into
+  `.mcard-col`. Moved, never re-rendered, so HubSpot's bindings survive.
+  `renderCards()` shows the current stage's form and hides the rest.
+- **No script on submit.** Each form really submits (GET, since GitHub Pages
+  405s a POST) into its own hidden iframe, `stage-sink-<stage>`, loading
+  `assets/stage-sent.html`, an empty noindex page with no tracking code. The
+  slider listens to the iframe's load and swaps in "Check your inbox - it's
+  on the way!" at the fields' height.
+- **No hidden stage field**; HubSpot ignores hidden fields. The form's id is
+  the stage.
+- **HubSpot side, still to do by James:** Settings > Marketing > Forms >
+  Non-HubSpot forms on; submit each stage once on the live site so the five
+  appear; then a workflow per form. Nothing here posts until the site is live
+  with the tracking code.
+- New `stage forms` block in `tools/smoke.js`.
+
+**Case study rail cards are 20% smaller**: `.case-card` width
+`clamp(335px, 32.5vw, 429px)` to `clamp(268px, 26vw, 343px)`. That is the
+homepage and /services rails; /case-studies and the hub pages set their own.
+
+**Homepage "Small, by design"** gains a `Meet the team` text link under the
+ticks, to `about#team`. `section()` in `build-pages.js` takes an optional id
+for that.
+
+**/about**: the portrait and "The shop I wish I could have hired" are gone.
+It runs head, How we hop-erate, the logo marquee, Meet the team. LinkedIn is
+`ricksjrr` and the bio says 12 years.
+
+Rebuilt; `smoke.js`, `resources-smoke.js` and `hubs-smoke.js` all pass.
+
 ## 17 September: search on /resources
 
 **A search box sits at the right-hand end of the filter pill row** on a wide

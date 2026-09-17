@@ -1241,6 +1241,30 @@ main { overflow-x: clip; }
 .stage-form-send:hover .arrow { transform: translateX(4px); }
 .stage-form-send:focus-visible { outline: 2px solid var(--ink-strong); outline-offset: 3px; border-radius: 4px; }
 
+/* Five forms, one per stage (see index.html). Only the current stage's
+   shows; the display: flex above would otherwise outrank [hidden]. Before
+   the slider script has moved them into place they sit in the mount as a
+   plain stack, which should never paint. */
+.stage-form[hidden],
+.stage-form-fields[hidden],
+.stage-form-done[hidden] { display: none; }
+[data-revhops-maturity] > [data-stage-forms] { display: none; }
+/* The hidden iframes each form submits into. */
+.stage-sink { display: none; }
+
+/* The confirmation takes the fields' place at the fields' height, so the
+   column does not jump when it swaps in. */
+.stage-form-done {
+  min-height: 41px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .875rem;
+  line-height: 1.3;
+  color: var(--ink-strong);
+}
+
 /* ---- stage change: the four cards slide out, then the new set slides in ----
    The slot owns the slide so it never fights the card's own hover lift.
    Timings here must stay in step with OUT_MS / IN_MS in maturity-slider.js. */
@@ -1824,7 +1848,10 @@ main { overflow-x: clip; }
 .case-card {
   position: relative;
   flex: none;
-  width: clamp(335px, 32.5vw, 429px);
+  /* 20% down on 17 September, from clamp(335px, 32.5vw, 429px). Only the
+     rails on the homepage and /services read this: the /case-studies grid
+     and the hub pages set their own width. */
+  width: clamp(268px, 26vw, 343px);
   aspect-ratio: 3 / 4;
   scroll-snap-align: start;
   border-radius: var(--radius-card);

@@ -245,6 +245,32 @@ console.log('\n— services —');
     ? ok('and the heading sits hard left') : bad('the services heading is not left-aligned');
 }
 
+/* ------------------------------------------------------------ stage forms */
+// 17 September: one form per stage, so HubSpot's non-HubSpot form capture can
+// tell a Growth signup from a Startup one. Each check here is one of its rules.
+console.log('\n— stage forms —');
+{
+  const fs5 = [...d.querySelectorAll('[data-revhops-maturity] form.stage-form')];
+  fs5.length === 5 ? ok('five stage forms, moved into the slider') : bad(fs5.length + ' stage forms in the slider');
+  const ids = ['startup', 'scaleup', 'growth', 'maturity', 'enterprise'].map(x => 'stage-form-' + x);
+  JSON.stringify(fs5.map(f => f.id)) === JSON.stringify(ids)
+    ? ok('each form carries its own stage id') : bad('form ids are ' + fs5.map(f => f.id).join(', '));
+  fs5.every(f => f.querySelector('input[type="email"][name="email"][required]'))
+    ? ok('each has a required email field') : bad('a form is missing its email field');
+  fs5.some(f => f.querySelector('input[type="hidden"]'))
+    ? bad('a hidden field came back; HubSpot ignores them') : ok('no hidden fields');
+  new Set(fs5.map(f => f.querySelector('input').id)).size === 5
+    ? ok('label ids are unique') : bad('duplicate field ids across the forms');
+  fs5.every(f => d.querySelector('iframe.stage-sink[name="' + f.getAttribute('target') + '"]'))
+    ? ok('each form submits into its own iframe') : bad('a form has no iframe to submit into');
+  fs5.filter(f => !f.hidden).length === 1 && !fs5[0].hidden
+    ? ok('only the current stage\'s form shows') : bad(fs5.filter(f => !f.hidden).length + ' forms showing');
+  /addEventListener\(['"]submit/.test(fs.readFileSync(path.join(ROOT, 'assets/js/maturity-slider.js'), 'utf8'))
+    ? bad('script on submit: HubSpot will not capture the forms') : ok('no submit listener in the slider');
+  fs.existsSync(path.join(ROOT, 'assets/stage-sent.html'))
+    ? ok('the iframe target exists') : bad('assets/stage-sent.html is missing');
+}
+
 /* ------------------------------------------------------------- case studies */
 console.log('\n— case rail —');
 {

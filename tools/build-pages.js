@@ -487,8 +487,8 @@ function ticks(items, cls) {
 }
 
 /* a plain section on paper */
-function section(inner, cls) {
-  return '\n<section class="' + (cls || 'section') + '">\n' +
+function section(inner, cls, id) {
+  return '\n<section class="' + (cls || 'section') + '"' + (id ? ' id="' + id + '"' : '') + '>\n' +
          '  <div class="shell">\n' + inner + '  </div>\n' +
          '</section>\n';
 }
@@ -2338,11 +2338,11 @@ var TEAM = [
     name: 'James Ricks',
     role: 'Founder',
     photo: 'assets/img/james-portrait.webp',
-    bio: 'Spent [00] years running revenue systems from the inside before ' +
+    bio: 'Spent 12 years running revenue systems from the inside before ' +
          'starting RevHops, which means he has been the one explaining the ' +
          'forecast to a board as well as the one building it. HubSpot certified, ' +
          'Phoenix based, and the person on your first call and your last.',
-    linkedin: 'https://www.linkedin.com/in/[placeholder]'
+    linkedin: 'https://www.linkedin.com/in/ricksjrr'
   }
 ];
 
@@ -2372,8 +2372,8 @@ LI_ICON +
    left behind as a stale second copy of the same page.
 
    The head takes the /services treatment: a title and a subhead, no artwork
-   column. Below it the portrait block off the homepage, the client marquee,
-   the values under their own name, and the team. */
+   column. Below it the values under their own name, the client marquee,
+   and the team. The homepage's "Meet the team" link lands on #team. */
 var about = {
   file: 'about.html',
   depth: 0,
@@ -2386,32 +2386,8 @@ var about = {
   h1: 'About us',
   lede: 'A revenue operations consultancy in Phoenix, Arizona. Small on purpose, deep in one thing, and straight with you about the parts that will be difficult.',
   body:
-    /* The portrait block off the homepage, minus the Platinum badge that
-       overhangs it there — .about-stack-solo drops the padding that was
-       holding space for it. */
-    section(
-'    <div class="split about-split" style="align-items:center">\n' +
-'\n' +
-'      <div class="about-stack about-stack-solo reveal reveal-left" data-tilt>\n' +
-'        <img class="about-img about-img-back" src="assets/img/james-portrait.webp"\n' +
-'             alt="James Ricks, founder of RevHops">\n' +
-'      </div>\n' +
-'\n' +
-'      <div class="stack gap-20 reveal reveal-right">\n' +
-'        <h2 class="h2">The shop I wish I could have hired</h2>\n' +
-'        <p>I am James. Before RevHops I spent [00] years inside revenue teams rather than beside\n' +
-'          them, running the systems, owning the number, and explaining to a board why the\n' +
-'          forecast and the invoices disagreed. The agencies I hired were good at building\n' +
-'          exactly what I asked for and bad at telling me when I had asked for the wrong thing.\n' +
-'          The people who could tell me the truth were expensive, busy, and gone by month three.\n' +
-'          So RevHops takes fewer clients and keeps the same people on them. It is a less\n' +
-'          scalable business, and a much better one to be a client of.</p>\n' +
-'      </div>\n' +
-'\n' +
-'    </div>\n') +
-
-    logoBand(0) +
-
+    /* The portrait block and "The shop I wish I could have hired" came off
+       on 17 September. The page now runs head, values, clients, team. */
     /* The values, under their own name rather than "core values" — the
        phrase is on every consultancy About page and means nothing by now. */
     section(
@@ -2430,6 +2406,8 @@ var about = {
       ]) +
 '    </div>\n', 'section-tight') +
 
+    logoBand(0) +
+
     /* .to-white because the closing panel bleeds up into whatever is above
        it. The last section on every page carries this. */
     section(
@@ -2437,7 +2415,7 @@ var about = {
               'One of us today and more shortly. Whoever you meet on the first call is the person who does the work.') +
 '    <div class="team-grid">\n' +
       TEAM.map(teamCard).join('\n') + '\n' +
-'    </div>\n', 'section to-white')
+'    </div>\n', 'section to-white', 'team')
 };
 
 var contact = {

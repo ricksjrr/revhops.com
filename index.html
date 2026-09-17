@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=ee0ea1b8de">
+<link rel="stylesheet" href="assets/css/site.css?v=994c974579">
 
 <!-- Two things that have to happen before the first paint, which is why
      they are inline in the head and not in site.js.
@@ -103,7 +103,86 @@
            data-parallax="-0.28" data-parallax-grow="0.55" data-parallax-host=".hero-pin"></div>
     </div>
     <div class="shell shell-wide">
-      <div data-revhops-maturity data-start="0" data-cta-url="call"></div>
+      <!-- =============================================================
+           THE FIVE STAGE FORMS — one per stage, so HubSpot sees five forms.
+
+           HubSpot's non-HubSpot form capture ("collected forms") files each
+           <form> under its own id, so a workflow can trigger on "submitted
+           #stage-form-growth" and send the Growth write-up. It is picky, and
+           every choice below follows one of its rules:
+
+             - Static markup, present at page load. maturity-slider.js MOVES
+               these nodes into the case study column; it never rebuilds
+               them, so anything HubSpot bound to them survives.
+             - No JavaScript on submit or on the button. The form really
+               submits, into its own hidden iframe (target=), so the page
+               never navigates. The slider watches the iframe's load event,
+               not the form, to swap in the confirmation.
+             - No hidden stage field. HubSpot ignores hidden fields, which
+               is why the stage is the form itself rather than a value in it.
+
+           GET, not POST: GitHub Pages answers a POST with a 405, and
+           stage-sent.html is an empty page that exists only to be loaded.
+           ============================================================= -->
+      <div data-revhops-maturity data-start="0" data-cta-url="call">
+        <div data-stage-forms>
+          <form class="stage-form" id="stage-form-startup" name="stage-form-startup" data-stage-form="0"
+                action="assets/stage-sent.html" method="get" target="stage-sink-startup">
+            <h2 class="stage-form-title">Send me the info for my team’s stage</h2>
+            <div class="stage-form-fields">
+              <label class="sr-only" for="stage-email-startup">Work email</label>
+              <input id="stage-email-startup" name="email" type="email" placeholder="Work email" autocomplete="email" required>
+              <button class="stage-form-send" type="submit">Send it <span class="arrow">&rarr;</span></button>
+            </div>
+            <p class="stage-form-done" data-stage-done role="status" hidden>Check your inbox - it’s on the way!</p>
+          </form>
+          <form class="stage-form" id="stage-form-scaleup" name="stage-form-scaleup" data-stage-form="1"
+                action="assets/stage-sent.html" method="get" target="stage-sink-scaleup">
+            <h2 class="stage-form-title">Send me the info for my team’s stage</h2>
+            <div class="stage-form-fields">
+              <label class="sr-only" for="stage-email-scaleup">Work email</label>
+              <input id="stage-email-scaleup" name="email" type="email" placeholder="Work email" autocomplete="email" required>
+              <button class="stage-form-send" type="submit">Send it <span class="arrow">&rarr;</span></button>
+            </div>
+            <p class="stage-form-done" data-stage-done role="status" hidden>Check your inbox - it’s on the way!</p>
+          </form>
+          <form class="stage-form" id="stage-form-growth" name="stage-form-growth" data-stage-form="2"
+                action="assets/stage-sent.html" method="get" target="stage-sink-growth">
+            <h2 class="stage-form-title">Send me the info for my team’s stage</h2>
+            <div class="stage-form-fields">
+              <label class="sr-only" for="stage-email-growth">Work email</label>
+              <input id="stage-email-growth" name="email" type="email" placeholder="Work email" autocomplete="email" required>
+              <button class="stage-form-send" type="submit">Send it <span class="arrow">&rarr;</span></button>
+            </div>
+            <p class="stage-form-done" data-stage-done role="status" hidden>Check your inbox - it’s on the way!</p>
+          </form>
+          <form class="stage-form" id="stage-form-maturity" name="stage-form-maturity" data-stage-form="3"
+                action="assets/stage-sent.html" method="get" target="stage-sink-maturity">
+            <h2 class="stage-form-title">Send me the info for my team’s stage</h2>
+            <div class="stage-form-fields">
+              <label class="sr-only" for="stage-email-maturity">Work email</label>
+              <input id="stage-email-maturity" name="email" type="email" placeholder="Work email" autocomplete="email" required>
+              <button class="stage-form-send" type="submit">Send it <span class="arrow">&rarr;</span></button>
+            </div>
+            <p class="stage-form-done" data-stage-done role="status" hidden>Check your inbox - it’s on the way!</p>
+          </form>
+          <form class="stage-form" id="stage-form-enterprise" name="stage-form-enterprise" data-stage-form="4"
+                action="assets/stage-sent.html" method="get" target="stage-sink-enterprise">
+            <h2 class="stage-form-title">Send me the info for my team’s stage</h2>
+            <div class="stage-form-fields">
+              <label class="sr-only" for="stage-email-enterprise">Work email</label>
+              <input id="stage-email-enterprise" name="email" type="email" placeholder="Work email" autocomplete="email" required>
+              <button class="stage-form-send" type="submit">Send it <span class="arrow">&rarr;</span></button>
+            </div>
+            <p class="stage-form-done" data-stage-done role="status" hidden>Check your inbox - it’s on the way!</p>
+          </form>
+        </div>
+      </div>
+      <iframe class="stage-sink" name="stage-sink-startup" data-stage-sink title="" tabindex="-1" aria-hidden="true" hidden></iframe>
+      <iframe class="stage-sink" name="stage-sink-scaleup" data-stage-sink title="" tabindex="-1" aria-hidden="true" hidden></iframe>
+      <iframe class="stage-sink" name="stage-sink-growth" data-stage-sink title="" tabindex="-1" aria-hidden="true" hidden></iframe>
+      <iframe class="stage-sink" name="stage-sink-maturity" data-stage-sink title="" tabindex="-1" aria-hidden="true" hidden></iframe>
+      <iframe class="stage-sink" name="stage-sink-enterprise" data-stage-sink title="" tabindex="-1" aria-hidden="true" hidden></iframe>
     </div>
   </div>
 </section>
@@ -407,6 +486,7 @@
           <li>HubSpot Platinum Solutions Partner</li>
           <li>We value doing what’s right more than doing what’s easy</li>
         </ul>
+        <a class="text-link" href="about#team">Meet the team <span class="arrow">&rarr;</span></a>
       </div>
 
     </div>
@@ -697,7 +777,7 @@
   </svg>
 </button>
 
-<script src="assets/js/maturity-slider.js?v=ee0ea1b8de"></script>
-<script src="assets/js/site.js?v=ee0ea1b8de"></script>
+<script src="assets/js/maturity-slider.js?v=994c974579"></script>
+<script src="assets/js/site.js?v=994c974579"></script>
 </body>
 </html>

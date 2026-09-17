@@ -349,7 +349,7 @@ blank on purpose: these are real client results and should not be invented.
 is built from them. The tags themselves are invented, the same way the `00%`
 figures are. Correct them with the outcomes.
 
-**2. Years in revenue operations** — `[00]` in the About bullets.
+**2. Years in revenue operations** — done 17 September: 12, in the team bio.
 
 **3. A portrait** — About still points at `case-study-placeholder.svg`, twice.
 Both images are placeholders by choice, so the missing photographs cannot ship
@@ -359,11 +359,14 @@ unnoticed.
 `STAGES` in `maturity-slider.js`. All five currently name Makarios Design Build
 with placeholder text. Also swap `SHOT_SRC` for a real photo.
 
-**5. One form posts nowhere** — the hero's capture card. The hidden `stage`
-field already tracks the slider, so whatever receives it knows which stage was
-picked. The footer newsletter *opt-in block* was removed on 4 September and is
-not coming back; `/newsletter`, added 11 September, is a page rather than a
-footer widget, and its form id is a placeholder — see item 6.
+**5. The hero's stage forms** — five of them since 17 September, one per
+stage, ids `stage-form-startup` through `stage-form-enterprise`, static in
+`index.html` and captured by HubSpot as non-HubSpot forms. Turn on collected
+forms in HubSpot, submit each once, then build one workflow per form to send
+that stage's PDF. See `HANDOFF.md` for the rules the markup follows. The
+footer newsletter *opt-in block* was removed on 4 September and is not coming
+back; `/newsletter`, added 11 September, is a page rather than a footer
+widget, and its form id is a placeholder — see item 6.
 
 **6. HubSpot form IDs.** The contact page form when that page is rebuilt, and
 the newsletter form, which `/newsletter` ships with as the literal placeholder
