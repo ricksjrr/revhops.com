@@ -2904,20 +2904,21 @@ var hop = {
    on the way to the thing being described. `sub` is still honoured if one
    ever comes back. */
 /* THE ORDER OF THIS ARRAY IS THE ORDER OF THE PAGE, and of the filter pills
-   above it. James' order, 13 September: the things somebody can take away
-   and use first, the proof second, the reading after that, and the two games
-   last where they belong. Reordering the page is reordering this list; the
-   last entry gets .to-white because the closing panel bleeds up over it. */
+   above it. James' order, 17 September: the proof first, then the videos,
+   the reading, the things somebody can take away and use, and the games
+   last where they belong. (13 September had downloadables first.)
+   Reordering the page is reordering this list; the last entry gets
+   .to-white because the closing panel bleeds up over it. */
 var RESOURCE_TYPES = [
-  { slug: 'downloadables', name: 'Downloadables' },
-
   { slug: 'case-studies', name: 'Case studies',
     all: '/case-studies', allLabel: 'View all case studies' },
+
+  { slug: 'videos', name: 'Videos' },
 
   { slug: 'blog', name: 'Blog',
     all: '/resources/blog', allLabel: 'View all blog posts' },
 
-  { slug: 'videos', name: 'Videos' },
+  { slug: 'downloadables', name: 'Downloadables' },
 
   { slug: 'games', name: 'Games' }
 ];

@@ -32,7 +32,7 @@ w.Element.prototype.scrollIntoView=function(){};
 w.eval(js);
 
 const secs=[...d.querySelectorAll('[data-res-section]')].map(s=>s.getAttribute('data-res-section'));
-JSON.stringify(secs)===JSON.stringify(['downloadables','case-studies','blog','videos','games'])
+JSON.stringify(secs)===JSON.stringify(['case-studies','videos','blog','downloadables','games'])
   ? ok('five shelves, in the order RESOURCE_TYPES declares them') : bad('shelves are '+secs);
 
 /* Four, not five. A shelf with a See-all destination is a teaser: the
@@ -129,7 +129,7 @@ d.querySelector('.res-feature-eyebrow')
 
 /* THE SHELVES ARE IN JAMES' ORDER, and the filter pills follow them. */
 {
-  const want=['downloadables','case-studies','blog','videos','games'];
+  const want=['case-studies','videos','blog','downloadables','games'];
   const got=[...d.querySelectorAll('[data-res-section]')].map(s=>s.dataset.resSection);
   JSON.stringify(got)===JSON.stringify(want) ? ok('shelves in order: '+want.join(', ')) : bad('shelf order is '+got.join(', '));
   const pills=[...d.querySelectorAll('[data-res-pick]')].map(t=>t.dataset.resPick);
