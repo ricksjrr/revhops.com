@@ -1848,10 +1848,13 @@ main { overflow-x: clip; }
 .case-card {
   position: relative;
   flex: none;
-  /* 20% down on 17 September, from clamp(335px, 32.5vw, 429px). Only the
-     rails on the homepage and /services read this: the /case-studies grid
-     and the hub pages set their own width. */
-  width: clamp(268px, 26vw, 343px);
+  /* 20% down on 17 September, from clamp(335px, 32.5vw, 429px), then 15%
+     back up later the same day. Net effect against the original: about 8%
+     smaller. Only the rails on the homepage and /services read this — the
+     /case-studies grid and the hub pages set their own width — so this one
+     number is both of the pages James asks about and neither of the ones he
+     does not. */
+  width: clamp(308px, 29.9vw, 394px);
   aspect-ratio: 3 / 4;
   scroll-snap-align: start;
   border-radius: var(--radius-card);

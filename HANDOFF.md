@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `6332c0e5f8` — derived from a hash of the assets by
+**Current build stamp:** `a92f83367e` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -26,6 +26,49 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   not work as written. See "Deploying to GitHub Pages" in the README.
 
 ---
+
+## 17 September, eighth pass: bigger case cards, and the domain landmine defused
+
+**The case cards are 15% bigger** on the homepage and `/services`. One number:
+`.case-card`'s width in `site.css`, `clamp(268px, 26vw, 343px)` to
+`clamp(308px, 29.9vw, 394px)`. They were cut 20% earlier the same day from
+`clamp(335px, 32.5vw, 429px)`, so the net against this morning is about 8%
+smaller, not larger.
+
+Only those two pages read that width. `/case-studies` sets `width: auto` on
+its grid and the hub pages have their own card, so neither moved, which is
+what James asked for. Measured in headless Chromium: 394x525 on both pages at
+1440, 308 wide at 390, and no horizontal page scroll on the phone.
+
+**Every scheduler moved to `meetings.hubspot.com`.** This is the one that
+mattered. Four copies of `https://revhops.com/meetings/…` were sitting in
+`tools/build-pages.js`, and that spelling only works while HubSpot serves the
+apex domain. James is about to point `revhops.com` at GitHub Pages, which
+would have blanked the calendar on `/call`, `/client-call`, the Book a call
+tab on `/contact` and all five service pages in the same minute, with nothing
+in the console to say why.
+
+They are now two constants, `BOOKING_DEFAULT` and `BOOKING_CLIENT`, at the
+top of the booking section, and they are the only booking URLs in the file.
+Both spellings work today, which is why this changed before the DNS rather
+than during it. **If a calendar ever comes up blank, look there first** — the
+comment above them says where to get the right link out of HubSpot, and some
+portals are served from a regional host.
+
+**The README's deploy section is rewritten** with the actual records. DNS is
+at Porkbun; the apex is two A records on `199.60.103.x` and `www` is a CNAME
+to `46722926.group26.sites.hubspot.net`, both HubSpot, and those two rows are
+the only ones that change. Mail is Google Workspace and the SPF record
+includes both Google and HubSpot's sending domain — leave all of it alone.
+
+**A wildcard is hiding records.** `*.revhops.com` answers with Porkbun's
+parking host, so every subdomain looks like it resolves. A `dig` at
+`hs1._domainkey` or `blog` returns an answer that is not a real record. Read
+the Porkbun panel, not a lookup, before deciding a HubSpot CNAME is absent.
+
+The old warning at the foot of the README — "do not point revhops.com at
+GitHub Pages yet" — is retired, because the thing it was warning about is
+fixed.
 
 ## 17 September, seventh pass: /contact rebuilt, and the form is ours now
 

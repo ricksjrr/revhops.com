@@ -1409,10 +1409,32 @@ function csSide() {
 
 var QUAD_TITLES = ['What it is', 'Problems it solves', 'Our process', 'Who it is for'];
 
-/* Every service will eventually point at its own HubSpot meeting link.
-   Until James splits them out they all land on the discovery call, so the
-   fallback lives here rather than repeated five times in SERVICES. */
-var BOOKING_DEFAULT = 'https://revhops.com/meetings/revhops/discovery-call?embed=true';
+/* ---------- WHERE EVERY SCHEDULER ON THE SITE POINTS ----------
+
+   These two are the only booking URLs in this file. They were four copies
+   of the same string on `revhops.com/meetings/...` until 17 September, and
+   that spelling was a landmine: it only works while the apex domain is
+   served by HubSpot. The moment revhops.com points at GitHub Pages instead,
+   that path is a 404 and every scheduler on the site — /call, /client-call,
+   the Book a call tab on /contact and the five service pages — goes blank
+   at once. See "Deploying to GitHub Pages" in the README.
+
+   `meetings.hubspot.com` is HubSpot's own host for the same schedulers and
+   does not care who serves the website, so it survives the move. Both
+   spellings work today, which is why this changed before the DNS rather
+   than during it.
+
+   IF A CALENDAR EVER COMES UP BLANK, these two lines are the first place to
+   look. Copy the link out of HubSpot (Library > Meetings > the scheduler >
+   Copy link), keep the `?embed=true`, and paste it here. Some portals are
+   served from a regional host (meetings-na1.hubspot.com and similar) and
+   the link HubSpot hands you is always the right one.
+
+   Every service will eventually point at its own meeting link. Until James
+   splits them out they all land on the discovery call, so the fallback
+   lives here rather than five times over in SERVICES. */
+var BOOKING_DEFAULT = 'https://meetings.hubspot.com/revhops/discovery-call?embed=true';
+var BOOKING_CLIENT = 'https://meetings.hubspot.com/revhops/client-call?embed=true';
 
 function meetingEmbed(src) {
   return '      <!-- Start of Meetings Embed Script -->\n' +
@@ -2615,7 +2637,7 @@ var contact = {
 '           data-panel-script="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js">\n' +
 '        <p class="c-panel-note">Nothing to fill in first. Pick a time and we will meet you there.</p>\n' +
 '        <div class="meetings-iframe-container"\n' +
-'             data-src="https://revhops.com/meetings/revhops/discovery-call?embed=true"></div>\n' +
+'             data-src="' + BOOKING_DEFAULT + '"></div>\n' +
 '      </div>\n' +
 '\n' +
 '    </div>\n', 'section to-white')
@@ -2742,7 +2764,7 @@ var callPage = {
 '           is measured inside while it is still sizing itself. The widget is\n' +
 '           the page — it should be there on arrival, not fade in. -->\n' +
 '      <div class="call-embed">\n' +
-        meetingEmbed('https://revhops.com/meetings/revhops/discovery-call?embed=true') +
+        meetingEmbed(BOOKING_DEFAULT) +
 '      </div>\n' +
 '\n' +
 '    </div>\n' +
@@ -2779,7 +2801,7 @@ var clientCallPage = meetingPage({
   title: 'Client call — RevHops',
   description: 'Booking page for existing RevHops clients.',
   heading: 'Book a client call',
-  src: 'https://revhops.com/meetings/revhops/client-call?embed=true',
+  src: BOOKING_CLIENT,
   noindex: true
 });
 

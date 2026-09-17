@@ -828,15 +828,83 @@ The repo is initialised and committed. What is left:
 `.nojekyll` is already there, which is what stops Pages trying to run Jekyll
 over the folder.
 
-**Do not point `revhops.com` at GitHub Pages yet.** The domain currently
-resolves to HubSpot, and the meetings scheduler embedded on `/call` and
-`/client-call` loads from `https://revhops.com/meetings/revhops/…`. Moving the
-apex record to Pages takes that path with it and both booking pages break.
-Either move the schedulers to their `meetings.hubspot.com` equivalents first,
-or launch on a subdomain. This wants deciding before launch, not during it.
+### Moving revhops.com off HubSpot
 
-Not done yet: the custom domain, Open Graph and Twitter tags, canonical tags,
-`sitemap.xml`, `robots.txt`.
+**The blocker is cleared.** Every scheduler on the site used to load from
+`https://revhops.com/meetings/…`, which only works while HubSpot serves the
+apex, so moving the domain would have blanked the calendar on `/call`,
+`/client-call`, the Book a call tab on `/contact` and all five service pages
+at once. They point at `meetings.hubspot.com` now — `BOOKING_DEFAULT` and
+`BOOKING_CLIENT` in `tools/build-pages.js`, which are the only two booking
+URLs in the file. Load `/call` and watch a calendar render before touching
+DNS. If it is blank, the link is wrong and it is one line to fix.
+
+**Where DNS lives.** Porkbun. The nameservers are `curitiba`, `fortaleza`,
+`maceio` and `salvador`.`ns.porkbun.com`, so the records are edited in
+Porkbun's DNS panel and nowhere else.
+
+**What is there now**, read on 17 September 2026:
+
+| Host | Type | Value | Whose |
+| --- | --- | --- | --- |
+| `revhops.com` | A | `199.60.103.27`, `199.60.103.127` | HubSpot CMS |
+| `www` | CNAME | `46722926.group26.sites.hubspot.net` | HubSpot CMS |
+| `*` | CNAME | `pixie.porkbun.com` | Porkbun's catch-all |
+| `revhops.com` | MX | `smtp.google.com` (1), `…mx-verification.google.com` (15) | Google Workspace |
+| `revhops.com` | TXT | `v=spf1 include:46722926.spf06.hubspotemail.net include:_spf.google.com ~all` | both |
+| `google._domainkey` | TXT | DKIM key | Google Workspace |
+| `_dmarc` | TXT | `v=DMARC1; p=none;` | — |
+
+**Only the first two rows change.** Everything else is mail or HubSpot's
+sending domain and has nothing to do with who serves the website. Touching
+the MX or SPF records stops email.
+
+**A wildcard is in play and it hides things.** `*.revhops.com` answers with
+Porkbun's parking page, so a lookup of any subdomain appears to return a
+record whether or not one exists. Read the Porkbun panel rather than trusting
+a `dig`, and check for HubSpot CNAMEs the wildcard is masking — DKIM
+(`hs1._domainkey`, `hs2._domainkey`) and any `email` / `go` / `info` sending
+subdomain. Keep every one of them.
+
+**Remove**
+
+- the two apex `A` records on `199.60.103.x`
+- the `www` `CNAME` to `46722926.group26.sites.hubspot.net`
+
+**Add**
+
+| Host | Type | Value |
+| --- | --- | --- |
+| `revhops.com` | A | `185.199.108.153` |
+| `revhops.com` | A | `185.199.109.153` |
+| `revhops.com` | A | `185.199.110.153` |
+| `revhops.com` | A | `185.199.111.153` |
+| `revhops.com` | AAAA | `2606:50c0:8000::153` |
+| `revhops.com` | AAAA | `2606:50c0:8001::153` |
+| `revhops.com` | AAAA | `2606:50c0:8002::153` |
+| `revhops.com` | AAAA | `2606:50c0:8003::153` |
+| `www` | CNAME | `<user>.github.io` — the account, **not** the repo |
+
+All four A records and all four AAAA records, not one of each: they are
+GitHub's edge and dropping three of them costs redundancy for nothing.
+
+**Order matters.** Drop the TTL on the two apex A records and the www CNAME
+to 300 seconds a day before the switch, disconnect the domain inside HubSpot
+first (Settings → Website → Domains), then change the records, then enter
+`revhops.com` in the repo's Settings → Pages → Custom domain. That writes a
+`CNAME` file into the repo root, so `git pull` afterwards or the next push
+overwrites it and the domain drops off. Leave **Enforce HTTPS** alone until
+GitHub has issued the certificate, which can take a few hours.
+
+**What breaks on the switch, by design.** Any HubSpot landing page, thank you
+page or blog post served from `revhops.com/…` stops resolving the moment the
+apex moves. Inventory them in HubSpot before the change and either rebuild
+them here or move them to a subdomain that still points at HubSpot.
+`blog.revhops.com` is not one of them — it is on Porkbun's wildcard today and
+has never been stood up.
+
+Not done yet: Open Graph and Twitter tags, canonical tags, `sitemap.xml`,
+`robots.txt`.
 
 ## Brand reference
 
