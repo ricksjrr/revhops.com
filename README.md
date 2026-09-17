@@ -96,6 +96,8 @@ assets/
   css/site.css            Design system + all page styles
   js/site.js              Nav, theme, parallax, reveals, counters, back to top
   js/maturity-slider.js   Hero module (self-contained)
+  js/contact.js           /contact only: the tab switch, and the form's
+                          submission to HubSpot's API. See below.
   img/
     revhops-logo.png        Navy lockup, 1250x313 — nav
     revhops-logo-white.png  White lockup, 1250x313 — footer
@@ -114,6 +116,8 @@ assets/
 tools/
   build-pages.js          Writes every page except index.html. See below.
   smoke.js                The test. See below.
+  resources-smoke.js      /resources. hubs-smoke.js: the six hub pages.
+  contact-smoke.js        /contact, its tabs and its form submission.
   copy-export.js / copy-import.js / copy-map.json
 ```
 
@@ -277,6 +281,26 @@ every boxed button going to `/call` or `/contact`, the last section carrying
 `.to-white`, and every internal link resolving to a file that exists. That
 last check is the one that would have caught the six pages being missing.
 
+And a fourth for `/contact`, which since 17 September is the one page that
+owns a form rather than embedding one:
+
+```
+node tools/contact-smoke.js
+```
+
+47 checks. The tab and panel wiring, that all nine fields are present and
+every one required, that each dropdown opens on a disabled placeholder, that
+the page carries no HubSpot form embed any more, that the calendar's script
+is deferred to `data-panel-script` rather than a `<script>` tag, and the
+submission: that the structured post carries all nine answers to the right
+endpoint, that a refusal is retried with the four qualification answers
+folded into `message`, and that two failures surface `team@revhops.com` with
+a `mailto:` carrying what the visitor had typed.
+
+**The two-request path is the one running today**, because the four
+qualification properties do not exist in the portal yet, so that test is not
+covering an edge case. See `HANDOFF.md`.
+
 `smoke.js` loads the homepage, runs both scripts, and checks the structure,
 the cache stamp, every local file reference, stylesheet brace balance, that the document
 appears exactly once, the dark theme's contrast figures recomputed from the
@@ -368,10 +392,18 @@ footer newsletter *opt-in block* was removed on 4 September and is not coming
 back; `/newsletter`, added 11 September, is a page rather than a footer
 widget, and its form id is a placeholder — see item 6.
 
-**6. HubSpot form IDs.** The contact page form when that page is rebuilt, and
-the newsletter form, which `/newsletter` ships with as the literal placeholder
-`[NEWSLETTER-FORM-ID]`. Portal `46722926` is known. The meetings slug is
-`revhops/discovery-call`.
+**6. HubSpot form IDs, and four properties.** `/newsletter` still ships with
+the literal placeholder `[NEWSLETTER-FORM-ID]`. Portal `46722926` is known
+and the meetings slug is `revhops/discovery-call`.
+
+`/contact` has a real form id (`99d30994-ee79-447b-af6e-bce1cb2728ac`) and
+no embed: its fields are the site's own markup, posting to HubSpot's forms
+API. What it still needs is **four dropdown contact properties** —
+`current_crm`, `revenue_team_size`, `revops_biggest_struggle` and
+`change_timeline` — created in the portal and added to that form. Until
+they exist the page folds those four answers into `message` on a second
+attempt, so nothing is lost. The exact names, labels and option lists are
+in `HANDOFF.md` under 17 September, seventh pass.
 
 ## Conventions
 
@@ -865,7 +897,8 @@ All of them sit in `site.css` immediately before the dark theme block.
 | --- | --- |
 | `.to-white` | The paper-to-white drift done by one section instead of two. Every page that is not the homepage has a single section between its last content and the close, and the close paints white across its bleed — landing that white on paper leaves an edge. |
 | `.prose` | Terms and privacy. A 72ch measure, headings and paragraphs, no components. |
-| `.form` `.field` `.form-foot` | The contact form. Labels above fields, plate tokens so it inverts with the theme, and deliberately **not** inside a card. |
+| `.form` `.field` `.form-row` `.form-foot` | The contact form. Labels above fields, plate tokens so it inverts with the theme, and deliberately **not** inside a card. Written long before anything used it; /contact took it up on 17 September when its HubSpot embed came out. |
+| `.contact-wrap` `.c-tabs` `.c-tab` `.c-panel` `.form-ok` `.form-err` | /contact. The switch between the form and the calendar, and the form's sent and failed states. `.c-tab` is `.res-tab` written out again on purpose — see `HANDOFF.md`. |
 | `.figs` `.fig` | The three counted numbers on a case study, on navy. The only type on the site set larger than an H1. |
 | `.svc-list-plain` | `.svc-row` with three columns instead of four, for row lists with no timing column. Inherits the whole hover — the fill that bleeds past the text, the title stepping in, the arrow sliding. |
 | `.pcards` `.pcard` | The frosted card with chips that replaced every dash-bullet list on the inner pages. Same `--card-veil` surface and blur as the homepage stage cards, so the inner pages are built out of the homepage's own parts. `auto-fit` columns: three across on a laptop, more on a wide display, one on a phone, no media query per layout. |

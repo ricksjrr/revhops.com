@@ -5,7 +5,7 @@ of play; the README is how the thing is built.
 
 **Folder:** `~/Downloads/Claude/revhops.com` — this folder *is* the site.
 **Deadline:** live by 14 September 2026.
-**Current build stamp:** `de867ab06e` — derived from a hash of the assets by
+**Current build stamp:** `6332c0e5f8` — derived from a hash of the assets by
 `tools/build-pages.js`, so it cannot go stale and nothing has to be typed
 
 ---
@@ -26,6 +26,135 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
   not work as written. See "Deploying to GitHub Pages" in the README.
 
 ---
+
+## 17 September, seventh pass: /contact rebuilt, and the form is ours now
+
+James did not like the page. It was two third-party embeds side by side —
+HubSpot's own form on the left, the scheduler on the right — and the form
+asked for a name, an email and a message, which is not enough to answer
+anybody usefully. He asked for the general fields plus what CRM they are on,
+what their biggest RevOps struggle is today, team size and timeline.
+
+**It is one column, two panels and a switch above them.** Send a message, or
+Book a call. His call, chosen over a side-by-side split and over a form with
+the calendar underneath it: a nine-field form standing next to a full-height
+calendar leaves whichever one the visitor did not want taking half the page.
+
+**Nine fields, every one of them required.** Asked for explicitly. There are
+no asterisks — with nothing optional they would be on all nine — and one
+line above the form says it once instead.
+
+### THE FORM IS NOT A HUBSPOT EMBED, and that is the decision to understand
+
+The per-portal loader the rest of the site uses (`js.hsforms.net/forms/embed/`
+plus an `.hs-form-frame` div) **renders the form inside an iframe**, so no
+rule in `site.css` can reach a single field of it. Three fields in HubSpot's
+own type and spacing read as a widget dropped into the page. Nine read as a
+different website. So the fields are the site's own `.form` / `.field`
+components — which were in `site.css` doing nothing, written for exactly this
+— and the submission posts to HubSpot's public forms endpoint from
+`assets/js/contact.js`.
+
+`/newsletter` and `/audit` still use embeds and should. They are one field
+and a short form respectively.
+
+### JAMES: FOUR PROPERTIES TO CREATE IN THE PORTAL
+
+The four qualification answers have nowhere to land yet. Portal `46722926`
+has no property for any of them — checked on 17 September. Create these as
+**contact properties**, field type **dropdown select**, then add them to
+form `99d30994-ee79-447b-af6e-bce1cb2728ac` (the form /contact already
+posts to) and mark them required there.
+
+| Internal name | Label | Options, in this order |
+| --- | --- | --- |
+| `current_crm` | What CRM are you on today? | HubSpot / Salesforce / Pipedrive / Zoho / Microsoft Dynamics / Close / Monday / A spreadsheet / No CRM / Something else |
+| `revenue_team_size` | How big is your revenue team? | Just me / 2 to 5 / 6 to 15 / 16 to 40 / 41 to 100 / More than 100 |
+| `revops_biggest_struggle` | Biggest RevOps struggle right now | Data we cannot trust / Reporting that does not match reality / Too much manual work / Handoffs between teams break / The CRM does not match how we sell / Tools that do not talk to each other / Nobody owns the process / We do not know where to start / Something else |
+| `change_timeline` | When do you want it fixed? | Now, it is costing us money / In the next month / This quarter / In the next six months / Just looking for now |
+
+**The option text is the value that arrives.** HubSpot stores a dropdown's
+internal value, so if an option in the portal is worded differently from the
+option on the page the answer lands as nothing. Copy the words above exactly,
+or change them in `CONTACT_FIELDS` in `tools/build-pages.js` and copy the new
+ones. The other five fields are HubSpot defaults and need nothing:
+`firstname`, `lastname`, `email`, `company`, `message`.
+
+### Until then, nothing is lost
+
+**The submission posts twice, on purpose.** HubSpot's endpoint validates
+every field name against the form definition and rejects the whole payload
+if one is unknown, so the structured attempt goes first and a refusal falls
+back to the five default fields with the four answers folded into `message`
+as labelled lines. The enquiry arrives either way and it arrives complete
+either way, and the moment the properties exist the first attempt starts
+succeeding with no code change. **Do not "simplify" that to one request
+until the four properties are live.**
+
+Two failures in a row show the address instead, with a `mailto:` carrying
+what they had already typed. An enquiry is not worth losing to a network.
+
+`hutk` is read off HubSpot's own tracking cookie and passed in the context,
+which is what ties a submission to the rest of the visitor's session rather
+than creating a contact with no history behind it.
+
+### The rest of it
+
+**The calendar's embed script is not in the markup.** It hangs off
+`data-panel-script` on the panel and `contact.js` loads it the first time
+the panel is shown. HubSpot's meetings widget measures itself when its
+script runs, and a container that is `display: none` at that moment can come
+back with no height; somebody who only wanted the form also never pays for
+the request. It is injected once and not again on the second visit.
+
+**`/contact#book` lands on the calendar.** Anything else lands on the form.
+The tab does not write the hash back with `location.hash` — that scrolls the
+panel under the floating pill — it uses `replaceState`.
+
+**The calendar panel carries `hidden` in the markup** rather than having the
+script add it, so the two panels cannot both flash on screen before
+`contact.js` runs. The cost is that with JavaScript off the panel is
+unreachable, which is what the `<noscript>` line above the tabs is for: the
+form needs a script to submit and the calendar needs one to render, so it
+gives out `team@revhops.com` and stops pretending.
+
+**The switch is `.c-tab`, deliberately the same object as `.res-tab` on
+/resources** — same plate, line, radius, type and inverted pressed state. A
+site with two different row-of-choices controls has neither. It is written
+out again rather than sharing the selector, so a change to the resources
+filter cannot silently restyle these. Not `.btn`: a boxed button on this
+site means booking or requesting, and these change which panel is showing.
+The submit button is a `.btn`, because it requests something.
+
+**The wrap is left aligned, and it was centred first.** 960px is the
+scheduler's number — its month grid drops the date picker onto a second row
+below about that. Centred, the form started a couple of hundred pixels
+inboard of a left-aligned headline and the page read as two unrelated
+blocks. Everything on this site is left aligned against the shell.
+
+**The sent state replaces the form**, and takes the line counting the
+questions with it. A form still on screen after it has gone invites a second
+copy of the same enquiry, and a line saying "nine questions" over a thank you
+is describing something that is not there. Focus moves to its heading.
+
+**`.contact-split` and `.contact-col` are gone** from `site.css` with the
+side-by-side layout. `.contact-col-head` and `.hs-form-frame` stayed:
+`/newsletter` still uses both.
+
+**Verified** with `node tools/contact-smoke.js`, which is new — 47 checks,
+the third per-page suite after `resources-smoke.js` and `hubs-smoke.js`. It
+covers the tab wiring, that every field is present and required, that each
+dropdown opens on a disabled placeholder, that the structured post carries
+all nine answers, that a refusal retries with the answers folded into
+`message`, and that two failures surface the address. `smoke.js`,
+`resources-smoke.js` and `hubs-smoke.js` all still pass. Plus headless
+Chromium screenshots at 1440, 820 and 390 in both themes, and the sent state
+and the calendar panel at 1440.
+
+**Not checked in Arc.** The form's own layout and both themes are in the
+screenshots, but the two things that cannot be tested from here are the ones
+worth a look: the meetings widget rendering inside a panel that was hidden
+when the page loaded, and a real submission landing in HubSpot.
 
 ## 17 September, sixth pass: the labels take the real accent
 

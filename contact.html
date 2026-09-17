@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contact RevHops</title>
-<meta name="description" content="Get in touch with RevHops. Send us a message, or book a discovery call directly.">
+<meta name="description" content="Tell us what you are working with and what is breaking, or book a discovery call directly.">
 <link rel="icon" href="assets/img/revhops-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,400;1,700&family=Lato:wght@300;400;700;900&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=f78ab99b35">
+<link rel="stylesheet" href="assets/css/site.css?v=6332c0e5f8">
 
 <!-- Theme before the first paint, and no scroll restoration on reload.
      Both have to be inline and in the head: read the saved theme any later
@@ -79,7 +79,7 @@
     <div class="page-hero-inner">
       <div class="page-hero-text">
         <h1 class="h1" data-nav-clear>Get in touch</h1>
-        <p class="lede">Fill in the form or grab a time on the calendar. We answer everything within a working day, usually with a question rather than a pitch.</p>
+        <p class="lede">Tell us what you are working with and what is breaking. We answer everything within a working day, usually with a question rather than a pitch.</p>
       </div>
     </div>
   </div>
@@ -87,31 +87,134 @@
 
 <section class="section to-white">
   <div class="shell">
-    <div class="contact-split">
+    <div class="contact-wrap">
 
-      <div class="contact-col">
-        <div class="contact-col-head reveal reveal-left">
-          <h2>Send us a message</h2>
-          <p>The symptom is enough. You do not have to have diagnosed it.</p>
-        </div>
-        <!-- HubSpot form, portal 46722926. The script renders into the
-             .hs-form-frame div below and brings its own type and spacing. -->
-        <script src="https://js.hsforms.net/forms/embed/46722926.js" defer></script>
-        <div class="hs-form-frame" data-region="na1"
-             data-form-id="99d30994-ee79-447b-af6e-bce1cb2728ac"
-             data-portal-id="46722926"></div>
+      <div class="c-tabs" role="tablist" aria-label="How to get in touch" data-tabs>
+        <button class="c-tab" type="button" role="tab" id="tab-message"
+                aria-controls="panel-message" aria-selected="true"
+                data-tab="panel-message" data-hash="message">Send a message</button>
+        <button class="c-tab" type="button" role="tab" id="tab-book"
+                aria-controls="panel-book" aria-selected="false" tabindex="-1"
+                data-tab="panel-book" data-hash="book">Book a call</button>
       </div>
 
-      <div class="contact-col">
-        <div class="contact-col-head reveal reveal-right">
-          <h2>Or <span class="hl">book a call</span></h2>
-          <p>Nothing to fill in first. Pick a time and we will meet you there.</p>
+      <noscript>
+        <p class="c-panel-note">The form and the calendar both need JavaScript.
+          Email <a href="mailto:team@revhops.com">team@revhops.com</a> and we will
+          pick it up from there.</p>
+      </noscript>
+
+      <div class="c-panel" id="panel-message" role="tabpanel" aria-labelledby="tab-message">
+        <p class="c-panel-note" data-form-intro>Nine questions, about a minute. All of them are required,
+          because the answers are what let us come back with something worth reading.</p>
+
+        <form class="form" data-contact-form
+              data-portal="46722926"
+              data-form="99d30994-ee79-447b-af6e-bce1cb2728ac">
+          <div class="form-row">
+            <div class="field">
+              <label for="c-firstname">First name</label>
+              <input id="c-firstname" name="firstname" type="text" autocomplete="given-name" required>
+            </div>
+            <div class="field">
+              <label for="c-lastname">Last name</label>
+              <input id="c-lastname" name="lastname" type="text" autocomplete="family-name" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="c-email">Work email</label>
+              <input id="c-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="c-company">Company</label>
+              <input id="c-company" name="company" type="text" autocomplete="organization" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="c-current-crm">What CRM are you on today?</label>
+              <select id="c-current-crm" name="current_crm" required>
+                <option value="" selected disabled>Choose one</option>
+                <option>HubSpot</option>
+                <option>Salesforce</option>
+                <option>Pipedrive</option>
+                <option>Zoho</option>
+                <option>Microsoft Dynamics</option>
+                <option>Close</option>
+                <option>Monday</option>
+                <option>A spreadsheet</option>
+                <option>No CRM</option>
+                <option>Something else</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="c-revenue-team-size">How big is your revenue team?</label>
+              <select id="c-revenue-team-size" name="revenue_team_size" required>
+                <option value="" selected disabled>Choose one</option>
+                <option>Just me</option>
+                <option>2 to 5</option>
+                <option>6 to 15</option>
+                <option>16 to 40</option>
+                <option>41 to 100</option>
+                <option>More than 100</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="c-revops-biggest-struggle">Biggest RevOps struggle right now</label>
+              <select id="c-revops-biggest-struggle" name="revops_biggest_struggle" required>
+                <option value="" selected disabled>Choose one</option>
+                <option>Data we cannot trust</option>
+                <option>Reporting that does not match reality</option>
+                <option>Too much manual work</option>
+                <option>Handoffs between teams break</option>
+                <option>The CRM does not match how we sell</option>
+                <option>Tools that do not talk to each other</option>
+                <option>Nobody owns the process</option>
+                <option>We do not know where to start</option>
+                <option>Something else</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="c-change-timeline">When do you want it fixed?</label>
+              <select id="c-change-timeline" name="change_timeline" required>
+                <option value="" selected disabled>Choose one</option>
+                <option>Now, it is costing us money</option>
+                <option>In the next month</option>
+                <option>This quarter</option>
+                <option>In the next six months</option>
+                <option>Just looking for now</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="c-message">What is going on?</label>
+            <textarea id="c-message" name="message" required
+              placeholder="The symptom is enough. You do not have to have diagnosed it."></textarea>
+          </div>
+          <div class="form-foot">
+            <button class="btn btn-primary" type="submit" data-submit>Send message</button>
+            <p class="form-note">Nothing here starts a sequence. One reply, from a person.</p>
+          </div>
+          <p class="form-err" role="alert" data-form-error hidden></p>
+        </form>
+
+        <div class="form-ok" data-form-ok hidden>
+          <h2>Got it</h2>
+          <p>That is with us. We will come back within a working day, usually with a
+            question rather than a pitch.</p>
+          <p>If you would rather not wait for the reply,
+            <a class="text-link" href="call">grab a time now <span class="arrow">&rarr;</span></a></p>
         </div>
-        <!-- Start of Meetings Embed Script -->
+      </div>
+
+      <div class="c-panel" id="panel-book" role="tabpanel" aria-labelledby="tab-book" hidden
+           data-panel-script="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js">
+        <p class="c-panel-note">Nothing to fill in first. Pick a time and we will meet you there.</p>
         <div class="meetings-iframe-container"
              data-src="https://revhops.com/meetings/revhops/discovery-call?embed=true"></div>
-        <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"></script>
-        <!-- End of Meetings Embed Script -->
       </div>
 
     </div>
@@ -226,6 +329,7 @@
   </svg>
 </button>
 
-<script src="assets/js/site.js?v=f78ab99b35"></script>
+<script src="assets/js/site.js?v=6332c0e5f8"></script>
+<script src="assets/js/contact.js?v=6332c0e5f8"></script>
 </body>
 </html>

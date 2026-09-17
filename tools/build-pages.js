@@ -48,7 +48,7 @@ var ROOT = path.resolve(__dirname, '..');
 var STAMP = (function () {
   var h = require('crypto').createHash('sha1');
   ['assets/css/site.css', 'assets/js/site.js', 'assets/js/maturity-slider.js',
-   'assets/js/puzzle.js', 'assets/js/hop.js']
+   'assets/js/puzzle.js', 'assets/js/hop.js', 'assets/js/contact.js']
     .forEach(function (f) { h.update(fs.readFileSync(path.join(ROOT, f))); });
   return h.digest('hex').slice(0, 10);
 })();
@@ -2452,52 +2452,170 @@ var about = {
 '    </div>\n', 'section to-white', 'team')
 };
 
+/* ---------- /contact ----------
+
+   Rebuilt 17 September. The old page was two embeds side by side: HubSpot's
+   own form on the left, the scheduler on the right. James did not like it,
+   and the form on it asked for a name, an email and a message, which is not
+   enough to answer anybody usefully.
+
+   What it is now: one column, two panels, and a switch above them. The
+   message panel carries a nine-field qualification form; the call panel
+   carries the same meetings embed /call uses, for anyone who would rather
+   skip the questions and take a slot.
+
+   WHY THE FORM IS NOT A HUBSPOT EMBED. The per-portal loader the rest of
+   the site uses renders the form inside an iframe, so no rule in site.css
+   can reach a field of it. Three fields in HubSpot's own type read as a
+   widget dropped into the page; nine read as a different website. So the
+   fields are the site's own .form / .field components and the submission
+   posts to HubSpot's public forms endpoint. assets/js/contact.js does that,
+   and the reasoning is at the top of it.
+
+   THE FOUR QUALIFICATION FIELDS NEED PROPERTIES CREATING IN THE PORTAL and
+   they do not exist yet. `name` below is the property name to create; the
+   option text is the value that will arrive, so the dropdown options in
+   HubSpot have to read exactly the same. Until they exist, contact.js folds
+   the four answers into `message` on a second attempt, so nothing is lost
+   and the page works today. HANDOFF.md carries the spec.
+
+   EVERY FIELD IS REQUIRED, asked for on 17 September. There are no
+   asterisks: with nothing optional they would be on all nine and a line
+   above the form says it once instead. */
+
+var CONTACT_FIELDS = [
+  [{ name: 'firstname', label: 'First name', type: 'text', auto: 'given-name' },
+   { name: 'lastname', label: 'Last name', type: 'text', auto: 'family-name' }],
+
+  [{ name: 'email', label: 'Work email', type: 'email', auto: 'email' },
+   { name: 'company', label: 'Company', type: 'text', auto: 'organization' }],
+
+  [{ name: 'current_crm', label: 'What CRM are you on today?', options: [
+      'HubSpot', 'Salesforce', 'Pipedrive', 'Zoho', 'Microsoft Dynamics',
+      'Close', 'Monday', 'A spreadsheet', 'No CRM', 'Something else'] },
+   { name: 'revenue_team_size', label: 'How big is your revenue team?', options: [
+      'Just me', '2 to 5', '6 to 15', '16 to 40', '41 to 100',
+      'More than 100'] }],
+
+  [{ name: 'revops_biggest_struggle', label: 'Biggest RevOps struggle right now', options: [
+      'Data we cannot trust',
+      'Reporting that does not match reality',
+      'Too much manual work',
+      'Handoffs between teams break',
+      'The CRM does not match how we sell',
+      'Tools that do not talk to each other',
+      'Nobody owns the process',
+      'We do not know where to start',
+      'Something else'] },
+   { name: 'change_timeline', label: 'When do you want it fixed?', options: [
+      'Now, it is costing us money',
+      'In the next month',
+      'This quarter',
+      'In the next six months',
+      'Just looking for now'] }]
+];
+
+/* One field. A select when it carries options, an input when it does not.
+   The placeholder option is disabled as well as empty, so `required` has
+   something to fail on and the visitor cannot choose it back. */
+function contactField(f) {
+  var id = 'c-' + f.name.replace(/_/g, '-');
+  var out = '            <div class="field">\n' +
+            '              <label for="' + id + '">' + f.label + '</label>\n';
+  if (f.options) {
+    out += '              <select id="' + id + '" name="' + f.name + '" required>\n' +
+           '                <option value="" selected disabled>Choose one</option>\n' +
+           f.options.map(function (o) {
+             return '                <option>' + o + '</option>\n';
+           }).join('') +
+           '              </select>\n';
+  } else {
+    out += '              <input id="' + id + '" name="' + f.name + '"' +
+           ' type="' + f.type + '" autocomplete="' + f.auto + '" required>\n';
+  }
+  return out + '            </div>\n';
+}
+
 var contact = {
   file: 'contact.html',
   depth: 0,
   navCurrent: '/contact',
   title: 'Contact RevHops',
-  description: 'Get in touch with RevHops. Send us a message, or book a discovery call directly.',
+  description: 'Tell us what you are working with and what is breaking, or book a discovery call directly.',
   /* The /services header treatment: a title and a subhead, no artwork
      column. See .page-hero-nomedia in site.css. */
   heroClass: 'page-hero-nomedia',
   h1: 'Get in touch',
-  lede: 'Fill in the form or grab a time on the calendar. We answer everything within a working day, usually with a question rather than a pitch.',
-  /* No closing panel. The page already has two calls to action side by
-     side; a third one under them competes with both. */
+  lede: 'Tell us what you are working with and what is breaking. We answer everything within a working day, usually with a question rather than a pitch.',
+  /* No closing panel. The page is already two calls to action; a third one
+     under them competes with both. */
   noClose: true,
+  scripts: ['assets/js/contact.js'],
   body:
-    /* Two third-party embeds and their labels. Neither embed is wrapped in
-       .reveal: that class animates with transform and filter, and both make
-       the wrapper a containing block for anything the widget positions
-       fixed — HubSpot's date picker and its error toasts land in the wrong
-       place inside one. The heads above them carry the reveal instead. */
     section(
-'    <div class="contact-split">\n' +
+'    <div class="contact-wrap">\n' +
 '\n' +
-'      <div class="contact-col">\n' +
-'        <div class="contact-col-head reveal reveal-left">\n' +
-'          <h2>Send us a message</h2>\n' +
-'          <p>The symptom is enough. You do not have to have diagnosed it.</p>\n' +
-'        </div>\n' +
-'        <!-- HubSpot form, portal 46722926. The script renders into the\n' +
-'             .hs-form-frame div below and brings its own type and spacing. -->\n' +
-'        <script src="https://js.hsforms.net/forms/embed/46722926.js" defer><\/script>\n' +
-'        <div class="hs-form-frame" data-region="na1"\n' +
-'             data-form-id="99d30994-ee79-447b-af6e-bce1cb2728ac"\n' +
-'             data-portal-id="46722926"></div>\n' +
+'      <div class="c-tabs" role="tablist" aria-label="How to get in touch" data-tabs>\n' +
+'        <button class="c-tab" type="button" role="tab" id="tab-message"\n' +
+'                aria-controls="panel-message" aria-selected="true"\n' +
+'                data-tab="panel-message" data-hash="message">Send a message</button>\n' +
+'        <button class="c-tab" type="button" role="tab" id="tab-book"\n' +
+'                aria-controls="panel-book" aria-selected="false" tabindex="-1"\n' +
+'                data-tab="panel-book" data-hash="book">Book a call</button>\n' +
 '      </div>\n' +
 '\n' +
-'      <div class="contact-col">\n' +
-'        <div class="contact-col-head reveal reveal-right">\n' +
-'          <h2>Or <span class="hl">book a call</span></h2>\n' +
-'          <p>Nothing to fill in first. Pick a time and we will meet you there.</p>\n' +
+'      <noscript>\n' +
+'        <p class="c-panel-note">The form and the calendar both need JavaScript.\n' +
+'          Email <a href="mailto:team@revhops.com">team@revhops.com</a> and we will\n' +
+'          pick it up from there.</p>\n' +
+'      </noscript>\n' +
+'\n' +
+'      <div class="c-panel" id="panel-message" role="tabpanel" aria-labelledby="tab-message">\n' +
+'        <p class="c-panel-note" data-form-intro>Nine questions, about a minute. All of them are required,\n' +
+'          because the answers are what let us come back with something worth reading.</p>\n' +
+'\n' +
+'        <form class="form" data-contact-form\n' +
+'              data-portal="46722926"\n' +
+'              data-form="99d30994-ee79-447b-af6e-bce1cb2728ac">\n' +
+        CONTACT_FIELDS.map(function (row) {
+          return '          <div class="form-row">\n' +
+                 row.map(contactField).join('') +
+                 '          </div>\n';
+        }).join('') +
+'          <div class="field">\n' +
+'            <label for="c-message">What is going on?</label>\n' +
+'            <textarea id="c-message" name="message" required\n' +
+'              placeholder="The symptom is enough. You do not have to have diagnosed it."></textarea>\n' +
+'          </div>\n' +
+'          <div class="form-foot">\n' +
+'            <button class="btn btn-primary" type="submit" data-submit>Send message</button>\n' +
+'            <p class="form-note">Nothing here starts a sequence. One reply, from a person.</p>\n' +
+'          </div>\n' +
+'          <p class="form-err" role="alert" data-form-error hidden></p>\n' +
+'        </form>\n' +
+'\n' +
+'        <div class="form-ok" data-form-ok hidden>\n' +
+'          <h2>Got it</h2>\n' +
+'          <p>That is with us. We will come back within a working day, usually with a\n' +
+'            question rather than a pitch.</p>\n' +
+'          <p>If you would rather not wait for the reply,\n' +
+'            <a class="text-link" href="/call">grab a time now <span class="arrow">&rarr;</span></a></p>\n' +
 '        </div>\n' +
-'        <!-- Start of Meetings Embed Script -->\n' +
+'      </div>\n' +
+'\n' +
+    /* The calendar. `hidden` in the markup rather than added by the script,
+       so the two panels cannot both flash on screen before contact.js runs;
+       the noscript line above covers the visitor who never gets it.
+
+       Its embed script is NOT here. contact.js loads it from
+       data-panel-script the first time the panel is shown: HubSpot's widget
+       measures itself when its script runs, and a container that is
+       display:none at that moment can come back with no height at all. */
+'      <div class="c-panel" id="panel-book" role="tabpanel" aria-labelledby="tab-book" hidden\n' +
+'           data-panel-script="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js">\n' +
+'        <p class="c-panel-note">Nothing to fill in first. Pick a time and we will meet you there.</p>\n' +
 '        <div class="meetings-iframe-container"\n' +
 '             data-src="https://revhops.com/meetings/revhops/discovery-call?embed=true"></div>\n' +
-'        <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"><\/script>\n' +
-'        <!-- End of Meetings Embed Script -->\n' +
 '      </div>\n' +
 '\n' +
 '    </div>\n', 'section to-white')
