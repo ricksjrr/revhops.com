@@ -27,6 +27,14 @@ commit, 72 files tracked, `tools/node_modules` and `.DS_Store` ignored. So:
 
 ---
 
+## 17 September, sixth pass: the labels take the real accent
+
+Both new labels — the value cards' and the hub pages' — are `--warm`
+(#F2C39B) at James' call. The `--warm-ink` token added earlier in the day is
+gone, since nothing used it any more. It measures 1.6:1 on a light card, so
+it is decoration rather than text you can read at a glance; that is the
+trade he chose, and the smoke test no longer asserts a contrast on it.
+
 ## 17 September, fifth pass: a label on the hub case study
 
 `hubCase()` writes `<span class="hub-case-tag">See our work in action</span>`

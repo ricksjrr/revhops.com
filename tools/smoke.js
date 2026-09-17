@@ -130,19 +130,8 @@ console.log('\n— page —');
   (cas === svc + 1) ? ok('case studies follow services') : bad('services ' + svc + ', case ' + cas);
   /text-transform: uppercase/.test(rule('.pcard-n'))
     ? ok('the value card labels are set in caps') : bad('the labels lost their caps');
-  /var\(--warm-ink\)/.test(rule('.pcards-values .pcard-n'))
+  /color: var\(--warm\)/.test(rule('.pcards-values .pcard-n'))
     ? ok('and carry the warm ink') : bad('the labels are not warm');
-  // #F2C39B is 1.6:1 on white; the ink version has to stay above AA
-  (function () {
-    const m = /--warm-ink: (#[0-9A-Fa-f]{6})/.exec(css);
-    if (!m) return bad('--warm-ink is gone');
-    const L = h => { const v = [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16) / 255)
-      .map(x => x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4));
-      return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
-    const r = (1.05) / (L(m[1]) + 0.05);
-    r >= 4.5 ? ok('warm ink ' + m[1] + ' at ' + r.toFixed(2) + ':1 on white')
-             : bad('warm ink ' + m[1] + ' only ' + r.toFixed(2) + ':1 on white');
-  })();
   d.querySelector('.pcard-chips')
     ? bad('the value cards carry chips again') : ok('no chips on the value cards');
   (val === abt + 1) ? ok('how we hop-erate follows about') : bad('about ' + abt + ', values ' + val);

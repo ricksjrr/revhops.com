@@ -12,12 +12,6 @@
   --slate: #6B7A93;
   --mist: #C6D3E0;
   --warm: #F2C39B;
-  /* Warm as INK on the paper. #F2C39B is the accent on navy and measures
-     1.6:1 on white, so it cannot carry a word on a card. This is the same
-     hue at 4.86:1 on white and 4.65:1 on paper, which clears AA for the
-     small bold label it is used on. In dark the label sits on navy, so the
-     dark block puts the real accent back. */
-  --warm-ink: #9E6433;
   /* the doc's Do / Don't annotation colours, used as success and failure */
   --ok:      #5C7A5C;
   --ok-bg:   #F1F6F1;
@@ -3329,7 +3323,10 @@ main { overflow-x: clip; }
   text-transform: uppercase;
   color: var(--muted);
 }
-.pcards-values .pcard-n { color: var(--warm-ink); }
+/* The accent itself, at James' call on 17 September. It is pale on a light
+   card — #F2C39B measures 1.6:1 on white — and a darker mix of the same hue
+   was tried first and rejected. Same on the hub pages' label. */
+.pcards-values .pcard-n { color: var(--warm); }
 
 .pcard-title {
   text-wrap: balance;
@@ -4290,7 +4287,6 @@ a.pcard:hover .arrow { transform: translateX(5px); }
      Headings stop short of pure white on purpose: #FFFFFF over a whole
      paragraph on this navy glares. Full white is kept for the small, sparse
      things where it reads as emphasis rather than as a wall. */
-  --warm-ink: var(--warm);
   --ink: #F2F6FA;
   --ink-strong: #FFFFFF;
   --ink-hover: #FFFFFF;
@@ -7068,8 +7064,8 @@ div.res-card .res-go { color: var(--muted); }
 /* the scrim only exists to carry the card's type, and this card has none */
 .hub-case .hub-case-card::after { content: none; }
 /* The label over the client's name, 17 September. Caps in the stylesheet
-   rather than in the copy, and the warm ink rather than the accent, which
-   is 1.6:1 on paper. Same treatment as the value card labels. */
+   rather than in the copy, and the warm accent, same as the value card
+   labels. Pale on a light ground, and James' call. */
 .hub-case-tag {
   display: block;
   margin-bottom: 10px;
@@ -7078,7 +7074,7 @@ div.res-card .res-go { color: var(--muted); }
   font-size: .78rem;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: var(--warm-ink);
+  color: var(--warm);
 }
 .hub-case-copy .lede { margin-top: clamp(12px, 1.4vw, 18px); max-width: none; }
 .hub-case-copy .text-link { margin-top: clamp(18px, 2vw, 26px); }
