@@ -69,6 +69,24 @@ var NAV_ITEMS = [
   ['/contact',      'Contact']
 ];
 
+/* Social preview (Open Graph + X card). One image for every page,
+   assets/img/og-default.png at 1200x630. URLs have to be absolute, and they
+   follow the clean URLs GitHub Pages serves: services/x.html is /services/x. */
+var SITE = 'https://revhops.com';
+function socialMeta(p) {
+  var url = SITE + '/' + p.file.replace(/\.html$/, '');
+  return '<meta property="og:type" content="website">\n' +
+'<meta property="og:site_name" content="RevHops">\n' +
+'<meta property="og:title" content="' + p.title + '">\n' +
+'<meta property="og:description" content="' + p.description + '">\n' +
+'<meta property="og:url" content="' + url + '">\n' +
+'<meta property="og:image" content="' + SITE + '/assets/img/og-default.png">\n' +
+'<meta property="og:image:width" content="1200">\n' +
+'<meta property="og:image:height" content="630">\n' +
+'<meta property="og:image:alt" content="RevHops: Revenue operations for B2B SaaS and Professional Service teams ready to grow">\n' +
+'<meta name="twitter:card" content="summary_large_image">\n';
+}
+
 function head(p) {
   var a = up(p.depth);
   return '<!DOCTYPE html>\n' +
@@ -79,6 +97,7 @@ function head(p) {
 '<title>' + p.title + '</title>\n' +
 '<meta name="description" content="' + p.description + '">\n' +
 (p.noindex ? '<meta name="robots" content="noindex, nofollow">\n' : '') +
+socialMeta(p) +
 '<link rel="icon" href="' + a + 'assets/img/revhops-icon.png">\n' +
 '<link rel="preconnect" href="https://fonts.googleapis.com">\n' +
 '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
