@@ -48,7 +48,7 @@
            open the story. `photo` takes the place of `logo` and renders as
            a filled square rather than a mark on the paper. */
         who: 'Migrating from GHL to HubSpot',
-        line: 'A relationship business, run on a CRM that added a step to everything. Six weeks to a team live in HubSpot.',
+        line: 'A business built on relationships, using a CRM that was a hurdle, not a help. Six weeks from concept to launch with a new CRM that helps the team grow.',
         photo: 'assets/img/case-studies/ike-commercial-real-estate.webp',
         href: 'case-studies/Ike-Commercial-Real-Estate'
       }
