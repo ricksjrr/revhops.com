@@ -70,7 +70,7 @@ var NAV_ITEMS = [
 ];
 
 /* Social preview (Open Graph + X card). One image for every page,
-   assets/img/og-default.png at 1200x630. URLs have to be absolute, and they
+   assets/img/og-default.png at 2400x1260 (2x, so it stays sharp on retina screens); bump ?v= when it changes so LinkedIn refetches. URLs have to be absolute, and they
    follow the clean URLs GitHub Pages serves: services/x.html is /services/x. */
 var SITE = 'https://revhops.com';
 function socialMeta(p) {
@@ -80,9 +80,9 @@ function socialMeta(p) {
 '<meta property="og:title" content="' + p.title + '">\n' +
 '<meta property="og:description" content="' + p.description + '">\n' +
 '<meta property="og:url" content="' + url + '">\n' +
-'<meta property="og:image" content="' + SITE + '/assets/img/og-default.png">\n' +
-'<meta property="og:image:width" content="1200">\n' +
-'<meta property="og:image:height" content="630">\n' +
+'<meta property="og:image" content="' + SITE + '/assets/img/og-default.png?v=2">\n' +
+'<meta property="og:image:width" content="2400">\n' +
+'<meta property="og:image:height" content="1260">\n' +
 '<meta property="og:image:alt" content="RevHops: Revenue operations for B2B SaaS and Professional Service teams ready to grow">\n' +
 '<meta name="twitter:card" content="summary_large_image">\n';
 }
