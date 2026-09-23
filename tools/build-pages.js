@@ -3497,13 +3497,16 @@ var RESOURCES = [
      that ever matters more than staying in step. */
   { type: 'videos', title: 'Growing Better In The Age Of The Builder', video: 'mYwmm15nEaQ',
     thumb: 'https://i.ytimg.com/vi/mYwmm15nEaQ/maxresdefault.jpg',
-    copy: 'INBOUND 2026 keynote from HubSpot CTO, Dharmesh Shah.' },
+    copy: 'UNBOUND 2026 keynote from HubSpot CTO, Dharmesh Shah.' },
   { type: 'videos', title: '2026 HubSpot Beginner\'s Guide', video: 'mwtGIepbACM',
     thumb: 'https://i.ytimg.com/vi/mwtGIepbACM/maxresdefault.jpg',
     copy: 'Everything someone new to HubSpot needs in 90 minutes' },
   { type: 'videos', title: 'You to the power of AI', video: 'pPQngmSEIe0',
     thumb: 'https://i.ytimg.com/vi/pPQngmSEIe0/maxresdefault.jpg',
     copy: 'INBOUND 2025 keynote from HubSpot CTO, Dharmesh Shah.' },
+  { type: 'videos', title: 'Operating at the Edge with Astronaut Suni Williams', video: 'gaHUAWVb20Q',
+    thumb: 'https://i.ytimg.com/vi/gaHUAWVb20Q/maxresdefault.jpg',
+    copy: 'Our favorite session from UNBOUND 2026' },
 
   /* ---- downloadables ----
      Gated per item rather than per type: some of these are worth a form and
